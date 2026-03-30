@@ -15,9 +15,9 @@ out/
 # Environment Files
 .env
 .env.*
-!.env.example
 **/.env
 **/.env.*
+!.env.example
 
 # Logs
 *.log
