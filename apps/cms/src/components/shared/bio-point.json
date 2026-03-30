@@ -1,0 +1,15 @@
+{
+    "collectionName": "components_shared_bio_points",
+    "info": {
+        "displayName": "Bio Point",
+        "icon": "bulletList",
+        "description": "A single bullet point in a biography section"
+    },
+    "options": {},
+    "attributes": {
+        "text": {
+            "type": "text",
+            "required": true
+        }
+    }
+}

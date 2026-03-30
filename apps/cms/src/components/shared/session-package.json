@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_shared_session_packages",
+    "info": {
+        "displayName": "Session Package",
+        "icon": "calendar",
+        "description": "A bookable session package"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "type": {
+            "type": "string",
+            "default": "Audio session"
+        },
+        "price": {
+            "type": "string",
+            "required": true
+        },
+        "duration": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": ["images"]
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "collectionName": "components_shared_pop_ups",
+    "info": {
+        "displayName": "Pop-up",
+        "icon": "bullhorn",
+        "description": "A promotional pop-up to show on the page"
+    },
+    "options": {},
+    "attributes": {
+        "is_active": {
+            "type": "boolean",
+            "default": false
+        },
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "button_text": {
+            "type": "string"
+        },
+        "button_link": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        }
+    }
+}

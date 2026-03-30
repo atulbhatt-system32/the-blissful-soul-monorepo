@@ -1,0 +1,50 @@
+{
+    "kind": "singleType",
+    "collectionName": "about_pages",
+    "info": {
+        "singularName": "about-page",
+        "pluralName": "about-pages",
+        "displayName": "About Page",
+        "description": "Manage the About Master page content"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "hero_title": {
+            "type": "string",
+            "default": "About The Master"
+        },
+        "name": {
+            "type": "string",
+            "default": "Master Pragya Vijh"
+        },
+        "profile_image": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": ["images"]
+        },
+        "bio_points": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.bio-point"
+        },
+        "cta_text": {
+            "type": "string",
+            "default": "Get in Touch"
+        },
+        "cta_link": {
+            "type": "string",
+            "default": "/contact"
+        },
+        "quote": {
+            "type": "text",
+            "default": "Healing is a journey of coming back home to yourself."
+        },
+        "seo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.seo"
+        }
+    }
+}

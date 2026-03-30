@@ -1,0 +1,41 @@
+{
+    "collectionName": "components_shared_heroes",
+    "info": {
+        "displayName": "Hero",
+        "icon": "layout",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "subtitle": {
+            "type": "text"
+        },
+        "cta_text": {
+            "type": "string",
+            "default": "Shop Now"
+        },
+        "cta_link": {
+            "type": "string",
+            "default": "/store"
+        },
+        "image": {
+            "type": "media",
+            "multiple": true,
+            "allowedTypes": [
+                "images"
+            ],
+            "required": true
+        },
+        "theme": {
+            "type": "enumeration",
+            "enum": [
+                "dark",
+                "light"
+            ],
+            "default": "dark"
+        }
+    }
+}

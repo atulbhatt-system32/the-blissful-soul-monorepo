@@ -1,0 +1,85 @@
+{
+    "kind": "singleType",
+    "collectionName": "homepages",
+    "info": {
+        "singularName": "homepage",
+        "pluralName": "homepages",
+        "displayName": "Homepage",
+        "description": "Manage the homepage layout and content"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "hero_slideshow": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.hero"
+        },
+        "seo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.seo"
+        },
+        "featured_products_title": {
+            "type": "string",
+            "default": "New Arrivals"
+        },
+        "pop_up": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.pop-up"
+        },
+        "stats": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.stat-item"
+        },
+        "hot_seller_title": {
+            "type": "string",
+            "default": "Hot Seller"
+        },
+        "healing_crystals_title": {
+            "type": "string",
+            "default": "Shop Healing Crystals"
+        },
+        "book_session_title": {
+            "type": "string",
+            "default": "Book Your Session"
+        },
+        "tarot_services": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "audio_sessions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "video_sessions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "testimonials_title": {
+            "type": "string",
+            "default": "Client Testimonials"
+        },
+        "testimonials": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.testimonial"
+        },
+        "hot_sellers": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "healing_crystals": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "blissful-soul-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules **/*/node_modules"
+  },
+  "devDependencies": {
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@10.5.2",
+  "pnpm": {
+    "overrides": {
+      "react": "19.0.4",
+      "react-dom": "19.0.4",
+      "@types/react": "19.0.4",
+      "@types/react-dom": "19.0.4"
+    }
+  }
+}

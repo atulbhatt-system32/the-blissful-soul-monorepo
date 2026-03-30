@@ -1,0 +1,32 @@
+{
+    "kind": "singleType",
+    "collectionName": "store_configs",
+    "info": {
+        "singularName": "store-config",
+        "pluralName": "store-configs",
+        "displayName": "Store Config",
+        "description": "Manage the Shop Crystals page banner and settings"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "hero_title": {
+            "type": "string",
+            "default": "All Products"
+        },
+        "hero_subtitle": {
+            "type": "text"
+        },
+        "hero_image": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": ["images"]
+        },
+        "seo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.seo"
+        }
+    }
+}

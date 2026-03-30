@@ -1,0 +1,10 @@
+node_modules
+.next
+.medusa
+.cache
+build
+dist
+.DS_Store
+.git
+.turbo
+*.log

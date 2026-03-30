@@ -1,0 +1,43 @@
+{
+    "kind": "singleType",
+    "collectionName": "book_session_pages",
+    "info": {
+        "singularName": "book-session-page",
+        "pluralName": "book-session-pages",
+        "displayName": "Book Session Page",
+        "description": "Manage the Book Your Session page content"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "hero_title": {
+            "type": "string",
+            "default": "Our Services"
+        },
+        "section_title": {
+            "type": "string",
+            "default": "Select From the Below Categories"
+        },
+        "top_services": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "audio_sessions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "video_sessions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
+        },
+        "seo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.seo"
+        }
+    }
+}
