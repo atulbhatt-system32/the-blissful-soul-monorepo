@@ -1,0 +1,42 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js dependencies
+**/node_modules/
+node_modules/
+.npm
+pnpm-debug.log*
+
+# Builds and cache
+.next/
+dist/
+dist-*/
+build/
+.turbo/
+.medusa/
+.strapi/
+.tmp/
+*.db
+*.sqlite
+
+# Git and dev
+.git
+.gitignore
+.gitattributes
+README.md
+DOCKER.md
+PROJECT_OVERVIEW.md
+TODO.md
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env files
+.env
+.env.*
+!.env.example

@@ -1,17 +1,20 @@
-FROM node:20-alpine
-
-# Install dependencies for Medusa
-RUN apk add --no-cache python3 make g++ vips-dev
+FROM node:20-slim
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package*.json pnpm-lock.yaml* ./
+# Copy root monorepo files
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-RUN pnpm install --no-frozen-lockfile
+# Copy backend app files
+COPY apps/backend ./apps/backend
 
-COPY . .
+# Install dependencies for the whole monorepo
+RUN pnpm install
+
+WORKDIR /app/apps/backend
 
 EXPOSE 9000
 
-CMD ["pnpm", "run", "dev"]
+# Run migrations and setup before starting
+CMD ["sh", "-c", "pnpm exec medusa db:migrate && pnpm exec medusa exec ./src/scripts/create-region.ts && pnpm exec medusa develop"]

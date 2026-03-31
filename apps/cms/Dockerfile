@@ -1,16 +1,26 @@
-FROM node:20-alpine
+FROM node:20-slim
 
-# Install build dependencies for better-sqlite3 and other sharp dependencies
-RUN apk add --no-cache build-base gcc autoconf automake libtool zlib-dev libpng-dev nasm vips-dev python3
+# Install build tools for better-sqlite3 native compilation
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package*.json ./
+# Copy root monorepo files
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-RUN npm install
+# Copy cms app files
+COPY apps/cms ./apps/cms
 
-COPY . .
+# Install dependencies for the whole monorepo
+RUN pnpm install
+
+# Force rebuild better-sqlite3 for this platform (lockfile is Mac-generated)
+RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && npx --yes node-gyp rebuild
+
+WORKDIR /app/apps/cms
 
 EXPOSE 1337
 
-CMD ["npm", "run", "dev"]
+CMD ["pnpm", "run", "develop"]

@@ -29,6 +29,7 @@ sdk.client.fetch = async <T>(
 
   const newHeaders = {
     ...localeHeader,
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     ...headers,
   }
   init = {

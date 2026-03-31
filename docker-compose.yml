@@ -17,8 +17,8 @@ services:
 
   backend:
     build:
-      context: ./apps/backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/backend/Dockerfile
     ports:
       - "9000:9000"
     env_file:
@@ -31,13 +31,12 @@ services:
       - redis
     command: sh -c "npx medusa db:migrate && npx medusa exec ./src/scripts/create-region.ts && npx medusa develop"
     volumes:
-      - ./apps/backend:/app
-      - /app/node_modules
+      - ./apps/backend/src:/app/apps/backend/src
 
   storefront:
     build:
-      context: ./apps/storefront
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/storefront/Dockerfile
     ports:
       - "8001:8001"
     env_file:
@@ -52,20 +51,21 @@ services:
     extra_hosts:
       - "localhost:host-gateway"
     volumes:
-      - ./apps/storefront:/app
-      - /app/node_modules
+      - ./apps/storefront/src:/app/apps/storefront/src
 
   cms:
     build:
-      context: ./apps/cms
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/cms/Dockerfile
     ports:
       - "1337:1337"
     env_file:
       - ./apps/cms/.env
     volumes:
-      - ./apps/cms/.tmp:/app/.tmp
-      - ./apps/cms/public/uploads:/app/public/uploads
+      - ./apps/cms/src:/app/apps/cms/src
+      - cms_data:/app/apps/cms/.tmp
+      - ./apps/cms/public/uploads:/app/apps/cms/public/uploads
 
 volumes:
   postgres_data:
+  cms_data:

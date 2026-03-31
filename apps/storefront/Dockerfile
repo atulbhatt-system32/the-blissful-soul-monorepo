@@ -1,14 +1,19 @@
-FROM node:20-alpine
+FROM node:20-slim
 
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package*.json pnpm-lock.yaml* ./
+# Copy root monorepo files
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-RUN pnpm install --no-frozen-lockfile
+# Copy storefront app files
+COPY apps/storefront ./apps/storefront
 
-COPY . .
+# Install dependencies for the whole monorepo
+RUN pnpm install
+
+WORKDIR /app/apps/storefront
 
 EXPOSE 8001
 

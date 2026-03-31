@@ -52,25 +52,45 @@ To achieve this, the project is split into three separate and independent parts:
 
 ## How to Start the Project
 
-To start development, open three separate terminals and run the following instances:
+The recommended way to start the project is using **Docker Compose**. This ensures all services (Postgres, Redis, Medusa, Strapi, and Next.js) are correctly networked and configured.
 
-**Terminal 1:**
+### Using Docker (Recommended)
 
 ```bash
-cd blissful-soul-backend
+# Start everything in the background
+docker-compose up -d
+
+# View logs to ensure everything is ready
+docker-compose logs -f
+```
+
+### Manual Method (Individual Terminals)
+
+If you prefer running locally without Docker, you will need Postgres and Redis running on your host machine, then run:
+
+**Terminal 1 (Backend):**
+```bash
+cd apps/backend
 npm run dev
 ```
 
-**Terminal 2:**
-
+**Terminal 2 (Storefront):**
 ```bash
-cd blissful-soul-cms
+cd apps/storefront
 npm run dev
 ```
 
-**Terminal 3:**
-
+**Terminal 3 (CMS):**
 ```bash
-cd blissful-soul-storefront
+cd apps/cms
 npm run dev
 ```
+
+## Admin Access
+
+- **Medusa Admin**: [http://localhost:9000/app](http://localhost:9000/app)
+  - User: `admin@admin.com`
+  - Pass: `supersecret`
+- **Strapi Admin**: [http://localhost:1337/admin](http://localhost:1337/admin)
+- **Storefront**: [http://localhost:8001](http://localhost:8001)
+
