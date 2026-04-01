@@ -24,22 +24,25 @@ async function getRegionMap(cacheId: string) {
     regionMapUpdated < Date.now() - 3600 * 1000
   ) {
     // Fetch regions from Medusa. We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
+    console.log(`[Middleware] Handshaking with backend: ${BACKEND_URL}`);
+    console.log(`[Middleware] Using Publishable Key: ${PUBLISHABLE_API_KEY ? 'YES' : 'MISSING'}`);
+
     const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
+      method: "GET",
       headers: {
         "x-publishable-api-key": PUBLISHABLE_API_KEY!,
+        "Content-Type": "application/json",
       },
-      next: {
-        revalidate: 3600,
-        tags: [`regions-${cacheId}`],
-      },
-      cache: "force-cache",
+      cache: "no-store",
     }).then(async (response) => {
       const json = await response.json()
 
       if (!response.ok) {
+        console.error(`[Middleware] Backend Handshake Error: ${JSON.stringify(json)}`);
         throw new Error(json.message)
       }
 
+      console.log(`[Middleware] Handshake Successful! Found ${json.regions?.length} regions.`);
       return json
     })
 
@@ -159,7 +162,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|images|assets|png|svg|jpg|jpeg|gif|webp).*)",
-  ],
+  matcher: ["/", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }

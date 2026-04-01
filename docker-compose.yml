@@ -29,7 +29,7 @@ services:
     depends_on:
       - postgres
       - redis
-    command: sh -c "npx medusa db:migrate && npx medusa exec ./src/scripts/create-region.ts && npx medusa develop"
+    command: sh -c "npx medusa db:migrate && npx medusa develop"
     volumes:
       - ./apps/backend/src:/app/apps/backend/src
 
@@ -42,7 +42,7 @@ services:
     env_file:
       - ./apps/storefront/.env
     environment:
-      - MEDUSA_BACKEND_URL=http://backend:9000
+      - MEDUSA_BACKEND_URL=http://host.docker.internal:9000
       - STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
     depends_on:
