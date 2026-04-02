@@ -15,10 +15,16 @@ docker-compose up -d --build
 ---
 
 ## Step 2: Initialize Everything
-Run this single command in your terminal to create your admin account:
+Run these commands in your terminal to create your admin accounts:
 
+**For Medusa (Backend):**
 ```bash
 docker-compose exec backend npx medusa user --email admin@theblisfulsoul.in --password 'BlissfulSoul@123'
+```
+
+**For Strapi (CMS):**
+```bash
+docker-compose exec cms npx strapi admin:create-user --email admin@theblisfulsoul.in --password 'BlissfulSoul@123' --firstname Admin --lastname User
 ```
 
 ---
