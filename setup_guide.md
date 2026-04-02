@@ -7,7 +7,7 @@ Follow this definitive 2-step process to get your Medusa v2 project live and ful
 ## Step 1: Start All Services (Fresh Start)
 If you want to start from absolute zero:
 ```bash
-docker-compose down -v
+docker-compose down
 docker-compose up -d --build
 ```
 *Wait 60 seconds.* During this time, Docker pull all the missing dashboard pieces we fixed today and starts the backend.
