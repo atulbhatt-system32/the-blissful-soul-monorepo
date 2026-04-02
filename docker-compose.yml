@@ -26,13 +26,14 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/medusa_db?sslmode=disable
       - REDIS_URL=redis://redis:6379
+      - BACKEND_URL=http://localhost:9000
     depends_on:
       - postgres
       - redis
     command: sh -c "npx medusa db:migrate && npx medusa develop"
     volumes:
       - ./apps/backend/src:/app/apps/backend/src
-      - ./apps/backend/uploads:/app/apps/backend/uploads
+      - ./apps/backend/static:/app/apps/backend/static
 
   storefront:
     build:
