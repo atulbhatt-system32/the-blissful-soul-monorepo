@@ -90,7 +90,8 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
   }, [])
 
   return (
-    <section ref={sectionRef} className="bg-pink-300 py-10 md:py-16 text-white text-center">
+    <section ref={sectionRef} className="bg-[#d46695] py-10 md:py-16 text-white text-center relative overflow-hidden">
+      {/* Optional: Add a subtle pattern overlay if needed, but keeping it clean for now */}
       <div className="content-container grid grid-cols-2 lg:grid-cols-4 gap-8">
         {data.map((stat, idx) => (
           <div key={idx} className="flex flex-col items-center">

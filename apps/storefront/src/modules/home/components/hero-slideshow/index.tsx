@@ -103,14 +103,6 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                         {slide.subtitle}
                       </p>
                     )}
-                    {slide.cta_text && slide.cta_link && (
-                      <Link
-                        href={slide.cta_link}
-                        className="inline-block px-10 py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300 rounded shadow-2xl"
-                      >
-                        {slide.cta_text}
-                      </Link>
-                    )}
                   </motion.div>
                 </div>
               </div>

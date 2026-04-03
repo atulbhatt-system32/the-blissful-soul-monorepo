@@ -100,45 +100,51 @@ export default function ProductPreview({
   }
 
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-50 flex flex-col h-full">
+    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(255,192,203,0.1)] hover:shadow-[0_8px_30px_rgba(255,192,203,0.2)] transition-all duration-500 border border-pink-100 flex flex-col h-full hover:-translate-y-1">
       <LocalizedClientLink href={`/products/${product.handle}`} className="flex-grow">
         <div data-testid="product-wrapper" className="relative">
           {/* Discount Badge */}
-          {!!displayPrice?.percentage_diff && (
-            <div className="absolute top-3 left-3 z-10 bg-pink-400 text-white text-[10px] font-bold px-2 py-1 rounded-md">
-              -{displayPrice.percentage_diff}%
+          {Number(displayPrice?.percentage_diff) > 0 && (
+            <div className="absolute top-4 left-4 z-10 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+              -{displayPrice?.percentage_diff}%
             </div>
           )}
 
           {/* Session Type Badge (Metadata) */}
           {!!displayLabel && (
-            <div className="absolute top-3 right-3 z-10">
-              <Badge color="red" className="text-[10px] font-bold uppercase tracking-wider !rounded-md !bg-pink-100 !text-pink-600 border-none shadow-sm">
+            <div className="absolute top-4 right-4 z-10">
+              <Badge color="red" className="text-[10px] font-bold uppercase tracking-wider !rounded-full !bg-white/90 !text-pink-600 border border-pink-100 shadow-sm backdrop-blur-sm px-3 py-1">
                 {(displayLabel as string)}
               </Badge>
             </div>
           )}
           
-          <Thumbnail
-            thumbnail={product.thumbnail}
-            images={product.images}
-            size="full"
-            isFeatured={isFeatured}
-            className="!rounded-none !shadow-none !bg-transparent !p-0 aspect-[4/5]"
-          />
+          <div className="p-2">
+             <Thumbnail
+              thumbnail={product.thumbnail}
+              images={product.images}
+              size="full"
+              isFeatured={isFeatured}
+              className="!rounded-xl overflow-hidden aspect-square grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500"
+            />
+          </div>
           
-          <div className="p-4 flex flex-col items-center text-center">
-            <Text className="font-serif text-pink-950 text-base mb-2 group-hover:text-pink-600 transition-colors line-clamp-2" data-testid="product-title">
+          <div className="p-5 flex flex-col items-center text-center">
+            <Text className="font-serif text-pink-950 text-lg mb-2 group-hover:text-pink-600 transition-colors line-clamp-2 leading-tight" data-testid="product-title">
               {product.title}
             </Text>
             
-            <div className="flex flex-col items-center gap-y-2 mb-4">
-              {displayPrice && <PreviewPrice price={displayPrice} />}
+            <div className="flex flex-col items-center gap-y-3 mb-2">
+              {displayPrice && (
+                <div className="flex items-center gap-x-2">
+                   <PreviewPrice price={displayPrice} />
+                </div>
+              )}
               
               {/* Session Duration (Metadata) */}
               {!!displayDuration && (
-                <div className="flex items-center gap-x-1.5 text-gray-500 text-[11px] font-medium bg-gray-50 px-2 py-1 rounded-lg">
-                  <Clock className="text-pink-400 w-3 h-3" />
+                <div className="flex items-center gap-x-1.5 text-gray-400 text-[11px] font-semibold tracking-wide uppercase bg-pink-50/50 px-3 py-1 rounded-full border border-pink-100/50">
+                  <Clock className="text-pink-400 w-3.5 h-3.5" />
                   <span>{(displayDuration as string)}</span>
                 </div>
               )}
@@ -147,13 +153,23 @@ export default function ProductPreview({
         </div>
       </LocalizedClientLink>
 
-      <div className="px-4 pb-6 mt-auto">
+      <div className="px-5 pb-6 mt-auto">
         <button 
           onClick={handleBooking}
           disabled={isAdding}
-          className="w-full py-3 bg-pink-300 text-white rounded-xl font-bold hover:bg-pink-400 disabled:bg-gray-200 transition-colors uppercase tracking-widest text-[10px]"
+          className="w-full py-4 bg-[#e47ca1] text-white rounded-xl font-bold hover:bg-pink-500 shadow-[0_4px_15px_rgba(228,124,161,0.3)] hover:shadow-[0_6px_20px_rgba(228,124,161,0.4)] disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-widest text-[11px] flex items-center justify-center gap-x-2"
         >
-          {isAdding ? "PROCESSING..." : isSession ? "BOOK SESSION" : "ADD TO CART"}
+          {isAdding ? (
+            <>
+              <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              <span>PROCESSING</span>
+            </>
+          ) : (
+            <>
+               <span>{isSession ? "BOOK YOUR SESSION" : "ADD TO CART"}</span>
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </>
+          )}
         </button>
       </div>
     </div>
