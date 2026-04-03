@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict 635cpOC1P1nuwGi76j9HIrQ2HlfefbPa3cgYOtArgXrgDfbHdlQvvMwhcmhZez9
+\restrict lnFP3GZRkOaezwYsU3ZNN09GYqtETmz5bHDPrEAkPd3CUbY9EEtRjVy3XFTnlhE
 
--- Dumped from database version 14.20 (Homebrew)
--- Dumped by pg_dump version 14.20 (Homebrew)
+-- Dumped from database version 15.17
+-- Dumped by pg_dump version 15.17
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -3036,7 +3036,7 @@ COPY public.account_holder (id, provider_id, external_id, email, data, metadata,
 --
 
 COPY public.api_key (id, token, salt, redacted, title, type, last_used_at, created_by, created_at, revoked_by, revoked_at, updated_at, deleted_at) FROM stdin;
-apk_01KKB6VT37HNAW39V48A86KFN5	pk_2c2c7743f7ba60c660a518965bee8c7dbdce18f65cd69c323283b7c2a3fb1944		pk_2c2***944	Default Publishable API Key	publishable	\N		2026-03-10 11:57:33.095+05:30	\N	\N	2026-03-10 11:57:33.095+05:30	\N
+apk_01KKB6VT37HNAW39V48A86KFN5	pk_2c2c7743f7ba60c660a518965bee8c7dbdce18f65cd69c323283b7c2a3fb1944		pk_2c2***944	Default Publishable API Key	publishable	\N		2026-03-10 06:27:33.095+00	\N	\N	2026-03-10 06:27:33.095+00	\N
 \.
 
 
@@ -3061,8 +3061,8 @@ COPY public.application_method_target_rules (application_method_id, promotion_ru
 --
 
 COPY public.auth_identity (id, app_metadata, created_at, updated_at, deleted_at) FROM stdin;
-authid_01KKB74WW61QPK5144M9VB75GN	{"user_id": "user_01KKB74WTDX61HPKGPNXZ0K7SA"}	2026-03-10 12:02:30.854+05:30	2026-03-10 12:02:30.862+05:30	\N
-authid_01KKBNF62Q3DX94KHR72XXH6HC	{"customer_id": "cus_01KKBNF6A1T3EABE3324ZTY321"}	2026-03-10 16:12:48.025+05:30	2026-03-10 16:12:48.278+05:30	\N
+authid_01KKB74WW61QPK5144M9VB75GN	{"user_id": "user_01KKB74WTDX61HPKGPNXZ0K7SA"}	2026-03-10 06:32:30.854+00	2026-03-10 06:32:30.862+00	\N
+authid_01KKBNF62Q3DX94KHR72XXH6HC	{"customer_id": "cus_01KKBNF6A1T3EABE3324ZTY321"}	2026-03-10 10:42:48.025+00	2026-03-10 10:42:48.278+00	\N
 \.
 
 
@@ -3079,9 +3079,9 @@ COPY public.capture (id, amount, raw_amount, payment_id, created_at, updated_at,
 --
 
 COPY public.cart (id, region_id, customer_id, sales_channel_id, email, currency_code, shipping_address_id, billing_address_id, metadata, created_at, updated_at, deleted_at, completed_at, locale) FROM stdin;
-cart_01KKBWSW7ZSZ3KYQRSBW71ZW5X	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	\N	\N	\N	2026-03-10 18:20:58.447+05:30	2026-03-10 18:20:58.447+05:30	\N	\N	\N
-cart_01KM01A6X9YPPYZG9GXVSTJXMF	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	caaddr_01KM01E2143S3SMKJJ69F8R1M9	caaddr_01KM01E213VS40RZN262PDHC8K	\N	2026-03-18 14:04:36.587+05:30	2026-03-18 14:06:42.66+05:30	\N	\N	\N
-cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	caaddr_01KMYG6X6MAM32JB1F2WBHQ29N	caaddr_01KMYG6X6M9EG9GQ53B208F3KP	\N	2026-03-27 10:28:36.651+05:30	2026-03-30 10:02:09.94+05:30	\N	\N	\N
+cart_01KKBWSW7ZSZ3KYQRSBW71ZW5X	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	\N	\N	\N	2026-03-10 12:50:58.447+00	2026-03-10 12:50:58.447+00	\N	\N	\N
+cart_01KM01A6X9YPPYZG9GXVSTJXMF	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	caaddr_01KM01E2143S3SMKJJ69F8R1M9	caaddr_01KM01E213VS40RZN262PDHC8K	\N	2026-03-18 08:34:36.587+00	2026-03-18 08:36:42.66+00	\N	\N	\N
+cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY321	sc_01KKB6VT2GA936E202BCVNT0DC	kunalrisaanva12@gmail.com	inr	caaddr_01KMYG6X6MAM32JB1F2WBHQ29N	caaddr_01KMYG6X6M9EG9GQ53B208F3KP	\N	2026-03-27 04:58:36.651+00	2026-03-30 04:32:09.94+00	\N	\N	\N
 \.
 
 
@@ -3090,16 +3090,16 @@ cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	reg_01KKB79PXYZ123	cus_01KKBNF6A1T3EABE3324ZTY32
 --
 
 COPY public.cart_address (id, customer_id, company, first_name, last_name, address_1, address_2, city, country_code, province, postal_code, phone, metadata, created_at, updated_at, deleted_at) FROM stdin;
-caaddr_01KM01E213VS40RZN262PDHC8K	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114		\N	2026-03-18 14:06:42.66+05:30	2026-03-18 14:06:42.66+05:30	\N
-caaddr_01KM01E2143S3SMKJJ69F8R1M9	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114		\N	2026-03-18 14:06:42.66+05:30	2026-03-18 14:06:42.66+05:30	\N
-caaddr_01KMPVGJ1MENHR1HYH0Y9D678K	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 10:45:45.077+05:30	2026-03-27 10:45:45.077+05:30	\N
-caaddr_01KMPVGJ1M3HTPAKG3JA7PEMV4	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 10:45:45.077+05:30	2026-03-27 10:45:45.077+05:30	\N
-caaddr_01KMPX2BBHNAEWAKYVE799BPZN	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 11:12:56.626+05:30	2026-03-27 11:12:56.626+05:30	\N
-caaddr_01KMPX2BBHXNQRFMDXJFED2S5G	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 11:12:56.626+05:30	2026-03-27 11:12:56.626+05:30	\N
-caaddr_01KMQ5C3KZYQR4HX7BG2TK0X6B	\N	\N	Kunal	Jangra	Session Booking	\N	Delhi	us	\N	110007	08168336581	\N	2026-03-27 13:38:04.992+05:30	2026-03-27 13:38:04.992+05:30	\N
-caaddr_01KMQ5C3M02Z6J2MAZX8S26JD3	\N	\N	Kunal	Jangra	Session Booking	\N	Delhi	us	\N	110007	08168336581	\N	2026-03-27 13:38:04.992+05:30	2026-03-27 13:38:04.992+05:30	\N
-caaddr_01KMYG6X6M9EG9GQ53B208F3KP	\N		Kunal	Jangra	bhiwani 		bhiwani	in	Haryana	110007	08168336581	\N	2026-03-30 10:02:09.94+05:30	2026-03-30 10:02:09.94+05:30	\N
-caaddr_01KMYG6X6MAM32JB1F2WBHQ29N	\N		Kunal	Jangra	bhiwani 		bhiwani	in	Haryana	110007	08168336581	\N	2026-03-30 10:02:09.94+05:30	2026-03-30 10:02:09.94+05:30	\N
+caaddr_01KM01E213VS40RZN262PDHC8K	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114		\N	2026-03-18 08:36:42.66+00	2026-03-18 08:36:42.66+00	\N
+caaddr_01KM01E2143S3SMKJJ69F8R1M9	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114		\N	2026-03-18 08:36:42.66+00	2026-03-18 08:36:42.66+00	\N
+caaddr_01KMPVGJ1MENHR1HYH0Y9D678K	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 05:15:45.077+00	2026-03-27 05:15:45.077+00	\N
+caaddr_01KMPVGJ1M3HTPAKG3JA7PEMV4	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 05:15:45.077+00	2026-03-27 05:15:45.077+00	\N
+caaddr_01KMPX2BBHNAEWAKYVE799BPZN	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 05:42:56.626+00	2026-03-27 05:42:56.626+00	\N
+caaddr_01KMPX2BBHXNQRFMDXJFED2S5G	\N		Kunal	Jangra	Kharak		Bhiwani	in	Haryana	127114	08168336581	\N	2026-03-27 05:42:56.626+00	2026-03-27 05:42:56.626+00	\N
+caaddr_01KMQ5C3KZYQR4HX7BG2TK0X6B	\N	\N	Kunal	Jangra	Session Booking	\N	Delhi	us	\N	110007	08168336581	\N	2026-03-27 08:08:04.992+00	2026-03-27 08:08:04.992+00	\N
+caaddr_01KMQ5C3M02Z6J2MAZX8S26JD3	\N	\N	Kunal	Jangra	Session Booking	\N	Delhi	us	\N	110007	08168336581	\N	2026-03-27 08:08:04.992+00	2026-03-27 08:08:04.992+00	\N
+caaddr_01KMYG6X6M9EG9GQ53B208F3KP	\N		Kunal	Jangra	bhiwani 		bhiwani	in	Haryana	110007	08168336581	\N	2026-03-30 04:32:09.94+00	2026-03-30 04:32:09.94+00	\N
+caaddr_01KMYG6X6MAM32JB1F2WBHQ29N	\N		Kunal	Jangra	bhiwani 		bhiwani	in	Haryana	110007	08168336581	\N	2026-03-30 04:32:09.94+00	2026-03-30 04:32:09.94+00	\N
 \.
 
 
@@ -3108,10 +3108,10 @@ caaddr_01KMYG6X6MAM32JB1F2WBHQ29N	\N		Kunal	Jangra	bhiwani 		bhiwani	in	Haryana	
 --
 
 COPY public.cart_line_item (id, cart_id, title, subtitle, thumbnail, quantity, variant_id, product_id, product_title, product_description, product_subtitle, product_type, product_collection, product_handle, variant_sku, variant_barcode, variant_title, variant_option_values, requires_shipping, is_discountable, is_tax_inclusive, compare_at_unit_price, raw_compare_at_unit_price, unit_price, raw_unit_price, metadata, created_at, updated_at, deleted_at, product_type_id, is_custom_price, is_giftcard) FROM stdin;
-cali_01KM03BEWKHHQE36GHBPATRZZW	cart_01KM01A6X9YPPYZG9GXVSTJXMF	Therapy & Counselling Sessions	video	http://localhost:9000/static/1773652920929-Therapy-Counselling-Sessions.png	1	variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	prod_01KKTZ7JMM93QMPPSH61S8DP7K	Therapy & Counselling Sessions			session	\N	therapy-counselling-sessions	\N	\N	video	\N	f	t	f	\N	\N	999	{"value": "999", "precision": 20}	{}	2026-03-18 14:40:14.676+05:30	2026-03-18 14:40:14.676+05:30	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	f	f
-cali_01KM01A74VDTAF0HZAP3X890S6	cart_01KM01A6X9YPPYZG9GXVSTJXMF	Tarot Reading	Tarot Reading	http://localhost:9000/static/1773645550965-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	5	variant_01KKTWER0W0KP66KP7VJ8PXZ7H	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	Tarot Reading			session	\N	tarot-reading	\N	\N	Tarot Reading	\N	f	t	f	\N	\N	499	{"value": "499", "precision": 20}	{}	2026-03-18 14:04:36.827+05:30	2026-03-18 20:59:09.359+05:30	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	f	f
-cali_01KMYHS0R6EFH3V99M04HB21Q1	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Healing sea salt	Default variant	http://localhost:9000/static/1773303028619-2-18.webp	1	variant_01KKGHHPXMKDFS9NQ7T1PHT94G	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	Healing sea salt			\N	\N	healing-sea-salt	\N	\N	Default variant	\N	f	t	f	\N	\N	299	{"value": "299", "precision": 20}	{}	2026-03-30 10:29:31.974+05:30	2026-03-30 10:34:08.674+05:30	2026-03-30 10:34:08.672+05:30	\N	f	f
-cali_01KMYJ1KEZBAX9848ZKNQ16BMG	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Black obsidian Pencil Locket(evil eye and Nazar)	Default variant	http://localhost:9000/static/1773302845418-2-14.webp	1	variant_01KKGHC40DXRH9RHMXXK7ZRE4V	prod_01KKGHC3ZR2HTWW0GA4D777CPP	Black obsidian Pencil Locket(evil eye and Nazar)			\N	\N	black-obsidian-pencil-locketevil-eye-and-nazar	\N	\N	Default variant	\N	f	t	f	\N	\N	699	{"value": "699", "precision": 20}	{}	2026-03-30 10:34:13.279+05:30	2026-03-30 10:34:13.279+05:30	\N	\N	f	f
+cali_01KM03BEWKHHQE36GHBPATRZZW	cart_01KM01A6X9YPPYZG9GXVSTJXMF	Therapy & Counselling Sessions	video	http://localhost:9000/static/1773652920929-Therapy-Counselling-Sessions.png	1	variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	prod_01KKTZ7JMM93QMPPSH61S8DP7K	Therapy & Counselling Sessions			session	\N	therapy-counselling-sessions	\N	\N	video	\N	f	t	f	\N	\N	999	{"value": "999", "precision": 20}	{}	2026-03-18 09:10:14.676+00	2026-03-18 09:10:14.676+00	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	f	f
+cali_01KM01A74VDTAF0HZAP3X890S6	cart_01KM01A6X9YPPYZG9GXVSTJXMF	Tarot Reading	Tarot Reading	http://localhost:9000/static/1773645550965-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	5	variant_01KKTWER0W0KP66KP7VJ8PXZ7H	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	Tarot Reading			session	\N	tarot-reading	\N	\N	Tarot Reading	\N	f	t	f	\N	\N	499	{"value": "499", "precision": 20}	{}	2026-03-18 08:34:36.827+00	2026-03-18 15:29:09.359+00	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	f	f
+cali_01KMYHS0R6EFH3V99M04HB21Q1	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Healing sea salt	Default variant	http://localhost:9000/static/1773303028619-2-18.webp	1	variant_01KKGHHPXMKDFS9NQ7T1PHT94G	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	Healing sea salt			\N	\N	healing-sea-salt	\N	\N	Default variant	\N	f	t	f	\N	\N	299	{"value": "299", "precision": 20}	{}	2026-03-30 04:59:31.974+00	2026-03-30 05:04:08.674+00	2026-03-30 05:04:08.672+00	\N	f	f
+cali_01KMYJ1KEZBAX9848ZKNQ16BMG	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Black obsidian Pencil Locket(evil eye and Nazar)	Default variant	http://localhost:9000/static/1773302845418-2-14.webp	1	variant_01KKGHC40DXRH9RHMXXK7ZRE4V	prod_01KKGHC3ZR2HTWW0GA4D777CPP	Black obsidian Pencil Locket(evil eye and Nazar)			\N	\N	black-obsidian-pencil-locketevil-eye-and-nazar	\N	\N	Default variant	\N	f	t	f	\N	\N	699	{"value": "699", "precision": 20}	{}	2026-03-30 05:04:13.279+00	2026-03-30 05:04:13.279+00	\N	\N	f	f
 \.
 
 
@@ -3136,7 +3136,7 @@ COPY public.cart_line_item_tax_line (id, description, tax_rate_id, code, rate, p
 --
 
 COPY public.cart_payment_collection (cart_id, payment_collection_id, id, created_at, updated_at, deleted_at) FROM stdin;
-cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	pay_col_01KMYHS90P51HEDZMMF7WQTVRN	capaycol_01KMYHS90SQDG9HXZFK36AV87F	2026-03-30 10:29:40.441129+05:30	2026-03-30 10:29:40.441129+05:30	\N
+cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	pay_col_01KMYHS90P51HEDZMMF7WQTVRN	capaycol_01KMYHS90SQDG9HXZFK36AV87F	2026-03-30 04:59:40.441129+00	2026-03-30 04:59:40.441129+00	\N
 \.
 
 
@@ -3153,8 +3153,8 @@ COPY public.cart_promotion (cart_id, promotion_id, id, created_at, updated_at, d
 --
 
 COPY public.cart_shipping_method (id, cart_id, name, description, amount, raw_amount, is_tax_inclusive, shipping_option_id, data, metadata, created_at, updated_at, deleted_at) FROM stdin;
-casm_01KMYHS5AJAG1R1K13NGWQ79YP	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Standard Delivery	\N	0	{"value": "0", "precision": 20}	f	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	{}	\N	2026-03-30 10:29:36.658+05:30	2026-03-30 10:29:36.658+05:30	\N
-casm_01KMYHS53K3JMRA7R14FHT7GV0	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Standard Delivery	\N	0	{"value": "0", "precision": 20}	f	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	{}	\N	2026-03-30 10:29:36.435+05:30	2026-03-30 10:29:36.659+05:30	2026-03-30 10:29:36.659+05:30
+casm_01KMYHS5AJAG1R1K13NGWQ79YP	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Standard Delivery	\N	0	{"value": "0", "precision": 20}	f	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	{}	\N	2026-03-30 04:59:36.658+00	2026-03-30 04:59:36.658+00	\N
+casm_01KMYHS53K3JMRA7R14FHT7GV0	cart_01KMPTH5Q9R6EWZ7PFAKYF0H7K	Standard Delivery	\N	0	{"value": "0", "precision": 20}	f	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	{}	\N	2026-03-30 04:59:36.435+00	2026-03-30 04:59:36.659+00	2026-03-30 04:59:36.659+00
 \.
 
 
@@ -3187,129 +3187,129 @@ COPY public.credit_line (id, cart_id, reference, reference_id, amount, raw_amoun
 --
 
 COPY public.currency (code, symbol, symbol_native, decimal_digits, rounding, raw_rounding, name, created_at, updated_at, deleted_at) FROM stdin;
-usd	$	$	2	0	{"value": "0", "precision": 20}	US Dollar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-cad	CA$	$	2	0	{"value": "0", "precision": 20}	Canadian Dollar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-eur	€	€	2	0	{"value": "0", "precision": 20}	Euro	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-aed	AED	د.إ.‏	2	0	{"value": "0", "precision": 20}	United Arab Emirates Dirham	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-afn	Af	؋	0	0	{"value": "0", "precision": 20}	Afghan Afghani	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-all	ALL	Lek	0	0	{"value": "0", "precision": 20}	Albanian Lek	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-amd	AMD	դր.	0	0	{"value": "0", "precision": 20}	Armenian Dram	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-ars	AR$	$	2	0	{"value": "0", "precision": 20}	Argentine Peso	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-aud	AU$	$	2	0	{"value": "0", "precision": 20}	Australian Dollar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-azn	man.	ман.	2	0	{"value": "0", "precision": 20}	Azerbaijani Manat	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bam	KM	KM	2	0	{"value": "0", "precision": 20}	Bosnia-Herzegovina Convertible Mark	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bdt	Tk	৳	2	0	{"value": "0", "precision": 20}	Bangladeshi Taka	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bgn	BGN	лв.	2	0	{"value": "0", "precision": 20}	Bulgarian Lev	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bhd	BD	د.ب.‏	3	0	{"value": "0", "precision": 20}	Bahraini Dinar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bif	FBu	FBu	0	0	{"value": "0", "precision": 20}	Burundian Franc	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bnd	BN$	$	2	0	{"value": "0", "precision": 20}	Brunei Dollar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bob	Bs	Bs	2	0	{"value": "0", "precision": 20}	Bolivian Boliviano	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-brl	R$	R$	2	0	{"value": "0", "precision": 20}	Brazilian Real	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bwp	BWP	P	2	0	{"value": "0", "precision": 20}	Botswanan Pula	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-byn	Br	руб.	2	0	{"value": "0", "precision": 20}	Belarusian Ruble	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-bzd	BZ$	$	2	0	{"value": "0", "precision": 20}	Belize Dollar	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-cdf	CDF	FrCD	2	0	{"value": "0", "precision": 20}	Congolese Franc	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-chf	CHF	CHF	2	0.05	{"value": "0.05", "precision": 20}	Swiss Franc	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-clp	CL$	$	0	0	{"value": "0", "precision": 20}	Chilean Peso	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-cny	CN¥	CN¥	2	0	{"value": "0", "precision": 20}	Chinese Yuan	2026-03-10 11:57:20.269+05:30	2026-03-10 11:57:20.269+05:30	\N
-cop	CO$	$	0	0	{"value": "0", "precision": 20}	Colombian Peso	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-crc	₡	₡	0	0	{"value": "0", "precision": 20}	Costa Rican Colón	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-cve	CV$	CV$	2	0	{"value": "0", "precision": 20}	Cape Verdean Escudo	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-czk	Kč	Kč	2	0	{"value": "0", "precision": 20}	Czech Republic Koruna	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-djf	Fdj	Fdj	0	0	{"value": "0", "precision": 20}	Djiboutian Franc	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-dkk	Dkr	kr	2	0	{"value": "0", "precision": 20}	Danish Krone	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-dop	RD$	RD$	2	0	{"value": "0", "precision": 20}	Dominican Peso	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-dzd	DA	د.ج.‏	2	0	{"value": "0", "precision": 20}	Algerian Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-eek	Ekr	kr	2	0	{"value": "0", "precision": 20}	Estonian Kroon	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-egp	EGP	ج.م.‏	2	0	{"value": "0", "precision": 20}	Egyptian Pound	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ern	Nfk	Nfk	2	0	{"value": "0", "precision": 20}	Eritrean Nakfa	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-etb	Br	Br	2	0	{"value": "0", "precision": 20}	Ethiopian Birr	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-gbp	£	£	2	0	{"value": "0", "precision": 20}	British Pound Sterling	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-gel	GEL	GEL	2	0	{"value": "0", "precision": 20}	Georgian Lari	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ghs	GH₵	GH₵	2	0	{"value": "0", "precision": 20}	Ghanaian Cedi	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-gnf	FG	FG	0	0	{"value": "0", "precision": 20}	Guinean Franc	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-gtq	GTQ	Q	2	0	{"value": "0", "precision": 20}	Guatemalan Quetzal	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-hkd	HK$	$	2	0	{"value": "0", "precision": 20}	Hong Kong Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-hnl	HNL	L	2	0	{"value": "0", "precision": 20}	Honduran Lempira	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-hrk	kn	kn	2	0	{"value": "0", "precision": 20}	Croatian Kuna	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-huf	Ft	Ft	0	0	{"value": "0", "precision": 20}	Hungarian Forint	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-idr	Rp	Rp	0	0	{"value": "0", "precision": 20}	Indonesian Rupiah	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ils	₪	₪	2	0	{"value": "0", "precision": 20}	Israeli New Sheqel	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-inr	Rs	₹	2	0	{"value": "0", "precision": 20}	Indian Rupee	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-iqd	IQD	د.ع.‏	0	0	{"value": "0", "precision": 20}	Iraqi Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-irr	IRR	﷼	0	0	{"value": "0", "precision": 20}	Iranian Rial	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-isk	Ikr	kr	0	0	{"value": "0", "precision": 20}	Icelandic Króna	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-jmd	J$	$	2	0	{"value": "0", "precision": 20}	Jamaican Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-jod	JD	د.أ.‏	3	0	{"value": "0", "precision": 20}	Jordanian Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-jpy	¥	￥	0	0	{"value": "0", "precision": 20}	Japanese Yen	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-kes	Ksh	Ksh	2	0	{"value": "0", "precision": 20}	Kenyan Shilling	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-khr	KHR	៛	2	0	{"value": "0", "precision": 20}	Cambodian Riel	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-kmf	CF	FC	0	0	{"value": "0", "precision": 20}	Comorian Franc	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-krw	₩	₩	0	0	{"value": "0", "precision": 20}	South Korean Won	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-kwd	KD	د.ك.‏	3	0	{"value": "0", "precision": 20}	Kuwaiti Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-kzt	KZT	тңг.	2	0	{"value": "0", "precision": 20}	Kazakhstani Tenge	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-lbp	LB£	ل.ل.‏	0	0	{"value": "0", "precision": 20}	Lebanese Pound	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-lkr	SLRs	SL Re	2	0	{"value": "0", "precision": 20}	Sri Lankan Rupee	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ltl	Lt	Lt	2	0	{"value": "0", "precision": 20}	Lithuanian Litas	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-lvl	Ls	Ls	2	0	{"value": "0", "precision": 20}	Latvian Lats	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-lyd	LD	د.ل.‏	3	0	{"value": "0", "precision": 20}	Libyan Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mad	MAD	د.م.‏	2	0	{"value": "0", "precision": 20}	Moroccan Dirham	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mdl	MDL	MDL	2	0	{"value": "0", "precision": 20}	Moldovan Leu	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mga	MGA	MGA	0	0	{"value": "0", "precision": 20}	Malagasy Ariary	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mkd	MKD	MKD	2	0	{"value": "0", "precision": 20}	Macedonian Denar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mmk	MMK	K	0	0	{"value": "0", "precision": 20}	Myanma Kyat	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mnt	MNT	₮	0	0	{"value": "0", "precision": 20}	Mongolian Tugrig	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mop	MOP$	MOP$	2	0	{"value": "0", "precision": 20}	Macanese Pataca	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mur	MURs	MURs	0	0	{"value": "0", "precision": 20}	Mauritian Rupee	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mwk	K	K	2	0	{"value": "0", "precision": 20}	Malawian Kwacha	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mxn	MX$	$	2	0	{"value": "0", "precision": 20}	Mexican Peso	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-myr	RM	RM	2	0	{"value": "0", "precision": 20}	Malaysian Ringgit	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-mzn	MTn	MTn	2	0	{"value": "0", "precision": 20}	Mozambican Metical	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-nad	N$	N$	2	0	{"value": "0", "precision": 20}	Namibian Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ngn	₦	₦	2	0	{"value": "0", "precision": 20}	Nigerian Naira	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-nio	C$	C$	2	0	{"value": "0", "precision": 20}	Nicaraguan Córdoba	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-nok	Nkr	kr	2	0	{"value": "0", "precision": 20}	Norwegian Krone	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-npr	NPRs	नेरू	2	0	{"value": "0", "precision": 20}	Nepalese Rupee	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-nzd	NZ$	$	2	0	{"value": "0", "precision": 20}	New Zealand Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-omr	OMR	ر.ع.‏	3	0	{"value": "0", "precision": 20}	Omani Rial	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-pab	B/.	B/.	2	0	{"value": "0", "precision": 20}	Panamanian Balboa	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-pen	S/.	S/.	2	0	{"value": "0", "precision": 20}	Peruvian Nuevo Sol	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-php	₱	₱	2	0	{"value": "0", "precision": 20}	Philippine Peso	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-pkr	PKRs	₨	0	0	{"value": "0", "precision": 20}	Pakistani Rupee	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-pln	zł	zł	2	0	{"value": "0", "precision": 20}	Polish Zloty	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-pyg	₲	₲	0	0	{"value": "0", "precision": 20}	Paraguayan Guarani	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-qar	QR	ر.ق.‏	2	0	{"value": "0", "precision": 20}	Qatari Rial	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ron	RON	RON	2	0	{"value": "0", "precision": 20}	Romanian Leu	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-rsd	din.	дин.	0	0	{"value": "0", "precision": 20}	Serbian Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-rub	RUB	₽.	2	0	{"value": "0", "precision": 20}	Russian Ruble	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-rwf	RWF	FR	0	0	{"value": "0", "precision": 20}	Rwandan Franc	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-sar	SR	ر.س.‏	2	0	{"value": "0", "precision": 20}	Saudi Riyal	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-sdg	SDG	SDG	2	0	{"value": "0", "precision": 20}	Sudanese Pound	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-sek	Skr	kr	2	0	{"value": "0", "precision": 20}	Swedish Krona	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-sgd	S$	$	2	0	{"value": "0", "precision": 20}	Singapore Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-sos	Ssh	Ssh	0	0	{"value": "0", "precision": 20}	Somali Shilling	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-syp	SY£	ل.س.‏	0	0	{"value": "0", "precision": 20}	Syrian Pound	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-thb	฿	฿	2	0	{"value": "0", "precision": 20}	Thai Baht	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-tnd	DT	د.ت.‏	3	0	{"value": "0", "precision": 20}	Tunisian Dinar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-top	T$	T$	2	0	{"value": "0", "precision": 20}	Tongan Paʻanga	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-tjs	TJS	с.	2	0	{"value": "0", "precision": 20}	Tajikistani Somoni	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-try	₺	₺	2	0	{"value": "0", "precision": 20}	Turkish Lira	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ttd	TT$	$	2	0	{"value": "0", "precision": 20}	Trinidad and Tobago Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-twd	NT$	NT$	2	0	{"value": "0", "precision": 20}	New Taiwan Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-tzs	TSh	TSh	0	0	{"value": "0", "precision": 20}	Tanzanian Shilling	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-uah	₴	₴	2	0	{"value": "0", "precision": 20}	Ukrainian Hryvnia	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-ugx	USh	USh	0	0	{"value": "0", "precision": 20}	Ugandan Shilling	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-uyu	$U	$	2	0	{"value": "0", "precision": 20}	Uruguayan Peso	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-uzs	UZS	UZS	0	0	{"value": "0", "precision": 20}	Uzbekistan Som	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-vef	Bs.F.	Bs.F.	2	0	{"value": "0", "precision": 20}	Venezuelan Bolívar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-vnd	₫	₫	0	0	{"value": "0", "precision": 20}	Vietnamese Dong	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-xaf	FCFA	FCFA	0	0	{"value": "0", "precision": 20}	CFA Franc BEAC	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-xof	CFA	CFA	0	0	{"value": "0", "precision": 20}	CFA Franc BCEAO	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-xpf	₣	₣	0	0	{"value": "0", "precision": 20}	CFP Franc	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-yer	YR	ر.ي.‏	0	0	{"value": "0", "precision": 20}	Yemeni Rial	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-zar	R	R	2	0	{"value": "0", "precision": 20}	South African Rand	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-zmk	ZK	ZK	0	0	{"value": "0", "precision": 20}	Zambian Kwacha	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
-zwl	ZWL$	ZWL$	0	0	{"value": "0", "precision": 20}	Zimbabwean Dollar	2026-03-10 11:57:20.27+05:30	2026-03-10 11:57:20.27+05:30	\N
+usd	$	$	2	0	{"value": "0", "precision": 20}	US Dollar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+cad	CA$	$	2	0	{"value": "0", "precision": 20}	Canadian Dollar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+eur	€	€	2	0	{"value": "0", "precision": 20}	Euro	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+aed	AED	د.إ.‏	2	0	{"value": "0", "precision": 20}	United Arab Emirates Dirham	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+afn	Af	؋	0	0	{"value": "0", "precision": 20}	Afghan Afghani	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+all	ALL	Lek	0	0	{"value": "0", "precision": 20}	Albanian Lek	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+amd	AMD	դր.	0	0	{"value": "0", "precision": 20}	Armenian Dram	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+ars	AR$	$	2	0	{"value": "0", "precision": 20}	Argentine Peso	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+aud	AU$	$	2	0	{"value": "0", "precision": 20}	Australian Dollar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+azn	man.	ман.	2	0	{"value": "0", "precision": 20}	Azerbaijani Manat	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bam	KM	KM	2	0	{"value": "0", "precision": 20}	Bosnia-Herzegovina Convertible Mark	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bdt	Tk	৳	2	0	{"value": "0", "precision": 20}	Bangladeshi Taka	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bgn	BGN	лв.	2	0	{"value": "0", "precision": 20}	Bulgarian Lev	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bhd	BD	د.ب.‏	3	0	{"value": "0", "precision": 20}	Bahraini Dinar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bif	FBu	FBu	0	0	{"value": "0", "precision": 20}	Burundian Franc	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bnd	BN$	$	2	0	{"value": "0", "precision": 20}	Brunei Dollar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bob	Bs	Bs	2	0	{"value": "0", "precision": 20}	Bolivian Boliviano	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+brl	R$	R$	2	0	{"value": "0", "precision": 20}	Brazilian Real	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bwp	BWP	P	2	0	{"value": "0", "precision": 20}	Botswanan Pula	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+byn	Br	руб.	2	0	{"value": "0", "precision": 20}	Belarusian Ruble	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+bzd	BZ$	$	2	0	{"value": "0", "precision": 20}	Belize Dollar	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+cdf	CDF	FrCD	2	0	{"value": "0", "precision": 20}	Congolese Franc	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+chf	CHF	CHF	2	0.05	{"value": "0.05", "precision": 20}	Swiss Franc	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+clp	CL$	$	0	0	{"value": "0", "precision": 20}	Chilean Peso	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+cny	CN¥	CN¥	2	0	{"value": "0", "precision": 20}	Chinese Yuan	2026-03-10 06:27:20.269+00	2026-03-10 06:27:20.269+00	\N
+cop	CO$	$	0	0	{"value": "0", "precision": 20}	Colombian Peso	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+crc	₡	₡	0	0	{"value": "0", "precision": 20}	Costa Rican Colón	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+cve	CV$	CV$	2	0	{"value": "0", "precision": 20}	Cape Verdean Escudo	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+czk	Kč	Kč	2	0	{"value": "0", "precision": 20}	Czech Republic Koruna	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+djf	Fdj	Fdj	0	0	{"value": "0", "precision": 20}	Djiboutian Franc	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+dkk	Dkr	kr	2	0	{"value": "0", "precision": 20}	Danish Krone	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+dop	RD$	RD$	2	0	{"value": "0", "precision": 20}	Dominican Peso	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+dzd	DA	د.ج.‏	2	0	{"value": "0", "precision": 20}	Algerian Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+eek	Ekr	kr	2	0	{"value": "0", "precision": 20}	Estonian Kroon	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+egp	EGP	ج.م.‏	2	0	{"value": "0", "precision": 20}	Egyptian Pound	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ern	Nfk	Nfk	2	0	{"value": "0", "precision": 20}	Eritrean Nakfa	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+etb	Br	Br	2	0	{"value": "0", "precision": 20}	Ethiopian Birr	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+gbp	£	£	2	0	{"value": "0", "precision": 20}	British Pound Sterling	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+gel	GEL	GEL	2	0	{"value": "0", "precision": 20}	Georgian Lari	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ghs	GH₵	GH₵	2	0	{"value": "0", "precision": 20}	Ghanaian Cedi	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+gnf	FG	FG	0	0	{"value": "0", "precision": 20}	Guinean Franc	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+gtq	GTQ	Q	2	0	{"value": "0", "precision": 20}	Guatemalan Quetzal	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+hkd	HK$	$	2	0	{"value": "0", "precision": 20}	Hong Kong Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+hnl	HNL	L	2	0	{"value": "0", "precision": 20}	Honduran Lempira	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+hrk	kn	kn	2	0	{"value": "0", "precision": 20}	Croatian Kuna	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+huf	Ft	Ft	0	0	{"value": "0", "precision": 20}	Hungarian Forint	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+idr	Rp	Rp	0	0	{"value": "0", "precision": 20}	Indonesian Rupiah	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ils	₪	₪	2	0	{"value": "0", "precision": 20}	Israeli New Sheqel	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+inr	Rs	₹	2	0	{"value": "0", "precision": 20}	Indian Rupee	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+iqd	IQD	د.ع.‏	0	0	{"value": "0", "precision": 20}	Iraqi Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+irr	IRR	﷼	0	0	{"value": "0", "precision": 20}	Iranian Rial	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+isk	Ikr	kr	0	0	{"value": "0", "precision": 20}	Icelandic Króna	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+jmd	J$	$	2	0	{"value": "0", "precision": 20}	Jamaican Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+jod	JD	د.أ.‏	3	0	{"value": "0", "precision": 20}	Jordanian Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+jpy	¥	￥	0	0	{"value": "0", "precision": 20}	Japanese Yen	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+kes	Ksh	Ksh	2	0	{"value": "0", "precision": 20}	Kenyan Shilling	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+khr	KHR	៛	2	0	{"value": "0", "precision": 20}	Cambodian Riel	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+kmf	CF	FC	0	0	{"value": "0", "precision": 20}	Comorian Franc	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+krw	₩	₩	0	0	{"value": "0", "precision": 20}	South Korean Won	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+kwd	KD	د.ك.‏	3	0	{"value": "0", "precision": 20}	Kuwaiti Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+kzt	KZT	тңг.	2	0	{"value": "0", "precision": 20}	Kazakhstani Tenge	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+lbp	LB£	ل.ل.‏	0	0	{"value": "0", "precision": 20}	Lebanese Pound	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+lkr	SLRs	SL Re	2	0	{"value": "0", "precision": 20}	Sri Lankan Rupee	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ltl	Lt	Lt	2	0	{"value": "0", "precision": 20}	Lithuanian Litas	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+lvl	Ls	Ls	2	0	{"value": "0", "precision": 20}	Latvian Lats	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+lyd	LD	د.ل.‏	3	0	{"value": "0", "precision": 20}	Libyan Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mad	MAD	د.م.‏	2	0	{"value": "0", "precision": 20}	Moroccan Dirham	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mdl	MDL	MDL	2	0	{"value": "0", "precision": 20}	Moldovan Leu	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mga	MGA	MGA	0	0	{"value": "0", "precision": 20}	Malagasy Ariary	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mkd	MKD	MKD	2	0	{"value": "0", "precision": 20}	Macedonian Denar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mmk	MMK	K	0	0	{"value": "0", "precision": 20}	Myanma Kyat	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mnt	MNT	₮	0	0	{"value": "0", "precision": 20}	Mongolian Tugrig	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mop	MOP$	MOP$	2	0	{"value": "0", "precision": 20}	Macanese Pataca	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mur	MURs	MURs	0	0	{"value": "0", "precision": 20}	Mauritian Rupee	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mwk	K	K	2	0	{"value": "0", "precision": 20}	Malawian Kwacha	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mxn	MX$	$	2	0	{"value": "0", "precision": 20}	Mexican Peso	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+myr	RM	RM	2	0	{"value": "0", "precision": 20}	Malaysian Ringgit	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+mzn	MTn	MTn	2	0	{"value": "0", "precision": 20}	Mozambican Metical	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+nad	N$	N$	2	0	{"value": "0", "precision": 20}	Namibian Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ngn	₦	₦	2	0	{"value": "0", "precision": 20}	Nigerian Naira	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+nio	C$	C$	2	0	{"value": "0", "precision": 20}	Nicaraguan Córdoba	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+nok	Nkr	kr	2	0	{"value": "0", "precision": 20}	Norwegian Krone	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+npr	NPRs	नेरू	2	0	{"value": "0", "precision": 20}	Nepalese Rupee	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+nzd	NZ$	$	2	0	{"value": "0", "precision": 20}	New Zealand Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+omr	OMR	ر.ع.‏	3	0	{"value": "0", "precision": 20}	Omani Rial	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+pab	B/.	B/.	2	0	{"value": "0", "precision": 20}	Panamanian Balboa	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+pen	S/.	S/.	2	0	{"value": "0", "precision": 20}	Peruvian Nuevo Sol	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+php	₱	₱	2	0	{"value": "0", "precision": 20}	Philippine Peso	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+pkr	PKRs	₨	0	0	{"value": "0", "precision": 20}	Pakistani Rupee	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+pln	zł	zł	2	0	{"value": "0", "precision": 20}	Polish Zloty	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+pyg	₲	₲	0	0	{"value": "0", "precision": 20}	Paraguayan Guarani	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+qar	QR	ر.ق.‏	2	0	{"value": "0", "precision": 20}	Qatari Rial	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ron	RON	RON	2	0	{"value": "0", "precision": 20}	Romanian Leu	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+rsd	din.	дин.	0	0	{"value": "0", "precision": 20}	Serbian Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+rub	RUB	₽.	2	0	{"value": "0", "precision": 20}	Russian Ruble	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+rwf	RWF	FR	0	0	{"value": "0", "precision": 20}	Rwandan Franc	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+sar	SR	ر.س.‏	2	0	{"value": "0", "precision": 20}	Saudi Riyal	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+sdg	SDG	SDG	2	0	{"value": "0", "precision": 20}	Sudanese Pound	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+sek	Skr	kr	2	0	{"value": "0", "precision": 20}	Swedish Krona	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+sgd	S$	$	2	0	{"value": "0", "precision": 20}	Singapore Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+sos	Ssh	Ssh	0	0	{"value": "0", "precision": 20}	Somali Shilling	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+syp	SY£	ل.س.‏	0	0	{"value": "0", "precision": 20}	Syrian Pound	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+thb	฿	฿	2	0	{"value": "0", "precision": 20}	Thai Baht	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+tnd	DT	د.ت.‏	3	0	{"value": "0", "precision": 20}	Tunisian Dinar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+top	T$	T$	2	0	{"value": "0", "precision": 20}	Tongan Paʻanga	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+tjs	TJS	с.	2	0	{"value": "0", "precision": 20}	Tajikistani Somoni	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+try	₺	₺	2	0	{"value": "0", "precision": 20}	Turkish Lira	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ttd	TT$	$	2	0	{"value": "0", "precision": 20}	Trinidad and Tobago Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+twd	NT$	NT$	2	0	{"value": "0", "precision": 20}	New Taiwan Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+tzs	TSh	TSh	0	0	{"value": "0", "precision": 20}	Tanzanian Shilling	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+uah	₴	₴	2	0	{"value": "0", "precision": 20}	Ukrainian Hryvnia	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+ugx	USh	USh	0	0	{"value": "0", "precision": 20}	Ugandan Shilling	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+uyu	$U	$	2	0	{"value": "0", "precision": 20}	Uruguayan Peso	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+uzs	UZS	UZS	0	0	{"value": "0", "precision": 20}	Uzbekistan Som	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+vef	Bs.F.	Bs.F.	2	0	{"value": "0", "precision": 20}	Venezuelan Bolívar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+vnd	₫	₫	0	0	{"value": "0", "precision": 20}	Vietnamese Dong	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+xaf	FCFA	FCFA	0	0	{"value": "0", "precision": 20}	CFA Franc BEAC	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+xof	CFA	CFA	0	0	{"value": "0", "precision": 20}	CFA Franc BCEAO	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+xpf	₣	₣	0	0	{"value": "0", "precision": 20}	CFP Franc	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+yer	YR	ر.ي.‏	0	0	{"value": "0", "precision": 20}	Yemeni Rial	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+zar	R	R	2	0	{"value": "0", "precision": 20}	South African Rand	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+zmk	ZK	ZK	0	0	{"value": "0", "precision": 20}	Zambian Kwacha	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
+zwl	ZWL$	ZWL$	0	0	{"value": "0", "precision": 20}	Zimbabwean Dollar	2026-03-10 06:27:20.27+00	2026-03-10 06:27:20.27+00	\N
 \.
 
 
@@ -3318,7 +3318,7 @@ zwl	ZWL$	ZWL$	0	0	{"value": "0", "precision": 20}	Zimbabwean Dollar	2026-03-10 1
 --
 
 COPY public.customer (id, company_name, first_name, last_name, email, phone, has_account, metadata, created_at, updated_at, deleted_at, created_by) FROM stdin;
-cus_01KKBNF6A1T3EABE3324ZTY321	\N	Kunal	Jangra	kunalrisaanva12@gmail.com	08168336581	t	\N	2026-03-10 16:12:48.258+05:30	2026-03-10 16:12:48.258+05:30	\N	\N
+cus_01KKBNF6A1T3EABE3324ZTY321	\N	Kunal	Jangra	kunalrisaanva12@gmail.com	08168336581	t	\N	2026-03-10 10:42:48.258+00	2026-03-10 10:42:48.258+00	\N	\N
 \.
 
 
@@ -3391,7 +3391,7 @@ COPY public.fulfillment_label (id, tracking_number, tracking_url, label_url, ful
 --
 
 COPY public.fulfillment_provider (id, is_enabled, created_at, updated_at, deleted_at) FROM stdin;
-manual_manual	t	2026-03-10 11:57:20.284+05:30	2026-03-10 11:57:20.284+05:30	\N
+manual_manual	t	2026-03-10 06:27:20.284+00	2026-03-10 06:27:20.284+00	\N
 \.
 
 
@@ -3400,8 +3400,8 @@ manual_manual	t	2026-03-10 11:57:20.284+05:30	2026-03-10 11:57:20.284+05:30	\N
 --
 
 COPY public.fulfillment_set (id, name, type, metadata, created_at, updated_at, deleted_at) FROM stdin;
-fuset_01KMQ2FTWPXCYAYM88E94SV3A9	The Blissful Soul Warehouse pick up	pickup	\N	2026-03-27 12:47:41.399+05:30	2026-03-27 12:47:41.399+05:30	\N
-fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	The Blissful Soul Warehouse shipping	shipping	\N	2026-03-27 12:48:11.697+05:30	2026-03-27 12:48:11.697+05:30	\N
+fuset_01KMQ2FTWPXCYAYM88E94SV3A9	The Blissful Soul Warehouse pick up	pickup	\N	2026-03-27 07:17:41.399+00	2026-03-27 07:17:41.399+00	\N
+fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	The Blissful Soul Warehouse shipping	shipping	\N	2026-03-27 07:18:11.697+00	2026-03-27 07:18:11.697+00	\N
 \.
 
 
@@ -3410,9 +3410,9 @@ fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	The Blissful Soul Warehouse shipping	shipping	\
 --
 
 COPY public.geo_zone (id, type, country_code, province_code, city, service_zone_id, postal_expression, metadata, created_at, updated_at, deleted_at) FROM stdin;
-fgz_01KMQ2KNE3JATWSACXFSZNQ4RE	country	in	\N	\N	serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	\N	\N	2026-03-27 12:49:46.886+05:30	2026-03-27 12:49:46.886+05:30	\N
-fgz_01KMQ4TBQYJYATX1EECHRVFJ2V	country	in	\N	\N	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	\N	\N	2026-03-27 13:28:23.487+05:30	2026-03-27 13:28:23.487+05:30	\N
-fgz_01KMQ4TBQYZ57KHS0N8J9QK9E0	country	us	\N	\N	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	\N	\N	2026-03-27 13:28:23.487+05:30	2026-03-27 13:28:23.487+05:30	\N
+fgz_01KMQ2KNE3JATWSACXFSZNQ4RE	country	in	\N	\N	serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	\N	\N	2026-03-27 07:19:46.886+00	2026-03-27 07:19:46.886+00	\N
+fgz_01KMQ4TBQYJYATX1EECHRVFJ2V	country	in	\N	\N	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	\N	\N	2026-03-27 07:58:23.487+00	2026-03-27 07:58:23.487+00	\N
+fgz_01KMQ4TBQYZ57KHS0N8J9QK9E0	country	us	\N	\N	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	\N	\N	2026-03-27 07:58:23.487+00	2026-03-27 07:58:23.487+00	\N
 \.
 
 
@@ -3421,48 +3421,53 @@ fgz_01KMQ4TBQYZ57KHS0N8J9QK9E0	country	us	\N	\N	serzo_01KMQ4TBQYYJTSQXDA2THYY07V
 --
 
 COPY public.image (id, url, metadata, created_at, updated_at, deleted_at, rank, product_id) FROM stdin;
-img_01KKGEV0T5269JS99GA2RGH50D	http://localhost:9000/static/1773300187949-1-22.webp	\N	2026-03-12 12:53:07.974+05:30	2026-03-12 12:53:07.974+05:30	\N	0	prod_01KKGEV0T2SE3CBBTHBSCDX5S3
-img_01KKGF0JY19BR9F0MH87WJ1RRP	http://localhost:9000/static/1773300370343-1-23.webp	\N	2026-03-12 12:56:10.371+05:30	2026-03-12 12:56:10.371+05:30	\N	0	prod_01KKGF0JXXE36GBNN7GRRZ0J6F
-img_01KKGFD3XM5N4657CM7JD5GT5Z	http://localhost:9000/static/1773300780960-4.webp	\N	2026-03-12 13:03:00.983+05:30	2026-03-12 13:03:00.983+05:30	\N	0	prod_01KKGFD3XJW2DF5NM4N9NH3BPB
-img_01KKGFEDP2MSQCS20ESKN9PDAV	http://localhost:9000/static/1773300823720-1-e1757322710183.webp	\N	2026-03-12 13:03:43.747+05:30	2026-03-12 13:03:43.747+05:30	\N	0	prod_01KKGFEDP1B71M6E0VAXVCD132
-img_01KKGFHZQ0FHEC08YWTTGJ587N	http://localhost:9000/static/1773300940495-2-21.webp	\N	2026-03-12 13:05:40.513+05:30	2026-03-12 13:05:40.513+05:30	\N	0	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5
-img_01KKGFQ2PDDFWG77066E2X091Q	http://localhost:9000/static/1773301107390-1-26.webp	\N	2026-03-12 13:08:27.406+05:30	2026-03-12 13:08:27.406+05:30	\N	0	prod_01KKGFQ2PBH10AEGGBY47EGDWD
-img_01KKGFS54QPHD54X308ND3ZC0B	http://localhost:9000/static/1773301175433-2-3.webp	\N	2026-03-12 13:09:35.447+05:30	2026-03-12 13:09:35.447+05:30	\N	0	prod_01KKGFS54N6JFJ00AN1X0B778M
-img_01KKGG1ZW660JPAF04K0W18F3B	http://localhost:9000/static/1773301464931-1-27.webp	\N	2026-03-12 13:14:24.967+05:30	2026-03-12 13:14:24.967+05:30	\N	0	prod_01KKGG1ZW550D0X09AD05PFNJD
-img_01KKGGBWPZEDJ5V6GGHNPBH0DX	http://localhost:9000/static/1773301789385-3-3.webp	\N	2026-03-12 13:19:49.409+05:30	2026-03-12 13:19:49.409+05:30	\N	0	prod_01KKGGBWPWW603YYCM9QSA8M8F
-img_01KKGGCYRV7W8APSDRR9F45FV2	http://localhost:9000/static/1773301824262-2-5.webp	\N	2026-03-12 13:20:24.283+05:30	2026-03-12 13:20:24.283+05:30	\N	0	prod_01KKGGCYRS02FZPXSS5E81Z0VT
-img_01KKGGDSH16JQRQ694T6SGRSY0	http://localhost:9000/static/1773301851661-1-6.webp	\N	2026-03-12 13:20:51.681+05:30	2026-03-12 13:20:51.681+05:30	\N	0	prod_01KKGGDSGZAQA07E2W95SYWFJY
-img_01KKGGETJTFGRVBM7PJZFQXMKY	http://localhost:9000/static/1773301885501-1-7.webp	\N	2026-03-12 13:21:25.531+05:30	2026-03-12 13:21:25.531+05:30	\N	0	prod_01KKGGETJS4R9WWQDEZXVC6YKP
-img_01KKGGGS8W0EXEWBP3010NPEBJ	http://localhost:9000/static/1773301949707-photo-4.png	\N	2026-03-12 13:22:29.725+05:30	2026-03-12 13:22:29.725+05:30	\N	0	prod_01KKGGGS8V9GRPDY2RM0EX5T8V
-img_01KKGGSX677XVFM5AS3G2YS5CC	http://localhost:9000/static/1773302248632-3-8.webp	\N	2026-03-12 13:27:28.647+05:30	2026-03-12 13:27:28.647+05:30	\N	0	prod_01KKGGSX663XAWMPZPXXZ152T0
-img_01KKGGTJQW11YQHX84NKQNP90G	http://localhost:9000/static/1773302270695-1-10.webp	\N	2026-03-12 13:27:50.717+05:30	2026-03-12 13:27:50.717+05:30	\N	0	prod_01KKGGTJQV56K1RZXS5PVCR33Q
-img_01KKGH7HHJ3MWRPZDJSDK05BVK	http://localhost:9000/static/1773302695457-1-11.webp	\N	2026-03-12 13:34:55.475+05:30	2026-03-12 13:34:55.475+05:30	\N	0	prod_01KKGH7HHH2ZZC94E0HEP3N1PH
-img_01KKGH86CDK79BS576S0BBGVMZ	http://localhost:9000/static/1773302716800-1-12.webp	\N	2026-03-12 13:35:16.814+05:30	2026-03-12 13:35:16.814+05:30	\N	0	prod_01KKGH86CCFJ4680NM1TTRZBBZ
-img_01KKGH9BC4P8FYYSSE0V3KE19K	http://localhost:9000/static/1773302754679-photo-5.png	\N	2026-03-12 13:35:54.692+05:30	2026-03-12 13:35:54.692+05:30	\N	0	prod_01KKGH9BC3KA041DVWQV1XACAK
-img_01KKGHA006SHEQCJACTYHJ1CVW	http://localhost:9000/static/1773302775791-1-14.webp	\N	2026-03-12 13:36:15.815+05:30	2026-03-12 13:36:15.815+05:30	\N	0	prod_01KKGHA00514BHTAHQMFK1BXX5
-img_01KKGHBHJCVBVY8EMN30WFCN9P	http://localhost:9000/static/1773302826560-1-15.webp	\N	2026-03-12 13:37:06.572+05:30	2026-03-12 13:37:06.572+05:30	\N	0	prod_01KKGHBHJBDQTRSV188CTFDNR6
-img_01KKGHC3ZTTC4D07J1Q0H26SY8	http://localhost:9000/static/1773302845418-2-14.webp	\N	2026-03-12 13:37:25.434+05:30	2026-03-12 13:37:25.434+05:30	\N	0	prod_01KKGHC3ZR2HTWW0GA4D777CPP
-img_01KKGHEGQXFM4CKBVXRNS1CHEB	http://localhost:9000/static/1773302924014-2-15.webp	\N	2026-03-12 13:38:44.029+05:30	2026-03-12 13:38:44.029+05:30	\N	0	prod_01KKGHEGQWSYMSHDTKRG61JRV8
-img_01KKGHGGGCYEGEDG316W6XY0W2	http://localhost:9000/static/1773302989305-1-19.webp	\N	2026-03-12 13:39:49.325+05:30	2026-03-12 13:39:49.325+05:30	\N	0	prod_01KKGHGGGB544H7EA1GY5RZ1B3
-img_01KKGHGZ1Y2QWY66BSXS3J8J5A	http://localhost:9000/static/1773303004196-3-17.webp	\N	2026-03-12 13:40:04.222+05:30	2026-03-12 13:40:04.222+05:30	\N	0	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7
-img_01KKGHHPWTSPZEW8YAP99QN3R0	http://localhost:9000/static/1773303028619-2-18.webp	\N	2026-03-12 13:40:28.635+05:30	2026-03-12 13:40:28.635+05:30	\N	0	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7
-img_01KKBDMEKX0HFEYN1EYCFHH19C	http://localhost:9000/static/1773131151964-SB-9001copy.webp	\N	2026-03-10 13:55:51.999+05:30	2026-03-12 16:02:32.641+05:30	2026-03-12 16:02:32.626+05:30	0	prod_01KKBDMEKJY42ZVZNDDP102XVQ
-img_01KKB6VT3VGX6JJS8AM92H24GX	https://theblissfulsoul.in/cdn/shop/files/pyrite-keychain.jpg	\N	2026-03-10 11:57:33.116+05:30	2026-03-12 16:02:38.022+05:30	2026-03-12 16:02:38.011+05:30	0	prod_01KKB6VT3TZZFRMNP201QPVDTK
-img_01KKB6VT6M7YZPE54M90GCMPHG	https://theblissfulsoul.in/cdn/shop/files/money-pyramid.jpg	\N	2026-03-10 11:57:33.205+05:30	2026-03-12 16:02:40.977+05:30	2026-03-12 16:02:40.971+05:30	0	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ
-img_01KKB6VT8H1D1HYHAQMEVA8889	https://theblissfulsoul.in/cdn/shop/files/amethyst-bracelet.jpg	\N	2026-03-10 11:57:33.265+05:30	2026-03-12 16:02:43.14+05:30	2026-03-12 16:02:43.137+05:30	0	prod_01KKB6VT8GE0JVDMNBMB5CRNTB
-img_01KKB6VT9V7QRME96VWAF2PC05	https://theblissfulsoul.in/cdn/shop/files/rose-quartz-bracelet.jpg	\N	2026-03-10 11:57:33.307+05:30	2026-03-12 16:02:45.856+05:30	2026-03-12 16:02:45.844+05:30	0	prod_01KKB6VT9V8NQCAT15G2AFEWG7
-img_01KKB6VTAV99EZ44V5K3JNVWXM	https://theblissfulsoul.in/cdn/shop/files/money-magnet.jpg	\N	2026-03-10 11:57:33.339+05:30	2026-03-12 16:02:48.98+05:30	2026-03-12 16:02:48.971+05:30	0	prod_01KKB6VTATHKEEE6MXR51QSD4T
-img_01KKB6VTBT3KHRRFZ254QH58YX	https://theblissfulsoul.in/cdn/shop/files/selenite-plate.jpg	\N	2026-03-10 11:57:33.37+05:30	2026-03-12 16:03:09.174+05:30	2026-03-12 16:03:09.166+05:30	0	prod_01KKB6VTBTDH1X31R50EC7Q1GB
-img_01KKGT0Q08TJ9ECG0V3YN9QZFE	http://localhost:9000/static/1773311908843-1-24.webp	\N	2026-03-12 16:08:28.874+05:30	2026-03-12 16:08:28.874+05:30	\N	0	prod_01KKGT0Q069BHJ6VP4P98TZEXB
-img_01KKTQC8215SQMTRFZ21GMM9DH	http://localhost:9000/static/1773644685358-Screenshot_1.png	\N	2026-03-16 12:34:45.378+05:30	2026-03-16 12:34:45.378+05:30	\N	0	prod_01KKTQC820Z82HT7ZNZAPRENCW
-img_01KKTNFA13WKVMSSPRWKYG94AG	http://localhost:9000/static/1773642688458-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	2026-03-16 12:01:28.548+05:30	2026-03-16 12:45:00.563+05:30	2026-03-16 12:45:00.552+05:30	0	prod_01KKTNFA12ZYJMT053XBDDXXHX
-img_01KKK08Q69ZS5TXT1YCP2136EA	http://localhost:9000/static/1773385571504-6.png	\N	2026-03-13 12:36:11.53+05:30	2026-03-16 12:47:39.994+05:30	2026-03-16 12:47:39.977+05:30	0	prod_01KKK08Q66WYDN10VJ75BDQX47
-img_01KKTR6NCNQ9XCJ5VE8T2AGMAH	http://localhost:9000/static/1773645550965-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	2026-03-16 12:49:10.998+05:30	2026-03-16 12:49:10.998+05:30	\N	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41
-img_01KKTQ8QPQ2RA40348FZHS4QD7	http://localhost:9000/static/1773644570135-Therapy-Counselling-Sessions.png	\N	2026-03-16 12:32:50.329+05:30	2026-03-16 14:40:45.072+05:30	2026-03-16 14:40:45.067+05:30	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12
-img_01KKTYN1SMGGYS8XENHW1H9R13	http://localhost:9000/static/1773652313883-Therapy-Counselling-Sessions.png	\N	2026-03-16 14:41:53.909+05:30	2026-03-16 14:46:32.003+05:30	2026-03-16 14:46:31.955+05:30	0	prod_01KKTYN1SKJF99NAKB81G9R1NX
-img_01KKTZ7JMTNA2K1BFK8B5F02GN	http://localhost:9000/static/1773652920929-Therapy-Counselling-Sessions.png	\N	2026-03-16 14:52:00.988+05:30	2026-03-16 14:52:00.988+05:30	\N	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K
-img_01KKTNA7JCTJXFNKBPJ0ZVFD9X	http://localhost:9000/static/1773642522149-Kundli.png	\N	2026-03-16 11:58:42.189+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0
-img_01KKV08VDRYCJS48KJGAZKQ2A7	http://localhost:9000/static/1773654011295-Kundli.png	\N	2026-03-16 15:10:11.321+05:30	2026-03-16 15:10:11.321+05:30	\N	0	prod_01KKV08VDQQ210Z466H8Z4P9NY
+img_01KKBDMEKX0HFEYN1EYCFHH19C	http://localhost:9000/static/1773131151964-SB-9001copy.webp	\N	2026-03-10 08:25:51.999+00	2026-03-12 10:32:32.641+00	2026-03-12 10:32:32.626+00	0	prod_01KKBDMEKJY42ZVZNDDP102XVQ
+img_01KKB6VT3VGX6JJS8AM92H24GX	https://theblissfulsoul.in/cdn/shop/files/pyrite-keychain.jpg	\N	2026-03-10 06:27:33.116+00	2026-03-12 10:32:38.022+00	2026-03-12 10:32:38.011+00	0	prod_01KKB6VT3TZZFRMNP201QPVDTK
+img_01KKB6VT6M7YZPE54M90GCMPHG	https://theblissfulsoul.in/cdn/shop/files/money-pyramid.jpg	\N	2026-03-10 06:27:33.205+00	2026-03-12 10:32:40.977+00	2026-03-12 10:32:40.971+00	0	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ
+img_01KKB6VT8H1D1HYHAQMEVA8889	https://theblissfulsoul.in/cdn/shop/files/amethyst-bracelet.jpg	\N	2026-03-10 06:27:33.265+00	2026-03-12 10:32:43.14+00	2026-03-12 10:32:43.137+00	0	prod_01KKB6VT8GE0JVDMNBMB5CRNTB
+img_01KKB6VT9V7QRME96VWAF2PC05	https://theblissfulsoul.in/cdn/shop/files/rose-quartz-bracelet.jpg	\N	2026-03-10 06:27:33.307+00	2026-03-12 10:32:45.856+00	2026-03-12 10:32:45.844+00	0	prod_01KKB6VT9V8NQCAT15G2AFEWG7
+img_01KKB6VTAV99EZ44V5K3JNVWXM	https://theblissfulsoul.in/cdn/shop/files/money-magnet.jpg	\N	2026-03-10 06:27:33.339+00	2026-03-12 10:32:48.98+00	2026-03-12 10:32:48.971+00	0	prod_01KKB6VTATHKEEE6MXR51QSD4T
+img_01KKB6VTBT3KHRRFZ254QH58YX	https://theblissfulsoul.in/cdn/shop/files/selenite-plate.jpg	\N	2026-03-10 06:27:33.37+00	2026-03-12 10:33:09.174+00	2026-03-12 10:33:09.166+00	0	prod_01KKB6VTBTDH1X31R50EC7Q1GB
+img_01KKTNFA13WKVMSSPRWKYG94AG	http://localhost:9000/static/1773642688458-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	2026-03-16 06:31:28.548+00	2026-03-16 07:15:00.563+00	2026-03-16 07:15:00.552+00	0	prod_01KKTNFA12ZYJMT053XBDDXXHX
+img_01KKK08Q69ZS5TXT1YCP2136EA	http://localhost:9000/static/1773385571504-6.png	\N	2026-03-13 07:06:11.53+00	2026-03-16 07:17:39.994+00	2026-03-16 07:17:39.977+00	0	prod_01KKK08Q66WYDN10VJ75BDQX47
+img_01KKTQ8QPQ2RA40348FZHS4QD7	http://localhost:9000/static/1773644570135-Therapy-Counselling-Sessions.png	\N	2026-03-16 07:02:50.329+00	2026-03-16 09:10:45.072+00	2026-03-16 09:10:45.067+00	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12
+img_01KKTYN1SMGGYS8XENHW1H9R13	http://localhost:9000/static/1773652313883-Therapy-Counselling-Sessions.png	\N	2026-03-16 09:11:53.909+00	2026-03-16 09:16:32.003+00	2026-03-16 09:16:31.955+00	0	prod_01KKTYN1SKJF99NAKB81G9R1NX
+img_01KKTNA7JCTJXFNKBPJ0ZVFD9X	http://localhost:9000/static/1773642522149-Kundli.png	\N	2026-03-16 06:28:42.189+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0
+nbge0g	http://localhost:9000/static/1775199987610-1-22.webp	\N	2026-04-03 07:06:27.657+00	2026-04-03 07:06:27.657+00	\N	0	prod_01KKGEV0T2SE3CBBTHBSCDX5S3
+c2v90a	http://localhost:9000/static/1775200054864-5-3.webp	\N	2026-04-03 07:07:34.949+00	2026-04-03 07:07:34.949+00	\N	0	prod_01KKGF0JXXE36GBNN7GRRZ0J6F
+yrdh4q	http://localhost:9000/static/1775200129123-3.webp	\N	2026-04-03 07:08:49.168+00	2026-04-03 07:08:49.168+00	\N	0	prod_01KKGFD3XJW2DF5NM4N9NH3BPB
+gqmf4	http://localhost:9000/static/1775200162906-2-e1757322736665.webp	\N	2026-04-03 07:09:22.944+00	2026-04-03 07:09:22.944+00	\N	0	prod_01KKGFEDP1B71M6E0VAXVCD132
+pwvjv	http://localhost:9000/static/1775200195929-2-21.webp	\N	2026-04-03 07:09:55.98+00	2026-04-03 07:09:55.98+00	\N	0	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5
+cbokjk	http://localhost:9000/static/1775200228510-2-22.webp	\N	2026-04-03 07:10:28.545+00	2026-04-03 07:10:28.545+00	\N	0	prod_01KKGFQ2PBH10AEGGBY47EGDWD
+4frntg	http://localhost:9000/static/1775200246427-2-3.webp	\N	2026-04-03 07:10:46.477+00	2026-04-03 07:10:46.477+00	\N	0	prod_01KKGFS54N6JFJ00AN1X0B778M
+i3cev8	http://localhost:9000/static/1775200266331-1-27.webp	\N	2026-04-03 07:11:06.372+00	2026-04-03 07:11:06.372+00	\N	0	prod_01KKGG1ZW550D0X09AD05PFNJD
+cj7239	http://localhost:9000/static/1775200286037-3-3.webp	\N	2026-04-03 07:11:26.092+00	2026-04-03 07:11:26.092+00	\N	0	prod_01KKGGBWPWW603YYCM9QSA8M8F
+0xycqi	http://localhost:9000/static/1775200308304-2-5.webp	\N	2026-04-03 07:11:48.367+00	2026-04-03 07:11:48.367+00	\N	0	prod_01KKGGCYRS02FZPXSS5E81Z0VT
+z1ge0b	http://localhost:9000/static/1775200332269-1-6.webp	\N	2026-04-03 07:12:12.312+00	2026-04-03 07:12:12.312+00	\N	0	prod_01KKGGDSGZAQA07E2W95SYWFJY
+hl2h1h	http://localhost:9000/static/1775200353831-2-7.webp	\N	2026-04-03 07:12:33.876+00	2026-04-03 07:12:33.876+00	\N	0	prod_01KKGGETJS4R9WWQDEZXVC6YKP
+ft7cc	http://localhost:9000/static/1775200369117-photo-4.png	\N	2026-04-03 07:12:49.158+00	2026-04-03 07:12:49.158+00	\N	0	prod_01KKGGGS8V9GRPDY2RM0EX5T8V
+t22zjc	http://localhost:9000/static/1775200417942-1-8.webp	\N	2026-04-03 07:13:37.992+00	2026-04-03 07:13:37.992+00	\N	0	prod_01KKGGSX663XAWMPZPXXZ152T0
+4o8ikr	http://localhost:9000/static/1775200436836-1-10.webp	\N	2026-04-03 07:13:56.884+00	2026-04-03 07:13:56.884+00	\N	0	prod_01KKGGTJQV56K1RZXS5PVCR33Q
+z75u5	http://localhost:9000/static/1775200458878-1-11.webp	\N	2026-04-03 07:14:18.928+00	2026-04-03 07:14:18.928+00	\N	0	prod_01KKGH7HHH2ZZC94E0HEP3N1PH
+3usdyk	http://localhost:9000/static/1775200497025-1-12.webp	\N	2026-04-03 07:14:57.077+00	2026-04-03 07:14:57.077+00	\N	0	prod_01KKGH86CCFJ4680NM1TTRZBBZ
+4r644d	http://localhost:9000/static/1775200515017-photo-5.png	\N	2026-04-03 07:15:15.063+00	2026-04-03 07:15:15.063+00	\N	0	prod_01KKGH9BC3KA041DVWQV1XACAK
+208kzj	http://localhost:9000/static/1775200533569-1-14.webp	\N	2026-04-03 07:15:33.624+00	2026-04-03 07:15:33.624+00	\N	0	prod_01KKGHA00514BHTAHQMFK1BXX5
+5e44ca	http://localhost:9000/static/1775200551527-1-15.webp	\N	2026-04-03 07:15:51.577+00	2026-04-03 07:15:51.577+00	\N	0	prod_01KKGHBHJBDQTRSV188CTFDNR6
+xrqoxs	http://localhost:9000/static/1775200614269-2-14.webp	\N	2026-04-03 07:16:54.31+00	2026-04-03 07:16:54.31+00	\N	0	prod_01KKGHC3ZR2HTWW0GA4D777CPP
+tr2gq7	http://localhost:9000/static/1775200652011-1-18.webp	\N	2026-04-03 07:17:32.071+00	2026-04-03 07:17:32.071+00	\N	0	prod_01KKGHEGQWSYMSHDTKRG61JRV8
+66zfea	http://localhost:9000/static/1775200626714-2-15.webp	\N	2026-04-03 07:17:06.759+00	2026-04-03 07:17:32.071+00	\N	1	prod_01KKGHEGQWSYMSHDTKRG61JRV8
+2te9ck	http://localhost:9000/static/1775200692007-1-19.webp	\N	2026-04-03 07:18:12.062+00	2026-04-03 07:18:12.062+00	\N	0	prod_01KKGHGGGB544H7EA1GY5RZ1B3
+9ost7	http://localhost:9000/static/1775200692011-2-16.webp	\N	2026-04-03 07:18:12.062+00	2026-04-03 07:18:12.062+00	\N	1	prod_01KKGHGGGB544H7EA1GY5RZ1B3
+9b7x9l	http://localhost:9000/static/1775200728413-3-17.webp	\N	2026-04-03 07:18:48.473+00	2026-04-03 07:18:48.473+00	\N	0	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7
+bmi5x	http://localhost:9000/static/1775200728420-1-20.webp	\N	2026-04-03 07:18:48.473+00	2026-04-03 07:18:48.473+00	\N	1	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7
+d41wv2	http://localhost:9000/static/1775200763151-1-21-e1757325863584.webp	\N	2026-04-03 07:19:23.198+00	2026-04-03 07:19:23.198+00	\N	0	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7
+q2bow	http://localhost:9000/static/1775200763150-2-18.webp	\N	2026-04-03 07:19:23.198+00	2026-04-03 07:19:23.198+00	\N	1	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7
+1j0muc	http://localhost:9000/static/1775200801619-1-24.webp	\N	2026-04-03 07:20:01.677+00	2026-04-03 07:20:01.677+00	\N	0	prod_01KKGT0Q069BHJ6VP4P98TZEXB
+4xz6v	http://localhost:9000/static/1775200813494-2-20.webp	\N	2026-04-03 07:20:13.547+00	2026-04-03 07:20:13.547+00	\N	1	prod_01KKGT0Q069BHJ6VP4P98TZEXB
+8l2olf	http://localhost:9000/static/1775200867998-Screenshot_1.png	\N	2026-04-03 07:21:08.063+00	2026-04-03 07:21:08.063+00	\N	0	prod_01KKTQC820Z82HT7ZNZAPRENCW
+0g6gir	http://localhost:9000/static/1775200886896-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	2026-04-03 07:21:26.947+00	2026-04-03 07:21:26.947+00	\N	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41
+vl3eb	http://localhost:9000/static/1775200922755-Therapy-Counselling-Sessions.png	\N	2026-04-03 07:22:02.808+00	2026-04-03 07:22:02.808+00	\N	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K
+knxmms	http://localhost:9000/static/1775200939739-Kundli.png	\N	2026-04-03 07:22:19.792+00	2026-04-03 07:22:19.792+00	\N	0	prod_01KKV08VDQQ210Z466H8Z4P9NY
 \.
 
 
@@ -3471,15 +3476,15 @@ img_01KKV08VDRYCJS48KJGAZKQ2A7	http://localhost:9000/static/1773654011295-Kundli
 --
 
 COPY public.inventory_item (id, created_at, updated_at, deleted_at, sku, origin_country, hs_code, mid_code, material, weight, length, height, width, requires_shipping, description, title, thumbnail, metadata) FROM stdin;
-iitem_01KKGF0JZE35HM4ZZ5GZ6M8RBX	2026-03-12 12:56:10.414+05:30	2026-03-12 12:56:10.414+05:30	\N	999	\N	\N	\N	\N	\N	\N	\N	\N	t	Default variant	Default variant	\N	\N
-iitem_01KKGFHZR28FB1F7RZTHGFK2TQ	2026-03-12 13:05:40.546+05:30	2026-03-12 13:05:40.546+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Default variant	Default variant	\N	\N
-iitem_01KKGG1ZXXAJASD66F24D0VGK0	2026-03-12 13:14:25.022+05:30	2026-03-12 13:14:25.022+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Crystal Charger – Selenite Plate	Crystal Charger – Selenite Plate	\N	\N
-iitem_01KKB6VT5M68DX6W4C944ZWQW4	2026-03-10 11:57:33.172+05:30	2026-03-12 16:02:37.981+05:30	2026-03-12 16:02:37.981+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
-iitem_01KKB6VT7EM9T7FHMWR0A28KTP	2026-03-10 11:57:33.23+05:30	2026-03-12 16:02:40.962+05:30	2026-03-12 16:02:40.961+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
-iitem_01KKB6VT93GQGKX90VQY26ANJ7	2026-03-10 11:57:33.284+05:30	2026-03-12 16:02:43.125+05:30	2026-03-12 16:02:43.125+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
-iitem_01KKB6VTAETXHW429F59VMQFP5	2026-03-10 11:57:33.326+05:30	2026-03-12 16:02:45.835+05:30	2026-03-12 16:02:45.835+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
-iitem_01KKB6VTBCXVX1R04XE3N7TC3J	2026-03-10 11:57:33.357+05:30	2026-03-12 16:02:48.95+05:30	2026-03-12 16:02:48.95+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
-iitem_01KKB6VTC953R7V5MK3KXD5X1B	2026-03-10 11:57:33.385+05:30	2026-03-12 16:03:09.141+05:30	2026-03-12 16:03:09.141+05:30	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKGF0JZE35HM4ZZ5GZ6M8RBX	2026-03-12 07:26:10.414+00	2026-03-12 07:26:10.414+00	\N	999	\N	\N	\N	\N	\N	\N	\N	\N	t	Default variant	Default variant	\N	\N
+iitem_01KKGFHZR28FB1F7RZTHGFK2TQ	2026-03-12 07:35:40.546+00	2026-03-12 07:35:40.546+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Default variant	Default variant	\N	\N
+iitem_01KKGG1ZXXAJASD66F24D0VGK0	2026-03-12 07:44:25.022+00	2026-03-12 07:44:25.022+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Crystal Charger – Selenite Plate	Crystal Charger – Selenite Plate	\N	\N
+iitem_01KKB6VT5M68DX6W4C944ZWQW4	2026-03-10 06:27:33.172+00	2026-03-12 10:32:37.981+00	2026-03-12 10:32:37.981+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKB6VT7EM9T7FHMWR0A28KTP	2026-03-10 06:27:33.23+00	2026-03-12 10:32:40.962+00	2026-03-12 10:32:40.961+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKB6VT93GQGKX90VQY26ANJ7	2026-03-10 06:27:33.284+00	2026-03-12 10:32:43.125+00	2026-03-12 10:32:43.125+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKB6VTAETXHW429F59VMQFP5	2026-03-10 06:27:33.326+00	2026-03-12 10:32:45.835+00	2026-03-12 10:32:45.835+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKB6VTBCXVX1R04XE3N7TC3J	2026-03-10 06:27:33.357+00	2026-03-12 10:32:48.95+00	2026-03-12 10:32:48.95+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
+iitem_01KKB6VTC953R7V5MK3KXD5X1B	2026-03-10 06:27:33.385+00	2026-03-12 10:33:09.141+00	2026-03-12 10:33:09.141+00	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	Standard	Standard	\N	\N
 \.
 
 
@@ -3531,7 +3536,7 @@ COPY public.link_module_migrations (id, table_name, link_descriptor, created_at)
 --
 
 COPY public.location_fulfillment_provider (stock_location_id, fulfillment_provider_id, id, created_at, updated_at, deleted_at) FROM stdin;
-sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	manual_manual	locfp_01KMQ2F340CFSW48PCJTS9ABEM	2026-03-27 12:47:17.05101+05:30	2026-03-27 12:47:17.05101+05:30	\N
+sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	manual_manual	locfp_01KMQ2F340CFSW48PCJTS9ABEM	2026-03-27 07:17:17.05101+00	2026-03-27 07:17:17.05101+00	\N
 \.
 
 
@@ -3540,8 +3545,8 @@ sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	manual_manual	locfp_01KMQ2F340CFSW48PCJTS9ABEM	2
 --
 
 COPY public.location_fulfillment_set (stock_location_id, fulfillment_set_id, id, created_at, updated_at, deleted_at) FROM stdin;
-sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	fuset_01KMQ2FTWPXCYAYM88E94SV3A9	locfs_01KMQ2FTX5FCVQW57FPZHRAC7W	2026-03-27 12:47:41.410647+05:30	2026-03-27 12:47:41.410647+05:30	\N
-sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	locfs_01KMQ2GRGB4VHMCZ0RDAGN0HZR	2026-03-27 12:48:11.722875+05:30	2026-03-27 12:48:11.722875+05:30	\N
+sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	fuset_01KMQ2FTWPXCYAYM88E94SV3A9	locfs_01KMQ2FTX5FCVQW57FPZHRAC7W	2026-03-27 07:17:41.410647+00	2026-03-27 07:17:41.410647+00	\N
+sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	locfs_01KMQ2GRGB4VHMCZ0RDAGN0HZR	2026-03-27 07:18:11.722875+00	2026-03-27 07:18:11.722875+00	\N
 \.
 
 
@@ -3550,162 +3555,162 @@ sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	locfs_01KMQ2GRG
 --
 
 COPY public.mikro_orm_migrations (id, name, executed_at) FROM stdin;
-1	Migration20240307161216	2026-03-10 11:57:17.208115+05:30
-2	Migration20241210073813	2026-03-10 11:57:17.208115+05:30
-3	Migration20250106142624	2026-03-10 11:57:17.208115+05:30
-4	Migration20250120110820	2026-03-10 11:57:17.208115+05:30
-5	Migration20240307132720	2026-03-10 11:57:17.267357+05:30
-6	Migration20240719123015	2026-03-10 11:57:17.267357+05:30
-7	Migration20241213063611	2026-03-10 11:57:17.267357+05:30
-8	Migration20251010131115	2026-03-10 11:57:17.267357+05:30
-9	InitialSetup20240401153642	2026-03-10 11:57:17.315004+05:30
-10	Migration20240601111544	2026-03-10 11:57:17.315004+05:30
-11	Migration202408271511	2026-03-10 11:57:17.315004+05:30
-12	Migration20241122120331	2026-03-10 11:57:17.315004+05:30
-13	Migration20241125090957	2026-03-10 11:57:17.315004+05:30
-14	Migration20250411073236	2026-03-10 11:57:17.315004+05:30
-15	Migration20250516081326	2026-03-10 11:57:17.315004+05:30
-16	Migration20250910154539	2026-03-10 11:57:17.315004+05:30
-17	Migration20250911092221	2026-03-10 11:57:17.315004+05:30
-18	Migration20250929204438	2026-03-10 11:57:17.315004+05:30
-19	Migration20251008132218	2026-03-10 11:57:17.315004+05:30
-20	Migration20251011090511	2026-03-10 11:57:17.315004+05:30
-21	Migration20230929122253	2026-03-10 11:57:17.39647+05:30
-22	Migration20240322094407	2026-03-10 11:57:17.39647+05:30
-23	Migration20240322113359	2026-03-10 11:57:17.39647+05:30
-24	Migration20240322120125	2026-03-10 11:57:17.39647+05:30
-25	Migration20240626133555	2026-03-10 11:57:17.39647+05:30
-26	Migration20240704094505	2026-03-10 11:57:17.39647+05:30
-27	Migration20241127114534	2026-03-10 11:57:17.39647+05:30
-28	Migration20241127223829	2026-03-10 11:57:17.39647+05:30
-29	Migration20241128055359	2026-03-10 11:57:17.39647+05:30
-30	Migration20241212190401	2026-03-10 11:57:17.39647+05:30
-31	Migration20250408145122	2026-03-10 11:57:17.39647+05:30
-32	Migration20250409122219	2026-03-10 11:57:17.39647+05:30
-33	Migration20251009110625	2026-03-10 11:57:17.39647+05:30
-34	Migration20251112192723	2026-03-10 11:57:17.39647+05:30
-35	Migration20240227120221	2026-03-10 11:57:17.468357+05:30
-36	Migration20240617102917	2026-03-10 11:57:17.468357+05:30
-37	Migration20240624153824	2026-03-10 11:57:17.468357+05:30
-38	Migration20241211061114	2026-03-10 11:57:17.468357+05:30
-39	Migration20250113094144	2026-03-10 11:57:17.468357+05:30
-40	Migration20250120110700	2026-03-10 11:57:17.468357+05:30
-41	Migration20250226130616	2026-03-10 11:57:17.468357+05:30
-42	Migration20250508081510	2026-03-10 11:57:17.468357+05:30
-43	Migration20250828075407	2026-03-10 11:57:17.468357+05:30
-44	Migration20250909083125	2026-03-10 11:57:17.468357+05:30
-45	Migration20250916120552	2026-03-10 11:57:17.468357+05:30
-46	Migration20250917143818	2026-03-10 11:57:17.468357+05:30
-47	Migration20250919122137	2026-03-10 11:57:17.468357+05:30
-48	Migration20251006000000	2026-03-10 11:57:17.468357+05:30
-49	Migration20251015113934	2026-03-10 11:57:17.468357+05:30
-50	Migration20251107050148	2026-03-10 11:57:17.468357+05:30
-51	Migration20240124154000	2026-03-10 11:57:17.527519+05:30
-52	Migration20240524123112	2026-03-10 11:57:17.527519+05:30
-53	Migration20240602110946	2026-03-10 11:57:17.527519+05:30
-54	Migration20241211074630	2026-03-10 11:57:17.527519+05:30
-55	Migration20251010130829	2026-03-10 11:57:17.527519+05:30
-56	Migration20240115152146	2026-03-10 11:57:17.554156+05:30
-57	Migration20240222170223	2026-03-10 11:57:17.565318+05:30
-58	Migration20240831125857	2026-03-10 11:57:17.565318+05:30
-59	Migration20241106085918	2026-03-10 11:57:17.565318+05:30
-60	Migration20241205095237	2026-03-10 11:57:17.565318+05:30
-61	Migration20241216183049	2026-03-10 11:57:17.565318+05:30
-62	Migration20241218091938	2026-03-10 11:57:17.565318+05:30
-63	Migration20250120115059	2026-03-10 11:57:17.565318+05:30
-64	Migration20250212131240	2026-03-10 11:57:17.565318+05:30
-65	Migration20250326151602	2026-03-10 11:57:17.565318+05:30
-66	Migration20250508081553	2026-03-10 11:57:17.565318+05:30
-67	Migration20251017153909	2026-03-10 11:57:17.565318+05:30
-68	Migration20251208130704	2026-03-10 11:57:17.565318+05:30
-69	Migration20240205173216	2026-03-10 11:57:17.610754+05:30
-70	Migration20240624200006	2026-03-10 11:57:17.610754+05:30
-71	Migration20250120110744	2026-03-10 11:57:17.610754+05:30
-72	InitialSetup20240221144943	2026-03-10 11:57:17.673276+05:30
-73	Migration20240604080145	2026-03-10 11:57:17.673276+05:30
-74	Migration20241205122700	2026-03-10 11:57:17.673276+05:30
-75	Migration20251015123842	2026-03-10 11:57:17.673276+05:30
-76	InitialSetup20240227075933	2026-03-10 11:57:17.696284+05:30
-77	Migration20240621145944	2026-03-10 11:57:17.696284+05:30
-78	Migration20241206083313	2026-03-10 11:57:17.696284+05:30
-79	Migration20251202184737	2026-03-10 11:57:17.696284+05:30
-80	Migration20251212161429	2026-03-10 11:57:17.696284+05:30
-81	Migration20240227090331	2026-03-10 11:57:17.717646+05:30
-82	Migration20240710135844	2026-03-10 11:57:17.717646+05:30
-83	Migration20240924114005	2026-03-10 11:57:17.717646+05:30
-84	Migration20241212052837	2026-03-10 11:57:17.717646+05:30
-85	InitialSetup20240228133303	2026-03-10 11:57:17.750817+05:30
-86	Migration20240624082354	2026-03-10 11:57:17.750817+05:30
-87	Migration20240225134525	2026-03-10 11:57:17.763886+05:30
-88	Migration20240806072619	2026-03-10 11:57:17.763886+05:30
-89	Migration20241211151053	2026-03-10 11:57:17.763886+05:30
-90	Migration20250115160517	2026-03-10 11:57:17.763886+05:30
-91	Migration20250120110552	2026-03-10 11:57:17.763886+05:30
-92	Migration20250123122334	2026-03-10 11:57:17.763886+05:30
-93	Migration20250206105639	2026-03-10 11:57:17.763886+05:30
-94	Migration20250207132723	2026-03-10 11:57:17.763886+05:30
-95	Migration20250625084134	2026-03-10 11:57:17.763886+05:30
-96	Migration20250924135437	2026-03-10 11:57:17.763886+05:30
-97	Migration20250929124701	2026-03-10 11:57:17.763886+05:30
-98	Migration20240219102530	2026-03-10 11:57:17.812979+05:30
-99	Migration20240604100512	2026-03-10 11:57:17.812979+05:30
-100	Migration20240715102100	2026-03-10 11:57:17.812979+05:30
-101	Migration20240715174100	2026-03-10 11:57:17.812979+05:30
-102	Migration20240716081800	2026-03-10 11:57:17.812979+05:30
-103	Migration20240801085921	2026-03-10 11:57:17.812979+05:30
-104	Migration20240821164505	2026-03-10 11:57:17.812979+05:30
-105	Migration20240821170920	2026-03-10 11:57:17.812979+05:30
-106	Migration20240827133639	2026-03-10 11:57:17.812979+05:30
-107	Migration20240902195921	2026-03-10 11:57:17.812979+05:30
-108	Migration20240913092514	2026-03-10 11:57:17.812979+05:30
-109	Migration20240930122627	2026-03-10 11:57:17.812979+05:30
-110	Migration20241014142943	2026-03-10 11:57:17.812979+05:30
-111	Migration20241106085223	2026-03-10 11:57:17.812979+05:30
-112	Migration20241129124827	2026-03-10 11:57:17.812979+05:30
-113	Migration20241217162224	2026-03-10 11:57:17.812979+05:30
-114	Migration20250326151554	2026-03-10 11:57:17.812979+05:30
-115	Migration20250522181137	2026-03-10 11:57:17.812979+05:30
-116	Migration20250702095353	2026-03-10 11:57:17.812979+05:30
-117	Migration20250704120229	2026-03-10 11:57:17.812979+05:30
-118	Migration20250910130000	2026-03-10 11:57:17.812979+05:30
-119	Migration20251016160403	2026-03-10 11:57:17.812979+05:30
-120	Migration20251016182939	2026-03-10 11:57:17.812979+05:30
-121	Migration20251017155709	2026-03-10 11:57:17.812979+05:30
-122	Migration20251114100559	2026-03-10 11:57:17.812979+05:30
-123	Migration20251125164002	2026-03-10 11:57:17.812979+05:30
-124	Migration20251210112909	2026-03-10 11:57:17.812979+05:30
-125	Migration20251210112924	2026-03-10 11:57:17.812979+05:30
-126	Migration20251225120947	2026-03-10 11:57:17.812979+05:30
-127	Migration20250717162007	2026-03-10 11:57:17.933702+05:30
-128	Migration20240205025928	2026-03-10 11:57:17.948757+05:30
-129	Migration20240529080336	2026-03-10 11:57:17.948757+05:30
-130	Migration20241202100304	2026-03-10 11:57:17.948757+05:30
-131	Migration20240214033943	2026-03-10 11:57:17.980926+05:30
-132	Migration20240703095850	2026-03-10 11:57:17.980926+05:30
-133	Migration20241202103352	2026-03-10 11:57:17.980926+05:30
-134	Migration20240311145700_InitialSetupMigration	2026-03-10 11:57:18.004522+05:30
-135	Migration20240821170957	2026-03-10 11:57:18.004522+05:30
-136	Migration20240917161003	2026-03-10 11:57:18.004522+05:30
-137	Migration20241217110416	2026-03-10 11:57:18.004522+05:30
-138	Migration20250113122235	2026-03-10 11:57:18.004522+05:30
-139	Migration20250120115002	2026-03-10 11:57:18.004522+05:30
-140	Migration20250822130931	2026-03-10 11:57:18.004522+05:30
-141	Migration20250825132614	2026-03-10 11:57:18.004522+05:30
-142	Migration20251114133146	2026-03-10 11:57:18.004522+05:30
-143	Migration20240509083918_InitialSetupMigration	2026-03-10 11:57:18.063183+05:30
-144	Migration20240628075401	2026-03-10 11:57:18.063183+05:30
-145	Migration20240830094712	2026-03-10 11:57:18.063183+05:30
-146	Migration20250120110514	2026-03-10 11:57:18.063183+05:30
-147	Migration20251028172715	2026-03-10 11:57:18.063183+05:30
-148	Migration20251121123942	2026-03-10 11:57:18.063183+05:30
-149	Migration20251121150408	2026-03-10 11:57:18.063183+05:30
-150	Migration20231228143900	2026-03-10 11:57:18.113155+05:30
-151	Migration20241206101446	2026-03-10 11:57:18.113155+05:30
-152	Migration20250128174331	2026-03-10 11:57:18.113155+05:30
-153	Migration20250505092459	2026-03-10 11:57:18.113155+05:30
-154	Migration20250819104213	2026-03-10 11:57:18.113155+05:30
-155	Migration20250819110924	2026-03-10 11:57:18.113155+05:30
-156	Migration20250908080305	2026-03-10 11:57:18.113155+05:30
+1	Migration20240307161216	2026-03-10 06:27:17.208115+00
+2	Migration20241210073813	2026-03-10 06:27:17.208115+00
+3	Migration20250106142624	2026-03-10 06:27:17.208115+00
+4	Migration20250120110820	2026-03-10 06:27:17.208115+00
+5	Migration20240307132720	2026-03-10 06:27:17.267357+00
+6	Migration20240719123015	2026-03-10 06:27:17.267357+00
+7	Migration20241213063611	2026-03-10 06:27:17.267357+00
+8	Migration20251010131115	2026-03-10 06:27:17.267357+00
+9	InitialSetup20240401153642	2026-03-10 06:27:17.315004+00
+10	Migration20240601111544	2026-03-10 06:27:17.315004+00
+11	Migration202408271511	2026-03-10 06:27:17.315004+00
+12	Migration20241122120331	2026-03-10 06:27:17.315004+00
+13	Migration20241125090957	2026-03-10 06:27:17.315004+00
+14	Migration20250411073236	2026-03-10 06:27:17.315004+00
+15	Migration20250516081326	2026-03-10 06:27:17.315004+00
+16	Migration20250910154539	2026-03-10 06:27:17.315004+00
+17	Migration20250911092221	2026-03-10 06:27:17.315004+00
+18	Migration20250929204438	2026-03-10 06:27:17.315004+00
+19	Migration20251008132218	2026-03-10 06:27:17.315004+00
+20	Migration20251011090511	2026-03-10 06:27:17.315004+00
+21	Migration20230929122253	2026-03-10 06:27:17.39647+00
+22	Migration20240322094407	2026-03-10 06:27:17.39647+00
+23	Migration20240322113359	2026-03-10 06:27:17.39647+00
+24	Migration20240322120125	2026-03-10 06:27:17.39647+00
+25	Migration20240626133555	2026-03-10 06:27:17.39647+00
+26	Migration20240704094505	2026-03-10 06:27:17.39647+00
+27	Migration20241127114534	2026-03-10 06:27:17.39647+00
+28	Migration20241127223829	2026-03-10 06:27:17.39647+00
+29	Migration20241128055359	2026-03-10 06:27:17.39647+00
+30	Migration20241212190401	2026-03-10 06:27:17.39647+00
+31	Migration20250408145122	2026-03-10 06:27:17.39647+00
+32	Migration20250409122219	2026-03-10 06:27:17.39647+00
+33	Migration20251009110625	2026-03-10 06:27:17.39647+00
+34	Migration20251112192723	2026-03-10 06:27:17.39647+00
+35	Migration20240227120221	2026-03-10 06:27:17.468357+00
+36	Migration20240617102917	2026-03-10 06:27:17.468357+00
+37	Migration20240624153824	2026-03-10 06:27:17.468357+00
+38	Migration20241211061114	2026-03-10 06:27:17.468357+00
+39	Migration20250113094144	2026-03-10 06:27:17.468357+00
+40	Migration20250120110700	2026-03-10 06:27:17.468357+00
+41	Migration20250226130616	2026-03-10 06:27:17.468357+00
+42	Migration20250508081510	2026-03-10 06:27:17.468357+00
+43	Migration20250828075407	2026-03-10 06:27:17.468357+00
+44	Migration20250909083125	2026-03-10 06:27:17.468357+00
+45	Migration20250916120552	2026-03-10 06:27:17.468357+00
+46	Migration20250917143818	2026-03-10 06:27:17.468357+00
+47	Migration20250919122137	2026-03-10 06:27:17.468357+00
+48	Migration20251006000000	2026-03-10 06:27:17.468357+00
+49	Migration20251015113934	2026-03-10 06:27:17.468357+00
+50	Migration20251107050148	2026-03-10 06:27:17.468357+00
+51	Migration20240124154000	2026-03-10 06:27:17.527519+00
+52	Migration20240524123112	2026-03-10 06:27:17.527519+00
+53	Migration20240602110946	2026-03-10 06:27:17.527519+00
+54	Migration20241211074630	2026-03-10 06:27:17.527519+00
+55	Migration20251010130829	2026-03-10 06:27:17.527519+00
+56	Migration20240115152146	2026-03-10 06:27:17.554156+00
+57	Migration20240222170223	2026-03-10 06:27:17.565318+00
+58	Migration20240831125857	2026-03-10 06:27:17.565318+00
+59	Migration20241106085918	2026-03-10 06:27:17.565318+00
+60	Migration20241205095237	2026-03-10 06:27:17.565318+00
+61	Migration20241216183049	2026-03-10 06:27:17.565318+00
+62	Migration20241218091938	2026-03-10 06:27:17.565318+00
+63	Migration20250120115059	2026-03-10 06:27:17.565318+00
+64	Migration20250212131240	2026-03-10 06:27:17.565318+00
+65	Migration20250326151602	2026-03-10 06:27:17.565318+00
+66	Migration20250508081553	2026-03-10 06:27:17.565318+00
+67	Migration20251017153909	2026-03-10 06:27:17.565318+00
+68	Migration20251208130704	2026-03-10 06:27:17.565318+00
+69	Migration20240205173216	2026-03-10 06:27:17.610754+00
+70	Migration20240624200006	2026-03-10 06:27:17.610754+00
+71	Migration20250120110744	2026-03-10 06:27:17.610754+00
+72	InitialSetup20240221144943	2026-03-10 06:27:17.673276+00
+73	Migration20240604080145	2026-03-10 06:27:17.673276+00
+74	Migration20241205122700	2026-03-10 06:27:17.673276+00
+75	Migration20251015123842	2026-03-10 06:27:17.673276+00
+76	InitialSetup20240227075933	2026-03-10 06:27:17.696284+00
+77	Migration20240621145944	2026-03-10 06:27:17.696284+00
+78	Migration20241206083313	2026-03-10 06:27:17.696284+00
+79	Migration20251202184737	2026-03-10 06:27:17.696284+00
+80	Migration20251212161429	2026-03-10 06:27:17.696284+00
+81	Migration20240227090331	2026-03-10 06:27:17.717646+00
+82	Migration20240710135844	2026-03-10 06:27:17.717646+00
+83	Migration20240924114005	2026-03-10 06:27:17.717646+00
+84	Migration20241212052837	2026-03-10 06:27:17.717646+00
+85	InitialSetup20240228133303	2026-03-10 06:27:17.750817+00
+86	Migration20240624082354	2026-03-10 06:27:17.750817+00
+87	Migration20240225134525	2026-03-10 06:27:17.763886+00
+88	Migration20240806072619	2026-03-10 06:27:17.763886+00
+89	Migration20241211151053	2026-03-10 06:27:17.763886+00
+90	Migration20250115160517	2026-03-10 06:27:17.763886+00
+91	Migration20250120110552	2026-03-10 06:27:17.763886+00
+92	Migration20250123122334	2026-03-10 06:27:17.763886+00
+93	Migration20250206105639	2026-03-10 06:27:17.763886+00
+94	Migration20250207132723	2026-03-10 06:27:17.763886+00
+95	Migration20250625084134	2026-03-10 06:27:17.763886+00
+96	Migration20250924135437	2026-03-10 06:27:17.763886+00
+97	Migration20250929124701	2026-03-10 06:27:17.763886+00
+98	Migration20240219102530	2026-03-10 06:27:17.812979+00
+99	Migration20240604100512	2026-03-10 06:27:17.812979+00
+100	Migration20240715102100	2026-03-10 06:27:17.812979+00
+101	Migration20240715174100	2026-03-10 06:27:17.812979+00
+102	Migration20240716081800	2026-03-10 06:27:17.812979+00
+103	Migration20240801085921	2026-03-10 06:27:17.812979+00
+104	Migration20240821164505	2026-03-10 06:27:17.812979+00
+105	Migration20240821170920	2026-03-10 06:27:17.812979+00
+106	Migration20240827133639	2026-03-10 06:27:17.812979+00
+107	Migration20240902195921	2026-03-10 06:27:17.812979+00
+108	Migration20240913092514	2026-03-10 06:27:17.812979+00
+109	Migration20240930122627	2026-03-10 06:27:17.812979+00
+110	Migration20241014142943	2026-03-10 06:27:17.812979+00
+111	Migration20241106085223	2026-03-10 06:27:17.812979+00
+112	Migration20241129124827	2026-03-10 06:27:17.812979+00
+113	Migration20241217162224	2026-03-10 06:27:17.812979+00
+114	Migration20250326151554	2026-03-10 06:27:17.812979+00
+115	Migration20250522181137	2026-03-10 06:27:17.812979+00
+116	Migration20250702095353	2026-03-10 06:27:17.812979+00
+117	Migration20250704120229	2026-03-10 06:27:17.812979+00
+118	Migration20250910130000	2026-03-10 06:27:17.812979+00
+119	Migration20251016160403	2026-03-10 06:27:17.812979+00
+120	Migration20251016182939	2026-03-10 06:27:17.812979+00
+121	Migration20251017155709	2026-03-10 06:27:17.812979+00
+122	Migration20251114100559	2026-03-10 06:27:17.812979+00
+123	Migration20251125164002	2026-03-10 06:27:17.812979+00
+124	Migration20251210112909	2026-03-10 06:27:17.812979+00
+125	Migration20251210112924	2026-03-10 06:27:17.812979+00
+126	Migration20251225120947	2026-03-10 06:27:17.812979+00
+127	Migration20250717162007	2026-03-10 06:27:17.933702+00
+128	Migration20240205025928	2026-03-10 06:27:17.948757+00
+129	Migration20240529080336	2026-03-10 06:27:17.948757+00
+130	Migration20241202100304	2026-03-10 06:27:17.948757+00
+131	Migration20240214033943	2026-03-10 06:27:17.980926+00
+132	Migration20240703095850	2026-03-10 06:27:17.980926+00
+133	Migration20241202103352	2026-03-10 06:27:17.980926+00
+134	Migration20240311145700_InitialSetupMigration	2026-03-10 06:27:18.004522+00
+135	Migration20240821170957	2026-03-10 06:27:18.004522+00
+136	Migration20240917161003	2026-03-10 06:27:18.004522+00
+137	Migration20241217110416	2026-03-10 06:27:18.004522+00
+138	Migration20250113122235	2026-03-10 06:27:18.004522+00
+139	Migration20250120115002	2026-03-10 06:27:18.004522+00
+140	Migration20250822130931	2026-03-10 06:27:18.004522+00
+141	Migration20250825132614	2026-03-10 06:27:18.004522+00
+142	Migration20251114133146	2026-03-10 06:27:18.004522+00
+143	Migration20240509083918_InitialSetupMigration	2026-03-10 06:27:18.063183+00
+144	Migration20240628075401	2026-03-10 06:27:18.063183+00
+145	Migration20240830094712	2026-03-10 06:27:18.063183+00
+146	Migration20250120110514	2026-03-10 06:27:18.063183+00
+147	Migration20251028172715	2026-03-10 06:27:18.063183+00
+148	Migration20251121123942	2026-03-10 06:27:18.063183+00
+149	Migration20251121150408	2026-03-10 06:27:18.063183+00
+150	Migration20231228143900	2026-03-10 06:27:18.113155+00
+151	Migration20241206101446	2026-03-10 06:27:18.113155+00
+152	Migration20250128174331	2026-03-10 06:27:18.113155+00
+153	Migration20250505092459	2026-03-10 06:27:18.113155+00
+154	Migration20250819104213	2026-03-10 06:27:18.113155+00
+155	Migration20250819110924	2026-03-10 06:27:18.113155+00
+156	Migration20250908080305	2026-03-10 06:27:18.113155+00
 \.
 
 
@@ -3714,7 +3719,7 @@ COPY public.mikro_orm_migrations (id, name, executed_at) FROM stdin;
 --
 
 COPY public.notification (id, "to", channel, template, data, trigger_type, resource_id, resource_type, receiver_id, original_notification_id, idempotency_key, external_id, provider_id, created_at, updated_at, deleted_at, status, "from", provider_data) FROM stdin;
-noti_01KN4PRR6N8YXXKC2X6JWV06EH		feed	admin-ui	{"file": {"url": "http://localhost:9000/static/private-1775053332622-1775053332621-product-exports.csv", "filename": "1775053332621-product-exports.csv", "mimeType": "text/csv"}, "title": "Product export", "description": "Product export completed successfully!"}	\N	\N	\N	\N	\N	\N	\N	local	2026-04-01 19:52:12.694+05:30	2026-04-01 19:52:12.709+05:30	\N	success	\N	\N
+noti_01KN4PRR6N8YXXKC2X6JWV06EH		feed	admin-ui	{"file": {"url": "http://localhost:9000/static/private-1775053332622-1775053332621-product-exports.csv", "filename": "1775053332621-product-exports.csv", "mimeType": "text/csv"}, "title": "Product export", "description": "Product export completed successfully!"}	\N	\N	\N	\N	\N	\N	\N	local	2026-04-01 14:22:12.694+00	2026-04-01 14:22:12.709+00	\N	success	\N	\N
 \.
 
 
@@ -3723,7 +3728,8 @@ noti_01KN4PRR6N8YXXKC2X6JWV06EH		feed	admin-ui	{"file": {"url": "http://localhos
 --
 
 COPY public.notification_provider (id, handle, name, is_enabled, channels, created_at, updated_at, deleted_at) FROM stdin;
-local	local	local	t	{feed}	2026-03-10 11:57:20.297+05:30	2026-03-10 11:57:20.297+05:30	\N
+local	local	local	f	{feed}	2026-03-10 06:27:20.297+00	2026-04-03 05:57:39.036+00	\N
+google-smtp	google-smtp	google-smtp	t	{email}	2026-04-03 05:57:39.039+00	2026-04-03 05:57:39.039+00	\N
 \.
 
 
@@ -3932,8 +3938,8 @@ COPY public.payment (id, amount, raw_amount, currency_code, provider_id, data, c
 --
 
 COPY public.payment_collection (id, currency_code, amount, raw_amount, authorized_amount, raw_authorized_amount, captured_amount, raw_captured_amount, refunded_amount, raw_refunded_amount, created_at, updated_at, deleted_at, completed_at, status, metadata) FROM stdin;
-pay_col_01KMYHPVE0C9Y7T3FMNNQKSR24	inr	299	{"value": "299", "precision": 20}	\N	\N	\N	\N	\N	\N	2026-03-30 10:28:20.992+05:30	2026-03-30 10:28:20.992+05:30	\N	\N	not_paid	\N
-pay_col_01KMYHS90P51HEDZMMF7WQTVRN	inr	699	{"value": "699", "precision": 20}	\N	\N	\N	\N	\N	\N	2026-03-30 10:29:40.438+05:30	2026-03-30 10:34:13.442+05:30	\N	\N	not_paid	\N
+pay_col_01KMYHPVE0C9Y7T3FMNNQKSR24	inr	299	{"value": "299", "precision": 20}	\N	\N	\N	\N	\N	\N	2026-03-30 04:58:20.992+00	2026-03-30 04:58:20.992+00	\N	\N	not_paid	\N
+pay_col_01KMYHS90P51HEDZMMF7WQTVRN	inr	699	{"value": "699", "precision": 20}	\N	\N	\N	\N	\N	\N	2026-03-30 04:59:40.438+00	2026-03-30 05:04:13.442+00	\N	\N	not_paid	\N
 \.
 
 
@@ -3950,8 +3956,8 @@ COPY public.payment_collection_payment_providers (payment_collection_id, payment
 --
 
 COPY public.payment_provider (id, is_enabled, created_at, updated_at, deleted_at) FROM stdin;
-pp_system_default	t	2026-03-10 11:57:20.293+05:30	2026-03-10 11:57:20.293+05:30	\N
-pp_razorpay_razorpay	t	2026-03-18 13:51:42.406+05:30	2026-03-18 13:51:42.406+05:30	\N
+pp_system_default	t	2026-03-10 06:27:20.293+00	2026-03-10 06:27:20.293+00	\N
+pp_razorpay_razorpay	t	2026-03-18 08:21:42.406+00	2026-03-18 08:21:42.406+00	\N
 \.
 
 
@@ -3968,62 +3974,62 @@ COPY public.payment_session (id, currency_code, amount, raw_amount, provider_id,
 --
 
 COPY public.price (id, title, price_set_id, currency_code, raw_amount, rules_count, created_at, updated_at, deleted_at, price_list_id, amount, min_quantity, max_quantity, raw_min_quantity, raw_max_quantity) FROM stdin;
-price_01KKGFHZRETSGPVVTH33BTKHKX	\N	pset_01KKGFHZRECH6NJ67B763BPCYT	eur	{"value": "232", "precision": 20}	0	2026-03-12 13:05:40.558+05:30	2026-03-12 13:05:40.558+05:30	\N	\N	232	\N	\N	\N	\N
-price_01KKGG1ZY9RSJXGJWXKPKQVPNQ	\N	pset_01KKGG1ZY99X1555RKVHR1QH2K	eur	{"value": "999", "precision": 20}	0	2026-03-12 13:14:25.033+05:30	2026-03-12 13:14:25.033+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKB6VT5Y29RHX5NG79PMZXRY	\N	pset_01KKB6VT5YPEDGRWFE8S0R5Z76	inr	{"value": "299", "precision": 20}	0	2026-03-10 11:57:33.183+05:30	2026-03-12 16:02:38.029+05:30	2026-03-12 16:02:38.027+05:30	\N	299	\N	\N	\N	\N
-price_01KKB6VT86ZZZQWK6RKD0ENYJS	\N	pset_01KKB6VT86R9TQ73WRP5GCK4GK	inr	{"value": "899", "precision": 20}	0	2026-03-10 11:57:33.254+05:30	2026-03-12 16:02:40.98+05:30	2026-03-12 16:02:40.978+05:30	\N	899	\N	\N	\N	\N
-price_01KKB6VT98V8JNTQCPWZKP2AEQ	\N	pset_01KKB6VT98JKKJ5M3E38DT431A	inr	{"value": "999", "precision": 20}	0	2026-03-10 11:57:33.288+05:30	2026-03-12 16:02:43.145+05:30	2026-03-12 16:02:43.141+05:30	\N	999	\N	\N	\N	\N
-price_01KKB6VTAJ6ZTAAB7HM0J7X6Z9	\N	pset_01KKB6VTAJMR6W10Q248MXKEXY	inr	{"value": "899", "precision": 20}	0	2026-03-10 11:57:33.331+05:30	2026-03-12 16:02:45.859+05:30	2026-03-12 16:02:45.856+05:30	\N	899	\N	\N	\N	\N
-price_01KKB6VTBJKVZASZCBQBX2M2JZ	\N	pset_01KKB6VTBJAAG9R6QSY42N65KR	inr	{"value": "999", "precision": 20}	0	2026-03-10 11:57:33.362+05:30	2026-03-12 16:02:48.985+05:30	2026-03-12 16:02:48.983+05:30	\N	999	\N	\N	\N	\N
-price_01KKB6VTCF7CS54RWD6DF8VK6S	\N	pset_01KKB6VTCF190QVWVWB1CBMX1R	inr	{"value": "699", "precision": 20}	0	2026-03-10 11:57:33.391+05:30	2026-03-12 16:03:09.177+05:30	2026-03-12 16:03:09.174+05:30	\N	699	\N	\N	\N	\N
-price_01KKGV82SE1FD88RW6PAS0Z6SD	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	eur	{"value": "333", "precision": 20}	0	2026-03-12 16:29:58.899+05:30	2026-03-12 16:29:58.899+05:30	\N	\N	333	\N	\N	\N	\N
-price_01KKGVWKKGBBNA6Y2AN7QDN2Q4	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	inr	{"value": "899", "precision": 20}	0	2026-03-12 16:41:11.473+05:30	2026-03-12 16:41:11.473+05:30	\N	\N	899	\N	\N	\N	\N
-price_01KKGV82SFFG7BMCQM3Z0EB14T	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	inr	{"value": "9990", "precision": 20}	1	2026-03-12 16:29:58.899+05:30	2026-03-12 16:41:30.408+05:30	\N	\N	9990	\N	\N	\N	\N
-price_01KKTF6N80H8YM1G2H9D0MSRFG	\N	pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	inr	{"value": "1299", "precision": 20}	0	2026-03-16 10:11:53.666+05:30	2026-03-16 10:11:53.666+05:30	\N	\N	1299	\N	\N	\N	\N
-price_01KKTF7KCG05SKV46YV2ZJDMZG	\N	pset_01KKGFEDQ80CPB3MQMX7AH9EY5	inr	{"value": "299", "precision": 20}	0	2026-03-16 10:12:24.53+05:30	2026-03-16 10:12:24.53+05:30	\N	\N	299	\N	\N	\N	\N
-price_01KKTFB31J0S0PWE25DM0PFZF3	\N	pset_01KKGFHZRECH6NJ67B763BPCYT	inr	{"value": "999", "precision": 20}	0	2026-03-16 10:14:18.866+05:30	2026-03-16 10:14:18.866+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTFBYM3ARTVMER1CX6BPMBA	\N	pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	inr	{"value": "999", "precision": 20}	0	2026-03-16 10:14:47.108+05:30	2026-03-16 10:14:47.108+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTFCQNE3NFT2F52669RPDQZ	\N	pset_01KKGFS55XEJR6DQSE1AD8JTMN	inr	{"value": "999", "precision": 20}	0	2026-03-16 10:15:12.752+05:30	2026-03-16 10:15:12.752+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTFDCKEJ70BEVD93CXK5D47	\N	pset_01KKGG1ZY99X1555RKVHR1QH2K	inr	{"value": "599", "precision": 20}	0	2026-03-16 10:15:34.19+05:30	2026-03-16 10:15:34.19+05:30	\N	\N	599	\N	\N	\N	\N
-price_01KKTFE0YWJW4B2SWD7BC9J653	\N	pset_01KKGGBWRR04B0V09J6JRBGR9E	inr	{"value": "1499", "precision": 20}	0	2026-03-16 10:15:55.037+05:30	2026-03-16 10:15:55.037+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTFEPQH3701SPDPT6HNND97	\N	pset_01KKGGCYSZD6FPVW7A656K81GA	inr	{"value": "299", "precision": 20}	0	2026-03-16 10:16:17.331+05:30	2026-03-16 10:16:17.331+05:30	\N	\N	299	\N	\N	\N	\N
-price_01KKTFFCH6C85JPYXW3KMYYEHV	\N	pset_01KKGGDSJ1EF1AP0XT83V82GVP	inr	{"value": "299", "precision": 20}	0	2026-03-16 10:16:39.655+05:30	2026-03-16 10:16:39.655+05:30	\N	\N	299	\N	\N	\N	\N
-price_01KKTFG03FWGA5FFTND4TN37J3	\N	pset_01KKGGETKZX9YMBF0NWNR7EAJ4	inr	{"value": "299", "precision": 20}	0	2026-03-16 10:16:59.697+05:30	2026-03-16 10:16:59.697+05:30	\N	\N	299	\N	\N	\N	\N
-price_01KKTFGHYBRM8J2R4WET531SWV	\N	pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	inr	{"value": "2999", "precision": 20}	0	2026-03-16 10:17:17.965+05:30	2026-03-16 10:17:17.965+05:30	\N	\N	2999	\N	\N	\N	\N
-price_01KKTFJ4FTZMDBZEZZE7VVMK0N	\N	pset_01KKGGSX7EC6X1H3CJPY04V5GK	inr	{"value": "1499", "precision": 20}	0	2026-03-16 10:18:09.723+05:30	2026-03-16 10:18:09.723+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTFJN4DMAB2V057ZAWH8N56	\N	pset_01KKGGTJRVBPMNBPJQMPZEMS3X	inr	{"value": "499", "precision": 20}	0	2026-03-16 10:18:26.766+05:30	2026-03-16 10:18:26.766+05:30	\N	\N	499	\N	\N	\N	\N
-price_01KKTFKAA3H1MJ64CR43CM21CM	\N	pset_01KKGH7HJJ4B1F9CA998A2A5ZB	inr	{"value": "1499", "precision": 20}	0	2026-03-16 10:18:48.453+05:30	2026-03-16 10:18:48.453+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTFM1AMWNWBATV96D2WHACA	\N	pset_01KKGH86D7VJX9Y8THV8S4SDM3	inr	{"value": "499", "precision": 20}	0	2026-03-16 10:19:12.021+05:30	2026-03-16 10:19:12.021+05:30	\N	\N	499	\N	\N	\N	\N
-price_01KKTFMTHDG1GD5X2KY42JM2R1	\N	pset_01KKGH9BDQTV7S85K4G7AVP2KX	inr	{"value": "699", "precision": 20}	0	2026-03-16 10:19:37.839+05:30	2026-03-16 10:19:37.839+05:30	\N	\N	699	\N	\N	\N	\N
-price_01KKTFNH8BH586KJY9CFEV7AT1	\N	pset_01KKGHA01DGX2ZS08W6R70JZX2	inr	{"value": "999", "precision": 20}	0	2026-03-16 10:20:01.101+05:30	2026-03-16 10:20:01.101+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTFP92GA1RC2JFDYAS7362S	\N	pset_01KKGHBHKCD32VX7Q1155EXC6J	inr	{"value": "1499", "precision": 20}	0	2026-03-16 10:20:25.489+05:30	2026-03-16 10:20:25.489+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTFVZBBA6684X9KY02VQP9K	\N	pset_01KKGHEGRRDBX41P4RZF5WGMFB	inr	{"value": "1499", "precision": 20}	0	2026-03-16 10:23:32.141+05:30	2026-03-16 10:23:32.141+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTJ55QH4H1BNYA8RCM534NY	\N	pset_01KKGHGGHKB957PSJN4XGHX5SJ	inr	{"value": "599", "precision": 20}	0	2026-03-16 11:03:30.739+05:30	2026-03-16 11:03:30.739+05:30	\N	\N	599	\N	\N	\N	\N
-price_01KKTJ5TJYGK63D7CXEWEHVJ6E	\N	pset_01KKGHGZ2YXETBK6H4PG7YMMT0	inr	{"value": "1499", "precision": 20}	0	2026-03-16 11:03:52.096+05:30	2026-03-16 11:03:52.096+05:30	\N	\N	1499	\N	\N	\N	\N
-price_01KKTJ6E52GHM9568T514WA1SA	\N	pset_01KKGHHPXXWPYDYH8NZXPDWKR4	inr	{"value": "299", "precision": 20}	0	2026-03-16 11:04:12.131+05:30	2026-03-16 11:04:12.131+05:30	\N	\N	299	\N	\N	\N	\N
-price_01KKTJG5HB91R1CV235XPNCA47	\N	pset_01KKGEV0WWTGNQDTXVECXSWYHD	inr	{"value": "599", "precision": 20}	0	2026-03-16 11:09:30.989+05:30	2026-03-16 11:09:30.989+05:30	\N	\N	599	\N	\N	\N	\N
-price_01KKTJGZP7TPP0WD2EFN7SSASZ	\N	pset_01KKGF0K08AQ5G53G682WTQQJF	inr	{"value": "999", "precision": 20}	0	2026-03-16 11:09:57.768+05:30	2026-03-16 11:09:57.768+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTJK316K9111X8R5FWSFKV6	\N	pset_01KKGHC40SYJ1RNBQ7MZFE56QG	inr	{"value": "699", "precision": 20}	0	2026-03-16 11:11:06.728+05:30	2026-03-16 11:11:06.728+05:30	\N	\N	699	\N	\N	\N	\N
-price_01KKTNFA4AM24Q2C2VTTFE3JTZ	\N	pset_01KKTNFA4AKA90RBEDX3FXGVGS	inr	{"value": "899", "precision": 20}	0	2026-03-16 12:01:28.65+05:30	2026-03-16 12:45:00.566+05:30	2026-03-16 12:45:00.561+05:30	\N	899	\N	\N	\N	\N
-price_01KKTKY8PWFF6TDY4QAE9YQYVY	\N	pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	inr	{"value": "499", "precision": 20}	0	2026-03-16 11:34:41.566+05:30	2026-03-16 12:47:39.997+05:30	2026-03-16 12:47:39.993+05:30	\N	499	\N	\N	\N	\N
-price_01KKTQ8QS9KZ4WWV990N438TY7	\N	pset_01KKTQ8QS90E58VF9AMC6S304F	inr	{"value": "599", "precision": 20}	0	2026-03-16 12:32:50.409+05:30	2026-03-16 13:53:00.435+05:30	2026-03-16 13:53:00.429+05:30	\N	599	\N	\N	\N	\N
-price_01KKTQC8398VPJ2AFRSNYPB8M2	\N	pset_01KKTQC839KYMWHRS6HJCCPAX8	inr	{"value": "1699", "precision": 20}	0	2026-03-16 12:34:45.417+05:30	2026-03-16 13:55:29.202+05:30	2026-03-16 13:55:29.199+05:30	\N	1699	\N	\N	\N	\N
-price_01KKTNA7NSY4VZKJH3ENBC589X	\N	pset_01KKTNA7NSJX5KCYAYPCGGS6K9	inr	{"value": "899", "precision": 20}	0	2026-03-16 11:58:42.297+05:30	2026-03-16 14:54:58.151+05:30	2026-03-16 14:54:58.147+05:30	\N	899	\N	\N	\N	\N
-price_01KKTWER1HTKCBMWKY7GKVCDSC	\N	pset_01KKTWER1HWDK1949ST4MM5J1V	inr	{"value": "499", "precision": 20}	0	2026-03-16 14:03:30.162+05:30	2026-03-16 14:03:30.162+05:30	\N	\N	499	\N	\N	\N	\N
-price_01KKTR6NEK4VF1WGGCZRPP7MX9	\N	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	inr	{"value": "1649", "precision": 20}	1	2026-03-16 12:49:11.059+05:30	2026-03-16 14:06:17.014+05:30	\N	\N	1649	\N	\N	\N	\N
-price_01KKTX66N3832D6NK1695GDZZA	\N	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	inr	{"value": "1649", "precision": 20}	0	2026-03-16 14:16:18.789+05:30	2026-03-16 14:16:18.789+05:30	\N	\N	1649	\N	\N	\N	\N
-price_01KKTYFCQYBW1FY16VQGWM79EX	\N	pset_01KKTYFCQYNFG9SKWXJGMBPB1F	inr	{"value": "999", "precision": 20}	0	2026-03-16 14:38:48.511+05:30	2026-03-16 14:40:19.842+05:30	2026-03-16 14:40:19.83+05:30	\N	999	\N	\N	\N	\N
-price_01KKTYNXX7M1XAQN89W9XDRMSF	\N	pset_01KKTYN1V0DSA87VB92R79ZSMN	inr	{"value": "599", "precision": 20}	0	2026-03-16 14:42:22.696+05:30	2026-03-16 14:46:32.031+05:30	2026-03-16 14:46:32.03+05:30	\N	599	\N	\N	\N	\N
-price_01KKTZ7JQK81KT34DWF1NSA49Z	\N	pset_01KKTZ7JQMBYK90THA8TDMR1DK	inr	{"value": "999", "precision": 20}	1	2026-03-16 14:52:01.076+05:30	2026-03-16 14:52:01.076+05:30	\N	\N	999	\N	\N	\N	\N
-price_01KKTZ937V7T74WWZX1TQP8K03	\N	pset_01KKTZ937W6ENYAZZPQBY583KZ	inr	{"value": "599", "precision": 20}	0	2026-03-16 14:52:50.748+05:30	2026-03-16 14:52:50.748+05:30	\N	\N	599	\N	\N	\N	\N
-price_01KKTZGMNEEHHZCZZAM5RYCNDE	\N	pset_01KKTZGMNESN2XC94297D21PKK	inr	{"value": "1649", "precision": 20}	1	2026-03-16 14:56:57.967+05:30	2026-03-16 15:09:27.612+05:30	2026-03-16 15:09:27.609+05:30	\N	1649	\N	\N	\N	\N
-price_01KKTZJP6R7FC8A563FWQ40YNE	\N	pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	inr	{"value": "899", "precision": 20}	1	2026-03-16 14:58:05.08+05:30	2026-03-16 15:09:27.617+05:30	2026-03-16 15:09:27.609+05:30	\N	899	\N	\N	\N	\N
-price_01KKV08VF65XJ8Q02RB8DYH1SV	\N	pset_01KKV08VF6RZ18D0FKBWJSHEN8	inr	{"value": "899", "precision": 20}	1	2026-03-16 15:10:11.367+05:30	2026-03-16 15:10:11.367+05:30	\N	\N	899	\N	\N	\N	\N
-price_01KKV0BYQF2GV1E548JXR8HQMQ	\N	pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	inr	{"value": "1649", "precision": 20}	1	2026-03-16 15:11:53.007+05:30	2026-03-16 15:11:53.007+05:30	\N	\N	1649	\N	\N	\N	\N
-price_01KKV0J50DBPYD9JKBR5KG3D4X	\N	pset_01KKV0J50DWYZPPJDPV6KD7F4V	inr	{"value": "2398", "precision": 20}	1	2026-03-16 15:15:16.045+05:30	2026-03-16 15:15:16.045+05:30	\N	\N	2398	\N	\N	\N	\N
-price_01KKV0KMG055B5KQSQT39VHZ75	\N	pset_01KKV0KMG059BFC3YV0KDA3VXX	inr	{"value": "1699", "precision": 20}	1	2026-03-16 15:16:04.672+05:30	2026-03-16 15:16:04.672+05:30	\N	\N	1699	\N	\N	\N	\N
-price_01KMQ4W166NMWHD5WQHVX63A67	\N	pset_01KMQ4W166G1H3QH38VTZF639Z	inr	{"value": "0", "precision": 20}	0	2026-03-27 13:29:18.214+05:30	2026-03-27 13:29:18.214+05:30	\N	\N	0	\N	\N	\N	\N
-price_01KMYGBJHAH7ZXHNRWAFYZYVAA	\N	pset_01KMYGBJHAZDWKS1MHRTYCNND4	inr	{"value": "0", "precision": 20}	0	2026-03-30 10:04:42.858+05:30	2026-03-30 10:04:42.858+05:30	\N	\N	0	\N	\N	\N	\N
+price_01KKGFHZRETSGPVVTH33BTKHKX	\N	pset_01KKGFHZRECH6NJ67B763BPCYT	eur	{"value": "232", "precision": 20}	0	2026-03-12 07:35:40.558+00	2026-03-12 07:35:40.558+00	\N	\N	232	\N	\N	\N	\N
+price_01KKGG1ZY9RSJXGJWXKPKQVPNQ	\N	pset_01KKGG1ZY99X1555RKVHR1QH2K	eur	{"value": "999", "precision": 20}	0	2026-03-12 07:44:25.033+00	2026-03-12 07:44:25.033+00	\N	\N	999	\N	\N	\N	\N
+price_01KKB6VT5Y29RHX5NG79PMZXRY	\N	pset_01KKB6VT5YPEDGRWFE8S0R5Z76	inr	{"value": "299", "precision": 20}	0	2026-03-10 06:27:33.183+00	2026-03-12 10:32:38.029+00	2026-03-12 10:32:38.027+00	\N	299	\N	\N	\N	\N
+price_01KKB6VT86ZZZQWK6RKD0ENYJS	\N	pset_01KKB6VT86R9TQ73WRP5GCK4GK	inr	{"value": "899", "precision": 20}	0	2026-03-10 06:27:33.254+00	2026-03-12 10:32:40.98+00	2026-03-12 10:32:40.978+00	\N	899	\N	\N	\N	\N
+price_01KKB6VT98V8JNTQCPWZKP2AEQ	\N	pset_01KKB6VT98JKKJ5M3E38DT431A	inr	{"value": "999", "precision": 20}	0	2026-03-10 06:27:33.288+00	2026-03-12 10:32:43.145+00	2026-03-12 10:32:43.141+00	\N	999	\N	\N	\N	\N
+price_01KKB6VTAJ6ZTAAB7HM0J7X6Z9	\N	pset_01KKB6VTAJMR6W10Q248MXKEXY	inr	{"value": "899", "precision": 20}	0	2026-03-10 06:27:33.331+00	2026-03-12 10:32:45.859+00	2026-03-12 10:32:45.856+00	\N	899	\N	\N	\N	\N
+price_01KKB6VTBJKVZASZCBQBX2M2JZ	\N	pset_01KKB6VTBJAAG9R6QSY42N65KR	inr	{"value": "999", "precision": 20}	0	2026-03-10 06:27:33.362+00	2026-03-12 10:32:48.985+00	2026-03-12 10:32:48.983+00	\N	999	\N	\N	\N	\N
+price_01KKB6VTCF7CS54RWD6DF8VK6S	\N	pset_01KKB6VTCF190QVWVWB1CBMX1R	inr	{"value": "699", "precision": 20}	0	2026-03-10 06:27:33.391+00	2026-03-12 10:33:09.177+00	2026-03-12 10:33:09.174+00	\N	699	\N	\N	\N	\N
+price_01KKGV82SE1FD88RW6PAS0Z6SD	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	eur	{"value": "333", "precision": 20}	0	2026-03-12 10:59:58.899+00	2026-03-12 10:59:58.899+00	\N	\N	333	\N	\N	\N	\N
+price_01KKGVWKKGBBNA6Y2AN7QDN2Q4	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	inr	{"value": "899", "precision": 20}	0	2026-03-12 11:11:11.473+00	2026-03-12 11:11:11.473+00	\N	\N	899	\N	\N	\N	\N
+price_01KKGV82SFFG7BMCQM3Z0EB14T	\N	pset_01KKGT0Q3A7YEG81665WS3A9AW	inr	{"value": "9990", "precision": 20}	1	2026-03-12 10:59:58.899+00	2026-03-12 11:11:30.408+00	\N	\N	9990	\N	\N	\N	\N
+price_01KKTF6N80H8YM1G2H9D0MSRFG	\N	pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	inr	{"value": "1299", "precision": 20}	0	2026-03-16 04:41:53.666+00	2026-03-16 04:41:53.666+00	\N	\N	1299	\N	\N	\N	\N
+price_01KKTF7KCG05SKV46YV2ZJDMZG	\N	pset_01KKGFEDQ80CPB3MQMX7AH9EY5	inr	{"value": "299", "precision": 20}	0	2026-03-16 04:42:24.53+00	2026-03-16 04:42:24.53+00	\N	\N	299	\N	\N	\N	\N
+price_01KKTFB31J0S0PWE25DM0PFZF3	\N	pset_01KKGFHZRECH6NJ67B763BPCYT	inr	{"value": "999", "precision": 20}	0	2026-03-16 04:44:18.866+00	2026-03-16 04:44:18.866+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTFBYM3ARTVMER1CX6BPMBA	\N	pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	inr	{"value": "999", "precision": 20}	0	2026-03-16 04:44:47.108+00	2026-03-16 04:44:47.108+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTFCQNE3NFT2F52669RPDQZ	\N	pset_01KKGFS55XEJR6DQSE1AD8JTMN	inr	{"value": "999", "precision": 20}	0	2026-03-16 04:45:12.752+00	2026-03-16 04:45:12.752+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTFDCKEJ70BEVD93CXK5D47	\N	pset_01KKGG1ZY99X1555RKVHR1QH2K	inr	{"value": "599", "precision": 20}	0	2026-03-16 04:45:34.19+00	2026-03-16 04:45:34.19+00	\N	\N	599	\N	\N	\N	\N
+price_01KKTFE0YWJW4B2SWD7BC9J653	\N	pset_01KKGGBWRR04B0V09J6JRBGR9E	inr	{"value": "1499", "precision": 20}	0	2026-03-16 04:45:55.037+00	2026-03-16 04:45:55.037+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTFEPQH3701SPDPT6HNND97	\N	pset_01KKGGCYSZD6FPVW7A656K81GA	inr	{"value": "299", "precision": 20}	0	2026-03-16 04:46:17.331+00	2026-03-16 04:46:17.331+00	\N	\N	299	\N	\N	\N	\N
+price_01KKTFFCH6C85JPYXW3KMYYEHV	\N	pset_01KKGGDSJ1EF1AP0XT83V82GVP	inr	{"value": "299", "precision": 20}	0	2026-03-16 04:46:39.655+00	2026-03-16 04:46:39.655+00	\N	\N	299	\N	\N	\N	\N
+price_01KKTFG03FWGA5FFTND4TN37J3	\N	pset_01KKGGETKZX9YMBF0NWNR7EAJ4	inr	{"value": "299", "precision": 20}	0	2026-03-16 04:46:59.697+00	2026-03-16 04:46:59.697+00	\N	\N	299	\N	\N	\N	\N
+price_01KKTFGHYBRM8J2R4WET531SWV	\N	pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	inr	{"value": "2999", "precision": 20}	0	2026-03-16 04:47:17.965+00	2026-03-16 04:47:17.965+00	\N	\N	2999	\N	\N	\N	\N
+price_01KKTFJ4FTZMDBZEZZE7VVMK0N	\N	pset_01KKGGSX7EC6X1H3CJPY04V5GK	inr	{"value": "1499", "precision": 20}	0	2026-03-16 04:48:09.723+00	2026-03-16 04:48:09.723+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTFJN4DMAB2V057ZAWH8N56	\N	pset_01KKGGTJRVBPMNBPJQMPZEMS3X	inr	{"value": "499", "precision": 20}	0	2026-03-16 04:48:26.766+00	2026-03-16 04:48:26.766+00	\N	\N	499	\N	\N	\N	\N
+price_01KKTFKAA3H1MJ64CR43CM21CM	\N	pset_01KKGH7HJJ4B1F9CA998A2A5ZB	inr	{"value": "1499", "precision": 20}	0	2026-03-16 04:48:48.453+00	2026-03-16 04:48:48.453+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTFM1AMWNWBATV96D2WHACA	\N	pset_01KKGH86D7VJX9Y8THV8S4SDM3	inr	{"value": "499", "precision": 20}	0	2026-03-16 04:49:12.021+00	2026-03-16 04:49:12.021+00	\N	\N	499	\N	\N	\N	\N
+price_01KKTFMTHDG1GD5X2KY42JM2R1	\N	pset_01KKGH9BDQTV7S85K4G7AVP2KX	inr	{"value": "699", "precision": 20}	0	2026-03-16 04:49:37.839+00	2026-03-16 04:49:37.839+00	\N	\N	699	\N	\N	\N	\N
+price_01KKTFNH8BH586KJY9CFEV7AT1	\N	pset_01KKGHA01DGX2ZS08W6R70JZX2	inr	{"value": "999", "precision": 20}	0	2026-03-16 04:50:01.101+00	2026-03-16 04:50:01.101+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTFP92GA1RC2JFDYAS7362S	\N	pset_01KKGHBHKCD32VX7Q1155EXC6J	inr	{"value": "1499", "precision": 20}	0	2026-03-16 04:50:25.489+00	2026-03-16 04:50:25.489+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTFVZBBA6684X9KY02VQP9K	\N	pset_01KKGHEGRRDBX41P4RZF5WGMFB	inr	{"value": "1499", "precision": 20}	0	2026-03-16 04:53:32.141+00	2026-03-16 04:53:32.141+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTJ55QH4H1BNYA8RCM534NY	\N	pset_01KKGHGGHKB957PSJN4XGHX5SJ	inr	{"value": "599", "precision": 20}	0	2026-03-16 05:33:30.739+00	2026-03-16 05:33:30.739+00	\N	\N	599	\N	\N	\N	\N
+price_01KKTJ5TJYGK63D7CXEWEHVJ6E	\N	pset_01KKGHGZ2YXETBK6H4PG7YMMT0	inr	{"value": "1499", "precision": 20}	0	2026-03-16 05:33:52.096+00	2026-03-16 05:33:52.096+00	\N	\N	1499	\N	\N	\N	\N
+price_01KKTJ6E52GHM9568T514WA1SA	\N	pset_01KKGHHPXXWPYDYH8NZXPDWKR4	inr	{"value": "299", "precision": 20}	0	2026-03-16 05:34:12.131+00	2026-03-16 05:34:12.131+00	\N	\N	299	\N	\N	\N	\N
+price_01KKTJG5HB91R1CV235XPNCA47	\N	pset_01KKGEV0WWTGNQDTXVECXSWYHD	inr	{"value": "599", "precision": 20}	0	2026-03-16 05:39:30.989+00	2026-03-16 05:39:30.989+00	\N	\N	599	\N	\N	\N	\N
+price_01KKTJGZP7TPP0WD2EFN7SSASZ	\N	pset_01KKGF0K08AQ5G53G682WTQQJF	inr	{"value": "999", "precision": 20}	0	2026-03-16 05:39:57.768+00	2026-03-16 05:39:57.768+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTJK316K9111X8R5FWSFKV6	\N	pset_01KKGHC40SYJ1RNBQ7MZFE56QG	inr	{"value": "699", "precision": 20}	0	2026-03-16 05:41:06.728+00	2026-03-16 05:41:06.728+00	\N	\N	699	\N	\N	\N	\N
+price_01KKTNFA4AM24Q2C2VTTFE3JTZ	\N	pset_01KKTNFA4AKA90RBEDX3FXGVGS	inr	{"value": "899", "precision": 20}	0	2026-03-16 06:31:28.65+00	2026-03-16 07:15:00.566+00	2026-03-16 07:15:00.561+00	\N	899	\N	\N	\N	\N
+price_01KKTKY8PWFF6TDY4QAE9YQYVY	\N	pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	inr	{"value": "499", "precision": 20}	0	2026-03-16 06:04:41.566+00	2026-03-16 07:17:39.997+00	2026-03-16 07:17:39.993+00	\N	499	\N	\N	\N	\N
+price_01KKTQ8QS9KZ4WWV990N438TY7	\N	pset_01KKTQ8QS90E58VF9AMC6S304F	inr	{"value": "599", "precision": 20}	0	2026-03-16 07:02:50.409+00	2026-03-16 08:23:00.435+00	2026-03-16 08:23:00.429+00	\N	599	\N	\N	\N	\N
+price_01KKTQC8398VPJ2AFRSNYPB8M2	\N	pset_01KKTQC839KYMWHRS6HJCCPAX8	inr	{"value": "1699", "precision": 20}	0	2026-03-16 07:04:45.417+00	2026-03-16 08:25:29.202+00	2026-03-16 08:25:29.199+00	\N	1699	\N	\N	\N	\N
+price_01KKTNA7NSY4VZKJH3ENBC589X	\N	pset_01KKTNA7NSJX5KCYAYPCGGS6K9	inr	{"value": "899", "precision": 20}	0	2026-03-16 06:28:42.297+00	2026-03-16 09:24:58.151+00	2026-03-16 09:24:58.147+00	\N	899	\N	\N	\N	\N
+price_01KKTWER1HTKCBMWKY7GKVCDSC	\N	pset_01KKTWER1HWDK1949ST4MM5J1V	inr	{"value": "499", "precision": 20}	0	2026-03-16 08:33:30.162+00	2026-03-16 08:33:30.162+00	\N	\N	499	\N	\N	\N	\N
+price_01KKTR6NEK4VF1WGGCZRPP7MX9	\N	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	inr	{"value": "1649", "precision": 20}	1	2026-03-16 07:19:11.059+00	2026-03-16 08:36:17.014+00	\N	\N	1649	\N	\N	\N	\N
+price_01KKTX66N3832D6NK1695GDZZA	\N	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	inr	{"value": "1649", "precision": 20}	0	2026-03-16 08:46:18.789+00	2026-03-16 08:46:18.789+00	\N	\N	1649	\N	\N	\N	\N
+price_01KKTYFCQYBW1FY16VQGWM79EX	\N	pset_01KKTYFCQYNFG9SKWXJGMBPB1F	inr	{"value": "999", "precision": 20}	0	2026-03-16 09:08:48.511+00	2026-03-16 09:10:19.842+00	2026-03-16 09:10:19.83+00	\N	999	\N	\N	\N	\N
+price_01KKTYNXX7M1XAQN89W9XDRMSF	\N	pset_01KKTYN1V0DSA87VB92R79ZSMN	inr	{"value": "599", "precision": 20}	0	2026-03-16 09:12:22.696+00	2026-03-16 09:16:32.031+00	2026-03-16 09:16:32.03+00	\N	599	\N	\N	\N	\N
+price_01KKTZ7JQK81KT34DWF1NSA49Z	\N	pset_01KKTZ7JQMBYK90THA8TDMR1DK	inr	{"value": "999", "precision": 20}	1	2026-03-16 09:22:01.076+00	2026-03-16 09:22:01.076+00	\N	\N	999	\N	\N	\N	\N
+price_01KKTZ937V7T74WWZX1TQP8K03	\N	pset_01KKTZ937W6ENYAZZPQBY583KZ	inr	{"value": "599", "precision": 20}	0	2026-03-16 09:22:50.748+00	2026-03-16 09:22:50.748+00	\N	\N	599	\N	\N	\N	\N
+price_01KKTZGMNEEHHZCZZAM5RYCNDE	\N	pset_01KKTZGMNESN2XC94297D21PKK	inr	{"value": "1649", "precision": 20}	1	2026-03-16 09:26:57.967+00	2026-03-16 09:39:27.612+00	2026-03-16 09:39:27.609+00	\N	1649	\N	\N	\N	\N
+price_01KKTZJP6R7FC8A563FWQ40YNE	\N	pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	inr	{"value": "899", "precision": 20}	1	2026-03-16 09:28:05.08+00	2026-03-16 09:39:27.617+00	2026-03-16 09:39:27.609+00	\N	899	\N	\N	\N	\N
+price_01KKV08VF65XJ8Q02RB8DYH1SV	\N	pset_01KKV08VF6RZ18D0FKBWJSHEN8	inr	{"value": "899", "precision": 20}	1	2026-03-16 09:40:11.367+00	2026-03-16 09:40:11.367+00	\N	\N	899	\N	\N	\N	\N
+price_01KKV0BYQF2GV1E548JXR8HQMQ	\N	pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	inr	{"value": "1649", "precision": 20}	1	2026-03-16 09:41:53.007+00	2026-03-16 09:41:53.007+00	\N	\N	1649	\N	\N	\N	\N
+price_01KKV0J50DBPYD9JKBR5KG3D4X	\N	pset_01KKV0J50DWYZPPJDPV6KD7F4V	inr	{"value": "2398", "precision": 20}	1	2026-03-16 09:45:16.045+00	2026-03-16 09:45:16.045+00	\N	\N	2398	\N	\N	\N	\N
+price_01KKV0KMG055B5KQSQT39VHZ75	\N	pset_01KKV0KMG059BFC3YV0KDA3VXX	inr	{"value": "1699", "precision": 20}	1	2026-03-16 09:46:04.672+00	2026-03-16 09:46:04.672+00	\N	\N	1699	\N	\N	\N	\N
+price_01KMQ4W166NMWHD5WQHVX63A67	\N	pset_01KMQ4W166G1H3QH38VTZF639Z	inr	{"value": "0", "precision": 20}	0	2026-03-27 07:59:18.214+00	2026-03-27 07:59:18.214+00	\N	\N	0	\N	\N	\N	\N
+price_01KMYGBJHAH7ZXHNRWAFYZYVAA	\N	pset_01KMYGBJHAZDWKS1MHRTYCNND4	inr	{"value": "0", "precision": 20}	0	2026-03-30 04:34:42.858+00	2026-03-30 04:34:42.858+00	\N	\N	0	\N	\N	\N	\N
 \.
 
 
@@ -4048,8 +4054,8 @@ COPY public.price_list_rule (id, price_list_id, created_at, updated_at, deleted_
 --
 
 COPY public.price_preference (id, attribute, value, is_tax_inclusive, created_at, updated_at, deleted_at) FROM stdin;
-prpref_01KKB6VT317AGHZRY2V1P1FSAQ	currency_code	eur	f	2026-03-10 11:57:33.089+05:30	2026-03-10 11:57:33.089+05:30	\N
-prpref_01KKGV0WTDHAJH0ZQWQFXGFKDW	currency_code	inr	f	2026-03-12 16:26:03.405+05:30	2026-03-12 16:26:03.405+05:30	\N
+prpref_01KKB6VT317AGHZRY2V1P1FSAQ	currency_code	eur	f	2026-03-10 06:27:33.089+00	2026-03-10 06:27:33.089+00	\N
+prpref_01KKGV0WTDHAJH0ZQWQFXGFKDW	currency_code	inr	f	2026-03-12 10:56:03.405+00	2026-03-12 10:56:03.405+00	\N
 \.
 
 
@@ -4058,15 +4064,15 @@ prpref_01KKGV0WTDHAJH0ZQWQFXGFKDW	currency_code	inr	f	2026-03-12 16:26:03.405+05
 --
 
 COPY public.price_rule (id, value, priority, price_id, created_at, updated_at, deleted_at, attribute, operator) FROM stdin;
-prule_01KKGVX631V55Q44DK1GZREB52	reg_01KKB79PXYZ123	0	price_01KKGV82SFFG7BMCQM3Z0EB14T	2026-03-12 16:41:30.408+05:30	2026-03-12 16:41:30.408+05:30	\N	region_id	eq
-prule_01KKTX66N3XA03BSV101PX2SBH	reg_01KKB79PXYZ123	0	price_01KKTR6NEK4VF1WGGCZRPP7MX9	2026-03-16 14:16:18.789+05:30	2026-03-16 14:16:18.789+05:30	\N	region_id	eq
-prule_01KKTZ7JQKBVGEGS3TR1AE7VYA	reg_01KKB79PXYZ123	0	price_01KKTZ7JQK81KT34DWF1NSA49Z	2026-03-16 14:52:01.076+05:30	2026-03-16 14:52:01.076+05:30	\N	region_id	eq
-prule_01KKTZGMNEZFHNETZXTR2Y9JSD	reg_01KKB79PXYZ123	0	price_01KKTZGMNEEHHZCZZAM5RYCNDE	2026-03-16 14:56:57.967+05:30	2026-03-16 15:09:27.614+05:30	2026-03-16 15:09:27.609+05:30	region_id	eq
-prule_01KKTZJP6R64K932G5M4VW5HW5	reg_01KKB79PXYZ123	0	price_01KKTZJP6R7FC8A563FWQ40YNE	2026-03-16 14:58:05.08+05:30	2026-03-16 15:09:27.618+05:30	2026-03-16 15:09:27.609+05:30	region_id	eq
-prule_01KKV08VF6QYT45NWJQ8EZEKHT	reg_01KKB79PXYZ123	0	price_01KKV08VF65XJ8Q02RB8DYH1SV	2026-03-16 15:10:11.367+05:30	2026-03-16 15:10:11.367+05:30	\N	region_id	eq
-prule_01KKV0BYQFMAKFRPGXPT4J81RA	reg_01KKB79PXYZ123	0	price_01KKV0BYQF2GV1E548JXR8HQMQ	2026-03-16 15:11:53.007+05:30	2026-03-16 15:11:53.007+05:30	\N	region_id	eq
-prule_01KKV0J50DKD6J27VYDQVJ1PW2	reg_01KKB79PXYZ123	0	price_01KKV0J50DBPYD9JKBR5KG3D4X	2026-03-16 15:15:16.046+05:30	2026-03-16 15:15:16.046+05:30	\N	region_id	eq
-prule_01KKV0KMG0G05F75S6NWV44MRT	reg_01KKB79PXYZ123	0	price_01KKV0KMG055B5KQSQT39VHZ75	2026-03-16 15:16:04.672+05:30	2026-03-16 15:16:04.672+05:30	\N	region_id	eq
+prule_01KKGVX631V55Q44DK1GZREB52	reg_01KKB79PXYZ123	0	price_01KKGV82SFFG7BMCQM3Z0EB14T	2026-03-12 11:11:30.408+00	2026-03-12 11:11:30.408+00	\N	region_id	eq
+prule_01KKTX66N3XA03BSV101PX2SBH	reg_01KKB79PXYZ123	0	price_01KKTR6NEK4VF1WGGCZRPP7MX9	2026-03-16 08:46:18.789+00	2026-03-16 08:46:18.789+00	\N	region_id	eq
+prule_01KKTZ7JQKBVGEGS3TR1AE7VYA	reg_01KKB79PXYZ123	0	price_01KKTZ7JQK81KT34DWF1NSA49Z	2026-03-16 09:22:01.076+00	2026-03-16 09:22:01.076+00	\N	region_id	eq
+prule_01KKTZGMNEZFHNETZXTR2Y9JSD	reg_01KKB79PXYZ123	0	price_01KKTZGMNEEHHZCZZAM5RYCNDE	2026-03-16 09:26:57.967+00	2026-03-16 09:39:27.614+00	2026-03-16 09:39:27.609+00	region_id	eq
+prule_01KKTZJP6R64K932G5M4VW5HW5	reg_01KKB79PXYZ123	0	price_01KKTZJP6R7FC8A563FWQ40YNE	2026-03-16 09:28:05.08+00	2026-03-16 09:39:27.618+00	2026-03-16 09:39:27.609+00	region_id	eq
+prule_01KKV08VF6QYT45NWJQ8EZEKHT	reg_01KKB79PXYZ123	0	price_01KKV08VF65XJ8Q02RB8DYH1SV	2026-03-16 09:40:11.367+00	2026-03-16 09:40:11.367+00	\N	region_id	eq
+prule_01KKV0BYQFMAKFRPGXPT4J81RA	reg_01KKB79PXYZ123	0	price_01KKV0BYQF2GV1E548JXR8HQMQ	2026-03-16 09:41:53.007+00	2026-03-16 09:41:53.007+00	\N	region_id	eq
+prule_01KKV0J50DKD6J27VYDQVJ1PW2	reg_01KKB79PXYZ123	0	price_01KKV0J50DBPYD9JKBR5KG3D4X	2026-03-16 09:45:16.046+00	2026-03-16 09:45:16.046+00	\N	region_id	eq
+prule_01KKV0KMG0G05F75S6NWV44MRT	reg_01KKB79PXYZ123	0	price_01KKV0KMG055B5KQSQT39VHZ75	2026-03-16 09:46:04.672+00	2026-03-16 09:46:04.672+00	\N	region_id	eq
 \.
 
 
@@ -4075,59 +4081,59 @@ prule_01KKV0KMG0G05F75S6NWV44MRT	reg_01KKB79PXYZ123	0	price_01KKV0KMG055B5KQSQT3
 --
 
 COPY public.price_set (id, created_at, updated_at, deleted_at) FROM stdin;
-pset_01KKGEV0WWTGNQDTXVECXSWYHD	2026-03-12 12:53:08.06+05:30	2026-03-12 12:53:08.06+05:30	\N
-pset_01KKGF0K08AQ5G53G682WTQQJF	2026-03-12 12:56:10.44+05:30	2026-03-12 12:56:10.44+05:30	\N
-pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	2026-03-12 13:03:01.024+05:30	2026-03-12 13:03:01.024+05:30	\N
-pset_01KKGFEDQ80CPB3MQMX7AH9EY5	2026-03-12 13:03:43.784+05:30	2026-03-12 13:03:43.784+05:30	\N
-pset_01KKGFHZRECH6NJ67B763BPCYT	2026-03-12 13:05:40.558+05:30	2026-03-12 13:05:40.558+05:30	\N
-pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	2026-03-12 13:08:27.447+05:30	2026-03-12 13:08:27.447+05:30	\N
-pset_01KKGFS55XEJR6DQSE1AD8JTMN	2026-03-12 13:09:35.486+05:30	2026-03-12 13:09:35.486+05:30	\N
-pset_01KKGG1ZY99X1555RKVHR1QH2K	2026-03-12 13:14:25.033+05:30	2026-03-12 13:14:25.033+05:30	\N
-pset_01KKGGBWRR04B0V09J6JRBGR9E	2026-03-12 13:19:49.464+05:30	2026-03-12 13:19:49.464+05:30	\N
-pset_01KKGGCYSZD6FPVW7A656K81GA	2026-03-12 13:20:24.319+05:30	2026-03-12 13:20:24.319+05:30	\N
-pset_01KKGGDSJ1EF1AP0XT83V82GVP	2026-03-12 13:20:51.713+05:30	2026-03-12 13:20:51.713+05:30	\N
-pset_01KKGGETKZX9YMBF0NWNR7EAJ4	2026-03-12 13:21:25.567+05:30	2026-03-12 13:21:25.567+05:30	\N
-pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	2026-03-12 13:22:29.765+05:30	2026-03-12 13:22:29.765+05:30	\N
-pset_01KKGGSX7EC6X1H3CJPY04V5GK	2026-03-12 13:27:28.686+05:30	2026-03-12 13:27:28.686+05:30	\N
-pset_01KKGGTJRVBPMNBPJQMPZEMS3X	2026-03-12 13:27:50.747+05:30	2026-03-12 13:27:50.747+05:30	\N
-pset_01KKGH7HJJ4B1F9CA998A2A5ZB	2026-03-12 13:34:55.506+05:30	2026-03-12 13:34:55.506+05:30	\N
-pset_01KKGH86D7VJX9Y8THV8S4SDM3	2026-03-12 13:35:16.839+05:30	2026-03-12 13:35:16.839+05:30	\N
-pset_01KKGH9BDQTV7S85K4G7AVP2KX	2026-03-12 13:35:54.743+05:30	2026-03-12 13:35:54.743+05:30	\N
-pset_01KKGHA01DGX2ZS08W6R70JZX2	2026-03-12 13:36:15.854+05:30	2026-03-12 13:36:15.854+05:30	\N
-pset_01KKGHBHKCD32VX7Q1155EXC6J	2026-03-12 13:37:06.604+05:30	2026-03-12 13:37:06.604+05:30	\N
-pset_01KKGHC40SYJ1RNBQ7MZFE56QG	2026-03-12 13:37:25.466+05:30	2026-03-12 13:37:25.466+05:30	\N
-pset_01KKGHEGRRDBX41P4RZF5WGMFB	2026-03-12 13:38:44.056+05:30	2026-03-12 13:38:44.056+05:30	\N
-pset_01KKGHGGHKB957PSJN4XGHX5SJ	2026-03-12 13:39:49.363+05:30	2026-03-12 13:39:49.363+05:30	\N
-pset_01KKGHGZ2YXETBK6H4PG7YMMT0	2026-03-12 13:40:04.254+05:30	2026-03-12 13:40:04.254+05:30	\N
-pset_01KKGHHPXXWPYDYH8NZXPDWKR4	2026-03-12 13:40:28.669+05:30	2026-03-12 13:40:28.669+05:30	\N
-pset_01KKBDMEQMBYCVS6C3832CD7WX	2026-03-10 13:55:52.117+05:30	2026-03-12 16:02:32.64+05:30	2026-03-12 16:02:32.639+05:30
-pset_01KKB6VT5YPEDGRWFE8S0R5Z76	2026-03-10 11:57:33.183+05:30	2026-03-12 16:02:38.027+05:30	2026-03-12 16:02:38.027+05:30
-pset_01KKB6VT86R9TQ73WRP5GCK4GK	2026-03-10 11:57:33.254+05:30	2026-03-12 16:02:40.978+05:30	2026-03-12 16:02:40.978+05:30
-pset_01KKB6VT98JKKJ5M3E38DT431A	2026-03-10 11:57:33.288+05:30	2026-03-12 16:02:43.141+05:30	2026-03-12 16:02:43.141+05:30
-pset_01KKB6VTAJMR6W10Q248MXKEXY	2026-03-10 11:57:33.331+05:30	2026-03-12 16:02:45.856+05:30	2026-03-12 16:02:45.856+05:30
-pset_01KKB6VTBJAAG9R6QSY42N65KR	2026-03-10 11:57:33.362+05:30	2026-03-12 16:02:48.984+05:30	2026-03-12 16:02:48.983+05:30
-pset_01KKB937DEXCZKSFWR9YHA5BZX	2026-03-10 12:36:33.262+05:30	2026-03-12 16:02:51.644+05:30	2026-03-12 16:02:51.643+05:30
-pset_01KKB6VTCF190QVWVWB1CBMX1R	2026-03-10 11:57:33.391+05:30	2026-03-12 16:03:09.174+05:30	2026-03-12 16:03:09.174+05:30
-pset_01KKGT0Q3A7YEG81665WS3A9AW	2026-03-12 16:08:28.97+05:30	2026-03-12 16:08:28.97+05:30	\N
-pset_01KKTNFA4AKA90RBEDX3FXGVGS	2026-03-16 12:01:28.65+05:30	2026-03-16 12:45:00.561+05:30	2026-03-16 12:45:00.561+05:30
-pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	2026-03-13 12:36:11.6+05:30	2026-03-16 12:47:39.993+05:30	2026-03-16 12:47:39.993+05:30
-pset_01KKTR6NEK2DA8X2RQX8D8MFJE	2026-03-16 12:49:11.059+05:30	2026-03-16 12:49:11.059+05:30	\N
-pset_01KKTQ8QS90E58VF9AMC6S304F	2026-03-16 12:32:50.409+05:30	2026-03-16 13:53:00.429+05:30	2026-03-16 13:53:00.429+05:30
-pset_01KKTQC839KYMWHRS6HJCCPAX8	2026-03-16 12:34:45.417+05:30	2026-03-16 13:55:29.199+05:30	2026-03-16 13:55:29.199+05:30
-pset_01KKTWER1HWDK1949ST4MM5J1V	2026-03-16 14:03:30.161+05:30	2026-03-16 14:03:30.161+05:30	\N
-pset_01KKTYFCQYNFG9SKWXJGMBPB1F	2026-03-16 14:38:48.51+05:30	2026-03-16 14:40:19.83+05:30	2026-03-16 14:40:19.83+05:30
-pset_01KKTYN1V0DSA87VB92R79ZSMN	2026-03-16 14:41:53.953+05:30	2026-03-16 14:46:32.03+05:30	2026-03-16 14:46:32.03+05:30
-pset_01KKTZ7JQMBYK90THA8TDMR1DK	2026-03-16 14:52:01.076+05:30	2026-03-16 14:52:01.076+05:30	\N
-pset_01KKTZ937W6ENYAZZPQBY583KZ	2026-03-16 14:52:50.748+05:30	2026-03-16 14:52:50.748+05:30	\N
-pset_01KKTNA7NSJX5KCYAYPCGGS6K9	2026-03-16 11:58:42.297+05:30	2026-03-16 14:54:58.147+05:30	2026-03-16 14:54:58.147+05:30
-pset_01KKTZGMNESN2XC94297D21PKK	2026-03-16 14:56:57.967+05:30	2026-03-16 15:09:27.609+05:30	2026-03-16 15:09:27.609+05:30
-pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	2026-03-16 14:58:05.08+05:30	2026-03-16 15:09:27.614+05:30	2026-03-16 15:09:27.609+05:30
-pset_01KKV08VF6RZ18D0FKBWJSHEN8	2026-03-16 15:10:11.367+05:30	2026-03-16 15:10:11.367+05:30	\N
-pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	2026-03-16 15:11:53.007+05:30	2026-03-16 15:11:53.007+05:30	\N
-pset_01KKV0J50DWYZPPJDPV6KD7F4V	2026-03-16 15:15:16.045+05:30	2026-03-16 15:15:16.045+05:30	\N
-pset_01KKV0KMG059BFC3YV0KDA3VXX	2026-03-16 15:16:04.672+05:30	2026-03-16 15:16:04.672+05:30	\N
-pset_01KMQ4W166G1H3QH38VTZF639Z	2026-03-27 13:29:18.214+05:30	2026-03-27 13:29:18.214+05:30	\N
-pset_01KMYGBJHAZDWKS1MHRTYCNND4	2026-03-30 10:04:42.858+05:30	2026-03-30 10:04:42.858+05:30	\N
+pset_01KKGEV0WWTGNQDTXVECXSWYHD	2026-03-12 07:23:08.06+00	2026-03-12 07:23:08.06+00	\N
+pset_01KKGF0K08AQ5G53G682WTQQJF	2026-03-12 07:26:10.44+00	2026-03-12 07:26:10.44+00	\N
+pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	2026-03-12 07:33:01.024+00	2026-03-12 07:33:01.024+00	\N
+pset_01KKGFEDQ80CPB3MQMX7AH9EY5	2026-03-12 07:33:43.784+00	2026-03-12 07:33:43.784+00	\N
+pset_01KKGFHZRECH6NJ67B763BPCYT	2026-03-12 07:35:40.558+00	2026-03-12 07:35:40.558+00	\N
+pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	2026-03-12 07:38:27.447+00	2026-03-12 07:38:27.447+00	\N
+pset_01KKGFS55XEJR6DQSE1AD8JTMN	2026-03-12 07:39:35.486+00	2026-03-12 07:39:35.486+00	\N
+pset_01KKGG1ZY99X1555RKVHR1QH2K	2026-03-12 07:44:25.033+00	2026-03-12 07:44:25.033+00	\N
+pset_01KKGGBWRR04B0V09J6JRBGR9E	2026-03-12 07:49:49.464+00	2026-03-12 07:49:49.464+00	\N
+pset_01KKGGCYSZD6FPVW7A656K81GA	2026-03-12 07:50:24.319+00	2026-03-12 07:50:24.319+00	\N
+pset_01KKGGDSJ1EF1AP0XT83V82GVP	2026-03-12 07:50:51.713+00	2026-03-12 07:50:51.713+00	\N
+pset_01KKGGETKZX9YMBF0NWNR7EAJ4	2026-03-12 07:51:25.567+00	2026-03-12 07:51:25.567+00	\N
+pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	2026-03-12 07:52:29.765+00	2026-03-12 07:52:29.765+00	\N
+pset_01KKGGSX7EC6X1H3CJPY04V5GK	2026-03-12 07:57:28.686+00	2026-03-12 07:57:28.686+00	\N
+pset_01KKGGTJRVBPMNBPJQMPZEMS3X	2026-03-12 07:57:50.747+00	2026-03-12 07:57:50.747+00	\N
+pset_01KKGH7HJJ4B1F9CA998A2A5ZB	2026-03-12 08:04:55.506+00	2026-03-12 08:04:55.506+00	\N
+pset_01KKGH86D7VJX9Y8THV8S4SDM3	2026-03-12 08:05:16.839+00	2026-03-12 08:05:16.839+00	\N
+pset_01KKGH9BDQTV7S85K4G7AVP2KX	2026-03-12 08:05:54.743+00	2026-03-12 08:05:54.743+00	\N
+pset_01KKGHA01DGX2ZS08W6R70JZX2	2026-03-12 08:06:15.854+00	2026-03-12 08:06:15.854+00	\N
+pset_01KKGHBHKCD32VX7Q1155EXC6J	2026-03-12 08:07:06.604+00	2026-03-12 08:07:06.604+00	\N
+pset_01KKGHC40SYJ1RNBQ7MZFE56QG	2026-03-12 08:07:25.466+00	2026-03-12 08:07:25.466+00	\N
+pset_01KKGHEGRRDBX41P4RZF5WGMFB	2026-03-12 08:08:44.056+00	2026-03-12 08:08:44.056+00	\N
+pset_01KKGHGGHKB957PSJN4XGHX5SJ	2026-03-12 08:09:49.363+00	2026-03-12 08:09:49.363+00	\N
+pset_01KKGHGZ2YXETBK6H4PG7YMMT0	2026-03-12 08:10:04.254+00	2026-03-12 08:10:04.254+00	\N
+pset_01KKGHHPXXWPYDYH8NZXPDWKR4	2026-03-12 08:10:28.669+00	2026-03-12 08:10:28.669+00	\N
+pset_01KKBDMEQMBYCVS6C3832CD7WX	2026-03-10 08:25:52.117+00	2026-03-12 10:32:32.64+00	2026-03-12 10:32:32.639+00
+pset_01KKB6VT5YPEDGRWFE8S0R5Z76	2026-03-10 06:27:33.183+00	2026-03-12 10:32:38.027+00	2026-03-12 10:32:38.027+00
+pset_01KKB6VT86R9TQ73WRP5GCK4GK	2026-03-10 06:27:33.254+00	2026-03-12 10:32:40.978+00	2026-03-12 10:32:40.978+00
+pset_01KKB6VT98JKKJ5M3E38DT431A	2026-03-10 06:27:33.288+00	2026-03-12 10:32:43.141+00	2026-03-12 10:32:43.141+00
+pset_01KKB6VTAJMR6W10Q248MXKEXY	2026-03-10 06:27:33.331+00	2026-03-12 10:32:45.856+00	2026-03-12 10:32:45.856+00
+pset_01KKB6VTBJAAG9R6QSY42N65KR	2026-03-10 06:27:33.362+00	2026-03-12 10:32:48.984+00	2026-03-12 10:32:48.983+00
+pset_01KKB937DEXCZKSFWR9YHA5BZX	2026-03-10 07:06:33.262+00	2026-03-12 10:32:51.644+00	2026-03-12 10:32:51.643+00
+pset_01KKB6VTCF190QVWVWB1CBMX1R	2026-03-10 06:27:33.391+00	2026-03-12 10:33:09.174+00	2026-03-12 10:33:09.174+00
+pset_01KKGT0Q3A7YEG81665WS3A9AW	2026-03-12 10:38:28.97+00	2026-03-12 10:38:28.97+00	\N
+pset_01KKTNFA4AKA90RBEDX3FXGVGS	2026-03-16 06:31:28.65+00	2026-03-16 07:15:00.561+00	2026-03-16 07:15:00.561+00
+pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	2026-03-13 07:06:11.6+00	2026-03-16 07:17:39.993+00	2026-03-16 07:17:39.993+00
+pset_01KKTR6NEK2DA8X2RQX8D8MFJE	2026-03-16 07:19:11.059+00	2026-03-16 07:19:11.059+00	\N
+pset_01KKTQ8QS90E58VF9AMC6S304F	2026-03-16 07:02:50.409+00	2026-03-16 08:23:00.429+00	2026-03-16 08:23:00.429+00
+pset_01KKTQC839KYMWHRS6HJCCPAX8	2026-03-16 07:04:45.417+00	2026-03-16 08:25:29.199+00	2026-03-16 08:25:29.199+00
+pset_01KKTWER1HWDK1949ST4MM5J1V	2026-03-16 08:33:30.161+00	2026-03-16 08:33:30.161+00	\N
+pset_01KKTYFCQYNFG9SKWXJGMBPB1F	2026-03-16 09:08:48.51+00	2026-03-16 09:10:19.83+00	2026-03-16 09:10:19.83+00
+pset_01KKTYN1V0DSA87VB92R79ZSMN	2026-03-16 09:11:53.953+00	2026-03-16 09:16:32.03+00	2026-03-16 09:16:32.03+00
+pset_01KKTZ7JQMBYK90THA8TDMR1DK	2026-03-16 09:22:01.076+00	2026-03-16 09:22:01.076+00	\N
+pset_01KKTZ937W6ENYAZZPQBY583KZ	2026-03-16 09:22:50.748+00	2026-03-16 09:22:50.748+00	\N
+pset_01KKTNA7NSJX5KCYAYPCGGS6K9	2026-03-16 06:28:42.297+00	2026-03-16 09:24:58.147+00	2026-03-16 09:24:58.147+00
+pset_01KKTZGMNESN2XC94297D21PKK	2026-03-16 09:26:57.967+00	2026-03-16 09:39:27.609+00	2026-03-16 09:39:27.609+00
+pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	2026-03-16 09:28:05.08+00	2026-03-16 09:39:27.614+00	2026-03-16 09:39:27.609+00
+pset_01KKV08VF6RZ18D0FKBWJSHEN8	2026-03-16 09:40:11.367+00	2026-03-16 09:40:11.367+00	\N
+pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	2026-03-16 09:41:53.007+00	2026-03-16 09:41:53.007+00	\N
+pset_01KKV0J50DWYZPPJDPV6KD7F4V	2026-03-16 09:45:16.045+00	2026-03-16 09:45:16.045+00	\N
+pset_01KKV0KMG059BFC3YV0KDA3VXX	2026-03-16 09:46:04.672+00	2026-03-16 09:46:04.672+00	\N
+pset_01KMQ4W166G1H3QH38VTZF639Z	2026-03-27 07:59:18.214+00	2026-03-27 07:59:18.214+00	\N
+pset_01KMYGBJHAZDWKS1MHRTYCNND4	2026-03-30 04:34:42.858+00	2026-03-30 04:34:42.858+00	\N
 \.
 
 
@@ -4136,49 +4142,49 @@ pset_01KMYGBJHAZDWKS1MHRTYCNND4	2026-03-30 10:04:42.858+05:30	2026-03-30 10:04:4
 --
 
 COPY public.product (id, title, handle, subtitle, description, is_giftcard, status, thumbnail, weight, length, height, width, origin_country, hs_code, mid_code, material, collection_id, type_id, discountable, external_id, created_at, updated_at, deleted_at, metadata) FROM stdin;
-prod_01KKGEV0T2SE3CBBTHBSCDX5S3	Tiger Eye Locket(self-esteem and confidence)	tiger-eye-locketself-esteem-and-confidence	₹599.00	\N	f	published	http://localhost:9000/static/1773300187949-1-22.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 12:53:07.973+05:30	2026-03-12 12:54:01.257+05:30	\N	\N
-prod_01KKGF0JXXE36GBNN7GRRZ0J6F	Tiger Eye Natural Bracelet	tiger-eye-natural-bracelet			f	published	http://localhost:9000/static/1773300370343-1-23.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 12:56:10.37+05:30	2026-03-12 12:56:10.37+05:30	\N	\N
-prod_01KKGFD3XJW2DF5NM4N9NH3BPB	MONEY PYRAMID & SELENITE (CHARGING) PLATE COMBO	money-pyramid-selenite-charging-plate-combo			f	published	http://localhost:9000/static/1773300780960-4.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:03:00.982+05:30	2026-03-12 13:03:00.982+05:30	\N	\N
-prod_01KKGFEDP1B71M6E0VAXVCD132	PYRITE – MONEY KEYCHAIN ( 1 piece)- Assorted	pyrite-money-keychain-1-piece-assorted			f	published	http://localhost:9000/static/1773300823720-1-e1757322710183.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:03:43.746+05:30	2026-03-12 13:03:43.746+05:30	\N	\N
-prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	Amethyst natural Bracelett	amethyst-natural-bracelett			f	published	http://localhost:9000/static/1773300940495-2-21.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	\N	2026-03-12 13:05:40.513+05:30	2026-03-12 13:05:40.513+05:30	\N	\N
-prod_01KKGFQ2PBH10AEGGBY47EGDWD	Rose Quartz natural Bracelett	rose-quartz-natural-bracelett	₹999.00		f	published	http://localhost:9000/static/1773301107390-1-26.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:08:27.406+05:30	2026-03-12 13:08:27.406+05:30	\N	\N
-prod_01KKGFS54N6JFJ00AN1X0B778M	Money Magnet	money-magnet	₹599.00	₹599.00	f	published	http://localhost:9000/static/1773301175433-2-3.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:09:35.447+05:30	2026-03-12 13:09:35.447+05:30	\N	\N
-prod_01KKGG1ZW550D0X09AD05PFNJD	Crystal Charger – Selenite Plate	crystal-charger-selenite-plate			f	published	http://localhost:9000/static/1773301464931-1-27.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:14:24.967+05:30	2026-03-12 13:14:24.967+05:30	\N	\N
-prod_01KKGGBWPWW603YYCM9QSA8M8F	Rose Quartz Pyramid	rose-quartz-pyramid			f	published	http://localhost:9000/static/1773301789385-3-3.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:19:49.408+05:30	2026-03-12 13:19:49.408+05:30	\N	\N
-prod_01KKGGCYRS02FZPXSS5E81Z0VT	BLACK OBSIDIAN TUMBLES (Negativity/ Evil Eye)	black-obsidian-tumbles-negativity-evil-eye			f	published	http://localhost:9000/static/1773301824262-2-5.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:20:24.283+05:30	2026-03-12 13:20:24.283+05:30	\N	\N
-prod_01KKGGDSGZAQA07E2W95SYWFJY	AMETHYST TUMBLES (Peace and Anxiety)	amethyst-tumbles-peace-and-anxiety			f	published	http://localhost:9000/static/1773301851661-1-6.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:20:51.681+05:30	2026-03-12 13:20:51.681+05:30	\N	\N
-prod_01KKGGETJS4R9WWQDEZXVC6YKP	ROSE QUARTZ TUMBLES (LOVE/RELATIONSHIPS)	rose-quartz-tumbles-loverelationships			f	published	http://localhost:9000/static/1773301885501-1-7.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:21:25.531+05:30	2026-03-12 13:21:25.531+05:30	\N	\N
-prod_01KKGGGS8V9GRPDY2RM0EX5T8V	Riche Rich	riche-rich			f	published	http://localhost:9000/static/1773301949707-photo-4.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:22:29.725+05:30	2026-03-12 13:22:29.725+05:30	\N	\N
-prod_01KKGGSX663XAWMPZPXXZ152T0	Pyrite Natural Bracelet	pyrite-natural-bracelet			f	published	http://localhost:9000/static/1773302248632-3-8.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:27:28.647+05:30	2026-03-12 13:27:28.647+05:30	\N	\N
-prod_01KKGGTJQV56K1RZXS5PVCR33Q	Sage sticks ( Negativity Removal)	sage-sticks-negativity-removal			f	published	http://localhost:9000/static/1773302270695-1-10.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:27:50.717+05:30	2026-03-12 13:27:50.717+05:30	\N	\N
-prod_01KKGH7HHH2ZZC94E0HEP3N1PH	MASTER’S WISH BOX (Manifest all desires)	masters-wish-box-manifest-all-desires			f	published	http://localhost:9000/static/1773302695457-1-11.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:34:55.475+05:30	2026-03-12 13:34:55.475+05:30	\N	\N
-prod_01KKGH86CCFJ4680NM1TTRZBBZ	GENIE BRACELET	genie-bracelet			f	published	http://localhost:9000/static/1773302716800-1-12.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:35:16.814+05:30	2026-03-12 13:35:16.814+05:30	\N	\N
-prod_01KKGH9BC3KA041DVWQV1XACAK	Rose Quartz Pencil Locket(self-love and relationship)	rose-quartz-pencil-locketself-love-and-relationship			f	published	http://localhost:9000/static/1773302754679-photo-5.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:35:54.692+05:30	2026-03-12 13:35:54.692+05:30	\N	\N
-prod_01KKGHA00514BHTAHQMFK1BXX5	Red Jasper natural Bracelet	red-jasper-natural-bracelet			f	published	http://localhost:9000/static/1773302775791-1-14.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:36:15.815+05:30	2026-03-12 13:36:15.815+05:30	\N	\N
-prod_01KKGHBHJBDQTRSV188CTFDNR6	Pregnancy & Health Bracelet	pregnancy-health-bracelet			f	published	http://localhost:9000/static/1773302826560-1-15.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:37:06.572+05:30	2026-03-12 13:37:06.572+05:30	\N	\N
-prod_01KKGHC3ZR2HTWW0GA4D777CPP	Black obsidian Pencil Locket(evil eye and Nazar)	black-obsidian-pencil-locketevil-eye-and-nazar			f	published	http://localhost:9000/static/1773302845418-2-14.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:37:25.434+05:30	2026-03-12 13:37:25.434+05:30	\N	\N
-prod_01KKGHEGQWSYMSHDTKRG61JRV8	Black obsidian natural Bracelet	black-obsidian-natural-bracelet			f	published	http://localhost:9000/static/1773302924014-2-15.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:38:44.029+05:30	2026-03-12 13:38:44.029+05:30	\N	\N
-prod_01KKGHGGGB544H7EA1GY5RZ1B3	7 Chakra Locket(overall health)	7-chakra-locketoverall-health			f	published	http://localhost:9000/static/1773302989305-1-19.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:39:49.325+05:30	2026-03-12 13:39:49.325+05:30	\N	\N
-prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	Black obsidian pyramid	black-obsidian-pyramid			f	published	http://localhost:9000/static/1773303004196-3-17.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:40:04.222+05:30	2026-03-12 13:40:04.222+05:30	\N	\N
-prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	Healing sea salt	healing-sea-salt			f	published	http://localhost:9000/static/1773303028619-2-18.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 13:40:28.634+05:30	2026-03-12 13:40:28.635+05:30	\N	\N
-prod_01KKBDMEKJY42ZVZNDDP102XVQ	sharee	sharee	sharee	sharee	f	published	http://localhost:9000/static/1773131151964-SB-9001copy.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 13:55:51.998+05:30	2026-03-12 16:02:32.629+05:30	2026-03-12 16:02:32.626+05:30	\N
-prod_01KKB6VT3TZZFRMNP201QPVDTK	Pyrite - MONEY KEYCHAIN (Assorted)	pyrite-money-keychain	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/pyrite-keychain.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.116+05:30	2026-03-12 16:02:38.012+05:30	2026-03-12 16:02:38.011+05:30	\N
-prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	MONEY PYRAMID	money-pyramid	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/money-pyramid.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.205+05:30	2026-03-12 16:02:40.971+05:30	2026-03-12 16:02:40.971+05:30	\N
-prod_01KKB6VT8GE0JVDMNBMB5CRNTB	Amethyst Natural Bracelet	amethyst-natural-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/amethyst-bracelet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.265+05:30	2026-03-12 16:02:43.137+05:30	2026-03-12 16:02:43.137+05:30	\N
-prod_01KKB6VT9V8NQCAT15G2AFEWG7	Rose Quartz Natural Bracelet	rose-quartz-natural-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/rose-quartz-bracelet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.307+05:30	2026-03-12 16:02:45.844+05:30	2026-03-12 16:02:45.844+05:30	\N
-prod_01KKB6VTATHKEEE6MXR51QSD4T	Money Magnet Bracelet	money-magnet-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/money-magnet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.339+05:30	2026-03-12 16:02:48.971+05:30	2026-03-12 16:02:48.971+05:30	\N
-prod_01KKB937AGFSC33DZ1PXMDP86M	testing	sdf	sdf	sdf	f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 12:36:33.176+05:30	2026-03-12 16:02:51.639+05:30	2026-03-12 16:02:51.639+05:30	\N
-prod_01KKB6VTBTDH1X31R50EC7Q1GB	Crystal Charger - Selenite Plate	selenite-charging-plate	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/selenite-plate.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 11:57:33.37+05:30	2026-03-12 16:03:09.166+05:30	2026-03-12 16:03:09.166+05:30	\N
-prod_01KKGT0Q069BHJ6VP4P98TZEXB	Citrine Bracelet(money and growth)	citrine-braceletmoney-and-growth			f	published	http://localhost:9000/static/1773311908843-1-24.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 16:08:28.872+05:30	2026-03-12 16:10:20.054+05:30	\N	{"price": 9999}
-prod_01KKK08Q66WYDN10VJ75BDQX47	Tarot Reading	tarot-reading			f	published	http://localhost:9000/static/1773385571504-6.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-13 12:36:11.53+05:30	2026-03-16 12:47:39.978+05:30	2026-03-16 12:47:39.977+05:30	{"label": "Audio Session", "duration": "20 min"}
-prod_01KKTNFA12ZYJMT053XBDDXXHX	Tarot Reading 2	tarot-reading-2			f	published	http://localhost:9000/static/1773642688458-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-16 12:01:28.548+05:30	2026-03-16 12:45:00.554+05:30	2026-03-16 12:45:00.552+05:30	{"label": "Audio Session", "duration": "30 min"}
-prod_01KKTQC820Z82HT7ZNZAPRENCW	All-in-1 Astrology	all-in-1-astrology			f	published	http://localhost:9000/static/1773644685358-Screenshot_1.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 12:34:45.377+05:30	2026-03-16 13:57:19.451+05:30	\N	{"label": "audio session", "duration": "30 mint"}
-prod_01KKTR6NCKGH4S7ZZKT8ESKT41	Tarot Reading	tarot-reading			f	published	http://localhost:9000/static/1773645550965-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 12:49:10.997+05:30	2026-03-16 14:11:05.318+05:30	\N	{"label": "audio session", "duration": "30 min"}
-prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	http://localhost:9000/static/1773644570135-Therapy-Counselling-Sessions.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 12:32:50.329+05:30	2026-03-16 14:40:45.068+05:30	2026-03-16 14:40:45.067+05:30	{"label": "audio session", "duration": "30 mint"}
-prod_01KKTYN1SKJF99NAKB81G9R1NX	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	http://localhost:9000/static/1773652313883-Therapy-Counselling-Sessions.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 14:41:53.909+05:30	2026-03-16 14:46:31.955+05:30	2026-03-16 14:46:31.955+05:30	\N
-prod_01KKTZ7JMM93QMPPSH61S8DP7K	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	http://localhost:9000/static/1773652920929-Therapy-Counselling-Sessions.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 14:52:00.988+05:30	2026-03-16 14:52:00.988+05:30	\N	\N
-prod_01KKTNA7JBNG7PVCK2D7VFVEG0	Kundali Session	kundali-session			f	published	http://localhost:9000/static/1773642522149-Kundli.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-16 11:58:42.189+05:30	2026-03-16 15:09:27.585+05:30	2026-03-16 15:09:27.583+05:30	{"label": "Audio Session", "duration": "30 min"}
-prod_01KKV08VDQQ210Z466H8Z4P9NY	Kundali Session	kundali-session			f	published	http://localhost:9000/static/1773654011295-Kundli.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 15:10:11.321+05:30	2026-03-16 15:10:11.321+05:30	\N	\N
+prod_01KKBDMEKJY42ZVZNDDP102XVQ	sharee	sharee	sharee	sharee	f	published	http://localhost:9000/static/1773131151964-SB-9001copy.webp	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 08:25:51.998+00	2026-03-12 10:32:32.629+00	2026-03-12 10:32:32.626+00	\N
+prod_01KKB6VT3TZZFRMNP201QPVDTK	Pyrite - MONEY KEYCHAIN (Assorted)	pyrite-money-keychain	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/pyrite-keychain.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.116+00	2026-03-12 10:32:38.012+00	2026-03-12 10:32:38.011+00	\N
+prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	MONEY PYRAMID	money-pyramid	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/money-pyramid.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.205+00	2026-03-12 10:32:40.971+00	2026-03-12 10:32:40.971+00	\N
+prod_01KKB6VT8GE0JVDMNBMB5CRNTB	Amethyst Natural Bracelet	amethyst-natural-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/amethyst-bracelet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.265+00	2026-03-12 10:32:43.137+00	2026-03-12 10:32:43.137+00	\N
+prod_01KKB6VT9V8NQCAT15G2AFEWG7	Rose Quartz Natural Bracelet	rose-quartz-natural-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/rose-quartz-bracelet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.307+00	2026-03-12 10:32:45.844+00	2026-03-12 10:32:45.844+00	\N
+prod_01KKB6VTATHKEEE6MXR51QSD4T	Money Magnet Bracelet	money-magnet-bracelet	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/money-magnet.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.339+00	2026-03-12 10:32:48.971+00	2026-03-12 10:32:48.971+00	\N
+prod_01KKB937AGFSC33DZ1PXMDP86M	testing	sdf	sdf	sdf	f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 07:06:33.176+00	2026-03-12 10:32:51.639+00	2026-03-12 10:32:51.639+00	\N
+prod_01KKB6VTBTDH1X31R50EC7Q1GB	Crystal Charger - Selenite Plate	selenite-charging-plate	\N	\N	f	published	https://theblissfulsoul.in/cdn/shop/files/selenite-plate.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-10 06:27:33.37+00	2026-03-12 10:33:09.166+00	2026-03-12 10:33:09.166+00	\N
+prod_01KKK08Q66WYDN10VJ75BDQX47	Tarot Reading	tarot-reading			f	published	http://localhost:9000/static/1773385571504-6.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-13 07:06:11.53+00	2026-03-16 07:17:39.978+00	2026-03-16 07:17:39.977+00	{"label": "Audio Session", "duration": "20 min"}
+prod_01KKTNFA12ZYJMT053XBDDXXHX	Tarot Reading 2	tarot-reading-2			f	published	http://localhost:9000/static/1773642688458-WhatsApp-Image-2025-08-30-at-2.03.56-PM-1-scaled-e1756997216538.jpg	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-16 06:31:28.548+00	2026-03-16 07:15:00.554+00	2026-03-16 07:15:00.552+00	{"label": "Audio Session", "duration": "30 min"}
+prod_01KKGH9BC3KA041DVWQV1XACAK	Rose Quartz Pencil Locket(self-love and relationship)	rose-quartz-pencil-locketself-love-and-relationship			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:05:54.692+00	2026-04-03 07:15:15.064+00	\N	\N
+prod_01KKGF0JXXE36GBNN7GRRZ0J6F	Tiger Eye Natural Bracelet	tiger-eye-natural-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:26:10.37+00	2026-04-02 11:10:54.157+00	\N	\N
+prod_01KKGFD3XJW2DF5NM4N9NH3BPB	MONEY PYRAMID & SELENITE (CHARGING) PLATE COMBO	money-pyramid-selenite-charging-plate-combo			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:33:00.982+00	2026-04-02 11:11:17.783+00	\N	\N
+prod_01KKGFEDP1B71M6E0VAXVCD132	PYRITE – MONEY KEYCHAIN ( 1 piece)- Assorted	pyrite-money-keychain-1-piece-assorted			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:33:43.746+00	2026-04-03 07:09:22.944+00	\N	\N
+prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	Amethyst natural Bracelett	amethyst-natural-bracelett			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	\N	2026-03-12 07:35:40.513+00	2026-04-03 07:09:55.981+00	\N	\N
+prod_01KKGFQ2PBH10AEGGBY47EGDWD	Rose Quartz natural Bracelett	rose-quartz-natural-bracelett	₹999.00		f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:38:27.406+00	2026-04-03 07:10:28.545+00	\N	\N
+prod_01KKGFS54N6JFJ00AN1X0B778M	Money Magnet	money-magnet	₹599.00	₹599.00	f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:39:35.447+00	2026-04-03 07:10:46.477+00	\N	\N
+prod_01KKGG1ZW550D0X09AD05PFNJD	Crystal Charger – Selenite Plate	crystal-charger-selenite-plate			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:44:24.967+00	2026-04-03 07:11:06.372+00	\N	\N
+prod_01KKGGBWPWW603YYCM9QSA8M8F	Rose Quartz Pyramid	rose-quartz-pyramid			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:49:49.408+00	2026-04-03 07:11:26.092+00	\N	\N
+prod_01KKGGCYRS02FZPXSS5E81Z0VT	BLACK OBSIDIAN TUMBLES (Negativity/ Evil Eye)	black-obsidian-tumbles-negativity-evil-eye			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:50:24.283+00	2026-04-03 07:11:48.367+00	\N	\N
+prod_01KKGGDSGZAQA07E2W95SYWFJY	AMETHYST TUMBLES (Peace and Anxiety)	amethyst-tumbles-peace-and-anxiety			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:50:51.681+00	2026-04-03 07:12:12.313+00	\N	\N
+prod_01KKGGETJS4R9WWQDEZXVC6YKP	ROSE QUARTZ TUMBLES (LOVE/RELATIONSHIPS)	rose-quartz-tumbles-loverelationships			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:51:25.531+00	2026-04-03 07:12:33.876+00	\N	\N
+prod_01KKGGGS8V9GRPDY2RM0EX5T8V	Riche Rich	riche-rich			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:52:29.725+00	2026-04-03 07:12:49.158+00	\N	\N
+prod_01KKGGSX663XAWMPZPXXZ152T0	Pyrite Natural Bracelet	pyrite-natural-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:57:28.647+00	2026-04-03 07:13:37.992+00	\N	\N
+prod_01KKGGTJQV56K1RZXS5PVCR33Q	Sage sticks ( Negativity Removal)	sage-sticks-negativity-removal			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:57:50.717+00	2026-04-03 07:13:56.884+00	\N	\N
+prod_01KKGH7HHH2ZZC94E0HEP3N1PH	MASTER’S WISH BOX (Manifest all desires)	masters-wish-box-manifest-all-desires			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:04:55.475+00	2026-04-03 07:14:18.928+00	\N	\N
+prod_01KKGH86CCFJ4680NM1TTRZBBZ	GENIE BRACELET	genie-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:05:16.814+00	2026-04-03 07:14:57.077+00	\N	\N
+prod_01KKGT0Q069BHJ6VP4P98TZEXB	Citrine Bracelet(money and growth)	citrine-braceletmoney-and-growth			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 10:38:28.872+00	2026-04-03 07:20:01.677+00	\N	{"price": 9999}
+prod_01KKGHBHJBDQTRSV188CTFDNR6	Pregnancy & Health Bracelet	pregnancy-health-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:07:06.572+00	2026-04-03 07:15:51.577+00	\N	\N
+prod_01KKGHA00514BHTAHQMFK1BXX5	Red Jasper natural Bracelet	red-jasper-natural-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:06:15.815+00	2026-04-03 07:15:33.624+00	\N	\N
+prod_01KKGHEGQWSYMSHDTKRG61JRV8	Black obsidian natural Bracelet	black-obsidian-natural-bracelet			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:08:44.029+00	2026-04-03 07:17:06.759+00	\N	\N
+prod_01KKGHC3ZR2HTWW0GA4D777CPP	Black obsidian Pencil Locket(evil eye and Nazar)	black-obsidian-pencil-locketevil-eye-and-nazar			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:07:25.434+00	2026-04-03 07:16:11.293+00	\N	\N
+prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	Black obsidian pyramid	black-obsidian-pyramid			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:10:04.222+00	2026-04-03 07:18:48.473+00	\N	\N
+prod_01KKGHGGGB544H7EA1GY5RZ1B3	7 Chakra Locket(overall health)	7-chakra-locketoverall-health			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:09:49.325+00	2026-04-03 07:18:12.062+00	\N	\N
+prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	Healing sea salt	healing-sea-salt			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 08:10:28.634+00	2026-04-03 07:19:23.198+00	\N	\N
+prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	http://localhost:9000/static/1773644570135-Therapy-Counselling-Sessions.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 07:02:50.329+00	2026-03-16 09:10:45.068+00	2026-03-16 09:10:45.067+00	{"label": "audio session", "duration": "30 mint"}
+prod_01KKTYN1SKJF99NAKB81G9R1NX	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	http://localhost:9000/static/1773652313883-Therapy-Counselling-Sessions.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 09:11:53.909+00	2026-03-16 09:16:31.955+00	2026-03-16 09:16:31.955+00	\N
+prod_01KKTNA7JBNG7PVCK2D7VFVEG0	Kundali Session	kundali-session			f	published	http://localhost:9000/static/1773642522149-Kundli.png	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-16 06:28:42.189+00	2026-03-16 09:39:27.585+00	2026-03-16 09:39:27.583+00	{"label": "Audio Session", "duration": "30 min"}
+prod_01KKGEV0T2SE3CBBTHBSCDX5S3	Tiger Eye Locket(self-esteem and confidence)	tiger-eye-locketself-esteem-and-confidence	₹599.00	\N	f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	\N	2026-03-12 07:23:07.973+00	2026-04-02 11:02:11.635+00	\N	\N
+prod_01KKTQC820Z82HT7ZNZAPRENCW	All-in-1 Astrology	all-in-1-astrology			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 07:04:45.377+00	2026-04-03 07:21:08.064+00	\N	{"label": "audio session", "duration": "30 mint"}
+prod_01KKTR6NCKGH4S7ZZKT8ESKT41	Tarot Reading	tarot-reading			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 07:19:10.997+00	2026-04-03 07:21:26.947+00	\N	{"label": "audio session", "duration": "30 min"}
+prod_01KKTZ7JMM93QMPPSH61S8DP7K	Therapy & Counselling Sessions	therapy-counselling-sessions			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 09:22:00.988+00	2026-04-03 07:22:02.809+00	\N	\N
+prod_01KKV08VDQQ210Z466H8Z4P9NY	Kundali Session	kundali-session			f	published	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	ptyp_01KKK18C4KW84N78TGBEJTCHK7	t	\N	2026-03-16 09:40:11.321+00	2026-04-03 07:22:19.792+00	\N	\N
 \.
 
 
@@ -4187,10 +4193,10 @@ prod_01KKV08VDQQ210Z466H8Z4P9NY	Kundali Session	kundali-session			f	published	ht
 --
 
 COPY public.product_category (id, name, description, handle, mpath, is_active, is_internal, rank, parent_category_id, created_at, updated_at, deleted_at, metadata) FROM stdin;
-pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	Sessions		sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	t	f	0	\N	2026-03-13 13:05:48.38+05:30	2026-03-13 13:05:48.38+05:30	\N	\N
-pcat_01KKK4NQR2MR7PAN9GKD8HNMHM	Audio Sessions		audio-sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQR2MR7PAN9GKD8HNMHM	t	f	0	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 13:53:12.386+05:30	2026-03-13 13:53:12.386+05:30	\N	\N
-pcat_01KKK4NQRDNWVAEY0MXDY1YJVR	Video Sessions		video-sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQRDNWVAEY0MXDY1YJVR	t	f	1	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 13:53:12.397+05:30	2026-03-13 13:53:12.397+05:30	\N	\N
-pcat_01KKK4NQRHA11RNTJPB4SXDRM8	Top Services		top-services	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQRHA11RNTJPB4SXDRM8	t	f	2	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 13:53:12.401+05:30	2026-03-13 16:02:29.3+05:30	\N	\N
+pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	Sessions		sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	t	f	0	\N	2026-03-13 07:35:48.38+00	2026-03-13 07:35:48.38+00	\N	\N
+pcat_01KKK4NQR2MR7PAN9GKD8HNMHM	Audio Sessions		audio-sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQR2MR7PAN9GKD8HNMHM	t	f	0	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 08:23:12.386+00	2026-03-13 08:23:12.386+00	\N	\N
+pcat_01KKK4NQRDNWVAEY0MXDY1YJVR	Video Sessions		video-sessions	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQRDNWVAEY0MXDY1YJVR	t	f	1	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 08:23:12.397+00	2026-03-13 08:23:12.397+00	\N	\N
+pcat_01KKK4NQRHA11RNTJPB4SXDRM8	Top Services		top-services	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1.pcat_01KKK4NQRHA11RNTJPB4SXDRM8	t	f	2	pcat_01KKK1YYCVQNT54FPBQJ8RX8E1	2026-03-13 08:23:12.401+00	2026-03-13 10:32:29.3+00	\N	\N
 \.
 
 
@@ -4241,54 +4247,54 @@ COPY public.product_collection (id, title, handle, metadata, created_at, updated
 --
 
 COPY public.product_option (id, title, product_id, metadata, created_at, updated_at, deleted_at) FROM stdin;
-opt_01KKGEV0T5PPGXCXFPW79EFY7E	Default option	prod_01KKGEV0T2SE3CBBTHBSCDX5S3	\N	2026-03-12 12:53:07.974+05:30	2026-03-12 12:53:07.974+05:30	\N
-opt_01KKGF0JY0PHAVYDEYM22Y7NSA	Default option	prod_01KKGF0JXXE36GBNN7GRRZ0J6F	\N	2026-03-12 12:56:10.371+05:30	2026-03-12 12:56:10.371+05:30	\N
-opt_01KKGFD3XMWRSNVZ8D94Q5BP4N	Default option	prod_01KKGFD3XJW2DF5NM4N9NH3BPB	\N	2026-03-12 13:03:00.983+05:30	2026-03-12 13:03:00.983+05:30	\N
-opt_01KKGFEDP2WQJ0SR0BT8KKERY9	Default option	prod_01KKGFEDP1B71M6E0VAXVCD132	\N	2026-03-12 13:03:43.747+05:30	2026-03-12 13:03:43.747+05:30	\N
-opt_01KKGFHZQ065P1F8BH8CB2R720	Default option	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	\N	2026-03-12 13:05:40.513+05:30	2026-03-12 13:05:40.513+05:30	\N
-opt_01KKGFQ2PDGF2WCX8QJBRZMV6N	Default option	prod_01KKGFQ2PBH10AEGGBY47EGDWD	\N	2026-03-12 13:08:27.406+05:30	2026-03-12 13:08:27.406+05:30	\N
-opt_01KKGFS54P6CB6AY1A0CZVVYYC	Default option	prod_01KKGFS54N6JFJ00AN1X0B778M	\N	2026-03-12 13:09:35.447+05:30	2026-03-12 13:09:35.447+05:30	\N
-opt_01KKGG1ZW6TFWTBDQHH3H6ZCF6	Default option	prod_01KKGG1ZW550D0X09AD05PFNJD	\N	2026-03-12 13:14:24.967+05:30	2026-03-12 13:14:24.967+05:30	\N
-opt_01KKGGBWPZ5N1GKJY0GBEA656Y	Default option	prod_01KKGGBWPWW603YYCM9QSA8M8F	\N	2026-03-12 13:19:49.409+05:30	2026-03-12 13:19:49.409+05:30	\N
-opt_01KKGGCYRT1TEND4J9ZYHY7KBE	Default option	prod_01KKGGCYRS02FZPXSS5E81Z0VT	\N	2026-03-12 13:20:24.283+05:30	2026-03-12 13:20:24.283+05:30	\N
-opt_01KKGGDSH1DVNPMM9N69PKNB5P	Default option	prod_01KKGGDSGZAQA07E2W95SYWFJY	\N	2026-03-12 13:20:51.681+05:30	2026-03-12 13:20:51.681+05:30	\N
-opt_01KKGGETJTJE6FS8QXE8NBENHS	Default option	prod_01KKGGETJS4R9WWQDEZXVC6YKP	\N	2026-03-12 13:21:25.531+05:30	2026-03-12 13:21:25.531+05:30	\N
-opt_01KKGGGS8WCQVXXTQ7B4PNG7J5	Default option	prod_01KKGGGS8V9GRPDY2RM0EX5T8V	\N	2026-03-12 13:22:29.725+05:30	2026-03-12 13:22:29.725+05:30	\N
-opt_01KKGGSX66J9RWZQAY3RMD6E8S	Default option	prod_01KKGGSX663XAWMPZPXXZ152T0	\N	2026-03-12 13:27:28.647+05:30	2026-03-12 13:27:28.647+05:30	\N
-opt_01KKGGTJQWRHYY4GTMCFGZ2RJ5	Default option	prod_01KKGGTJQV56K1RZXS5PVCR33Q	\N	2026-03-12 13:27:50.717+05:30	2026-03-12 13:27:50.717+05:30	\N
-opt_01KKGH7HHJZTFMW9GX1P0EX9NV	Default option	prod_01KKGH7HHH2ZZC94E0HEP3N1PH	\N	2026-03-12 13:34:55.475+05:30	2026-03-12 13:34:55.475+05:30	\N
-opt_01KKGH86CD70V4YMVYBSXK4358	Default option	prod_01KKGH86CCFJ4680NM1TTRZBBZ	\N	2026-03-12 13:35:16.814+05:30	2026-03-12 13:35:16.814+05:30	\N
-opt_01KKGH9BC44R6JQ3A1797FERMY	Default option	prod_01KKGH9BC3KA041DVWQV1XACAK	\N	2026-03-12 13:35:54.692+05:30	2026-03-12 13:35:54.692+05:30	\N
-opt_01KKGHA0062850H14NWB9Z42FP	Default option	prod_01KKGHA00514BHTAHQMFK1BXX5	\N	2026-03-12 13:36:15.815+05:30	2026-03-12 13:36:15.815+05:30	\N
-opt_01KKGHBHJC7XRFB92FR6JA5G9K	Default option	prod_01KKGHBHJBDQTRSV188CTFDNR6	\N	2026-03-12 13:37:06.572+05:30	2026-03-12 13:37:06.572+05:30	\N
-opt_01KKGHC3ZT8B56ER9N9EFAKKXM	Default option	prod_01KKGHC3ZR2HTWW0GA4D777CPP	\N	2026-03-12 13:37:25.434+05:30	2026-03-12 13:37:25.434+05:30	\N
-opt_01KKGHEGQXGKT3FAK1HRVRY17C	Default option	prod_01KKGHEGQWSYMSHDTKRG61JRV8	\N	2026-03-12 13:38:44.029+05:30	2026-03-12 13:38:44.029+05:30	\N
-opt_01KKGHGGGCQEE8W54A133273PX	Default option	prod_01KKGHGGGB544H7EA1GY5RZ1B3	\N	2026-03-12 13:39:49.325+05:30	2026-03-12 13:39:49.325+05:30	\N
-opt_01KKGHGZ1Y15WCCPX9EAHGABQ3	Default option	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	\N	2026-03-12 13:40:04.222+05:30	2026-03-12 13:40:04.222+05:30	\N
-opt_01KKGHHPWTPNTTFK7HYS2V5M43	Default option	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	\N	2026-03-12 13:40:28.635+05:30	2026-03-12 13:40:28.635+05:30	\N
-opt_01KKBDMEKWFYVQGXF7XJCVBMAZ	Default option	prod_01KKBDMEKJY42ZVZNDDP102XVQ	\N	2026-03-10 13:55:51.999+05:30	2026-03-12 16:02:32.641+05:30	2026-03-12 16:02:32.626+05:30
-opt_01KKB6VT3VB4V34S119SCDP818	Title	prod_01KKB6VT3TZZFRMNP201QPVDTK	\N	2026-03-10 11:57:33.116+05:30	2026-03-12 16:02:38.022+05:30	2026-03-12 16:02:38.011+05:30
-opt_01KKB6VT6MP3SAP66VVNK3DGFY	Title	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	\N	2026-03-10 11:57:33.205+05:30	2026-03-12 16:02:40.977+05:30	2026-03-12 16:02:40.971+05:30
-opt_01KKB6VT8HQBJRW9W9CV4M0ZV4	Title	prod_01KKB6VT8GE0JVDMNBMB5CRNTB	\N	2026-03-10 11:57:33.265+05:30	2026-03-12 16:02:43.14+05:30	2026-03-12 16:02:43.137+05:30
-opt_01KKB6VT9V1NQ5AQYDDPYPDGG0	Title	prod_01KKB6VT9V8NQCAT15G2AFEWG7	\N	2026-03-10 11:57:33.307+05:30	2026-03-12 16:02:45.856+05:30	2026-03-12 16:02:45.844+05:30
-opt_01KKB6VTAVQ19EH3PKDHDTVEX4	Title	prod_01KKB6VTATHKEEE6MXR51QSD4T	\N	2026-03-10 11:57:33.339+05:30	2026-03-12 16:02:48.98+05:30	2026-03-12 16:02:48.971+05:30
-opt_01KKB937AQSXGMF5WJAR41Q5YF	Default option	prod_01KKB937AGFSC33DZ1PXMDP86M	\N	2026-03-10 12:36:33.176+05:30	2026-03-12 16:02:51.641+05:30	2026-03-12 16:02:51.639+05:30
-opt_01KKB6VTBTATWGDAYFXMAY4A4G	Title	prod_01KKB6VTBTDH1X31R50EC7Q1GB	\N	2026-03-10 11:57:33.37+05:30	2026-03-12 16:03:09.174+05:30	2026-03-12 16:03:09.166+05:30
-opt_01KKGT0Q083PTNX1KMCBQ76CSV	Default option	prod_01KKGT0Q069BHJ6VP4P98TZEXB	\N	2026-03-12 16:08:28.874+05:30	2026-03-12 16:08:28.874+05:30	\N
-opt_01KKTQC821M7N98Y6XY8ACSN08	Default option	prod_01KKTQC820Z82HT7ZNZAPRENCW	\N	2026-03-16 12:34:45.378+05:30	2026-03-16 12:34:45.378+05:30	\N
-opt_01KKTNFA13FEKT5ZMHMYH4R127	Default option	prod_01KKTNFA12ZYJMT053XBDDXXHX	\N	2026-03-16 12:01:28.548+05:30	2026-03-16 12:45:00.563+05:30	2026-03-16 12:45:00.552+05:30
-opt_01KKK08Q69P097PNHDA8EJFJ7A	Default option	prod_01KKK08Q66WYDN10VJ75BDQX47	\N	2026-03-13 12:36:11.53+05:30	2026-03-16 12:47:39.994+05:30	2026-03-16 12:47:39.977+05:30
-opt_01KKTR6NCNY4C3S883J4KP935X	Tarot Reading	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	\N	2026-03-16 12:49:10.998+05:30	2026-03-16 12:56:42.832+05:30	2026-03-16 12:56:42.831+05:30
-opt_01KKTRSKC397PZDMKPNW99GYQY	Format	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	\N	2026-03-16 12:59:31.524+05:30	2026-03-16 12:59:31.524+05:30	\N
-opt_01KKTQ8QPQ5DQ171MDA71HVHYR	Default option	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	\N	2026-03-16 12:32:50.329+05:30	2026-03-16 14:40:45.072+05:30	2026-03-16 14:40:45.067+05:30
-opt_01KKTYN1SM0WFRMRM0N5AG2YMN	Default option	prod_01KKTYN1SKJF99NAKB81G9R1NX	\N	2026-03-16 14:41:53.909+05:30	2026-03-16 14:46:32.003+05:30	2026-03-16 14:46:31.955+05:30
-opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	Therapy & Counselling Sessions	prod_01KKTZ7JMM93QMPPSH61S8DP7K	\N	2026-03-16 14:52:00.988+05:30	2026-03-16 14:52:00.988+05:30	\N
-opt_01KKV08VDRF7DQ8G64EAFHME52	Default option	prod_01KKV08VDQQ210Z466H8Z4P9NY	\N	2026-03-16 15:10:11.321+05:30	2026-03-16 15:10:11.321+05:30	\N
-opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	Format	prod_01KKV08VDQQ210Z466H8Z4P9NY	\N	2026-03-16 15:10:48.012+05:30	2026-03-16 15:10:48.012+05:30	\N
-opt_01KKTZCJZHN3RG8222FJM6ANQ1	Kundali Session	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 14:54:45.169+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30
-opt_01KKTNA7JCJYGJ1XT07EFNM279	Default option	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 11:58:42.189+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30
-opt_01KKTZFCHPN3N3TBS3T5NBEBQC	Format	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 14:56:16.886+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30
-opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	Formant	prod_01KKTQC820Z82HT7ZNZAPRENCW	\N	2026-03-16 15:14:41.152+05:30	2026-03-16 15:14:41.152+05:30	\N
+opt_01KKGEV0T5PPGXCXFPW79EFY7E	Default option	prod_01KKGEV0T2SE3CBBTHBSCDX5S3	\N	2026-03-12 07:23:07.974+00	2026-03-12 07:23:07.974+00	\N
+opt_01KKGF0JY0PHAVYDEYM22Y7NSA	Default option	prod_01KKGF0JXXE36GBNN7GRRZ0J6F	\N	2026-03-12 07:26:10.371+00	2026-03-12 07:26:10.371+00	\N
+opt_01KKGFD3XMWRSNVZ8D94Q5BP4N	Default option	prod_01KKGFD3XJW2DF5NM4N9NH3BPB	\N	2026-03-12 07:33:00.983+00	2026-03-12 07:33:00.983+00	\N
+opt_01KKGFEDP2WQJ0SR0BT8KKERY9	Default option	prod_01KKGFEDP1B71M6E0VAXVCD132	\N	2026-03-12 07:33:43.747+00	2026-03-12 07:33:43.747+00	\N
+opt_01KKGFHZQ065P1F8BH8CB2R720	Default option	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	\N	2026-03-12 07:35:40.513+00	2026-03-12 07:35:40.513+00	\N
+opt_01KKGFQ2PDGF2WCX8QJBRZMV6N	Default option	prod_01KKGFQ2PBH10AEGGBY47EGDWD	\N	2026-03-12 07:38:27.406+00	2026-03-12 07:38:27.406+00	\N
+opt_01KKGFS54P6CB6AY1A0CZVVYYC	Default option	prod_01KKGFS54N6JFJ00AN1X0B778M	\N	2026-03-12 07:39:35.447+00	2026-03-12 07:39:35.447+00	\N
+opt_01KKGG1ZW6TFWTBDQHH3H6ZCF6	Default option	prod_01KKGG1ZW550D0X09AD05PFNJD	\N	2026-03-12 07:44:24.967+00	2026-03-12 07:44:24.967+00	\N
+opt_01KKGGBWPZ5N1GKJY0GBEA656Y	Default option	prod_01KKGGBWPWW603YYCM9QSA8M8F	\N	2026-03-12 07:49:49.409+00	2026-03-12 07:49:49.409+00	\N
+opt_01KKGGCYRT1TEND4J9ZYHY7KBE	Default option	prod_01KKGGCYRS02FZPXSS5E81Z0VT	\N	2026-03-12 07:50:24.283+00	2026-03-12 07:50:24.283+00	\N
+opt_01KKGGDSH1DVNPMM9N69PKNB5P	Default option	prod_01KKGGDSGZAQA07E2W95SYWFJY	\N	2026-03-12 07:50:51.681+00	2026-03-12 07:50:51.681+00	\N
+opt_01KKGGETJTJE6FS8QXE8NBENHS	Default option	prod_01KKGGETJS4R9WWQDEZXVC6YKP	\N	2026-03-12 07:51:25.531+00	2026-03-12 07:51:25.531+00	\N
+opt_01KKGGGS8WCQVXXTQ7B4PNG7J5	Default option	prod_01KKGGGS8V9GRPDY2RM0EX5T8V	\N	2026-03-12 07:52:29.725+00	2026-03-12 07:52:29.725+00	\N
+opt_01KKGGSX66J9RWZQAY3RMD6E8S	Default option	prod_01KKGGSX663XAWMPZPXXZ152T0	\N	2026-03-12 07:57:28.647+00	2026-03-12 07:57:28.647+00	\N
+opt_01KKGGTJQWRHYY4GTMCFGZ2RJ5	Default option	prod_01KKGGTJQV56K1RZXS5PVCR33Q	\N	2026-03-12 07:57:50.717+00	2026-03-12 07:57:50.717+00	\N
+opt_01KKGH7HHJZTFMW9GX1P0EX9NV	Default option	prod_01KKGH7HHH2ZZC94E0HEP3N1PH	\N	2026-03-12 08:04:55.475+00	2026-03-12 08:04:55.475+00	\N
+opt_01KKGH86CD70V4YMVYBSXK4358	Default option	prod_01KKGH86CCFJ4680NM1TTRZBBZ	\N	2026-03-12 08:05:16.814+00	2026-03-12 08:05:16.814+00	\N
+opt_01KKGH9BC44R6JQ3A1797FERMY	Default option	prod_01KKGH9BC3KA041DVWQV1XACAK	\N	2026-03-12 08:05:54.692+00	2026-03-12 08:05:54.692+00	\N
+opt_01KKGHA0062850H14NWB9Z42FP	Default option	prod_01KKGHA00514BHTAHQMFK1BXX5	\N	2026-03-12 08:06:15.815+00	2026-03-12 08:06:15.815+00	\N
+opt_01KKGHBHJC7XRFB92FR6JA5G9K	Default option	prod_01KKGHBHJBDQTRSV188CTFDNR6	\N	2026-03-12 08:07:06.572+00	2026-03-12 08:07:06.572+00	\N
+opt_01KKGHC3ZT8B56ER9N9EFAKKXM	Default option	prod_01KKGHC3ZR2HTWW0GA4D777CPP	\N	2026-03-12 08:07:25.434+00	2026-03-12 08:07:25.434+00	\N
+opt_01KKGHEGQXGKT3FAK1HRVRY17C	Default option	prod_01KKGHEGQWSYMSHDTKRG61JRV8	\N	2026-03-12 08:08:44.029+00	2026-03-12 08:08:44.029+00	\N
+opt_01KKGHGGGCQEE8W54A133273PX	Default option	prod_01KKGHGGGB544H7EA1GY5RZ1B3	\N	2026-03-12 08:09:49.325+00	2026-03-12 08:09:49.325+00	\N
+opt_01KKGHGZ1Y15WCCPX9EAHGABQ3	Default option	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	\N	2026-03-12 08:10:04.222+00	2026-03-12 08:10:04.222+00	\N
+opt_01KKGHHPWTPNTTFK7HYS2V5M43	Default option	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	\N	2026-03-12 08:10:28.635+00	2026-03-12 08:10:28.635+00	\N
+opt_01KKBDMEKWFYVQGXF7XJCVBMAZ	Default option	prod_01KKBDMEKJY42ZVZNDDP102XVQ	\N	2026-03-10 08:25:51.999+00	2026-03-12 10:32:32.641+00	2026-03-12 10:32:32.626+00
+opt_01KKB6VT3VB4V34S119SCDP818	Title	prod_01KKB6VT3TZZFRMNP201QPVDTK	\N	2026-03-10 06:27:33.116+00	2026-03-12 10:32:38.022+00	2026-03-12 10:32:38.011+00
+opt_01KKB6VT6MP3SAP66VVNK3DGFY	Title	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	\N	2026-03-10 06:27:33.205+00	2026-03-12 10:32:40.977+00	2026-03-12 10:32:40.971+00
+opt_01KKB6VT8HQBJRW9W9CV4M0ZV4	Title	prod_01KKB6VT8GE0JVDMNBMB5CRNTB	\N	2026-03-10 06:27:33.265+00	2026-03-12 10:32:43.14+00	2026-03-12 10:32:43.137+00
+opt_01KKB6VT9V1NQ5AQYDDPYPDGG0	Title	prod_01KKB6VT9V8NQCAT15G2AFEWG7	\N	2026-03-10 06:27:33.307+00	2026-03-12 10:32:45.856+00	2026-03-12 10:32:45.844+00
+opt_01KKB6VTAVQ19EH3PKDHDTVEX4	Title	prod_01KKB6VTATHKEEE6MXR51QSD4T	\N	2026-03-10 06:27:33.339+00	2026-03-12 10:32:48.98+00	2026-03-12 10:32:48.971+00
+opt_01KKB937AQSXGMF5WJAR41Q5YF	Default option	prod_01KKB937AGFSC33DZ1PXMDP86M	\N	2026-03-10 07:06:33.176+00	2026-03-12 10:32:51.641+00	2026-03-12 10:32:51.639+00
+opt_01KKB6VTBTATWGDAYFXMAY4A4G	Title	prod_01KKB6VTBTDH1X31R50EC7Q1GB	\N	2026-03-10 06:27:33.37+00	2026-03-12 10:33:09.174+00	2026-03-12 10:33:09.166+00
+opt_01KKGT0Q083PTNX1KMCBQ76CSV	Default option	prod_01KKGT0Q069BHJ6VP4P98TZEXB	\N	2026-03-12 10:38:28.874+00	2026-03-12 10:38:28.874+00	\N
+opt_01KKTQC821M7N98Y6XY8ACSN08	Default option	prod_01KKTQC820Z82HT7ZNZAPRENCW	\N	2026-03-16 07:04:45.378+00	2026-03-16 07:04:45.378+00	\N
+opt_01KKTNFA13FEKT5ZMHMYH4R127	Default option	prod_01KKTNFA12ZYJMT053XBDDXXHX	\N	2026-03-16 06:31:28.548+00	2026-03-16 07:15:00.563+00	2026-03-16 07:15:00.552+00
+opt_01KKK08Q69P097PNHDA8EJFJ7A	Default option	prod_01KKK08Q66WYDN10VJ75BDQX47	\N	2026-03-13 07:06:11.53+00	2026-03-16 07:17:39.994+00	2026-03-16 07:17:39.977+00
+opt_01KKTR6NCNY4C3S883J4KP935X	Tarot Reading	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	\N	2026-03-16 07:19:10.998+00	2026-03-16 07:26:42.832+00	2026-03-16 07:26:42.831+00
+opt_01KKTRSKC397PZDMKPNW99GYQY	Format	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	\N	2026-03-16 07:29:31.524+00	2026-03-16 07:29:31.524+00	\N
+opt_01KKTQ8QPQ5DQ171MDA71HVHYR	Default option	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	\N	2026-03-16 07:02:50.329+00	2026-03-16 09:10:45.072+00	2026-03-16 09:10:45.067+00
+opt_01KKTYN1SM0WFRMRM0N5AG2YMN	Default option	prod_01KKTYN1SKJF99NAKB81G9R1NX	\N	2026-03-16 09:11:53.909+00	2026-03-16 09:16:32.003+00	2026-03-16 09:16:31.955+00
+opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	Therapy & Counselling Sessions	prod_01KKTZ7JMM93QMPPSH61S8DP7K	\N	2026-03-16 09:22:00.988+00	2026-03-16 09:22:00.988+00	\N
+opt_01KKV08VDRF7DQ8G64EAFHME52	Default option	prod_01KKV08VDQQ210Z466H8Z4P9NY	\N	2026-03-16 09:40:11.321+00	2026-03-16 09:40:11.321+00	\N
+opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	Format	prod_01KKV08VDQQ210Z466H8Z4P9NY	\N	2026-03-16 09:40:48.012+00	2026-03-16 09:40:48.012+00	\N
+opt_01KKTZCJZHN3RG8222FJM6ANQ1	Kundali Session	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 09:24:45.169+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00
+opt_01KKTNA7JCJYGJ1XT07EFNM279	Default option	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 06:28:42.189+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00
+opt_01KKTZFCHPN3N3TBS3T5NBEBQC	Format	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	\N	2026-03-16 09:26:16.886+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00
+opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	Formant	prod_01KKTQC820Z82HT7ZNZAPRENCW	\N	2026-03-16 09:44:41.152+00	2026-03-16 09:44:41.152+00	\N
 \.
 
 
@@ -4297,60 +4303,60 @@ opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	Formant	prod_01KKTQC820Z82HT7ZNZAPRENCW	\N	2026-0
 --
 
 COPY public.product_option_value (id, value, option_id, metadata, created_at, updated_at, deleted_at) FROM stdin;
-optval_01KKGEV0T42HZ63TK1EAZ5KRXP	Default option value	opt_01KKGEV0T5PPGXCXFPW79EFY7E	\N	2026-03-12 12:53:07.974+05:30	2026-03-12 12:53:07.974+05:30	\N
-optval_01KKGF0JXZ5JSWFH4GYGE437F1	Default option value	opt_01KKGF0JY0PHAVYDEYM22Y7NSA	\N	2026-03-12 12:56:10.371+05:30	2026-03-12 12:56:10.371+05:30	\N
-optval_01KKGFD3XMK8J7QYM6QB2K1NWM	Default option value	opt_01KKGFD3XMWRSNVZ8D94Q5BP4N	\N	2026-03-12 13:03:00.983+05:30	2026-03-12 13:03:00.983+05:30	\N
-optval_01KKGFEDP2EAXZMNNNB8YTQD8D	Default option value	opt_01KKGFEDP2WQJ0SR0BT8KKERY9	\N	2026-03-12 13:03:43.747+05:30	2026-03-12 13:03:43.747+05:30	\N
-optval_01KKGFHZQ0K9S5AMB0S7YY4D2T	Default option value	opt_01KKGFHZQ065P1F8BH8CB2R720	\N	2026-03-12 13:05:40.513+05:30	2026-03-12 13:05:40.513+05:30	\N
-optval_01KKGFQ2PDZ9FP40V7GCK9RGYT	Default option value	opt_01KKGFQ2PDGF2WCX8QJBRZMV6N	\N	2026-03-12 13:08:27.406+05:30	2026-03-12 13:08:27.406+05:30	\N
-optval_01KKGFS54PEBMJAK8SYKQ9Z693	Default option value	opt_01KKGFS54P6CB6AY1A0CZVVYYC	\N	2026-03-12 13:09:35.447+05:30	2026-03-12 13:09:35.447+05:30	\N
-optval_01KKGG1ZW6KTPF340NEBBE8P2G	Default option value	opt_01KKGG1ZW6TFWTBDQHH3H6ZCF6	\N	2026-03-12 13:14:24.967+05:30	2026-03-12 13:14:24.967+05:30	\N
-optval_01KKGGBWPYA1TS2KSTS4PFDCCW	Default option value	opt_01KKGGBWPZ5N1GKJY0GBEA656Y	\N	2026-03-12 13:19:49.409+05:30	2026-03-12 13:19:49.409+05:30	\N
-optval_01KKGGCYRTH3VY59HRQM58YP0W	Default option value	opt_01KKGGCYRT1TEND4J9ZYHY7KBE	\N	2026-03-12 13:20:24.283+05:30	2026-03-12 13:20:24.283+05:30	\N
-optval_01KKGGDSH0GX7N77Y61D29QTMZ	Default option value	opt_01KKGGDSH1DVNPMM9N69PKNB5P	\N	2026-03-12 13:20:51.681+05:30	2026-03-12 13:20:51.681+05:30	\N
-optval_01KKGGETJTSGY29RK8P9ZW4JSG	Default option value	opt_01KKGGETJTJE6FS8QXE8NBENHS	\N	2026-03-12 13:21:25.531+05:30	2026-03-12 13:21:25.531+05:30	\N
-optval_01KKGGGS8WPDYEMX7MABYMJZ15	Default option value	opt_01KKGGGS8WCQVXXTQ7B4PNG7J5	\N	2026-03-12 13:22:29.725+05:30	2026-03-12 13:22:29.725+05:30	\N
-optval_01KKGGSX66S5F0FA6P7QHB332N	Default option value	opt_01KKGGSX66J9RWZQAY3RMD6E8S	\N	2026-03-12 13:27:28.647+05:30	2026-03-12 13:27:28.647+05:30	\N
-optval_01KKGGTJQW7ZETRX6Y37ME5AG9	Default option value	opt_01KKGGTJQWRHYY4GTMCFGZ2RJ5	\N	2026-03-12 13:27:50.717+05:30	2026-03-12 13:27:50.717+05:30	\N
-optval_01KKGH7HHJ9W6YAW0WQ6HWA9K0	Default option value	opt_01KKGH7HHJZTFMW9GX1P0EX9NV	\N	2026-03-12 13:34:55.475+05:30	2026-03-12 13:34:55.475+05:30	\N
-optval_01KKGH86CD2HCYTB5GG2A558RE	Default option value	opt_01KKGH86CD70V4YMVYBSXK4358	\N	2026-03-12 13:35:16.814+05:30	2026-03-12 13:35:16.814+05:30	\N
-optval_01KKGH9BC34D7Z793Z5NAS6CRJ	Default option value	opt_01KKGH9BC44R6JQ3A1797FERMY	\N	2026-03-12 13:35:54.692+05:30	2026-03-12 13:35:54.692+05:30	\N
-optval_01KKGHA006G6EBMV0179EBGY4X	Default option value	opt_01KKGHA0062850H14NWB9Z42FP	\N	2026-03-12 13:36:15.815+05:30	2026-03-12 13:36:15.815+05:30	\N
-optval_01KKGHBHJC673FDXFZ36EJ7TWM	Default option value	opt_01KKGHBHJC7XRFB92FR6JA5G9K	\N	2026-03-12 13:37:06.572+05:30	2026-03-12 13:37:06.572+05:30	\N
-optval_01KKGHC3ZSKRNDWFZE2NXQ1NVM	Default option value	opt_01KKGHC3ZT8B56ER9N9EFAKKXM	\N	2026-03-12 13:37:25.434+05:30	2026-03-12 13:37:25.434+05:30	\N
-optval_01KKGHEGQXVNYQ36PZR2EQSJTN	Default option value	opt_01KKGHEGQXGKT3FAK1HRVRY17C	\N	2026-03-12 13:38:44.029+05:30	2026-03-12 13:38:44.029+05:30	\N
-optval_01KKGHGGGCMRFP93CEN6QE4K4M	Default option value	opt_01KKGHGGGCQEE8W54A133273PX	\N	2026-03-12 13:39:49.325+05:30	2026-03-12 13:39:49.325+05:30	\N
-optval_01KKGHGZ1XTRZ93YE3VPRJ5SWB	Default option value	opt_01KKGHGZ1Y15WCCPX9EAHGABQ3	\N	2026-03-12 13:40:04.222+05:30	2026-03-12 13:40:04.222+05:30	\N
-optval_01KKGHHPWTMV0YMQ8DF89K3X2R	Default option value	opt_01KKGHHPWTPNTTFK7HYS2V5M43	\N	2026-03-12 13:40:28.635+05:30	2026-03-12 13:40:28.635+05:30	\N
-optval_01KKBDMEKWYGX0KYR4B5ZAHBE4	Default option value	opt_01KKBDMEKWFYVQGXF7XJCVBMAZ	\N	2026-03-10 13:55:51.999+05:30	2026-03-12 16:02:32.649+05:30	2026-03-12 16:02:32.626+05:30
-optval_01KKB6VT3VA1HDMYS64KH13DYX	Default	opt_01KKB6VT3VB4V34S119SCDP818	\N	2026-03-10 11:57:33.116+05:30	2026-03-12 16:02:38.03+05:30	2026-03-12 16:02:38.011+05:30
-optval_01KKB6VT6MZFX47P0T42HH805Q	Default	opt_01KKB6VT6MP3SAP66VVNK3DGFY	\N	2026-03-10 11:57:33.205+05:30	2026-03-12 16:02:40.979+05:30	2026-03-12 16:02:40.971+05:30
-optval_01KKB6VT8GYMMH110GT87ADHN3	Default	opt_01KKB6VT8HQBJRW9W9CV4M0ZV4	\N	2026-03-10 11:57:33.265+05:30	2026-03-12 16:02:43.144+05:30	2026-03-12 16:02:43.137+05:30
-optval_01KKB6VT9VA7675TP1VW1RC02W	Default	opt_01KKB6VT9V1NQ5AQYDDPYPDGG0	\N	2026-03-10 11:57:33.307+05:30	2026-03-12 16:02:45.859+05:30	2026-03-12 16:02:45.844+05:30
-optval_01KKB6VTAVYR1WZ2F786HHCVE2	Default	opt_01KKB6VTAVQ19EH3PKDHDTVEX4	\N	2026-03-10 11:57:33.339+05:30	2026-03-12 16:02:48.986+05:30	2026-03-12 16:02:48.971+05:30
-optval_01KKB937AQSTRWE113Q7C5ASZ9	Default option value	opt_01KKB937AQSXGMF5WJAR41Q5YF	\N	2026-03-10 12:36:33.177+05:30	2026-03-12 16:02:51.643+05:30	2026-03-12 16:02:51.639+05:30
-optval_01KKB6VTBTXAFF21F84AJHG6M4	Default	opt_01KKB6VTBTATWGDAYFXMAY4A4G	\N	2026-03-10 11:57:33.37+05:30	2026-03-12 16:03:09.177+05:30	2026-03-12 16:03:09.166+05:30
-optval_01KKGT0Q078YWX5MEQE1TYX7P6	Default option value	opt_01KKGT0Q083PTNX1KMCBQ76CSV	\N	2026-03-12 16:08:28.874+05:30	2026-03-12 16:08:28.874+05:30	\N
-optval_01KKTQC820S8R612MGMBY2CABW	Default option value	opt_01KKTQC821M7N98Y6XY8ACSN08	\N	2026-03-16 12:34:45.378+05:30	2026-03-16 12:34:45.378+05:30	\N
-optval_01KKTNFA13TKGSNWACDZ50RJ5D	Default option value	opt_01KKTNFA13FEKT5ZMHMYH4R127	\N	2026-03-16 12:01:28.548+05:30	2026-03-16 12:45:00.57+05:30	2026-03-16 12:45:00.552+05:30
-optval_01KKK08Q6884K5JY872ZFGAHJK	Default option value	opt_01KKK08Q69P097PNHDA8EJFJ7A	\N	2026-03-13 12:36:11.53+05:30	2026-03-16 12:47:39.997+05:30	2026-03-16 12:47:39.977+05:30
-optval_01KKTR6NCMVW42SADG640CZTH4	Red	opt_01KKTR6NCNY4C3S883J4KP935X	\N	2026-03-16 12:49:10.998+05:30	2026-03-16 12:56:42.845+05:30	2026-03-16 12:56:42.831+05:30
-optval_01KKTRSKC39XHN4EK6VWXX4PDP	Audio	opt_01KKTRSKC397PZDMKPNW99GYQY	\N	2026-03-16 12:59:31.524+05:30	2026-03-16 12:59:31.524+05:30	\N
-optval_01KKTRSKC3DYEYGHNNQ4XC19NE	Video	opt_01KKTRSKC397PZDMKPNW99GYQY	\N	2026-03-16 12:59:31.524+05:30	2026-03-16 12:59:31.524+05:30	\N
-optval_01KKTQ8QPQQDQKRDVB6126QFJ3	Default option value	opt_01KKTQ8QPQ5DQ171MDA71HVHYR	\N	2026-03-16 12:32:50.329+05:30	2026-03-16 14:40:45.076+05:30	2026-03-16 14:40:45.067+05:30
-optval_01KKTYN1SMBVWA1W87Z30A4K1A	Default option value	opt_01KKTYN1SM0WFRMRM0N5AG2YMN	\N	2026-03-16 14:41:53.909+05:30	2026-03-16 14:46:32.005+05:30	2026-03-16 14:46:31.955+05:30
-optval_01KKTZ7JMRM0F7BYSP6G1TBE6A	video	opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	\N	2026-03-16 14:52:00.988+05:30	2026-03-16 14:52:00.988+05:30	\N
-optval_01KKTZ8FG3MC3FGWH8WQX4KQRR	audio	opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	\N	2026-03-16 14:52:30.521462+05:30	2026-03-16 14:52:30.521462+05:30	\N
-optval_01KKV09Z8CFY7QVW7YM7EQF2V6	audio	opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	\N	2026-03-16 15:10:48.012+05:30	2026-03-16 15:10:48.012+05:30	\N
-optval_01KKV09Z8CFB5C0SY3ADQ665R7	video	opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	\N	2026-03-16 15:10:48.012+05:30	2026-03-16 15:10:48.012+05:30	\N
-optval_01KKV0H2XZ7SK13B7VPYQCGCSP	video	opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	\N	2026-03-16 15:14:41.152+05:30	2026-03-16 15:14:41.152+05:30	\N
-optval_01KKV0H2XZ5VA63FQP42WBF5CF	audio	opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	\N	2026-03-16 15:14:41.152+05:30	2026-03-16 15:14:41.152+05:30	\N
-optval_01KKTZCJZGK77PZH9CX634WB9J	video	opt_01KKTZCJZHN3RG8222FJM6ANQ1	\N	2026-03-16 14:54:45.169+05:30	2026-03-16 15:09:27.608+05:30	2026-03-16 15:09:27.583+05:30
-optval_01KKTZCT68283T3S508Z0M5VE9	audio	opt_01KKTZCJZHN3RG8222FJM6ANQ1	\N	2026-03-16 14:54:52.525341+05:30	2026-03-16 15:09:27.608+05:30	2026-03-16 15:09:27.583+05:30
-optval_01KKTNA7JCMXXPXRKB0CYE4CRR	Default option value	opt_01KKTNA7JCJYGJ1XT07EFNM279	\N	2026-03-16 11:58:42.189+05:30	2026-03-16 15:09:27.608+05:30	2026-03-16 15:09:27.583+05:30
-optval_01KKV03SAYA5RPFWEK8AG875JS	Audio	opt_01KKTZFCHPN3N3TBS3T5NBEBQC	\N	2026-03-16 15:07:25.333232+05:30	2026-03-16 15:09:27.608+05:30	2026-03-16 15:09:27.583+05:30
-optval_01KKV03SAY349E6VMN2TJZB15W	Video	opt_01KKTZFCHPN3N3TBS3T5NBEBQC	\N	2026-03-16 15:07:25.333232+05:30	2026-03-16 15:09:27.608+05:30	2026-03-16 15:09:27.583+05:30
-optval_01KKV08VDRSE39S52GBNGPXBBW	Default option value	opt_01KKV08VDRF7DQ8G64EAFHME52	\N	2026-03-16 15:10:11.321+05:30	2026-03-16 15:10:11.321+05:30	\N
+optval_01KKGEV0T42HZ63TK1EAZ5KRXP	Default option value	opt_01KKGEV0T5PPGXCXFPW79EFY7E	\N	2026-03-12 07:23:07.974+00	2026-03-12 07:23:07.974+00	\N
+optval_01KKGF0JXZ5JSWFH4GYGE437F1	Default option value	opt_01KKGF0JY0PHAVYDEYM22Y7NSA	\N	2026-03-12 07:26:10.371+00	2026-03-12 07:26:10.371+00	\N
+optval_01KKGFD3XMK8J7QYM6QB2K1NWM	Default option value	opt_01KKGFD3XMWRSNVZ8D94Q5BP4N	\N	2026-03-12 07:33:00.983+00	2026-03-12 07:33:00.983+00	\N
+optval_01KKGFEDP2EAXZMNNNB8YTQD8D	Default option value	opt_01KKGFEDP2WQJ0SR0BT8KKERY9	\N	2026-03-12 07:33:43.747+00	2026-03-12 07:33:43.747+00	\N
+optval_01KKGFHZQ0K9S5AMB0S7YY4D2T	Default option value	opt_01KKGFHZQ065P1F8BH8CB2R720	\N	2026-03-12 07:35:40.513+00	2026-03-12 07:35:40.513+00	\N
+optval_01KKGFQ2PDZ9FP40V7GCK9RGYT	Default option value	opt_01KKGFQ2PDGF2WCX8QJBRZMV6N	\N	2026-03-12 07:38:27.406+00	2026-03-12 07:38:27.406+00	\N
+optval_01KKGFS54PEBMJAK8SYKQ9Z693	Default option value	opt_01KKGFS54P6CB6AY1A0CZVVYYC	\N	2026-03-12 07:39:35.447+00	2026-03-12 07:39:35.447+00	\N
+optval_01KKGG1ZW6KTPF340NEBBE8P2G	Default option value	opt_01KKGG1ZW6TFWTBDQHH3H6ZCF6	\N	2026-03-12 07:44:24.967+00	2026-03-12 07:44:24.967+00	\N
+optval_01KKGGBWPYA1TS2KSTS4PFDCCW	Default option value	opt_01KKGGBWPZ5N1GKJY0GBEA656Y	\N	2026-03-12 07:49:49.409+00	2026-03-12 07:49:49.409+00	\N
+optval_01KKGGCYRTH3VY59HRQM58YP0W	Default option value	opt_01KKGGCYRT1TEND4J9ZYHY7KBE	\N	2026-03-12 07:50:24.283+00	2026-03-12 07:50:24.283+00	\N
+optval_01KKGGDSH0GX7N77Y61D29QTMZ	Default option value	opt_01KKGGDSH1DVNPMM9N69PKNB5P	\N	2026-03-12 07:50:51.681+00	2026-03-12 07:50:51.681+00	\N
+optval_01KKGGETJTSGY29RK8P9ZW4JSG	Default option value	opt_01KKGGETJTJE6FS8QXE8NBENHS	\N	2026-03-12 07:51:25.531+00	2026-03-12 07:51:25.531+00	\N
+optval_01KKGGGS8WPDYEMX7MABYMJZ15	Default option value	opt_01KKGGGS8WCQVXXTQ7B4PNG7J5	\N	2026-03-12 07:52:29.725+00	2026-03-12 07:52:29.725+00	\N
+optval_01KKGGSX66S5F0FA6P7QHB332N	Default option value	opt_01KKGGSX66J9RWZQAY3RMD6E8S	\N	2026-03-12 07:57:28.647+00	2026-03-12 07:57:28.647+00	\N
+optval_01KKGGTJQW7ZETRX6Y37ME5AG9	Default option value	opt_01KKGGTJQWRHYY4GTMCFGZ2RJ5	\N	2026-03-12 07:57:50.717+00	2026-03-12 07:57:50.717+00	\N
+optval_01KKGH7HHJ9W6YAW0WQ6HWA9K0	Default option value	opt_01KKGH7HHJZTFMW9GX1P0EX9NV	\N	2026-03-12 08:04:55.475+00	2026-03-12 08:04:55.475+00	\N
+optval_01KKGH86CD2HCYTB5GG2A558RE	Default option value	opt_01KKGH86CD70V4YMVYBSXK4358	\N	2026-03-12 08:05:16.814+00	2026-03-12 08:05:16.814+00	\N
+optval_01KKGH9BC34D7Z793Z5NAS6CRJ	Default option value	opt_01KKGH9BC44R6JQ3A1797FERMY	\N	2026-03-12 08:05:54.692+00	2026-03-12 08:05:54.692+00	\N
+optval_01KKGHA006G6EBMV0179EBGY4X	Default option value	opt_01KKGHA0062850H14NWB9Z42FP	\N	2026-03-12 08:06:15.815+00	2026-03-12 08:06:15.815+00	\N
+optval_01KKGHBHJC673FDXFZ36EJ7TWM	Default option value	opt_01KKGHBHJC7XRFB92FR6JA5G9K	\N	2026-03-12 08:07:06.572+00	2026-03-12 08:07:06.572+00	\N
+optval_01KKGHC3ZSKRNDWFZE2NXQ1NVM	Default option value	opt_01KKGHC3ZT8B56ER9N9EFAKKXM	\N	2026-03-12 08:07:25.434+00	2026-03-12 08:07:25.434+00	\N
+optval_01KKGHEGQXVNYQ36PZR2EQSJTN	Default option value	opt_01KKGHEGQXGKT3FAK1HRVRY17C	\N	2026-03-12 08:08:44.029+00	2026-03-12 08:08:44.029+00	\N
+optval_01KKGHGGGCMRFP93CEN6QE4K4M	Default option value	opt_01KKGHGGGCQEE8W54A133273PX	\N	2026-03-12 08:09:49.325+00	2026-03-12 08:09:49.325+00	\N
+optval_01KKGHGZ1XTRZ93YE3VPRJ5SWB	Default option value	opt_01KKGHGZ1Y15WCCPX9EAHGABQ3	\N	2026-03-12 08:10:04.222+00	2026-03-12 08:10:04.222+00	\N
+optval_01KKGHHPWTMV0YMQ8DF89K3X2R	Default option value	opt_01KKGHHPWTPNTTFK7HYS2V5M43	\N	2026-03-12 08:10:28.635+00	2026-03-12 08:10:28.635+00	\N
+optval_01KKBDMEKWYGX0KYR4B5ZAHBE4	Default option value	opt_01KKBDMEKWFYVQGXF7XJCVBMAZ	\N	2026-03-10 08:25:51.999+00	2026-03-12 10:32:32.649+00	2026-03-12 10:32:32.626+00
+optval_01KKB6VT3VA1HDMYS64KH13DYX	Default	opt_01KKB6VT3VB4V34S119SCDP818	\N	2026-03-10 06:27:33.116+00	2026-03-12 10:32:38.03+00	2026-03-12 10:32:38.011+00
+optval_01KKB6VT6MZFX47P0T42HH805Q	Default	opt_01KKB6VT6MP3SAP66VVNK3DGFY	\N	2026-03-10 06:27:33.205+00	2026-03-12 10:32:40.979+00	2026-03-12 10:32:40.971+00
+optval_01KKB6VT8GYMMH110GT87ADHN3	Default	opt_01KKB6VT8HQBJRW9W9CV4M0ZV4	\N	2026-03-10 06:27:33.265+00	2026-03-12 10:32:43.144+00	2026-03-12 10:32:43.137+00
+optval_01KKB6VT9VA7675TP1VW1RC02W	Default	opt_01KKB6VT9V1NQ5AQYDDPYPDGG0	\N	2026-03-10 06:27:33.307+00	2026-03-12 10:32:45.859+00	2026-03-12 10:32:45.844+00
+optval_01KKB6VTAVYR1WZ2F786HHCVE2	Default	opt_01KKB6VTAVQ19EH3PKDHDTVEX4	\N	2026-03-10 06:27:33.339+00	2026-03-12 10:32:48.986+00	2026-03-12 10:32:48.971+00
+optval_01KKB937AQSTRWE113Q7C5ASZ9	Default option value	opt_01KKB937AQSXGMF5WJAR41Q5YF	\N	2026-03-10 07:06:33.177+00	2026-03-12 10:32:51.643+00	2026-03-12 10:32:51.639+00
+optval_01KKB6VTBTXAFF21F84AJHG6M4	Default	opt_01KKB6VTBTATWGDAYFXMAY4A4G	\N	2026-03-10 06:27:33.37+00	2026-03-12 10:33:09.177+00	2026-03-12 10:33:09.166+00
+optval_01KKGT0Q078YWX5MEQE1TYX7P6	Default option value	opt_01KKGT0Q083PTNX1KMCBQ76CSV	\N	2026-03-12 10:38:28.874+00	2026-03-12 10:38:28.874+00	\N
+optval_01KKTQC820S8R612MGMBY2CABW	Default option value	opt_01KKTQC821M7N98Y6XY8ACSN08	\N	2026-03-16 07:04:45.378+00	2026-03-16 07:04:45.378+00	\N
+optval_01KKTNFA13TKGSNWACDZ50RJ5D	Default option value	opt_01KKTNFA13FEKT5ZMHMYH4R127	\N	2026-03-16 06:31:28.548+00	2026-03-16 07:15:00.57+00	2026-03-16 07:15:00.552+00
+optval_01KKK08Q6884K5JY872ZFGAHJK	Default option value	opt_01KKK08Q69P097PNHDA8EJFJ7A	\N	2026-03-13 07:06:11.53+00	2026-03-16 07:17:39.997+00	2026-03-16 07:17:39.977+00
+optval_01KKTR6NCMVW42SADG640CZTH4	Red	opt_01KKTR6NCNY4C3S883J4KP935X	\N	2026-03-16 07:19:10.998+00	2026-03-16 07:26:42.845+00	2026-03-16 07:26:42.831+00
+optval_01KKTRSKC39XHN4EK6VWXX4PDP	Audio	opt_01KKTRSKC397PZDMKPNW99GYQY	\N	2026-03-16 07:29:31.524+00	2026-03-16 07:29:31.524+00	\N
+optval_01KKTRSKC3DYEYGHNNQ4XC19NE	Video	opt_01KKTRSKC397PZDMKPNW99GYQY	\N	2026-03-16 07:29:31.524+00	2026-03-16 07:29:31.524+00	\N
+optval_01KKTQ8QPQQDQKRDVB6126QFJ3	Default option value	opt_01KKTQ8QPQ5DQ171MDA71HVHYR	\N	2026-03-16 07:02:50.329+00	2026-03-16 09:10:45.076+00	2026-03-16 09:10:45.067+00
+optval_01KKTYN1SMBVWA1W87Z30A4K1A	Default option value	opt_01KKTYN1SM0WFRMRM0N5AG2YMN	\N	2026-03-16 09:11:53.909+00	2026-03-16 09:16:32.005+00	2026-03-16 09:16:31.955+00
+optval_01KKTZ7JMRM0F7BYSP6G1TBE6A	video	opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	\N	2026-03-16 09:22:00.988+00	2026-03-16 09:22:00.988+00	\N
+optval_01KKTZ8FG3MC3FGWH8WQX4KQRR	audio	opt_01KKTZ7JMRMKB4PTNF4BVTF9MT	\N	2026-03-16 09:22:30.521462+00	2026-03-16 09:22:30.521462+00	\N
+optval_01KKV09Z8CFY7QVW7YM7EQF2V6	audio	opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	\N	2026-03-16 09:40:48.012+00	2026-03-16 09:40:48.012+00	\N
+optval_01KKV09Z8CFB5C0SY3ADQ665R7	video	opt_01KKV09Z8CG5S1QYWBP2Z4DQ63	\N	2026-03-16 09:40:48.012+00	2026-03-16 09:40:48.012+00	\N
+optval_01KKV0H2XZ7SK13B7VPYQCGCSP	video	opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	\N	2026-03-16 09:44:41.152+00	2026-03-16 09:44:41.152+00	\N
+optval_01KKV0H2XZ5VA63FQP42WBF5CF	audio	opt_01KKV0H2Y0Y9FEGRRBZ6YZG9SD	\N	2026-03-16 09:44:41.152+00	2026-03-16 09:44:41.152+00	\N
+optval_01KKTZCJZGK77PZH9CX634WB9J	video	opt_01KKTZCJZHN3RG8222FJM6ANQ1	\N	2026-03-16 09:24:45.169+00	2026-03-16 09:39:27.608+00	2026-03-16 09:39:27.583+00
+optval_01KKTZCT68283T3S508Z0M5VE9	audio	opt_01KKTZCJZHN3RG8222FJM6ANQ1	\N	2026-03-16 09:24:52.525341+00	2026-03-16 09:39:27.608+00	2026-03-16 09:39:27.583+00
+optval_01KKTNA7JCMXXPXRKB0CYE4CRR	Default option value	opt_01KKTNA7JCJYGJ1XT07EFNM279	\N	2026-03-16 06:28:42.189+00	2026-03-16 09:39:27.608+00	2026-03-16 09:39:27.583+00
+optval_01KKV03SAYA5RPFWEK8AG875JS	Audio	opt_01KKTZFCHPN3N3TBS3T5NBEBQC	\N	2026-03-16 09:37:25.333232+00	2026-03-16 09:39:27.608+00	2026-03-16 09:39:27.583+00
+optval_01KKV03SAY349E6VMN2TJZB15W	Video	opt_01KKTZFCHPN3N3TBS3T5NBEBQC	\N	2026-03-16 09:37:25.333232+00	2026-03-16 09:39:27.608+00	2026-03-16 09:39:27.583+00
+optval_01KKV08VDRSE39S52GBNGPXBBW	Default option value	opt_01KKV08VDRF7DQ8G64EAFHME52	\N	2026-03-16 09:40:11.321+00	2026-03-16 09:40:11.321+00	\N
 \.
 
 
@@ -4359,49 +4365,49 @@ optval_01KKV08VDRSE39S52GBNGPXBBW	Default option value	opt_01KKV08VDRF7DQ8G64EAF
 --
 
 COPY public.product_sales_channel (product_id, sales_channel_id, id, created_at, updated_at, deleted_at) FROM stdin;
-prod_01KKGEV0T2SE3CBBTHBSCDX5S3	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGEV0V96ABY362QBQ2KS379	2026-03-12 12:53:08.009409+05:30	2026-03-12 12:53:08.009409+05:30	\N
-prod_01KKGF0JXXE36GBNN7GRRZ0J6F	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGF0JYP9D96BEJHQ3E1RKB9	2026-03-12 12:56:10.389792+05:30	2026-03-12 12:56:10.389792+05:30	\N
-prod_01KKGFD3XJW2DF5NM4N9NH3BPB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFD3YAWH7512YNWJ3VKGMC	2026-03-12 13:03:01.002341+05:30	2026-03-12 13:03:01.002341+05:30	\N
-prod_01KKGFEDP1B71M6E0VAXVCD132	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFEDPFXKNSQS7QYBB6N14T	2026-03-12 13:03:43.758858+05:30	2026-03-12 13:03:43.758858+05:30	\N
-prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFHZQFDQ3QWZCHRQMJBGZA	2026-03-12 13:05:40.527151+05:30	2026-03-12 13:05:40.527151+05:30	\N
-prod_01KKGFQ2PBH10AEGGBY47EGDWD	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFQ2PT5X125NMSSTEENESJ	2026-03-12 13:08:27.418575+05:30	2026-03-12 13:08:27.418575+05:30	\N
-prod_01KKGFS54N6JFJ00AN1X0B778M	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFS55536ZW86Q2HBAFDFJH	2026-03-12 13:09:35.461028+05:30	2026-03-12 13:09:35.461028+05:30	\N
-prod_01KKGG1ZW550D0X09AD05PFNJD	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGG1ZWVY25TSG4E6AQ38HTZ	2026-03-12 13:14:24.987199+05:30	2026-03-12 13:14:24.987199+05:30	\N
-prod_01KKGGBWPWW603YYCM9QSA8M8F	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGBWQPG1EWRVEE2GJWAB0J	2026-03-12 13:19:49.430066+05:30	2026-03-12 13:19:49.430066+05:30	\N
-prod_01KKGGCYRS02FZPXSS5E81Z0VT	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGCYS6YWA2VKS6Z2AHMQ3Q	2026-03-12 13:20:24.293886+05:30	2026-03-12 13:20:24.293886+05:30	\N
-prod_01KKGGDSGZAQA07E2W95SYWFJY	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGDSHBF3H6HT0Q064KR9TQ	2026-03-12 13:20:51.691292+05:30	2026-03-12 13:20:51.691292+05:30	\N
-prod_01KKGGETJS4R9WWQDEZXVC6YKP	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGETK8FJYF1E7MGM3Z7R90	2026-03-12 13:21:25.543775+05:30	2026-03-12 13:21:25.543775+05:30	\N
-prod_01KKGGGS8V9GRPDY2RM0EX5T8V	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGGS9B5BCSEBMQA9V2NPRC	2026-03-12 13:22:29.739494+05:30	2026-03-12 13:22:29.739494+05:30	\N
-prod_01KKGGSX663XAWMPZPXXZ152T0	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGSX6P634Z0CTHRWT1H8KW	2026-03-12 13:27:28.661664+05:30	2026-03-12 13:27:28.661664+05:30	\N
-prod_01KKGGTJQV56K1RZXS5PVCR33Q	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGTJR5MJ0A0PK1F45VYC79	2026-03-12 13:27:50.725755+05:30	2026-03-12 13:27:50.725755+05:30	\N
-prod_01KKGH7HHH2ZZC94E0HEP3N1PH	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH7HHZP43QS9766Q2KQ7XX	2026-03-12 13:34:55.487355+05:30	2026-03-12 13:34:55.487355+05:30	\N
-prod_01KKGH86CCFJ4680NM1TTRZBBZ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH86CN4TQDAP3NWARAY5N8	2026-03-12 13:35:16.821123+05:30	2026-03-12 13:35:16.821123+05:30	\N
-prod_01KKGH9BC3KA041DVWQV1XACAK	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH9BCH1RPDZVYNZZZ3M0XJ	2026-03-12 13:35:54.705392+05:30	2026-03-12 13:35:54.705392+05:30	\N
-prod_01KKGHA00514BHTAHQMFK1BXX5	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHA00JKJF0MJAFK367RGNC	2026-03-12 13:36:15.825919+05:30	2026-03-12 13:36:15.825919+05:30	\N
-prod_01KKGHBHJBDQTRSV188CTFDNR6	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHBHJRKSK42VAWJN6DR6DY	2026-03-12 13:37:06.584175+05:30	2026-03-12 13:37:06.584175+05:30	\N
-prod_01KKGHC3ZR2HTWW0GA4D777CPP	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHC401CW2EBTGZXT1S3WM7	2026-03-12 13:37:25.441223+05:30	2026-03-12 13:37:25.441223+05:30	\N
-prod_01KKGHEGQWSYMSHDTKRG61JRV8	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHEGR8BQZ44Q6M61HR75SB	2026-03-12 13:38:44.040565+05:30	2026-03-12 13:38:44.040565+05:30	\N
-prod_01KKGHGGGB544H7EA1GY5RZ1B3	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHGGGVQ137MK6RGFEF9D9B	2026-03-12 13:39:49.338891+05:30	2026-03-12 13:39:49.338891+05:30	\N
-prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHGZ28KTM2XA2VHVHCFMBC	2026-03-12 13:40:04.232444+05:30	2026-03-12 13:40:04.232444+05:30	\N
-prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHHPX8Y5VMAVBJ6Y7T42F2	2026-03-12 13:40:28.647365+05:30	2026-03-12 13:40:28.647365+05:30	\N
-prod_01KKBDMEKJY42ZVZNDDP102XVQ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKBDMEPMM5F1NDR3NVNNG2R8	2026-03-10 13:55:52.084605+05:30	2026-03-12 16:02:32.622+05:30	2026-03-12 16:02:32.613+05:30
-prod_01KKB6VT3TZZFRMNP201QPVDTK	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT47JNMHV39B5WATQZBP	2026-03-10 11:57:33.127704+05:30	2026-03-12 16:02:38.019+05:30	2026-03-12 16:02:38.018+05:30
-prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT6X7ZW8MBY1R0H73YXD	2026-03-10 11:57:33.213748+05:30	2026-03-12 16:02:40.973+05:30	2026-03-12 16:02:40.973+05:30
-prod_01KKB6VT8GE0JVDMNBMB5CRNTB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT8P6FXP25176SF5Z9D9	2026-03-10 11:57:33.270301+05:30	2026-03-12 16:02:43.136+05:30	2026-03-12 16:02:43.136+05:30
-prod_01KKB6VT9V8NQCAT15G2AFEWG7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTA0DE9CX5BG1VA2MY6P	2026-03-10 11:57:33.312186+05:30	2026-03-12 16:02:45.843+05:30	2026-03-12 16:02:45.843+05:30
-prod_01KKB6VTATHKEEE6MXR51QSD4T	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTAZJZDN0QD20TPRM4BQ	2026-03-10 11:57:33.343423+05:30	2026-03-12 16:02:48.974+05:30	2026-03-12 16:02:48.973+05:30
-prod_01KKB937AGFSC33DZ1PXMDP86M	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB937BYP69WG0GYPBBPJGX3	2026-03-10 12:36:33.213776+05:30	2026-03-12 16:02:51.641+05:30	2026-03-12 16:02:51.641+05:30
-prod_01KKB6VTBTDH1X31R50EC7Q1GB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTBY2SBMM5W36V9T2QHN	2026-03-10 11:57:33.374324+05:30	2026-03-12 16:03:09.167+05:30	2026-03-12 16:03:09.167+05:30
-prod_01KKGT0Q069BHJ6VP4P98TZEXB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGT0Q1AYY3DZRJSWSC6EDCM	2026-03-12 16:08:28.902255+05:30	2026-03-12 16:08:28.902255+05:30	\N
-prod_01KKTQC820Z82HT7ZNZAPRENCW	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTQC82JCACEFSC5T3TEDFTA	2026-03-16 12:34:45.394607+05:30	2026-03-16 12:34:45.394607+05:30	\N
-prod_01KKTNFA12ZYJMT053XBDDXXHX	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTNFA34VKSX5SNF6TDVJ6T9	2026-03-16 12:01:28.611931+05:30	2026-03-16 12:45:00.557+05:30	2026-03-16 12:45:00.556+05:30
-prod_01KKK08Q66WYDN10VJ75BDQX47	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKK08Q75XB1DEHFB4QD3S6R9	2026-03-13 12:36:11.556983+05:30	2026-03-16 12:47:39.984+05:30	2026-03-16 12:47:39.983+05:30
-prod_01KKTR6NCKGH4S7ZZKT8ESKT41	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTR6NDM5JGYKAKRJ49MFXFK	2026-03-16 12:49:11.028451+05:30	2026-03-16 12:49:11.028451+05:30	\N
-prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTQ8QRERJ5V13QAV3ZFV7DD	2026-03-16 12:32:50.382381+05:30	2026-03-16 14:40:26.662+05:30	2026-03-16 14:40:26.661+05:30
-prod_01KKTYN1SKJF99NAKB81G9R1NX	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTYN1T853JFC6SD5DQW6FDC	2026-03-16 14:41:53.928556+05:30	2026-03-16 14:46:31.957+05:30	2026-03-16 14:46:31.957+05:30
-prod_01KKTZ7JMM93QMPPSH61S8DP7K	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTZ7JP2W8SW7RS7XVGQ2488	2026-03-16 14:52:01.025396+05:30	2026-03-16 14:52:01.025396+05:30	\N
-prod_01KKTNA7JBNG7PVCK2D7VFVEG0	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTNA7M437D25N5A0YW5YH2A	2026-03-16 11:58:42.243843+05:30	2026-03-16 15:09:27.6+05:30	2026-03-16 15:09:27.599+05:30
-prod_01KKV08VDQQ210Z466H8Z4P9NY	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKV08VEAA8T36CMAPKA9EVA5	2026-03-16 15:10:11.338337+05:30	2026-03-16 15:10:11.338337+05:30	\N
+prod_01KKGEV0T2SE3CBBTHBSCDX5S3	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGEV0V96ABY362QBQ2KS379	2026-03-12 07:23:08.009409+00	2026-03-12 07:23:08.009409+00	\N
+prod_01KKGF0JXXE36GBNN7GRRZ0J6F	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGF0JYP9D96BEJHQ3E1RKB9	2026-03-12 07:26:10.389792+00	2026-03-12 07:26:10.389792+00	\N
+prod_01KKGFD3XJW2DF5NM4N9NH3BPB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFD3YAWH7512YNWJ3VKGMC	2026-03-12 07:33:01.002341+00	2026-03-12 07:33:01.002341+00	\N
+prod_01KKGFEDP1B71M6E0VAXVCD132	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFEDPFXKNSQS7QYBB6N14T	2026-03-12 07:33:43.758858+00	2026-03-12 07:33:43.758858+00	\N
+prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFHZQFDQ3QWZCHRQMJBGZA	2026-03-12 07:35:40.527151+00	2026-03-12 07:35:40.527151+00	\N
+prod_01KKGFQ2PBH10AEGGBY47EGDWD	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFQ2PT5X125NMSSTEENESJ	2026-03-12 07:38:27.418575+00	2026-03-12 07:38:27.418575+00	\N
+prod_01KKGFS54N6JFJ00AN1X0B778M	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGFS55536ZW86Q2HBAFDFJH	2026-03-12 07:39:35.461028+00	2026-03-12 07:39:35.461028+00	\N
+prod_01KKGG1ZW550D0X09AD05PFNJD	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGG1ZWVY25TSG4E6AQ38HTZ	2026-03-12 07:44:24.987199+00	2026-03-12 07:44:24.987199+00	\N
+prod_01KKGGBWPWW603YYCM9QSA8M8F	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGBWQPG1EWRVEE2GJWAB0J	2026-03-12 07:49:49.430066+00	2026-03-12 07:49:49.430066+00	\N
+prod_01KKGGCYRS02FZPXSS5E81Z0VT	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGCYS6YWA2VKS6Z2AHMQ3Q	2026-03-12 07:50:24.293886+00	2026-03-12 07:50:24.293886+00	\N
+prod_01KKGGDSGZAQA07E2W95SYWFJY	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGDSHBF3H6HT0Q064KR9TQ	2026-03-12 07:50:51.691292+00	2026-03-12 07:50:51.691292+00	\N
+prod_01KKGGETJS4R9WWQDEZXVC6YKP	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGETK8FJYF1E7MGM3Z7R90	2026-03-12 07:51:25.543775+00	2026-03-12 07:51:25.543775+00	\N
+prod_01KKGGGS8V9GRPDY2RM0EX5T8V	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGGS9B5BCSEBMQA9V2NPRC	2026-03-12 07:52:29.739494+00	2026-03-12 07:52:29.739494+00	\N
+prod_01KKGGSX663XAWMPZPXXZ152T0	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGSX6P634Z0CTHRWT1H8KW	2026-03-12 07:57:28.661664+00	2026-03-12 07:57:28.661664+00	\N
+prod_01KKGGTJQV56K1RZXS5PVCR33Q	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGGTJR5MJ0A0PK1F45VYC79	2026-03-12 07:57:50.725755+00	2026-03-12 07:57:50.725755+00	\N
+prod_01KKGH7HHH2ZZC94E0HEP3N1PH	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH7HHZP43QS9766Q2KQ7XX	2026-03-12 08:04:55.487355+00	2026-03-12 08:04:55.487355+00	\N
+prod_01KKGH86CCFJ4680NM1TTRZBBZ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH86CN4TQDAP3NWARAY5N8	2026-03-12 08:05:16.821123+00	2026-03-12 08:05:16.821123+00	\N
+prod_01KKGH9BC3KA041DVWQV1XACAK	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGH9BCH1RPDZVYNZZZ3M0XJ	2026-03-12 08:05:54.705392+00	2026-03-12 08:05:54.705392+00	\N
+prod_01KKGHA00514BHTAHQMFK1BXX5	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHA00JKJF0MJAFK367RGNC	2026-03-12 08:06:15.825919+00	2026-03-12 08:06:15.825919+00	\N
+prod_01KKGHBHJBDQTRSV188CTFDNR6	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHBHJRKSK42VAWJN6DR6DY	2026-03-12 08:07:06.584175+00	2026-03-12 08:07:06.584175+00	\N
+prod_01KKGHC3ZR2HTWW0GA4D777CPP	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHC401CW2EBTGZXT1S3WM7	2026-03-12 08:07:25.441223+00	2026-03-12 08:07:25.441223+00	\N
+prod_01KKGHEGQWSYMSHDTKRG61JRV8	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHEGR8BQZ44Q6M61HR75SB	2026-03-12 08:08:44.040565+00	2026-03-12 08:08:44.040565+00	\N
+prod_01KKGHGGGB544H7EA1GY5RZ1B3	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHGGGVQ137MK6RGFEF9D9B	2026-03-12 08:09:49.338891+00	2026-03-12 08:09:49.338891+00	\N
+prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHGZ28KTM2XA2VHVHCFMBC	2026-03-12 08:10:04.232444+00	2026-03-12 08:10:04.232444+00	\N
+prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGHHPX8Y5VMAVBJ6Y7T42F2	2026-03-12 08:10:28.647365+00	2026-03-12 08:10:28.647365+00	\N
+prod_01KKBDMEKJY42ZVZNDDP102XVQ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKBDMEPMM5F1NDR3NVNNG2R8	2026-03-10 08:25:52.084605+00	2026-03-12 10:32:32.622+00	2026-03-12 10:32:32.613+00
+prod_01KKB6VT3TZZFRMNP201QPVDTK	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT47JNMHV39B5WATQZBP	2026-03-10 06:27:33.127704+00	2026-03-12 10:32:38.019+00	2026-03-12 10:32:38.018+00
+prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT6X7ZW8MBY1R0H73YXD	2026-03-10 06:27:33.213748+00	2026-03-12 10:32:40.973+00	2026-03-12 10:32:40.973+00
+prod_01KKB6VT8GE0JVDMNBMB5CRNTB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VT8P6FXP25176SF5Z9D9	2026-03-10 06:27:33.270301+00	2026-03-12 10:32:43.136+00	2026-03-12 10:32:43.136+00
+prod_01KKB6VT9V8NQCAT15G2AFEWG7	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTA0DE9CX5BG1VA2MY6P	2026-03-10 06:27:33.312186+00	2026-03-12 10:32:45.843+00	2026-03-12 10:32:45.843+00
+prod_01KKB6VTATHKEEE6MXR51QSD4T	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTAZJZDN0QD20TPRM4BQ	2026-03-10 06:27:33.343423+00	2026-03-12 10:32:48.974+00	2026-03-12 10:32:48.973+00
+prod_01KKB937AGFSC33DZ1PXMDP86M	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB937BYP69WG0GYPBBPJGX3	2026-03-10 07:06:33.213776+00	2026-03-12 10:32:51.641+00	2026-03-12 10:32:51.641+00
+prod_01KKB6VTBTDH1X31R50EC7Q1GB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKB6VTBY2SBMM5W36V9T2QHN	2026-03-10 06:27:33.374324+00	2026-03-12 10:33:09.167+00	2026-03-12 10:33:09.167+00
+prod_01KKGT0Q069BHJ6VP4P98TZEXB	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKGT0Q1AYY3DZRJSWSC6EDCM	2026-03-12 10:38:28.902255+00	2026-03-12 10:38:28.902255+00	\N
+prod_01KKTQC820Z82HT7ZNZAPRENCW	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTQC82JCACEFSC5T3TEDFTA	2026-03-16 07:04:45.394607+00	2026-03-16 07:04:45.394607+00	\N
+prod_01KKTNFA12ZYJMT053XBDDXXHX	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTNFA34VKSX5SNF6TDVJ6T9	2026-03-16 06:31:28.611931+00	2026-03-16 07:15:00.557+00	2026-03-16 07:15:00.556+00
+prod_01KKK08Q66WYDN10VJ75BDQX47	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKK08Q75XB1DEHFB4QD3S6R9	2026-03-13 07:06:11.556983+00	2026-03-16 07:17:39.984+00	2026-03-16 07:17:39.983+00
+prod_01KKTR6NCKGH4S7ZZKT8ESKT41	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTR6NDM5JGYKAKRJ49MFXFK	2026-03-16 07:19:11.028451+00	2026-03-16 07:19:11.028451+00	\N
+prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTQ8QRERJ5V13QAV3ZFV7DD	2026-03-16 07:02:50.382381+00	2026-03-16 09:10:26.662+00	2026-03-16 09:10:26.661+00
+prod_01KKTYN1SKJF99NAKB81G9R1NX	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTYN1T853JFC6SD5DQW6FDC	2026-03-16 09:11:53.928556+00	2026-03-16 09:16:31.957+00	2026-03-16 09:16:31.957+00
+prod_01KKTZ7JMM93QMPPSH61S8DP7K	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTZ7JP2W8SW7RS7XVGQ2488	2026-03-16 09:22:01.025396+00	2026-03-16 09:22:01.025396+00	\N
+prod_01KKTNA7JBNG7PVCK2D7VFVEG0	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKTNA7M437D25N5A0YW5YH2A	2026-03-16 06:28:42.243843+00	2026-03-16 09:39:27.6+00	2026-03-16 09:39:27.599+00
+prod_01KKV08VDQQ210Z466H8Z4P9NY	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKV08VEAA8T36CMAPKA9EVA5	2026-03-16 09:40:11.338337+00	2026-03-16 09:40:11.338337+00	\N
 \.
 
 
@@ -4410,12 +4416,12 @@ prod_01KKV08VDQQ210Z466H8Z4P9NY	sc_01KKB6VT2GA936E202BCVNT0DC	prodsc_01KKV08VEAA
 --
 
 COPY public.product_shipping_profile (product_id, shipping_profile_id, id, created_at, updated_at, deleted_at) FROM stdin;
-prod_01KKB6VT3TZZFRMNP201QPVDTK	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT4ESWB555YFV5B5E27S	2026-03-10 11:57:33.134009+05:30	2026-03-12 16:02:38.021+05:30	2026-03-12 16:02:38.02+05:30
-prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT71MK9CAYJV9GPMWMBG	2026-03-10 11:57:33.216908+05:30	2026-03-12 16:02:40.972+05:30	2026-03-12 16:02:40.972+05:30
-prod_01KKB6VT8GE0JVDMNBMB5CRNTB	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT8SF7P6690R3QGGGPD5	2026-03-10 11:57:33.273303+05:30	2026-03-12 16:02:43.137+05:30	2026-03-12 16:02:43.137+05:30
-prod_01KKB6VT9V8NQCAT15G2AFEWG7	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTA2DNDYDHH233GYZ7JX	2026-03-10 11:57:33.314663+05:30	2026-03-12 16:02:45.845+05:30	2026-03-12 16:02:45.845+05:30
-prod_01KKB6VTATHKEEE6MXR51QSD4T	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTB18X77TEFTC64984WY	2026-03-10 11:57:33.345573+05:30	2026-03-12 16:02:48.978+05:30	2026-03-12 16:02:48.978+05:30
-prod_01KKB6VTBTDH1X31R50EC7Q1GB	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTC1XKAMST95QB9ZQ8Z4	2026-03-10 11:57:33.377298+05:30	2026-03-12 16:03:09.169+05:30	2026-03-12 16:03:09.168+05:30
+prod_01KKB6VT3TZZFRMNP201QPVDTK	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT4ESWB555YFV5B5E27S	2026-03-10 06:27:33.134009+00	2026-03-12 10:32:38.021+00	2026-03-12 10:32:38.02+00
+prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT71MK9CAYJV9GPMWMBG	2026-03-10 06:27:33.216908+00	2026-03-12 10:32:40.972+00	2026-03-12 10:32:40.972+00
+prod_01KKB6VT8GE0JVDMNBMB5CRNTB	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VT8SF7P6690R3QGGGPD5	2026-03-10 06:27:33.273303+00	2026-03-12 10:32:43.137+00	2026-03-12 10:32:43.137+00
+prod_01KKB6VT9V8NQCAT15G2AFEWG7	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTA2DNDYDHH233GYZ7JX	2026-03-10 06:27:33.314663+00	2026-03-12 10:32:45.845+00	2026-03-12 10:32:45.845+00
+prod_01KKB6VTATHKEEE6MXR51QSD4T	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTB18X77TEFTC64984WY	2026-03-10 06:27:33.345573+00	2026-03-12 10:32:48.978+00	2026-03-12 10:32:48.978+00
+prod_01KKB6VTBTDH1X31R50EC7Q1GB	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTC1XKAMST95QB9ZQ8Z4	2026-03-10 06:27:33.377298+00	2026-03-12 10:33:09.169+00	2026-03-12 10:33:09.168+00
 \.
 
 
@@ -4424,9 +4430,9 @@ prod_01KKB6VTBTDH1X31R50EC7Q1GB	sp_01KKB6VE1XDK6CBQ378CHJNVF3	prodsp_01KKB6VTC1X
 --
 
 COPY public.product_tag (id, value, metadata, created_at, updated_at, deleted_at) FROM stdin;
-ptag_01KKK0XX2MQGDF3F6QV50T2HW5	session	\N	2026-03-13 12:47:45.684+05:30	2026-03-13 12:47:45.684+05:30	\N
-ptag_01KKK3V5AM4ZCHNTK1WNWWFF3V	audio	\N	2026-03-13 13:38:41.556+05:30	2026-03-13 13:38:41.556+05:30	\N
-ptag_01KKK3V5AVZ2WGV8137N5FSNM3	video	\N	2026-03-13 13:38:41.563+05:30	2026-03-13 13:38:41.563+05:30	\N
+ptag_01KKK0XX2MQGDF3F6QV50T2HW5	session	\N	2026-03-13 07:17:45.684+00	2026-03-13 07:17:45.684+00	\N
+ptag_01KKK3V5AM4ZCHNTK1WNWWFF3V	audio	\N	2026-03-13 08:08:41.556+00	2026-03-13 08:08:41.556+00	\N
+ptag_01KKK3V5AVZ2WGV8137N5FSNM3	video	\N	2026-03-13 08:08:41.563+00	2026-03-13 08:08:41.563+00	\N
 \.
 
 
@@ -4464,8 +4470,8 @@ prod_01KKTQC820Z82HT7ZNZAPRENCW	ptag_01KKK3V5AVZ2WGV8137N5FSNM3
 --
 
 COPY public.product_type (id, value, metadata, created_at, updated_at, deleted_at) FROM stdin;
-ptyp_01KKK18C4KW84N78TGBEJTCHK7	session	\N	2026-03-13 12:53:28.788+05:30	2026-03-13 12:53:28.788+05:30	\N
-ptyp_01KKK191M4M8TNV49Z8R0WGZTR	product	\N	2026-03-13 12:53:50.789+05:30	2026-03-13 12:53:50.789+05:30	\N
+ptyp_01KKK18C4KW84N78TGBEJTCHK7	session	\N	2026-03-13 07:23:28.788+00	2026-03-13 07:23:28.788+00	\N
+ptyp_01KKK191M4M8TNV49Z8R0WGZTR	product	\N	2026-03-13 07:23:50.789+00	2026-03-13 07:23:50.789+00	\N
 \.
 
 
@@ -4474,57 +4480,57 @@ ptyp_01KKK191M4M8TNV49Z8R0WGZTR	product	\N	2026-03-13 12:53:50.789+05:30	2026-03
 --
 
 COPY public.product_variant (id, title, sku, barcode, ean, upc, allow_backorder, manage_inventory, hs_code, origin_country, mid_code, material, weight, length, height, width, metadata, variant_rank, product_id, created_at, updated_at, deleted_at, thumbnail) FROM stdin;
-variant_01KKBDMEQ86XYK4EHA438X4FPE	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKBDMEKJY42ZVZNDDP102XVQ	2026-03-10 13:55:52.104+05:30	2026-03-12 16:02:32.641+05:30	2026-03-12 16:02:32.626+05:30	\N
-variant_01KKB6VT5DKHSAVZG3GTK1EK82	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT3TZZFRMNP201QPVDTK	2026-03-10 11:57:33.165+05:30	2026-03-12 16:02:38.022+05:30	2026-03-12 16:02:38.011+05:30	\N
-variant_01KKB6VT77404PJR2B233VB1H5	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	2026-03-10 11:57:33.223+05:30	2026-03-12 16:02:40.977+05:30	2026-03-12 16:02:40.971+05:30	\N
-variant_01KKB6VT90JFVKVR8BBDW3T2Q5	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT8GE0JVDMNBMB5CRNTB	2026-03-10 11:57:33.28+05:30	2026-03-12 16:02:43.14+05:30	2026-03-12 16:02:43.137+05:30	\N
-variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT9V8NQCAT15G2AFEWG7	2026-03-10 11:57:33.322+05:30	2026-03-12 16:02:45.856+05:30	2026-03-12 16:02:45.844+05:30	\N
-variant_01KKB6VTB8MCAKX2VP0ANPKYY6	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VTATHKEEE6MXR51QSD4T	2026-03-10 11:57:33.353+05:30	2026-03-12 16:02:48.98+05:30	2026-03-12 16:02:48.971+05:30	\N
-variant_01KKB937CR02BK69WQ51KVHHHT	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB937AGFSC33DZ1PXMDP86M	2026-03-10 12:36:33.241+05:30	2026-03-12 16:02:51.641+05:30	2026-03-12 16:02:51.639+05:30	\N
-variant_01KKB6VTC6APWWPE9TRW04ZMEE	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VTBTDH1X31R50EC7Q1GB	2026-03-10 11:57:33.382+05:30	2026-03-12 16:03:09.174+05:30	2026-03-12 16:03:09.166+05:30	\N
-variant_01KKGFQ2QDQK03XYWVGW9EWN0S	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFQ2PBH10AEGGBY47EGDWD	2026-03-12 13:08:27.437+05:30	2026-03-12 13:08:27.437+05:30	\N	\N
-variant_01KKGFS55KDRFYSF7WM6T7633W	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFS54N6JFJ00AN1X0B778M	2026-03-12 13:09:35.475+05:30	2026-03-12 13:09:35.475+05:30	\N	\N
-variant_01KKGG1ZXQB7M1RE5JM43RBN4R	Crystal Charger – Selenite Plate	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGG1ZW550D0X09AD05PFNJD	2026-03-12 13:14:25.015+05:30	2026-03-12 13:14:25.015+05:30	\N	\N
-variant_01KKGT0Q253GY122GAP6K9X9QD	Default variant	33	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGT0Q069BHJ6VP4P98TZEXB	2026-03-12 16:08:28.933+05:30	2026-03-12 16:08:28.933+05:30	\N	\N
-variant_01KKGFD3YRQGBEMV90V5T59R6M	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFD3XJW2DF5NM4N9NH3BPB	2026-03-12 13:03:01.016+05:30	2026-03-12 13:03:01.016+05:30	\N	\N
-variant_01KKGFEDPX6Z128JHBGFKBJ9B1	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFEDP1B71M6E0VAXVCD132	2026-03-12 13:03:43.773+05:30	2026-03-12 13:03:43.773+05:30	\N	\N
-variant_01KKGFHZQW7J8EENXMY2ME3CSB	Default variant	\N	\N	\N	\N	t	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	2026-03-12 13:05:40.54+05:30	2026-03-12 13:05:40.54+05:30	\N	\N
-variant_01KKGGBWR83696XCJGNGETCHD1	Rose Quartz Pyramid	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGBWPWW603YYCM9QSA8M8F	2026-03-12 13:19:49.448+05:30	2026-03-12 13:19:49.448+05:30	\N	\N
-variant_01KKGGCYSKC8P1KX9A5K79C1XA	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGCYRS02FZPXSS5E81Z0VT	2026-03-12 13:20:24.307+05:30	2026-03-12 13:20:24.307+05:30	\N	\N
-variant_01KKGGDSHPVYQV4XJH1XN6DCF2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGDSGZAQA07E2W95SYWFJY	2026-03-12 13:20:51.702+05:30	2026-03-12 13:20:51.702+05:30	\N	\N
-variant_01KKGGETKQ56DWSC48EG0T0AD2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGETJS4R9WWQDEZXVC6YKP	2026-03-12 13:21:25.559+05:30	2026-03-12 13:21:25.559+05:30	\N	\N
-variant_01KKGGGS9VD4645FXR6KY0NMXD	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGGS8V9GRPDY2RM0EX5T8V	2026-03-12 13:22:29.756+05:30	2026-03-12 13:22:29.756+05:30	\N	\N
-variant_01KKGGSX74CRA0XSKSM7G1VQZ9	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGSX663XAWMPZPXXZ152T0	2026-03-12 13:27:28.677+05:30	2026-03-12 13:27:28.677+05:30	\N	\N
-variant_01KKGGTJRGETB5CRPK4EV3EV8Y	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGTJQV56K1RZXS5PVCR33Q	2026-03-12 13:27:50.737+05:30	2026-03-12 13:27:50.737+05:30	\N	\N
-variant_01KKGH7HJADS57RSD5DZQ0T04Q	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH7HHH2ZZC94E0HEP3N1PH	2026-03-12 13:34:55.498+05:30	2026-03-12 13:34:55.498+05:30	\N	\N
-variant_01KKGH86CZPWDZF8EPVJBXAJQY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH86CCFJ4680NM1TTRZBBZ	2026-03-12 13:35:16.831+05:30	2026-03-12 13:35:16.831+05:30	\N	\N
-variant_01KKGH9BDF6JF8JQF19KRBVJ7X	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH9BC3KA041DVWQV1XACAK	2026-03-12 13:35:54.735+05:30	2026-03-12 13:35:54.735+05:30	\N	\N
-variant_01KKGHA0145Z4F7G7X77DZMBG9	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHA00514BHTAHQMFK1BXX5	2026-03-12 13:36:15.845+05:30	2026-03-12 13:36:15.845+05:30	\N	\N
-variant_01KKGHBHK3P08F3VPTF5CYV3TY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHBHJBDQTRSV188CTFDNR6	2026-03-12 13:37:06.595+05:30	2026-03-12 13:37:06.595+05:30	\N	\N
-variant_01KKGHEGRJD2PWV0SK6B316JFY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHEGQWSYMSHDTKRG61JRV8	2026-03-12 13:38:44.051+05:30	2026-03-12 13:38:44.051+05:30	\N	\N
-variant_01KKGHGGH9W0YJYQZ06NJGK1R2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHGGGB544H7EA1GY5RZ1B3	2026-03-12 13:39:49.353+05:30	2026-03-12 13:39:49.353+05:30	\N	\N
-variant_01KKGHGZ2JQS1ECGZDTSF7XM8E	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	2026-03-12 13:40:04.242+05:30	2026-03-12 13:40:04.242+05:30	\N	\N
-variant_01KKGHHPXMKDFS9NQ7T1PHT94G	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	2026-03-12 13:40:28.66+05:30	2026-03-12 13:40:28.66+05:30	\N	\N
-variant_01KKGEV0WDZTHFH4Q1WY5T75VG	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGEV0T2SE3CBBTHBSCDX5S3	2026-03-12 12:53:08.045+05:30	2026-03-12 12:53:08.045+05:30	\N	\N
-variant_01KKGF0JZ9APTJHS8W65E4FH5D	Default variant	999	\N	\N	\N	t	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGF0JXXE36GBNN7GRRZ0J6F	2026-03-12 12:56:10.409+05:30	2026-03-12 12:56:10.409+05:30	\N	\N
-variant_01KKGHC40DXRH9RHMXXK7ZRE4V	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHC3ZR2HTWW0GA4D777CPP	2026-03-12 13:37:25.453+05:30	2026-03-12 13:37:25.453+05:30	\N	\N
-variant_01KKTNFA3W0E5EP1XRYADW9F05	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTNFA12ZYJMT053XBDDXXHX	2026-03-16 12:01:28.636+05:30	2026-03-16 12:45:00.563+05:30	2026-03-16 12:45:00.552+05:30	\N
-variant_01KKK08Q7Z0Q14YMJJ05J2FG1R	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKK08Q66WYDN10VJ75BDQX47	2026-03-13 12:36:11.583+05:30	2026-03-16 12:47:39.994+05:30	2026-03-16 12:47:39.977+05:30	\N
-variant_01KKTQC82ZV4FCCQ94ZAQFSJGC	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 12:34:45.408+05:30	2026-03-16 13:55:29.214+05:30	2026-03-16 13:55:29.213+05:30	\N
-variant_01KKTYFCQAZC7BZA7DC17BQZ2N	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	2026-03-16 14:38:48.491+05:30	2026-03-16 14:40:45.072+05:30	2026-03-16 14:40:45.067+05:30	\N
-variant_01KKTQ8QRX41CW1C8K6RX2DANP	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	2026-03-16 12:32:50.397+05:30	2026-03-16 14:40:45.072+05:30	2026-03-16 14:40:45.067+05:30	\N
-variant_01KKTR6NE542E0SZ9AE5B56455	Tarot Reading	\N	\N	\N	\N	f	f	\N	in	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 min"}	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	2026-03-16 12:49:11.046+05:30	2026-03-16 12:49:11.046+05:30	\N	\N
-variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	video	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "40 mint"}	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K	2026-03-16 14:52:01.058+05:30	2026-03-16 14:52:01.058+05:30	\N	\N
-variant_01KKTYN1TPJFPA54NTVHD5HCX9	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "35 mint"}	0	prod_01KKTYN1SKJF99NAKB81G9R1NX	2026-03-16 14:41:53.942+05:30	2026-03-16 14:46:32.003+05:30	2026-03-16 14:46:31.955+05:30	\N
-variant_01KKTZ937F2FVJ9GDW2J1GZH3A	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "35 mint"}	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K	2026-03-16 14:52:50.735+05:30	2026-03-16 14:52:50.735+05:30	\N	\N
-variant_01KKTNA7N6QGQ1HYA0NREATVNC	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 11:58:42.278+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30	\N
-variant_01KKTZGMMWKJFCJV2TK71VPZMH	Format	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 mint"}	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 14:56:57.948+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30	\N
-variant_01KKTZJP6BXQQJNR43WBC8MTFY	Format	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "30 mint"}	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 14:58:05.068+05:30	2026-03-16 15:09:27.599+05:30	2026-03-16 15:09:27.583+05:30	\N
-variant_01KKV0BYPXF70HTGJK69AM4DMG	Kundali Session	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 mint"}	0	prod_01KKV08VDQQ210Z466H8Z4P9NY	2026-03-16 15:11:52.989+05:30	2026-03-16 15:11:52.989+05:30	\N	\N
-variant_01KKV08VEV9PWQH1RXH0FB4HGY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "30 mint"}	0	prod_01KKV08VDQQ210Z466H8Z4P9NY	2026-03-16 15:10:11.355+05:30	2026-03-16 15:10:11.355+05:30	\N	\N
-variant_01KKV0KMF9700JE362F2F9JP7R	All-in-1 Astrology	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio-session", "duration": "40 mint"}	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 15:16:04.65+05:30	2026-03-16 15:16:04.65+05:30	\N	\N
-variant_01KKV0J4ZYQP9QDQV1RKGGKW79	All-in-1 Astrology	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "40 mint"}	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 15:15:16.031+05:30	2026-03-16 15:15:16.031+05:30	\N	\N
-variant_01KKTWER0W0KP66KP7VJ8PXZ7H	Tarot Reading	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "cal_link": "kunal-risaanva-m3jown/video-session", "duration": "40 min"}	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	2026-03-16 14:03:30.14+05:30	2026-03-16 14:03:30.14+05:30	\N	\N
+variant_01KKBDMEQ86XYK4EHA438X4FPE	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKBDMEKJY42ZVZNDDP102XVQ	2026-03-10 08:25:52.104+00	2026-03-12 10:32:32.641+00	2026-03-12 10:32:32.626+00	\N
+variant_01KKB6VT5DKHSAVZG3GTK1EK82	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT3TZZFRMNP201QPVDTK	2026-03-10 06:27:33.165+00	2026-03-12 10:32:38.022+00	2026-03-12 10:32:38.011+00	\N
+variant_01KKB6VT77404PJR2B233VB1H5	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT6MG5P31Y6NH6W1KRZJ	2026-03-10 06:27:33.223+00	2026-03-12 10:32:40.977+00	2026-03-12 10:32:40.971+00	\N
+variant_01KKB6VT90JFVKVR8BBDW3T2Q5	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT8GE0JVDMNBMB5CRNTB	2026-03-10 06:27:33.28+00	2026-03-12 10:32:43.14+00	2026-03-12 10:32:43.137+00	\N
+variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VT9V8NQCAT15G2AFEWG7	2026-03-10 06:27:33.322+00	2026-03-12 10:32:45.856+00	2026-03-12 10:32:45.844+00	\N
+variant_01KKB6VTB8MCAKX2VP0ANPKYY6	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VTATHKEEE6MXR51QSD4T	2026-03-10 06:27:33.353+00	2026-03-12 10:32:48.98+00	2026-03-12 10:32:48.971+00	\N
+variant_01KKB937CR02BK69WQ51KVHHHT	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB937AGFSC33DZ1PXMDP86M	2026-03-10 07:06:33.241+00	2026-03-12 10:32:51.641+00	2026-03-12 10:32:51.639+00	\N
+variant_01KKB6VTC6APWWPE9TRW04ZMEE	Standard	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKB6VTBTDH1X31R50EC7Q1GB	2026-03-10 06:27:33.382+00	2026-03-12 10:33:09.174+00	2026-03-12 10:33:09.166+00	\N
+variant_01KKGFQ2QDQK03XYWVGW9EWN0S	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFQ2PBH10AEGGBY47EGDWD	2026-03-12 07:38:27.437+00	2026-03-12 07:38:27.437+00	\N	\N
+variant_01KKGFS55KDRFYSF7WM6T7633W	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFS54N6JFJ00AN1X0B778M	2026-03-12 07:39:35.475+00	2026-03-12 07:39:35.475+00	\N	\N
+variant_01KKGG1ZXQB7M1RE5JM43RBN4R	Crystal Charger – Selenite Plate	\N	\N	\N	\N	f	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGG1ZW550D0X09AD05PFNJD	2026-03-12 07:44:25.015+00	2026-03-12 07:44:25.015+00	\N	\N
+variant_01KKGT0Q253GY122GAP6K9X9QD	Default variant	33	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGT0Q069BHJ6VP4P98TZEXB	2026-03-12 10:38:28.933+00	2026-03-12 10:38:28.933+00	\N	\N
+variant_01KKGFD3YRQGBEMV90V5T59R6M	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFD3XJW2DF5NM4N9NH3BPB	2026-03-12 07:33:01.016+00	2026-03-12 07:33:01.016+00	\N	\N
+variant_01KKGFEDPX6Z128JHBGFKBJ9B1	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFEDP1B71M6E0VAXVCD132	2026-03-12 07:33:43.773+00	2026-03-12 07:33:43.773+00	\N	\N
+variant_01KKGFHZQW7J8EENXMY2ME3CSB	Default variant	\N	\N	\N	\N	t	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGFHZPZ4ZYDZ8DBZ5Q8CFF5	2026-03-12 07:35:40.54+00	2026-03-12 07:35:40.54+00	\N	\N
+variant_01KKGGBWR83696XCJGNGETCHD1	Rose Quartz Pyramid	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGBWPWW603YYCM9QSA8M8F	2026-03-12 07:49:49.448+00	2026-03-12 07:49:49.448+00	\N	\N
+variant_01KKGGCYSKC8P1KX9A5K79C1XA	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGCYRS02FZPXSS5E81Z0VT	2026-03-12 07:50:24.307+00	2026-03-12 07:50:24.307+00	\N	\N
+variant_01KKGGDSHPVYQV4XJH1XN6DCF2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGDSGZAQA07E2W95SYWFJY	2026-03-12 07:50:51.702+00	2026-03-12 07:50:51.702+00	\N	\N
+variant_01KKGGETKQ56DWSC48EG0T0AD2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGETJS4R9WWQDEZXVC6YKP	2026-03-12 07:51:25.559+00	2026-03-12 07:51:25.559+00	\N	\N
+variant_01KKGGGS9VD4645FXR6KY0NMXD	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGGS8V9GRPDY2RM0EX5T8V	2026-03-12 07:52:29.756+00	2026-03-12 07:52:29.756+00	\N	\N
+variant_01KKGGSX74CRA0XSKSM7G1VQZ9	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGSX663XAWMPZPXXZ152T0	2026-03-12 07:57:28.677+00	2026-03-12 07:57:28.677+00	\N	\N
+variant_01KKGGTJRGETB5CRPK4EV3EV8Y	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGGTJQV56K1RZXS5PVCR33Q	2026-03-12 07:57:50.737+00	2026-03-12 07:57:50.737+00	\N	\N
+variant_01KKGH7HJADS57RSD5DZQ0T04Q	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH7HHH2ZZC94E0HEP3N1PH	2026-03-12 08:04:55.498+00	2026-03-12 08:04:55.498+00	\N	\N
+variant_01KKGH86CZPWDZF8EPVJBXAJQY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH86CCFJ4680NM1TTRZBBZ	2026-03-12 08:05:16.831+00	2026-03-12 08:05:16.831+00	\N	\N
+variant_01KKGH9BDF6JF8JQF19KRBVJ7X	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGH9BC3KA041DVWQV1XACAK	2026-03-12 08:05:54.735+00	2026-03-12 08:05:54.735+00	\N	\N
+variant_01KKGHA0145Z4F7G7X77DZMBG9	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHA00514BHTAHQMFK1BXX5	2026-03-12 08:06:15.845+00	2026-03-12 08:06:15.845+00	\N	\N
+variant_01KKGHBHK3P08F3VPTF5CYV3TY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHBHJBDQTRSV188CTFDNR6	2026-03-12 08:07:06.595+00	2026-03-12 08:07:06.595+00	\N	\N
+variant_01KKGHEGRJD2PWV0SK6B316JFY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHEGQWSYMSHDTKRG61JRV8	2026-03-12 08:08:44.051+00	2026-03-12 08:08:44.051+00	\N	\N
+variant_01KKGHGGH9W0YJYQZ06NJGK1R2	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHGGGB544H7EA1GY5RZ1B3	2026-03-12 08:09:49.353+00	2026-03-12 08:09:49.353+00	\N	\N
+variant_01KKGHGZ2JQS1ECGZDTSF7XM8E	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHGZ1XN4KR4VXRSMX4N1N7	2026-03-12 08:10:04.242+00	2026-03-12 08:10:04.242+00	\N	\N
+variant_01KKGHHPXMKDFS9NQ7T1PHT94G	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHHPWS4T4BEWQ85AZ3N4H7	2026-03-12 08:10:28.66+00	2026-03-12 08:10:28.66+00	\N	\N
+variant_01KKGEV0WDZTHFH4Q1WY5T75VG	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGEV0T2SE3CBBTHBSCDX5S3	2026-03-12 07:23:08.045+00	2026-03-12 07:23:08.045+00	\N	\N
+variant_01KKGF0JZ9APTJHS8W65E4FH5D	Default variant	999	\N	\N	\N	t	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGF0JXXE36GBNN7GRRZ0J6F	2026-03-12 07:26:10.409+00	2026-03-12 07:26:10.409+00	\N	\N
+variant_01KKGHC40DXRH9RHMXXK7ZRE4V	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKGHC3ZR2HTWW0GA4D777CPP	2026-03-12 08:07:25.453+00	2026-03-12 08:07:25.453+00	\N	\N
+variant_01KKTNFA3W0E5EP1XRYADW9F05	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTNFA12ZYJMT053XBDDXXHX	2026-03-16 06:31:28.636+00	2026-03-16 07:15:00.563+00	2026-03-16 07:15:00.552+00	\N
+variant_01KKK08Q7Z0Q14YMJJ05J2FG1R	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKK08Q66WYDN10VJ75BDQX47	2026-03-13 07:06:11.583+00	2026-03-16 07:17:39.994+00	2026-03-16 07:17:39.977+00	\N
+variant_01KKTQC82ZV4FCCQ94ZAQFSJGC	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 07:04:45.408+00	2026-03-16 08:25:29.214+00	2026-03-16 08:25:29.213+00	\N
+variant_01KKTYFCQAZC7BZA7DC17BQZ2N	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	2026-03-16 09:08:48.491+00	2026-03-16 09:10:45.072+00	2026-03-16 09:10:45.067+00	\N
+variant_01KKTQ8QRX41CW1C8K6RX2DANP	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTQ8QPN5Y2K8ZAB53CHDB12	2026-03-16 07:02:50.397+00	2026-03-16 09:10:45.072+00	2026-03-16 09:10:45.067+00	\N
+variant_01KKTR6NE542E0SZ9AE5B56455	Tarot Reading	\N	\N	\N	\N	f	f	\N	in	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 min"}	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	2026-03-16 07:19:11.046+00	2026-03-16 07:19:11.046+00	\N	\N
+variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	video	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "40 mint"}	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K	2026-03-16 09:22:01.058+00	2026-03-16 09:22:01.058+00	\N	\N
+variant_01KKTYN1TPJFPA54NTVHD5HCX9	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "35 mint"}	0	prod_01KKTYN1SKJF99NAKB81G9R1NX	2026-03-16 09:11:53.942+00	2026-03-16 09:16:32.003+00	2026-03-16 09:16:31.955+00	\N
+variant_01KKTZ937F2FVJ9GDW2J1GZH3A	Therapy & Counselling Sessions	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "35 mint"}	0	prod_01KKTZ7JMM93QMPPSH61S8DP7K	2026-03-16 09:22:50.735+00	2026-03-16 09:22:50.735+00	\N	\N
+variant_01KKTNA7N6QGQ1HYA0NREATVNC	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 06:28:42.278+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00	\N
+variant_01KKTZGMMWKJFCJV2TK71VPZMH	Format	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 mint"}	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 09:26:57.948+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00	\N
+variant_01KKTZJP6BXQQJNR43WBC8MTFY	Format	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "30 mint"}	0	prod_01KKTNA7JBNG7PVCK2D7VFVEG0	2026-03-16 09:28:05.068+00	2026-03-16 09:39:27.599+00	2026-03-16 09:39:27.583+00	\N
+variant_01KKV0BYPXF70HTGJK69AM4DMG	Kundali Session	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "30 mint"}	0	prod_01KKV08VDQQ210Z466H8Z4P9NY	2026-03-16 09:41:52.989+00	2026-03-16 09:41:52.989+00	\N	\N
+variant_01KKV08VEV9PWQH1RXH0FB4HGY	Default variant	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "duration": "30 mint"}	0	prod_01KKV08VDQQ210Z466H8Z4P9NY	2026-03-16 09:40:11.355+00	2026-03-16 09:40:11.355+00	\N	\N
+variant_01KKV0KMF9700JE362F2F9JP7R	All-in-1 Astrology	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio-session", "duration": "40 mint"}	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 09:46:04.65+00	2026-03-16 09:46:04.65+00	\N	\N
+variant_01KKV0J4ZYQP9QDQV1RKGGKW79	All-in-1 Astrology	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "video session", "duration": "40 mint"}	0	prod_01KKTQC820Z82HT7ZNZAPRENCW	2026-03-16 09:45:16.031+00	2026-03-16 09:45:16.031+00	\N	\N
+variant_01KKTWER0W0KP66KP7VJ8PXZ7H	Tarot Reading	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	\N	\N	\N	{"label": "audio session", "cal_link": "kunal-risaanva-m3jown/video-session", "duration": "40 min"}	0	prod_01KKTR6NCKGH4S7ZZKT8ESKT41	2026-03-16 08:33:30.14+00	2026-03-16 08:33:30.14+00	\N	\N
 \.
 
 
@@ -4533,15 +4539,15 @@ variant_01KKTWER0W0KP66KP7VJ8PXZ7H	Tarot Reading	\N	\N	\N	\N	f	f	\N	\N	\N	\N	\N	
 --
 
 COPY public.product_variant_inventory_item (variant_id, inventory_item_id, id, required_quantity, created_at, updated_at, deleted_at) FROM stdin;
-variant_01KKGF0JZ9APTJHS8W65E4FH5D	iitem_01KKGF0JZE35HM4ZZ5GZ6M8RBX	pvitem_01KKGF0JZQTREVT5DF467HB7SH	1	2026-03-12 12:56:10.423791+05:30	2026-03-12 12:56:10.423791+05:30	\N
-variant_01KKGFHZQW7J8EENXMY2ME3CSB	iitem_01KKGFHZR28FB1F7RZTHGFK2TQ	pvitem_01KKGFHZRAMJ6S8RYKEQC60H18	1	2026-03-12 13:05:40.554146+05:30	2026-03-12 13:05:40.554146+05:30	\N
-variant_01KKGG1ZXQB7M1RE5JM43RBN4R	iitem_01KKGG1ZXXAJASD66F24D0VGK0	pvitem_01KKGG1ZY5BS6YSS66EQKZG7QD	1	2026-03-12 13:14:25.029805+05:30	2026-03-12 13:14:25.029805+05:30	\N
-variant_01KKB6VT5DKHSAVZG3GTK1EK82	iitem_01KKB6VT5M68DX6W4C944ZWQW4	pvitem_01KKB6VT5SQ0DAHX83EXRA32ES	1	2026-03-10 11:57:33.177404+05:30	2026-03-12 16:02:38.002+05:30	2026-03-12 16:02:38.002+05:30
-variant_01KKB6VT77404PJR2B233VB1H5	iitem_01KKB6VT7EM9T7FHMWR0A28KTP	pvitem_01KKB6VT8049VEGEQ1MWE6H0AB	1	2026-03-10 11:57:33.236505+05:30	2026-03-12 16:02:40.968+05:30	2026-03-12 16:02:40.968+05:30
-variant_01KKB6VT90JFVKVR8BBDW3T2Q5	iitem_01KKB6VT93GQGKX90VQY26ANJ7	pvitem_01KKB6VT97KQWMAEKQS117T48A	1	2026-03-10 11:57:33.287322+05:30	2026-03-12 16:02:43.131+05:30	2026-03-12 16:02:43.131+05:30
-variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	iitem_01KKB6VTAETXHW429F59VMQFP5	pvitem_01KKB6VTAHN96FPPWB158KHRNQ	1	2026-03-10 11:57:33.329441+05:30	2026-03-12 16:02:45.839+05:30	2026-03-12 16:02:45.839+05:30
-variant_01KKB6VTB8MCAKX2VP0ANPKYY6	iitem_01KKB6VTBCXVX1R04XE3N7TC3J	pvitem_01KKB6VTBGVDR2FGJ5K31FPA6C	1	2026-03-10 11:57:33.360734+05:30	2026-03-12 16:02:48.954+05:30	2026-03-12 16:02:48.954+05:30
-variant_01KKB6VTC6APWWPE9TRW04ZMEE	iitem_01KKB6VTC953R7V5MK3KXD5X1B	pvitem_01KKB6VTCDY9DVMECA91F8N8PG	1	2026-03-10 11:57:33.389561+05:30	2026-03-12 16:03:09.158+05:30	2026-03-12 16:03:09.158+05:30
+variant_01KKGF0JZ9APTJHS8W65E4FH5D	iitem_01KKGF0JZE35HM4ZZ5GZ6M8RBX	pvitem_01KKGF0JZQTREVT5DF467HB7SH	1	2026-03-12 07:26:10.423791+00	2026-03-12 07:26:10.423791+00	\N
+variant_01KKGFHZQW7J8EENXMY2ME3CSB	iitem_01KKGFHZR28FB1F7RZTHGFK2TQ	pvitem_01KKGFHZRAMJ6S8RYKEQC60H18	1	2026-03-12 07:35:40.554146+00	2026-03-12 07:35:40.554146+00	\N
+variant_01KKGG1ZXQB7M1RE5JM43RBN4R	iitem_01KKGG1ZXXAJASD66F24D0VGK0	pvitem_01KKGG1ZY5BS6YSS66EQKZG7QD	1	2026-03-12 07:44:25.029805+00	2026-03-12 07:44:25.029805+00	\N
+variant_01KKB6VT5DKHSAVZG3GTK1EK82	iitem_01KKB6VT5M68DX6W4C944ZWQW4	pvitem_01KKB6VT5SQ0DAHX83EXRA32ES	1	2026-03-10 06:27:33.177404+00	2026-03-12 10:32:38.002+00	2026-03-12 10:32:38.002+00
+variant_01KKB6VT77404PJR2B233VB1H5	iitem_01KKB6VT7EM9T7FHMWR0A28KTP	pvitem_01KKB6VT8049VEGEQ1MWE6H0AB	1	2026-03-10 06:27:33.236505+00	2026-03-12 10:32:40.968+00	2026-03-12 10:32:40.968+00
+variant_01KKB6VT90JFVKVR8BBDW3T2Q5	iitem_01KKB6VT93GQGKX90VQY26ANJ7	pvitem_01KKB6VT97KQWMAEKQS117T48A	1	2026-03-10 06:27:33.287322+00	2026-03-12 10:32:43.131+00	2026-03-12 10:32:43.131+00
+variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	iitem_01KKB6VTAETXHW429F59VMQFP5	pvitem_01KKB6VTAHN96FPPWB158KHRNQ	1	2026-03-10 06:27:33.329441+00	2026-03-12 10:32:45.839+00	2026-03-12 10:32:45.839+00
+variant_01KKB6VTB8MCAKX2VP0ANPKYY6	iitem_01KKB6VTBCXVX1R04XE3N7TC3J	pvitem_01KKB6VTBGVDR2FGJ5K31FPA6C	1	2026-03-10 06:27:33.360734+00	2026-03-12 10:32:48.954+00	2026-03-12 10:32:48.954+00
+variant_01KKB6VTC6APWWPE9TRW04ZMEE	iitem_01KKB6VTC953R7V5MK3KXD5X1B	pvitem_01KKB6VTCDY9DVMECA91F8N8PG	1	2026-03-10 06:27:33.389561+00	2026-03-12 10:33:09.158+00	2026-03-12 10:33:09.158+00
 \.
 
 
@@ -4613,57 +4619,57 @@ variant_01KKV0KMF9700JE362F2F9JP7R	optval_01KKV0H2XZ5VA63FQP42WBF5CF
 --
 
 COPY public.product_variant_price_set (variant_id, price_set_id, id, created_at, updated_at, deleted_at) FROM stdin;
-variant_01KKGEV0WDZTHFH4Q1WY5T75VG	pset_01KKGEV0WWTGNQDTXVECXSWYHD	pvps_01KKGEV0XAW7PSFVCCYGTMH9H1	2026-03-12 12:53:08.074327+05:30	2026-03-12 12:53:08.074327+05:30	\N
-variant_01KKGF0JZ9APTJHS8W65E4FH5D	pset_01KKGF0K08AQ5G53G682WTQQJF	pvps_01KKGF0K0GA6KGTKGSMTDMMSPD	2026-03-12 12:56:10.448534+05:30	2026-03-12 12:56:10.448534+05:30	\N
-variant_01KKGFD3YRQGBEMV90V5T59R6M	pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	pvps_01KKGFD3Z73Y3D07VKSMYKKMAG	2026-03-12 13:03:01.031421+05:30	2026-03-12 13:03:01.031421+05:30	\N
-variant_01KKGFEDPX6Z128JHBGFKBJ9B1	pset_01KKGFEDQ80CPB3MQMX7AH9EY5	pvps_01KKGFEDQFSZSQE3ZWVNCETA2S	2026-03-12 13:03:43.79121+05:30	2026-03-12 13:03:43.79121+05:30	\N
-variant_01KKGFHZQW7J8EENXMY2ME3CSB	pset_01KKGFHZRECH6NJ67B763BPCYT	pvps_01KKGFHZRY28S4C2FEX9BJ768H	2026-03-12 13:05:40.574513+05:30	2026-03-12 13:05:40.574513+05:30	\N
-variant_01KKGFQ2QDQK03XYWVGW9EWN0S	pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	pvps_01KKGFQ2R7YST74J68FTS0RXER	2026-03-12 13:08:27.463259+05:30	2026-03-12 13:08:27.463259+05:30	\N
-variant_01KKGFS55KDRFYSF7WM6T7633W	pset_01KKGFS55XEJR6DQSE1AD8JTMN	pvps_01KKGFS5664M790JQ6Y5JR4XNA	2026-03-12 13:09:35.494173+05:30	2026-03-12 13:09:35.494173+05:30	\N
-variant_01KKGG1ZXQB7M1RE5JM43RBN4R	pset_01KKGG1ZY99X1555RKVHR1QH2K	pvps_01KKGG1ZYNY89DXGM06EVM14KT	2026-03-12 13:14:25.045629+05:30	2026-03-12 13:14:25.045629+05:30	\N
-variant_01KKGGBWR83696XCJGNGETCHD1	pset_01KKGGBWRR04B0V09J6JRBGR9E	pvps_01KKGGBWRZK0S33NRG6EEX1NH9	2026-03-12 13:19:49.471497+05:30	2026-03-12 13:19:49.471497+05:30	\N
-variant_01KKGGCYSKC8P1KX9A5K79C1XA	pset_01KKGGCYSZD6FPVW7A656K81GA	pvps_01KKGGCYT8SS14KKXRP7M1AMZN	2026-03-12 13:20:24.32805+05:30	2026-03-12 13:20:24.32805+05:30	\N
-variant_01KKGGDSHPVYQV4XJH1XN6DCF2	pset_01KKGGDSJ1EF1AP0XT83V82GVP	pvps_01KKGGDSJ8E507S2Q80VDYD99W	2026-03-12 13:20:51.720618+05:30	2026-03-12 13:20:51.720618+05:30	\N
-variant_01KKGGETKQ56DWSC48EG0T0AD2	pset_01KKGGETKZX9YMBF0NWNR7EAJ4	pvps_01KKGGETMAX99JKG4RJ18PBZN2	2026-03-12 13:21:25.578054+05:30	2026-03-12 13:21:25.578054+05:30	\N
-variant_01KKGGGS9VD4645FXR6KY0NMXD	pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	pvps_01KKGGGSAE5Q0WQWHWNM2H6JJY	2026-03-12 13:22:29.774323+05:30	2026-03-12 13:22:29.774323+05:30	\N
-variant_01KKGGSX74CRA0XSKSM7G1VQZ9	pset_01KKGGSX7EC6X1H3CJPY04V5GK	pvps_01KKGGSX7PJ9873S1YWA3N07YD	2026-03-12 13:27:28.694776+05:30	2026-03-12 13:27:28.694776+05:30	\N
-variant_01KKGGTJRGETB5CRPK4EV3EV8Y	pset_01KKGGTJRVBPMNBPJQMPZEMS3X	pvps_01KKGGTJS0EMSBWCDQV9TMZXMM	2026-03-12 13:27:50.752372+05:30	2026-03-12 13:27:50.752372+05:30	\N
-variant_01KKGH7HJADS57RSD5DZQ0T04Q	pset_01KKGH7HJJ4B1F9CA998A2A5ZB	pvps_01KKGH7HJSFRN6MSH2S1RTA5KH	2026-03-12 13:34:55.513877+05:30	2026-03-12 13:34:55.513877+05:30	\N
-variant_01KKGH86CZPWDZF8EPVJBXAJQY	pset_01KKGH86D7VJX9Y8THV8S4SDM3	pvps_01KKGH86DCP8ZPGS89V01VND3S	2026-03-12 13:35:16.844342+05:30	2026-03-12 13:35:16.844342+05:30	\N
-variant_01KKGH9BDF6JF8JQF19KRBVJ7X	pset_01KKGH9BDQTV7S85K4G7AVP2KX	pvps_01KKGH9BE2PSSGR1RZH4NSK29X	2026-03-12 13:35:54.754396+05:30	2026-03-12 13:35:54.754396+05:30	\N
-variant_01KKGHA0145Z4F7G7X77DZMBG9	pset_01KKGHA01DGX2ZS08W6R70JZX2	pvps_01KKGHA01QES1NKVMVRWPPX3HA	2026-03-12 13:36:15.863261+05:30	2026-03-12 13:36:15.863261+05:30	\N
-variant_01KKGHBHK3P08F3VPTF5CYV3TY	pset_01KKGHBHKCD32VX7Q1155EXC6J	pvps_01KKGHBHKM7KKG4EE069VQRBKQ	2026-03-12 13:37:06.612429+05:30	2026-03-12 13:37:06.612429+05:30	\N
-variant_01KKGHC40DXRH9RHMXXK7ZRE4V	pset_01KKGHC40SYJ1RNBQ7MZFE56QG	pvps_01KKGHC413ES9SEEE4YY3N8FT9	2026-03-12 13:37:25.475484+05:30	2026-03-12 13:37:25.475484+05:30	\N
-variant_01KKGHEGRJD2PWV0SK6B316JFY	pset_01KKGHEGRRDBX41P4RZF5WGMFB	pvps_01KKGHEGRYKZY8G5EZ7F6QNMF7	2026-03-12 13:38:44.062165+05:30	2026-03-12 13:38:44.062165+05:30	\N
-variant_01KKGHGGH9W0YJYQZ06NJGK1R2	pset_01KKGHGGHKB957PSJN4XGHX5SJ	pvps_01KKGHGGHVHVQXAQEY0E7G1DJJ	2026-03-12 13:39:49.371801+05:30	2026-03-12 13:39:49.371801+05:30	\N
-variant_01KKGHGZ2JQS1ECGZDTSF7XM8E	pset_01KKGHGZ2YXETBK6H4PG7YMMT0	pvps_01KKGHGZ32AM82CZ75AYAWYMPB	2026-03-12 13:40:04.2588+05:30	2026-03-12 13:40:04.2588+05:30	\N
-variant_01KKGHHPXMKDFS9NQ7T1PHT94G	pset_01KKGHHPXXWPYDYH8NZXPDWKR4	pvps_01KKGHHPY6SFVEH628Z673BZFX	2026-03-12 13:40:28.678477+05:30	2026-03-12 13:40:28.678477+05:30	\N
-variant_01KKBDMEQ86XYK4EHA438X4FPE	pset_01KKBDMEQMBYCVS6C3832CD7WX	pvps_01KKBDMER3JH0WMFXZ0AGY0N87	2026-03-10 13:55:52.131206+05:30	2026-03-12 16:02:32.63+05:30	2026-03-12 16:02:32.63+05:30
-variant_01KKB6VT5DKHSAVZG3GTK1EK82	pset_01KKB6VT5YPEDGRWFE8S0R5Z76	pvps_01KKB6VT6ER3J6DTRHH0CEKQ6F	2026-03-10 11:57:33.198058+05:30	2026-03-12 16:02:38.014+05:30	2026-03-12 16:02:38.014+05:30
-variant_01KKB6VT77404PJR2B233VB1H5	pset_01KKB6VT86R9TQ73WRP5GCK4GK	pvps_01KKB6VT8BFD7CT39GCHXJE22N	2026-03-10 11:57:33.25949+05:30	2026-03-12 16:02:40.974+05:30	2026-03-12 16:02:40.974+05:30
-variant_01KKB6VT90JFVKVR8BBDW3T2Q5	pset_01KKB6VT98JKKJ5M3E38DT431A	pvps_01KKB6VT9M1HBSNTG8NHNTSYBA	2026-03-10 11:57:33.300528+05:30	2026-03-12 16:02:43.136+05:30	2026-03-12 16:02:43.136+05:30
-variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	pset_01KKB6VTAJMR6W10Q248MXKEXY	pvps_01KKB6VTAQFG797G7GDAXXKPPP	2026-03-10 11:57:33.334987+05:30	2026-03-12 16:02:45.845+05:30	2026-03-12 16:02:45.845+05:30
-variant_01KKB6VTB8MCAKX2VP0ANPKYY6	pset_01KKB6VTBJAAG9R6QSY42N65KR	pvps_01KKB6VTBP4K0ZA1A2X70ZFZP1	2026-03-10 11:57:33.366836+05:30	2026-03-12 16:02:48.975+05:30	2026-03-12 16:02:48.975+05:30
-variant_01KKB937CR02BK69WQ51KVHHHT	pset_01KKB937DEXCZKSFWR9YHA5BZX	pvps_01KKB937DXJXGZQYXYQD769592	2026-03-10 12:36:33.277296+05:30	2026-03-12 16:02:51.64+05:30	2026-03-12 16:02:51.64+05:30
-variant_01KKB6VTC6APWWPE9TRW04ZMEE	pset_01KKB6VTCF190QVWVWB1CBMX1R	pvps_01KKB6VTCKYNDKJHHBX6Y9CY92	2026-03-10 11:57:33.395584+05:30	2026-03-12 16:03:09.168+05:30	2026-03-12 16:03:09.168+05:30
-variant_01KKGT0Q253GY122GAP6K9X9QD	pset_01KKGT0Q3A7YEG81665WS3A9AW	pvps_01KKGT0Q3XSZS5MBZ3G90447T7	2026-03-12 16:08:28.989509+05:30	2026-03-12 16:08:28.989509+05:30	\N
-variant_01KKTNFA3W0E5EP1XRYADW9F05	pset_01KKTNFA4AKA90RBEDX3FXGVGS	pvps_01KKTNFA4PK3KEY569M3C4WVVM	2026-03-16 12:01:28.662189+05:30	2026-03-16 12:45:00.556+05:30	2026-03-16 12:45:00.555+05:30
-variant_01KKK08Q7Z0Q14YMJJ05J2FG1R	pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	pvps_01KKK08Q8Y0RHNV765XCKD63W3	2026-03-13 12:36:11.614003+05:30	2026-03-16 12:47:39.985+05:30	2026-03-16 12:47:39.984+05:30
-variant_01KKTR6NE542E0SZ9AE5B56455	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	pvps_01KKTR6NF3PE558W6E1PZ0T5G4	2026-03-16 12:49:11.075113+05:30	2026-03-16 12:49:11.075113+05:30	\N
-variant_01KKTQ8QRX41CW1C8K6RX2DANP	pset_01KKTQ8QS90E58VF9AMC6S304F	pvps_01KKTQ8QSQ2MSQFJDCRA43RQQZ	2026-03-16 12:32:50.423134+05:30	2026-03-16 13:53:00.42+05:30	2026-03-16 13:53:00.418+05:30
-variant_01KKTQC82ZV4FCCQ94ZAQFSJGC	pset_01KKTQC839KYMWHRS6HJCCPAX8	pvps_01KKTQC83FYYHPHYG4DSKD7BWW	2026-03-16 12:34:45.423789+05:30	2026-03-16 13:55:29.196+05:30	2026-03-16 13:55:29.195+05:30
-variant_01KKTWER0W0KP66KP7VJ8PXZ7H	pset_01KKTWER1HWDK1949ST4MM5J1V	pvps_01KKTWER2AVE5C4R90DTCFEY01	2026-03-16 14:03:30.185727+05:30	2026-03-16 14:03:30.185727+05:30	\N
-variant_01KKTYFCQAZC7BZA7DC17BQZ2N	pset_01KKTYFCQYNFG9SKWXJGMBPB1F	pvps_01KKTYFCRCPNESMKT7H1HENRMZ	2026-03-16 14:38:48.524082+05:30	2026-03-16 14:40:19.809+05:30	2026-03-16 14:40:19.808+05:30
-variant_01KKTYN1TPJFPA54NTVHD5HCX9	pset_01KKTYN1V0DSA87VB92R79ZSMN	pvps_01KKTYN1V9E5QAA6DD4V5AF22T	2026-03-16 14:41:53.961416+05:30	2026-03-16 14:46:31.954+05:30	2026-03-16 14:46:31.953+05:30
-variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	pset_01KKTZ7JQMBYK90THA8TDMR1DK	pvps_01KKTZ7JR61DH0XB5TS3CGRP0Z	2026-03-16 14:52:01.094499+05:30	2026-03-16 14:52:01.094499+05:30	\N
-variant_01KKTZ937F2FVJ9GDW2J1GZH3A	pset_01KKTZ937W6ENYAZZPQBY583KZ	pvps_01KKTZ93858RBH370ZV1T78X0S	2026-03-16 14:52:50.757592+05:30	2026-03-16 14:52:50.757592+05:30	\N
-variant_01KKTNA7N6QGQ1HYA0NREATVNC	pset_01KKTNA7NSJX5KCYAYPCGGS6K9	pvps_01KKTNA7P8PT11W1KEDZJPFNQ3	2026-03-16 11:58:42.31228+05:30	2026-03-16 14:54:58.137+05:30	2026-03-16 14:54:58.134+05:30
-variant_01KKTZGMMWKJFCJV2TK71VPZMH	pset_01KKTZGMNESN2XC94297D21PKK	pvps_01KKTZGMP1G5GPGYPADJZ17X67	2026-03-16 14:56:57.984746+05:30	2026-03-16 15:09:27.59+05:30	2026-03-16 15:09:27.59+05:30
-variant_01KKTZJP6BXQQJNR43WBC8MTFY	pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	pvps_01KKTZJP6YPMKE7EGS2BJ1ZV2N	2026-03-16 14:58:05.086649+05:30	2026-03-16 15:09:27.59+05:30	2026-03-16 15:09:27.59+05:30
-variant_01KKV08VEV9PWQH1RXH0FB4HGY	pset_01KKV08VF6RZ18D0FKBWJSHEN8	pvps_01KKV08VFF46NBHE37243HZA1K	2026-03-16 15:10:11.375568+05:30	2026-03-16 15:10:11.375568+05:30	\N
-variant_01KKV0BYPXF70HTGJK69AM4DMG	pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	pvps_01KKV0BYQWF8CBJ0MS4PS4AZGZ	2026-03-16 15:11:53.020215+05:30	2026-03-16 15:11:53.020215+05:30	\N
-variant_01KKV0J4ZYQP9QDQV1RKGGKW79	pset_01KKV0J50DWYZPPJDPV6KD7F4V	pvps_01KKV0J50ZG5MN4AB756YY6ZND	2026-03-16 15:15:16.063707+05:30	2026-03-16 15:15:16.063707+05:30	\N
-variant_01KKV0KMF9700JE362F2F9JP7R	pset_01KKV0KMG059BFC3YV0KDA3VXX	pvps_01KKV0KMGBXD4DA49QGZ0YBER1	2026-03-16 15:16:04.683327+05:30	2026-03-16 15:16:04.683327+05:30	\N
+variant_01KKGEV0WDZTHFH4Q1WY5T75VG	pset_01KKGEV0WWTGNQDTXVECXSWYHD	pvps_01KKGEV0XAW7PSFVCCYGTMH9H1	2026-03-12 07:23:08.074327+00	2026-03-12 07:23:08.074327+00	\N
+variant_01KKGF0JZ9APTJHS8W65E4FH5D	pset_01KKGF0K08AQ5G53G682WTQQJF	pvps_01KKGF0K0GA6KGTKGSMTDMMSPD	2026-03-12 07:26:10.448534+00	2026-03-12 07:26:10.448534+00	\N
+variant_01KKGFD3YRQGBEMV90V5T59R6M	pset_01KKGFD3Z0AA9TS84EE4TJZ2DZ	pvps_01KKGFD3Z73Y3D07VKSMYKKMAG	2026-03-12 07:33:01.031421+00	2026-03-12 07:33:01.031421+00	\N
+variant_01KKGFEDPX6Z128JHBGFKBJ9B1	pset_01KKGFEDQ80CPB3MQMX7AH9EY5	pvps_01KKGFEDQFSZSQE3ZWVNCETA2S	2026-03-12 07:33:43.79121+00	2026-03-12 07:33:43.79121+00	\N
+variant_01KKGFHZQW7J8EENXMY2ME3CSB	pset_01KKGFHZRECH6NJ67B763BPCYT	pvps_01KKGFHZRY28S4C2FEX9BJ768H	2026-03-12 07:35:40.574513+00	2026-03-12 07:35:40.574513+00	\N
+variant_01KKGFQ2QDQK03XYWVGW9EWN0S	pset_01KKGFQ2QQQPJQ7AKD8VXPJJRB	pvps_01KKGFQ2R7YST74J68FTS0RXER	2026-03-12 07:38:27.463259+00	2026-03-12 07:38:27.463259+00	\N
+variant_01KKGFS55KDRFYSF7WM6T7633W	pset_01KKGFS55XEJR6DQSE1AD8JTMN	pvps_01KKGFS5664M790JQ6Y5JR4XNA	2026-03-12 07:39:35.494173+00	2026-03-12 07:39:35.494173+00	\N
+variant_01KKGG1ZXQB7M1RE5JM43RBN4R	pset_01KKGG1ZY99X1555RKVHR1QH2K	pvps_01KKGG1ZYNY89DXGM06EVM14KT	2026-03-12 07:44:25.045629+00	2026-03-12 07:44:25.045629+00	\N
+variant_01KKGGBWR83696XCJGNGETCHD1	pset_01KKGGBWRR04B0V09J6JRBGR9E	pvps_01KKGGBWRZK0S33NRG6EEX1NH9	2026-03-12 07:49:49.471497+00	2026-03-12 07:49:49.471497+00	\N
+variant_01KKGGCYSKC8P1KX9A5K79C1XA	pset_01KKGGCYSZD6FPVW7A656K81GA	pvps_01KKGGCYT8SS14KKXRP7M1AMZN	2026-03-12 07:50:24.32805+00	2026-03-12 07:50:24.32805+00	\N
+variant_01KKGGDSHPVYQV4XJH1XN6DCF2	pset_01KKGGDSJ1EF1AP0XT83V82GVP	pvps_01KKGGDSJ8E507S2Q80VDYD99W	2026-03-12 07:50:51.720618+00	2026-03-12 07:50:51.720618+00	\N
+variant_01KKGGETKQ56DWSC48EG0T0AD2	pset_01KKGGETKZX9YMBF0NWNR7EAJ4	pvps_01KKGGETMAX99JKG4RJ18PBZN2	2026-03-12 07:51:25.578054+00	2026-03-12 07:51:25.578054+00	\N
+variant_01KKGGGS9VD4645FXR6KY0NMXD	pset_01KKGGGSA5GJ9RFCFB59H7ZXJE	pvps_01KKGGGSAE5Q0WQWHWNM2H6JJY	2026-03-12 07:52:29.774323+00	2026-03-12 07:52:29.774323+00	\N
+variant_01KKGGSX74CRA0XSKSM7G1VQZ9	pset_01KKGGSX7EC6X1H3CJPY04V5GK	pvps_01KKGGSX7PJ9873S1YWA3N07YD	2026-03-12 07:57:28.694776+00	2026-03-12 07:57:28.694776+00	\N
+variant_01KKGGTJRGETB5CRPK4EV3EV8Y	pset_01KKGGTJRVBPMNBPJQMPZEMS3X	pvps_01KKGGTJS0EMSBWCDQV9TMZXMM	2026-03-12 07:57:50.752372+00	2026-03-12 07:57:50.752372+00	\N
+variant_01KKGH7HJADS57RSD5DZQ0T04Q	pset_01KKGH7HJJ4B1F9CA998A2A5ZB	pvps_01KKGH7HJSFRN6MSH2S1RTA5KH	2026-03-12 08:04:55.513877+00	2026-03-12 08:04:55.513877+00	\N
+variant_01KKGH86CZPWDZF8EPVJBXAJQY	pset_01KKGH86D7VJX9Y8THV8S4SDM3	pvps_01KKGH86DCP8ZPGS89V01VND3S	2026-03-12 08:05:16.844342+00	2026-03-12 08:05:16.844342+00	\N
+variant_01KKGH9BDF6JF8JQF19KRBVJ7X	pset_01KKGH9BDQTV7S85K4G7AVP2KX	pvps_01KKGH9BE2PSSGR1RZH4NSK29X	2026-03-12 08:05:54.754396+00	2026-03-12 08:05:54.754396+00	\N
+variant_01KKGHA0145Z4F7G7X77DZMBG9	pset_01KKGHA01DGX2ZS08W6R70JZX2	pvps_01KKGHA01QES1NKVMVRWPPX3HA	2026-03-12 08:06:15.863261+00	2026-03-12 08:06:15.863261+00	\N
+variant_01KKGHBHK3P08F3VPTF5CYV3TY	pset_01KKGHBHKCD32VX7Q1155EXC6J	pvps_01KKGHBHKM7KKG4EE069VQRBKQ	2026-03-12 08:07:06.612429+00	2026-03-12 08:07:06.612429+00	\N
+variant_01KKGHC40DXRH9RHMXXK7ZRE4V	pset_01KKGHC40SYJ1RNBQ7MZFE56QG	pvps_01KKGHC413ES9SEEE4YY3N8FT9	2026-03-12 08:07:25.475484+00	2026-03-12 08:07:25.475484+00	\N
+variant_01KKGHEGRJD2PWV0SK6B316JFY	pset_01KKGHEGRRDBX41P4RZF5WGMFB	pvps_01KKGHEGRYKZY8G5EZ7F6QNMF7	2026-03-12 08:08:44.062165+00	2026-03-12 08:08:44.062165+00	\N
+variant_01KKGHGGH9W0YJYQZ06NJGK1R2	pset_01KKGHGGHKB957PSJN4XGHX5SJ	pvps_01KKGHGGHVHVQXAQEY0E7G1DJJ	2026-03-12 08:09:49.371801+00	2026-03-12 08:09:49.371801+00	\N
+variant_01KKGHGZ2JQS1ECGZDTSF7XM8E	pset_01KKGHGZ2YXETBK6H4PG7YMMT0	pvps_01KKGHGZ32AM82CZ75AYAWYMPB	2026-03-12 08:10:04.2588+00	2026-03-12 08:10:04.2588+00	\N
+variant_01KKGHHPXMKDFS9NQ7T1PHT94G	pset_01KKGHHPXXWPYDYH8NZXPDWKR4	pvps_01KKGHHPY6SFVEH628Z673BZFX	2026-03-12 08:10:28.678477+00	2026-03-12 08:10:28.678477+00	\N
+variant_01KKBDMEQ86XYK4EHA438X4FPE	pset_01KKBDMEQMBYCVS6C3832CD7WX	pvps_01KKBDMER3JH0WMFXZ0AGY0N87	2026-03-10 08:25:52.131206+00	2026-03-12 10:32:32.63+00	2026-03-12 10:32:32.63+00
+variant_01KKB6VT5DKHSAVZG3GTK1EK82	pset_01KKB6VT5YPEDGRWFE8S0R5Z76	pvps_01KKB6VT6ER3J6DTRHH0CEKQ6F	2026-03-10 06:27:33.198058+00	2026-03-12 10:32:38.014+00	2026-03-12 10:32:38.014+00
+variant_01KKB6VT77404PJR2B233VB1H5	pset_01KKB6VT86R9TQ73WRP5GCK4GK	pvps_01KKB6VT8BFD7CT39GCHXJE22N	2026-03-10 06:27:33.25949+00	2026-03-12 10:32:40.974+00	2026-03-12 10:32:40.974+00
+variant_01KKB6VT90JFVKVR8BBDW3T2Q5	pset_01KKB6VT98JKKJ5M3E38DT431A	pvps_01KKB6VT9M1HBSNTG8NHNTSYBA	2026-03-10 06:27:33.300528+00	2026-03-12 10:32:43.136+00	2026-03-12 10:32:43.136+00
+variant_01KKB6VTAAG6Y5EEBJ4BW6JPSP	pset_01KKB6VTAJMR6W10Q248MXKEXY	pvps_01KKB6VTAQFG797G7GDAXXKPPP	2026-03-10 06:27:33.334987+00	2026-03-12 10:32:45.845+00	2026-03-12 10:32:45.845+00
+variant_01KKB6VTB8MCAKX2VP0ANPKYY6	pset_01KKB6VTBJAAG9R6QSY42N65KR	pvps_01KKB6VTBP4K0ZA1A2X70ZFZP1	2026-03-10 06:27:33.366836+00	2026-03-12 10:32:48.975+00	2026-03-12 10:32:48.975+00
+variant_01KKB937CR02BK69WQ51KVHHHT	pset_01KKB937DEXCZKSFWR9YHA5BZX	pvps_01KKB937DXJXGZQYXYQD769592	2026-03-10 07:06:33.277296+00	2026-03-12 10:32:51.64+00	2026-03-12 10:32:51.64+00
+variant_01KKB6VTC6APWWPE9TRW04ZMEE	pset_01KKB6VTCF190QVWVWB1CBMX1R	pvps_01KKB6VTCKYNDKJHHBX6Y9CY92	2026-03-10 06:27:33.395584+00	2026-03-12 10:33:09.168+00	2026-03-12 10:33:09.168+00
+variant_01KKGT0Q253GY122GAP6K9X9QD	pset_01KKGT0Q3A7YEG81665WS3A9AW	pvps_01KKGT0Q3XSZS5MBZ3G90447T7	2026-03-12 10:38:28.989509+00	2026-03-12 10:38:28.989509+00	\N
+variant_01KKTNFA3W0E5EP1XRYADW9F05	pset_01KKTNFA4AKA90RBEDX3FXGVGS	pvps_01KKTNFA4PK3KEY569M3C4WVVM	2026-03-16 06:31:28.662189+00	2026-03-16 07:15:00.556+00	2026-03-16 07:15:00.555+00
+variant_01KKK08Q7Z0Q14YMJJ05J2FG1R	pset_01KKK08Q8GJJ6R6ZZWV2W4RM31	pvps_01KKK08Q8Y0RHNV765XCKD63W3	2026-03-13 07:06:11.614003+00	2026-03-16 07:17:39.985+00	2026-03-16 07:17:39.984+00
+variant_01KKTR6NE542E0SZ9AE5B56455	pset_01KKTR6NEK2DA8X2RQX8D8MFJE	pvps_01KKTR6NF3PE558W6E1PZ0T5G4	2026-03-16 07:19:11.075113+00	2026-03-16 07:19:11.075113+00	\N
+variant_01KKTQ8QRX41CW1C8K6RX2DANP	pset_01KKTQ8QS90E58VF9AMC6S304F	pvps_01KKTQ8QSQ2MSQFJDCRA43RQQZ	2026-03-16 07:02:50.423134+00	2026-03-16 08:23:00.42+00	2026-03-16 08:23:00.418+00
+variant_01KKTQC82ZV4FCCQ94ZAQFSJGC	pset_01KKTQC839KYMWHRS6HJCCPAX8	pvps_01KKTQC83FYYHPHYG4DSKD7BWW	2026-03-16 07:04:45.423789+00	2026-03-16 08:25:29.196+00	2026-03-16 08:25:29.195+00
+variant_01KKTWER0W0KP66KP7VJ8PXZ7H	pset_01KKTWER1HWDK1949ST4MM5J1V	pvps_01KKTWER2AVE5C4R90DTCFEY01	2026-03-16 08:33:30.185727+00	2026-03-16 08:33:30.185727+00	\N
+variant_01KKTYFCQAZC7BZA7DC17BQZ2N	pset_01KKTYFCQYNFG9SKWXJGMBPB1F	pvps_01KKTYFCRCPNESMKT7H1HENRMZ	2026-03-16 09:08:48.524082+00	2026-03-16 09:10:19.809+00	2026-03-16 09:10:19.808+00
+variant_01KKTYN1TPJFPA54NTVHD5HCX9	pset_01KKTYN1V0DSA87VB92R79ZSMN	pvps_01KKTYN1V9E5QAA6DD4V5AF22T	2026-03-16 09:11:53.961416+00	2026-03-16 09:16:31.954+00	2026-03-16 09:16:31.953+00
+variant_01KKTZ7JQ2DC3HB3E1XMTZ16QE	pset_01KKTZ7JQMBYK90THA8TDMR1DK	pvps_01KKTZ7JR61DH0XB5TS3CGRP0Z	2026-03-16 09:22:01.094499+00	2026-03-16 09:22:01.094499+00	\N
+variant_01KKTZ937F2FVJ9GDW2J1GZH3A	pset_01KKTZ937W6ENYAZZPQBY583KZ	pvps_01KKTZ93858RBH370ZV1T78X0S	2026-03-16 09:22:50.757592+00	2026-03-16 09:22:50.757592+00	\N
+variant_01KKTNA7N6QGQ1HYA0NREATVNC	pset_01KKTNA7NSJX5KCYAYPCGGS6K9	pvps_01KKTNA7P8PT11W1KEDZJPFNQ3	2026-03-16 06:28:42.31228+00	2026-03-16 09:24:58.137+00	2026-03-16 09:24:58.134+00
+variant_01KKTZGMMWKJFCJV2TK71VPZMH	pset_01KKTZGMNESN2XC94297D21PKK	pvps_01KKTZGMP1G5GPGYPADJZ17X67	2026-03-16 09:26:57.984746+00	2026-03-16 09:39:27.59+00	2026-03-16 09:39:27.59+00
+variant_01KKTZJP6BXQQJNR43WBC8MTFY	pset_01KKTZJP6RQ96VBDX2TGCWTGEQ	pvps_01KKTZJP6YPMKE7EGS2BJ1ZV2N	2026-03-16 09:28:05.086649+00	2026-03-16 09:39:27.59+00	2026-03-16 09:39:27.59+00
+variant_01KKV08VEV9PWQH1RXH0FB4HGY	pset_01KKV08VF6RZ18D0FKBWJSHEN8	pvps_01KKV08VFF46NBHE37243HZA1K	2026-03-16 09:40:11.375568+00	2026-03-16 09:40:11.375568+00	\N
+variant_01KKV0BYPXF70HTGJK69AM4DMG	pset_01KKV0BYQFZ5SZD1DF9BMMXYFY	pvps_01KKV0BYQWF8CBJ0MS4PS4AZGZ	2026-03-16 09:41:53.020215+00	2026-03-16 09:41:53.020215+00	\N
+variant_01KKV0J4ZYQP9QDQV1RKGGKW79	pset_01KKV0J50DWYZPPJDPV6KD7F4V	pvps_01KKV0J50ZG5MN4AB756YY6ZND	2026-03-16 09:45:16.063707+00	2026-03-16 09:45:16.063707+00	\N
+variant_01KKV0KMF9700JE362F2F9JP7R	pset_01KKV0KMG059BFC3YV0KDA3VXX	pvps_01KKV0KMGBXD4DA49QGZ0YBER1	2026-03-16 09:46:04.683327+00	2026-03-16 09:46:04.683327+00	\N
 \.
 
 
@@ -4672,7 +4678,6 @@ variant_01KKV0KMF9700JE362F2F9JP7R	pset_01KKV0KMG059BFC3YV0KDA3VXX	pvps_01KKV0KM
 --
 
 COPY public.product_variant_product_image (id, variant_id, image_id, created_at, updated_at, deleted_at) FROM stdin;
-pvpi_01KKTRWJTNX1TT9WX9MDS57779	variant_01KKTR6NE542E0SZ9AE5B56455	img_01KKTR6NCNQ9XCJ5VE8T2AGMAH	2026-03-16 13:01:09.27+05:30	2026-03-16 13:01:09.27+05:30	\N
 \.
 
 
@@ -4745,8 +4750,8 @@ COPY public.promotion_rule_value (id, promotion_rule_id, value, created_at, upda
 --
 
 COPY public.provider_identity (id, entity_id, provider, auth_identity_id, user_metadata, provider_metadata, created_at, updated_at, deleted_at) FROM stdin;
-01KKB74WW6YDYTBW4NXJ1CPA7R	admin@admin.com	emailpass	authid_01KKB74WW61QPK5144M9VB75GN	\N	{"password": "c2NyeXB0AA8AAAAIAAAAAYYt6r26YFjpBj6II4sfpVxq0wwjzpMGo5+cPBwGRmmTeGv7jFecyidNQ0bJCO2WwkxzJuj6i99pBxCcqn+pk065owNuEqkHd/ZVlXMZe98K"}	2026-03-10 12:02:30.854+05:30	2026-03-10 12:02:30.854+05:30	\N
-01KKBNF62NXWJBTTB51HH4B76A	kunalrisaanva12@gmail.com	emailpass	authid_01KKBNF62Q3DX94KHR72XXH6HC	\N	{"password": "c2NyeXB0AA8AAAAIAAAAAUzt3EMb7jKBF781I4JNtmwP+9frOzil1RUhDaXIw4HkWY/fpodAnle2hewH8iw5X357eD2XueNlnYyVYqkpa6uvMt7Y5G1uGytZCgn3UqQP"}	2026-03-10 16:12:48.032+05:30	2026-03-10 16:12:48.032+05:30	\N
+01KKB74WW6YDYTBW4NXJ1CPA7R	admin@admin.com	emailpass	authid_01KKB74WW61QPK5144M9VB75GN	\N	{"password": "c2NyeXB0AA8AAAAIAAAAAYYt6r26YFjpBj6II4sfpVxq0wwjzpMGo5+cPBwGRmmTeGv7jFecyidNQ0bJCO2WwkxzJuj6i99pBxCcqn+pk065owNuEqkHd/ZVlXMZe98K"}	2026-03-10 06:32:30.854+00	2026-03-10 06:32:30.854+00	\N
+01KKBNF62NXWJBTTB51HH4B76A	kunalrisaanva12@gmail.com	emailpass	authid_01KKBNF62Q3DX94KHR72XXH6HC	\N	{"password": "c2NyeXB0AA8AAAAIAAAAAUzt3EMb7jKBF781I4JNtmwP+9frOzil1RUhDaXIw4HkWY/fpodAnle2hewH8iw5X357eD2XueNlnYyVYqkpa6uvMt7Y5G1uGytZCgn3UqQP"}	2026-03-10 10:42:48.032+00	2026-03-10 10:42:48.032+00	\N
 \.
 
 
@@ -4755,7 +4760,7 @@ COPY public.provider_identity (id, entity_id, provider, auth_identity_id, user_m
 --
 
 COPY public.publishable_api_key_sales_channel (publishable_key_id, sales_channel_id, id, created_at, updated_at, deleted_at) FROM stdin;
-apk_01KKB6VT37HNAW39V48A86KFN5	sc_01KKB6VT2GA936E202BCVNT0DC	pksc_01KKB6VT3CGHB4TQZYCXFNE5MR	2026-03-10 11:57:33.100134+05:30	2026-03-10 11:57:33.100134+05:30	\N
+apk_01KKB6VT37HNAW39V48A86KFN5	sc_01KKB6VT2GA936E202BCVNT0DC	pksc_01KKB6VT3CGHB4TQZYCXFNE5MR	2026-03-10 06:27:33.100134+00	2026-03-10 06:27:33.100134+00	\N
 \.
 
 
@@ -4772,9 +4777,9 @@ COPY public.refund (id, amount, raw_amount, payment_id, created_at, updated_at, 
 --
 
 COPY public.refund_reason (id, label, description, metadata, created_at, updated_at, deleted_at, code) FROM stdin;
-refr_01KKB6VB570Q289Z6PHKPE9VAC	Shipping Issue	Refund due to lost, delayed, or misdelivered shipment	\N	2026-03-10 11:57:17.763886+05:30	2026-03-10 11:57:17.763886+05:30	\N	shipping_issue
-refr_01KKB6VB575ZNFMKD5YWB3GYT3	Customer Care Adjustment	Refund given as goodwill or compensation for inconvenience	\N	2026-03-10 11:57:17.763886+05:30	2026-03-10 11:57:17.763886+05:30	\N	customer_care_adjustment
-refr_01KKB6VB570GNZ4FNPQ3KPTQMZ	Pricing Error	Refund to correct an overcharge, missing discount, or incorrect price	\N	2026-03-10 11:57:17.763886+05:30	2026-03-10 11:57:17.763886+05:30	\N	pricing_error
+refr_01KKB6VB570Q289Z6PHKPE9VAC	Shipping Issue	Refund due to lost, delayed, or misdelivered shipment	\N	2026-03-10 06:27:17.763886+00	2026-03-10 06:27:17.763886+00	\N	shipping_issue
+refr_01KKB6VB575ZNFMKD5YWB3GYT3	Customer Care Adjustment	Refund given as goodwill or compensation for inconvenience	\N	2026-03-10 06:27:17.763886+00	2026-03-10 06:27:17.763886+00	\N	customer_care_adjustment
+refr_01KKB6VB570GNZ4FNPQ3KPTQMZ	Pricing Error	Refund to correct an overcharge, missing discount, or incorrect price	\N	2026-03-10 06:27:17.763886+00	2026-03-10 06:27:17.763886+00	\N	pricing_error
 \.
 
 
@@ -4783,7 +4788,7 @@ refr_01KKB6VB570GNZ4FNPQ3KPTQMZ	Pricing Error	Refund to correct an overcharge, m
 --
 
 COPY public.region (id, name, currency_code, metadata, created_at, updated_at, deleted_at, automatic_taxes) FROM stdin;
-reg_01KKB79PXYZ123	India	inr	\N	2026-03-10 12:07:24.892523+05:30	2026-03-10 12:07:24.892523+05:30	\N	t
+reg_01KKB79PXYZ123	India	inr	\N	2026-03-10 06:37:24.892523+00	2026-03-10 06:37:24.892523+00	\N	t
 \.
 
 
@@ -4792,256 +4797,256 @@ reg_01KKB79PXYZ123	India	inr	\N	2026-03-10 12:07:24.892523+05:30	2026-03-10 12:0
 --
 
 COPY public.region_country (iso_2, iso_3, num_code, name, display_name, region_id, metadata, created_at, updated_at, deleted_at) FROM stdin;
-af	afg	004	AFGHANISTAN	Afghanistan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-al	alb	008	ALBANIA	Albania	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-dz	dza	012	ALGERIA	Algeria	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-as	asm	016	AMERICAN SAMOA	American Samoa	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ad	and	020	ANDORRA	Andorra	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ao	ago	024	ANGOLA	Angola	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ai	aia	660	ANGUILLA	Anguilla	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-aq	ata	010	ANTARCTICA	Antarctica	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ag	atg	028	ANTIGUA AND BARBUDA	Antigua and Barbuda	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ar	arg	032	ARGENTINA	Argentina	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-am	arm	051	ARMENIA	Armenia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-aw	abw	533	ARUBA	Aruba	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-au	aus	036	AUSTRALIA	Australia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-at	aut	040	AUSTRIA	Austria	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-az	aze	031	AZERBAIJAN	Azerbaijan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bs	bhs	044	BAHAMAS	Bahamas	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bh	bhr	048	BAHRAIN	Bahrain	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bd	bgd	050	BANGLADESH	Bangladesh	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bb	brb	052	BARBADOS	Barbados	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-by	blr	112	BELARUS	Belarus	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-be	bel	056	BELGIUM	Belgium	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bz	blz	084	BELIZE	Belize	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bj	ben	204	BENIN	Benin	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bm	bmu	060	BERMUDA	Bermuda	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bt	btn	064	BHUTAN	Bhutan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bo	bol	068	BOLIVIA	Bolivia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bq	bes	535	BONAIRE, SINT EUSTATIUS AND SABA	Bonaire, Sint Eustatius and Saba	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ba	bih	070	BOSNIA AND HERZEGOVINA	Bosnia and Herzegovina	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bw	bwa	072	BOTSWANA	Botswana	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bv	bvd	074	BOUVET ISLAND	Bouvet Island	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-br	bra	076	BRAZIL	Brazil	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-io	iot	086	BRITISH INDIAN OCEAN TERRITORY	British Indian Ocean Territory	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bn	brn	096	BRUNEI DARUSSALAM	Brunei Darussalam	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bg	bgr	100	BULGARIA	Bulgaria	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bf	bfa	854	BURKINA FASO	Burkina Faso	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bi	bdi	108	BURUNDI	Burundi	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kh	khm	116	CAMBODIA	Cambodia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cm	cmr	120	CAMEROON	Cameroon	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ca	can	124	CANADA	Canada	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cv	cpv	132	CAPE VERDE	Cape Verde	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ky	cym	136	CAYMAN ISLANDS	Cayman Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cf	caf	140	CENTRAL AFRICAN REPUBLIC	Central African Republic	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-td	tcd	148	CHAD	Chad	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cl	chl	152	CHILE	Chile	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cn	chn	156	CHINA	China	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cx	cxr	162	CHRISTMAS ISLAND	Christmas Island	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cc	cck	166	COCOS (KEELING) ISLANDS	Cocos (Keeling) Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-co	col	170	COLOMBIA	Colombia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-km	com	174	COMOROS	Comoros	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cg	cog	178	CONGO	Congo	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cd	cod	180	CONGO, THE DEMOCRATIC REPUBLIC OF THE	Congo, the Democratic Republic of the	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ck	cok	184	COOK ISLANDS	Cook Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cr	cri	188	COSTA RICA	Costa Rica	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ci	civ	384	COTE D'IVOIRE	Cote D'Ivoire	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-hr	hrv	191	CROATIA	Croatia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cu	cub	192	CUBA	Cuba	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cw	cuw	531	CURAÇAO	Curaçao	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cy	cyp	196	CYPRUS	Cyprus	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-cz	cze	203	CZECH REPUBLIC	Czech Republic	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-dk	dnk	208	DENMARK	Denmark	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-dj	dji	262	DJIBOUTI	Djibouti	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-dm	dma	212	DOMINICA	Dominica	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-do	dom	214	DOMINICAN REPUBLIC	Dominican Republic	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ec	ecu	218	ECUADOR	Ecuador	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-eg	egy	818	EGYPT	Egypt	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sv	slv	222	EL SALVADOR	El Salvador	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gq	gnq	226	EQUATORIAL GUINEA	Equatorial Guinea	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-er	eri	232	ERITREA	Eritrea	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ee	est	233	ESTONIA	Estonia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-et	eth	231	ETHIOPIA	Ethiopia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fk	flk	238	FALKLAND ISLANDS (MALVINAS)	Falkland Islands (Malvinas)	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fo	fro	234	FAROE ISLANDS	Faroe Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fj	fji	242	FIJI	Fiji	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fi	fin	246	FINLAND	Finland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fr	fra	250	FRANCE	France	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gf	guf	254	FRENCH GUIANA	French Guiana	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pf	pyf	258	FRENCH POLYNESIA	French Polynesia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-tf	atf	260	FRENCH SOUTHERN TERRITORIES	French Southern Territories	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ga	gab	266	GABON	Gabon	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gm	gmb	270	GAMBIA	Gambia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ge	geo	268	GEORGIA	Georgia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-de	deu	276	GERMANY	Germany	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gh	gha	288	GHANA	Ghana	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gi	gib	292	GIBRALTAR	Gibraltar	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gr	grc	300	GREECE	Greece	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gl	grl	304	GREENLAND	Greenland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gd	grd	308	GRENADA	Grenada	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gp	glp	312	GUADELOUPE	Guadeloupe	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gu	gum	316	GUAM	Guam	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gt	gtm	320	GUATEMALA	Guatemala	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gg	ggy	831	GUERNSEY	Guernsey	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gn	gin	324	GUINEA	Guinea	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gw	gnb	624	GUINEA-BISSAU	Guinea-Bissau	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gy	guy	328	GUYANA	Guyana	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ht	hti	332	HAITI	Haiti	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-hm	hmd	334	HEARD ISLAND AND MCDONALD ISLANDS	Heard Island And Mcdonald Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-va	vat	336	HOLY SEE (VATICAN CITY STATE)	Holy See (Vatican City State)	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-hn	hnd	340	HONDURAS	Honduras	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-hk	hkg	344	HONG KONG	Hong Kong	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-hu	hun	348	HUNGARY	Hungary	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-is	isl	352	ICELAND	Iceland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-id	idn	360	INDONESIA	Indonesia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ir	irn	364	IRAN, ISLAMIC REPUBLIC OF	Iran, Islamic Republic of	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-iq	irq	368	IRAQ	Iraq	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ie	irl	372	IRELAND	Ireland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-im	imn	833	ISLE OF MAN	Isle Of Man	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-il	isr	376	ISRAEL	Israel	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-it	ita	380	ITALY	Italy	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-jm	jam	388	JAMAICA	Jamaica	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-jp	jpn	392	JAPAN	Japan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-je	jey	832	JERSEY	Jersey	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-jo	jor	400	JORDAN	Jordan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kz	kaz	398	KAZAKHSTAN	Kazakhstan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ke	ken	404	KENYA	Kenya	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ki	kir	296	KIRIBATI	Kiribati	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kp	prk	408	KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF	Korea, Democratic People's Republic of	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kr	kor	410	KOREA, REPUBLIC OF	Korea, Republic of	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-xk	xkx	900	KOSOVO	Kosovo	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kw	kwt	414	KUWAIT	Kuwait	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kg	kgz	417	KYRGYZSTAN	Kyrgyzstan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-la	lao	418	LAO PEOPLE'S DEMOCRATIC REPUBLIC	Lao People's Democratic Republic	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lv	lva	428	LATVIA	Latvia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lb	lbn	422	LEBANON	Lebanon	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ls	lso	426	LESOTHO	Lesotho	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lr	lbr	430	LIBERIA	Liberia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ly	lby	434	LIBYA	Libya	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-li	lie	438	LIECHTENSTEIN	Liechtenstein	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lt	ltu	440	LITHUANIA	Lithuania	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lu	lux	442	LUXEMBOURG	Luxembourg	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mo	mac	446	MACAO	Macao	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mg	mdg	450	MADAGASCAR	Madagascar	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mw	mwi	454	MALAWI	Malawi	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-my	mys	458	MALAYSIA	Malaysia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mv	mdv	462	MALDIVES	Maldives	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ml	mli	466	MALI	Mali	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mt	mlt	470	MALTA	Malta	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mh	mhl	584	MARSHALL ISLANDS	Marshall Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mq	mtq	474	MARTINIQUE	Martinique	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mr	mrt	478	MAURITANIA	Mauritania	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mu	mus	480	MAURITIUS	Mauritius	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-yt	myt	175	MAYOTTE	Mayotte	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mx	mex	484	MEXICO	Mexico	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-fm	fsm	583	MICRONESIA, FEDERATED STATES OF	Micronesia, Federated States of	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-md	mda	498	MOLDOVA, REPUBLIC OF	Moldova, Republic of	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mc	mco	492	MONACO	Monaco	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mn	mng	496	MONGOLIA	Mongolia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-me	mne	499	MONTENEGRO	Montenegro	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ms	msr	500	MONTSERRAT	Montserrat	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ma	mar	504	MOROCCO	Morocco	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mz	moz	508	MOZAMBIQUE	Mozambique	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mm	mmr	104	MYANMAR	Myanmar	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-na	nam	516	NAMIBIA	Namibia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nr	nru	520	NAURU	Nauru	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-np	npl	524	NEPAL	Nepal	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nl	nld	528	NETHERLANDS	Netherlands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nc	ncl	540	NEW CALEDONIA	New Caledonia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nz	nzl	554	NEW ZEALAND	New Zealand	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ni	nic	558	NICARAGUA	Nicaragua	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ne	ner	562	NIGER	Niger	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ng	nga	566	NIGERIA	Nigeria	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nu	niu	570	NIUE	Niue	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-nf	nfk	574	NORFOLK ISLAND	Norfolk Island	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mk	mkd	807	NORTH MACEDONIA	North Macedonia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mp	mnp	580	NORTHERN MARIANA ISLANDS	Northern Mariana Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-no	nor	578	NORWAY	Norway	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-om	omn	512	OMAN	Oman	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pk	pak	586	PAKISTAN	Pakistan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pw	plw	585	PALAU	Palau	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ps	pse	275	PALESTINIAN TERRITORY, OCCUPIED	Palestinian Territory, Occupied	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pa	pan	591	PANAMA	Panama	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pg	png	598	PAPUA NEW GUINEA	Papua New Guinea	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-py	pry	600	PARAGUAY	Paraguay	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pe	per	604	PERU	Peru	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ph	phl	608	PHILIPPINES	Philippines	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pn	pcn	612	PITCAIRN	Pitcairn	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pl	pol	616	POLAND	Poland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pt	prt	620	PORTUGAL	Portugal	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pr	pri	630	PUERTO RICO	Puerto Rico	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-qa	qat	634	QATAR	Qatar	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-re	reu	638	REUNION	Reunion	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ro	rom	642	ROMANIA	Romania	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ru	rus	643	RUSSIAN FEDERATION	Russian Federation	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-rw	rwa	646	RWANDA	Rwanda	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-bl	blm	652	SAINT BARTHÉLEMY	Saint Barthélemy	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sh	shn	654	SAINT HELENA	Saint Helena	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-kn	kna	659	SAINT KITTS AND NEVIS	Saint Kitts and Nevis	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lc	lca	662	SAINT LUCIA	Saint Lucia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-mf	maf	663	SAINT MARTIN (FRENCH PART)	Saint Martin (French part)	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-pm	spm	666	SAINT PIERRE AND MIQUELON	Saint Pierre and Miquelon	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-vc	vct	670	SAINT VINCENT AND THE GRENADINES	Saint Vincent and the Grenadines	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ws	wsm	882	SAMOA	Samoa	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sm	smr	674	SAN MARINO	San Marino	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-st	stp	678	SAO TOME AND PRINCIPE	Sao Tome and Principe	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sa	sau	682	SAUDI ARABIA	Saudi Arabia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sn	sen	686	SENEGAL	Senegal	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-rs	srb	688	SERBIA	Serbia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sc	syc	690	SEYCHELLES	Seychelles	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sl	sle	694	SIERRA LEONE	Sierra Leone	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sg	sgp	702	SINGAPORE	Singapore	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sx	sxm	534	SINT MAARTEN	Sint Maarten	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sk	svk	703	SLOVAKIA	Slovakia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-si	svn	705	SLOVENIA	Slovenia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sb	slb	090	SOLOMON ISLANDS	Solomon Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-so	som	706	SOMALIA	Somalia	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-za	zaf	710	SOUTH AFRICA	South Africa	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-gs	sgs	239	SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS	South Georgia and the South Sandwich Islands	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ss	ssd	728	SOUTH SUDAN	South Sudan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-es	esp	724	SPAIN	Spain	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-lk	lka	144	SRI LANKA	Sri Lanka	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sd	sdn	729	SUDAN	Sudan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sr	sur	740	SURINAME	Suriname	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sj	sjm	744	SVALBARD AND JAN MAYEN	Svalbard and Jan Mayen	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sz	swz	748	SWAZILAND	Swaziland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-se	swe	752	SWEDEN	Sweden	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-ch	che	756	SWITZERLAND	Switzerland	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-sy	syr	760	SYRIAN ARAB REPUBLIC	Syrian Arab Republic	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-tw	twn	158	TAIWAN, PROVINCE OF CHINA	Taiwan, Province of China	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-tj	tjk	762	TAJIKISTAN	Tajikistan	\N	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
-tz	tza	834	TANZANIA, UNITED REPUBLIC OF	Tanzania, United Republic of	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-th	tha	764	THAILAND	Thailand	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tl	tls	626	TIMOR LESTE	Timor Leste	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tg	tgo	768	TOGO	Togo	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tk	tkl	772	TOKELAU	Tokelau	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-to	ton	776	TONGA	Tonga	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tt	tto	780	TRINIDAD AND TOBAGO	Trinidad and Tobago	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tn	tun	788	TUNISIA	Tunisia	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tr	tur	792	TURKEY	Turkey	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tm	tkm	795	TURKMENISTAN	Turkmenistan	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tc	tca	796	TURKS AND CAICOS ISLANDS	Turks and Caicos Islands	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-tv	tuv	798	TUVALU	Tuvalu	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ug	uga	800	UGANDA	Uganda	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ua	ukr	804	UKRAINE	Ukraine	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ae	are	784	UNITED ARAB EMIRATES	United Arab Emirates	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-gb	gbr	826	UNITED KINGDOM	United Kingdom	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-um	umi	581	UNITED STATES MINOR OUTLYING ISLANDS	United States Minor Outlying Islands	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-uy	ury	858	URUGUAY	Uruguay	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-uz	uzb	860	UZBEKISTAN	Uzbekistan	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-vu	vut	548	VANUATU	Vanuatu	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ve	ven	862	VENEZUELA	Venezuela	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-vn	vnm	704	VIET NAM	Viet Nam	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-vg	vgb	092	VIRGIN ISLANDS, BRITISH	Virgin Islands, British	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-vi	vir	850	VIRGIN ISLANDS, U.S.	Virgin Islands, U.S.	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-wf	wlf	876	WALLIS AND FUTUNA	Wallis and Futuna	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-eh	esh	732	WESTERN SAHARA	Western Sahara	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ye	yem	887	YEMEN	Yemen	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-zm	zmb	894	ZAMBIA	Zambia	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-zw	zwe	716	ZIMBABWE	Zimbabwe	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-ax	ala	248	ÅLAND ISLANDS	Åland Islands	\N	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-us	usa	840	UNITED STATES	United States	reg_01KKB79PXYZ123	\N	2026-03-10 11:57:20.29+05:30	2026-03-10 11:57:20.29+05:30	\N
-in	ind	356	INDIA	India	reg_01KKB79PXYZ123	\N	2026-03-10 11:57:20.289+05:30	2026-03-10 11:57:20.289+05:30	\N
+af	afg	004	AFGHANISTAN	Afghanistan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+al	alb	008	ALBANIA	Albania	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+dz	dza	012	ALGERIA	Algeria	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+as	asm	016	AMERICAN SAMOA	American Samoa	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ad	and	020	ANDORRA	Andorra	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ao	ago	024	ANGOLA	Angola	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ai	aia	660	ANGUILLA	Anguilla	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+aq	ata	010	ANTARCTICA	Antarctica	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ag	atg	028	ANTIGUA AND BARBUDA	Antigua and Barbuda	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ar	arg	032	ARGENTINA	Argentina	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+am	arm	051	ARMENIA	Armenia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+aw	abw	533	ARUBA	Aruba	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+au	aus	036	AUSTRALIA	Australia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+at	aut	040	AUSTRIA	Austria	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+az	aze	031	AZERBAIJAN	Azerbaijan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bs	bhs	044	BAHAMAS	Bahamas	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bh	bhr	048	BAHRAIN	Bahrain	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bd	bgd	050	BANGLADESH	Bangladesh	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bb	brb	052	BARBADOS	Barbados	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+by	blr	112	BELARUS	Belarus	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+be	bel	056	BELGIUM	Belgium	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bz	blz	084	BELIZE	Belize	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bj	ben	204	BENIN	Benin	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bm	bmu	060	BERMUDA	Bermuda	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bt	btn	064	BHUTAN	Bhutan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bo	bol	068	BOLIVIA	Bolivia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bq	bes	535	BONAIRE, SINT EUSTATIUS AND SABA	Bonaire, Sint Eustatius and Saba	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ba	bih	070	BOSNIA AND HERZEGOVINA	Bosnia and Herzegovina	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bw	bwa	072	BOTSWANA	Botswana	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bv	bvd	074	BOUVET ISLAND	Bouvet Island	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+br	bra	076	BRAZIL	Brazil	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+io	iot	086	BRITISH INDIAN OCEAN TERRITORY	British Indian Ocean Territory	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bn	brn	096	BRUNEI DARUSSALAM	Brunei Darussalam	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bg	bgr	100	BULGARIA	Bulgaria	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bf	bfa	854	BURKINA FASO	Burkina Faso	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bi	bdi	108	BURUNDI	Burundi	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kh	khm	116	CAMBODIA	Cambodia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cm	cmr	120	CAMEROON	Cameroon	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ca	can	124	CANADA	Canada	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cv	cpv	132	CAPE VERDE	Cape Verde	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ky	cym	136	CAYMAN ISLANDS	Cayman Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cf	caf	140	CENTRAL AFRICAN REPUBLIC	Central African Republic	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+td	tcd	148	CHAD	Chad	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cl	chl	152	CHILE	Chile	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cn	chn	156	CHINA	China	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cx	cxr	162	CHRISTMAS ISLAND	Christmas Island	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cc	cck	166	COCOS (KEELING) ISLANDS	Cocos (Keeling) Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+co	col	170	COLOMBIA	Colombia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+km	com	174	COMOROS	Comoros	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cg	cog	178	CONGO	Congo	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cd	cod	180	CONGO, THE DEMOCRATIC REPUBLIC OF THE	Congo, the Democratic Republic of the	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ck	cok	184	COOK ISLANDS	Cook Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cr	cri	188	COSTA RICA	Costa Rica	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ci	civ	384	COTE D'IVOIRE	Cote D'Ivoire	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+hr	hrv	191	CROATIA	Croatia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cu	cub	192	CUBA	Cuba	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cw	cuw	531	CURAÇAO	Curaçao	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cy	cyp	196	CYPRUS	Cyprus	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+cz	cze	203	CZECH REPUBLIC	Czech Republic	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+dk	dnk	208	DENMARK	Denmark	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+dj	dji	262	DJIBOUTI	Djibouti	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+dm	dma	212	DOMINICA	Dominica	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+do	dom	214	DOMINICAN REPUBLIC	Dominican Republic	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ec	ecu	218	ECUADOR	Ecuador	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+eg	egy	818	EGYPT	Egypt	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sv	slv	222	EL SALVADOR	El Salvador	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gq	gnq	226	EQUATORIAL GUINEA	Equatorial Guinea	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+er	eri	232	ERITREA	Eritrea	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ee	est	233	ESTONIA	Estonia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+et	eth	231	ETHIOPIA	Ethiopia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fk	flk	238	FALKLAND ISLANDS (MALVINAS)	Falkland Islands (Malvinas)	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fo	fro	234	FAROE ISLANDS	Faroe Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fj	fji	242	FIJI	Fiji	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fi	fin	246	FINLAND	Finland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fr	fra	250	FRANCE	France	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gf	guf	254	FRENCH GUIANA	French Guiana	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pf	pyf	258	FRENCH POLYNESIA	French Polynesia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+tf	atf	260	FRENCH SOUTHERN TERRITORIES	French Southern Territories	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ga	gab	266	GABON	Gabon	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gm	gmb	270	GAMBIA	Gambia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ge	geo	268	GEORGIA	Georgia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+de	deu	276	GERMANY	Germany	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gh	gha	288	GHANA	Ghana	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gi	gib	292	GIBRALTAR	Gibraltar	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gr	grc	300	GREECE	Greece	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gl	grl	304	GREENLAND	Greenland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gd	grd	308	GRENADA	Grenada	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gp	glp	312	GUADELOUPE	Guadeloupe	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gu	gum	316	GUAM	Guam	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gt	gtm	320	GUATEMALA	Guatemala	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gg	ggy	831	GUERNSEY	Guernsey	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gn	gin	324	GUINEA	Guinea	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gw	gnb	624	GUINEA-BISSAU	Guinea-Bissau	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gy	guy	328	GUYANA	Guyana	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ht	hti	332	HAITI	Haiti	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+hm	hmd	334	HEARD ISLAND AND MCDONALD ISLANDS	Heard Island And Mcdonald Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+va	vat	336	HOLY SEE (VATICAN CITY STATE)	Holy See (Vatican City State)	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+hn	hnd	340	HONDURAS	Honduras	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+hk	hkg	344	HONG KONG	Hong Kong	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+hu	hun	348	HUNGARY	Hungary	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+is	isl	352	ICELAND	Iceland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+id	idn	360	INDONESIA	Indonesia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ir	irn	364	IRAN, ISLAMIC REPUBLIC OF	Iran, Islamic Republic of	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+iq	irq	368	IRAQ	Iraq	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ie	irl	372	IRELAND	Ireland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+im	imn	833	ISLE OF MAN	Isle Of Man	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+il	isr	376	ISRAEL	Israel	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+it	ita	380	ITALY	Italy	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+jm	jam	388	JAMAICA	Jamaica	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+jp	jpn	392	JAPAN	Japan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+je	jey	832	JERSEY	Jersey	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+jo	jor	400	JORDAN	Jordan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kz	kaz	398	KAZAKHSTAN	Kazakhstan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ke	ken	404	KENYA	Kenya	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ki	kir	296	KIRIBATI	Kiribati	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kp	prk	408	KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF	Korea, Democratic People's Republic of	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kr	kor	410	KOREA, REPUBLIC OF	Korea, Republic of	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+xk	xkx	900	KOSOVO	Kosovo	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kw	kwt	414	KUWAIT	Kuwait	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kg	kgz	417	KYRGYZSTAN	Kyrgyzstan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+la	lao	418	LAO PEOPLE'S DEMOCRATIC REPUBLIC	Lao People's Democratic Republic	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lv	lva	428	LATVIA	Latvia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lb	lbn	422	LEBANON	Lebanon	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ls	lso	426	LESOTHO	Lesotho	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lr	lbr	430	LIBERIA	Liberia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ly	lby	434	LIBYA	Libya	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+li	lie	438	LIECHTENSTEIN	Liechtenstein	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lt	ltu	440	LITHUANIA	Lithuania	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lu	lux	442	LUXEMBOURG	Luxembourg	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mo	mac	446	MACAO	Macao	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mg	mdg	450	MADAGASCAR	Madagascar	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mw	mwi	454	MALAWI	Malawi	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+my	mys	458	MALAYSIA	Malaysia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mv	mdv	462	MALDIVES	Maldives	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ml	mli	466	MALI	Mali	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mt	mlt	470	MALTA	Malta	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mh	mhl	584	MARSHALL ISLANDS	Marshall Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mq	mtq	474	MARTINIQUE	Martinique	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mr	mrt	478	MAURITANIA	Mauritania	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mu	mus	480	MAURITIUS	Mauritius	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+yt	myt	175	MAYOTTE	Mayotte	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mx	mex	484	MEXICO	Mexico	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+fm	fsm	583	MICRONESIA, FEDERATED STATES OF	Micronesia, Federated States of	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+md	mda	498	MOLDOVA, REPUBLIC OF	Moldova, Republic of	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mc	mco	492	MONACO	Monaco	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mn	mng	496	MONGOLIA	Mongolia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+me	mne	499	MONTENEGRO	Montenegro	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ms	msr	500	MONTSERRAT	Montserrat	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ma	mar	504	MOROCCO	Morocco	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mz	moz	508	MOZAMBIQUE	Mozambique	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mm	mmr	104	MYANMAR	Myanmar	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+na	nam	516	NAMIBIA	Namibia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nr	nru	520	NAURU	Nauru	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+np	npl	524	NEPAL	Nepal	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nl	nld	528	NETHERLANDS	Netherlands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nc	ncl	540	NEW CALEDONIA	New Caledonia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nz	nzl	554	NEW ZEALAND	New Zealand	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ni	nic	558	NICARAGUA	Nicaragua	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ne	ner	562	NIGER	Niger	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ng	nga	566	NIGERIA	Nigeria	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nu	niu	570	NIUE	Niue	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+nf	nfk	574	NORFOLK ISLAND	Norfolk Island	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mk	mkd	807	NORTH MACEDONIA	North Macedonia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mp	mnp	580	NORTHERN MARIANA ISLANDS	Northern Mariana Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+no	nor	578	NORWAY	Norway	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+om	omn	512	OMAN	Oman	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pk	pak	586	PAKISTAN	Pakistan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pw	plw	585	PALAU	Palau	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ps	pse	275	PALESTINIAN TERRITORY, OCCUPIED	Palestinian Territory, Occupied	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pa	pan	591	PANAMA	Panama	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pg	png	598	PAPUA NEW GUINEA	Papua New Guinea	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+py	pry	600	PARAGUAY	Paraguay	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pe	per	604	PERU	Peru	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ph	phl	608	PHILIPPINES	Philippines	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pn	pcn	612	PITCAIRN	Pitcairn	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pl	pol	616	POLAND	Poland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pt	prt	620	PORTUGAL	Portugal	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pr	pri	630	PUERTO RICO	Puerto Rico	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+qa	qat	634	QATAR	Qatar	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+re	reu	638	REUNION	Reunion	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ro	rom	642	ROMANIA	Romania	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ru	rus	643	RUSSIAN FEDERATION	Russian Federation	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+rw	rwa	646	RWANDA	Rwanda	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+bl	blm	652	SAINT BARTHÉLEMY	Saint Barthélemy	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sh	shn	654	SAINT HELENA	Saint Helena	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+kn	kna	659	SAINT KITTS AND NEVIS	Saint Kitts and Nevis	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lc	lca	662	SAINT LUCIA	Saint Lucia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+mf	maf	663	SAINT MARTIN (FRENCH PART)	Saint Martin (French part)	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+pm	spm	666	SAINT PIERRE AND MIQUELON	Saint Pierre and Miquelon	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+vc	vct	670	SAINT VINCENT AND THE GRENADINES	Saint Vincent and the Grenadines	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ws	wsm	882	SAMOA	Samoa	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sm	smr	674	SAN MARINO	San Marino	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+st	stp	678	SAO TOME AND PRINCIPE	Sao Tome and Principe	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sa	sau	682	SAUDI ARABIA	Saudi Arabia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sn	sen	686	SENEGAL	Senegal	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+rs	srb	688	SERBIA	Serbia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sc	syc	690	SEYCHELLES	Seychelles	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sl	sle	694	SIERRA LEONE	Sierra Leone	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sg	sgp	702	SINGAPORE	Singapore	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sx	sxm	534	SINT MAARTEN	Sint Maarten	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sk	svk	703	SLOVAKIA	Slovakia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+si	svn	705	SLOVENIA	Slovenia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sb	slb	090	SOLOMON ISLANDS	Solomon Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+so	som	706	SOMALIA	Somalia	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+za	zaf	710	SOUTH AFRICA	South Africa	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+gs	sgs	239	SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS	South Georgia and the South Sandwich Islands	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ss	ssd	728	SOUTH SUDAN	South Sudan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+es	esp	724	SPAIN	Spain	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+lk	lka	144	SRI LANKA	Sri Lanka	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sd	sdn	729	SUDAN	Sudan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sr	sur	740	SURINAME	Suriname	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sj	sjm	744	SVALBARD AND JAN MAYEN	Svalbard and Jan Mayen	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sz	swz	748	SWAZILAND	Swaziland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+se	swe	752	SWEDEN	Sweden	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+ch	che	756	SWITZERLAND	Switzerland	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+sy	syr	760	SYRIAN ARAB REPUBLIC	Syrian Arab Republic	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+tw	twn	158	TAIWAN, PROVINCE OF CHINA	Taiwan, Province of China	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+tj	tjk	762	TAJIKISTAN	Tajikistan	\N	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
+tz	tza	834	TANZANIA, UNITED REPUBLIC OF	Tanzania, United Republic of	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+th	tha	764	THAILAND	Thailand	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tl	tls	626	TIMOR LESTE	Timor Leste	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tg	tgo	768	TOGO	Togo	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tk	tkl	772	TOKELAU	Tokelau	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+to	ton	776	TONGA	Tonga	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tt	tto	780	TRINIDAD AND TOBAGO	Trinidad and Tobago	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tn	tun	788	TUNISIA	Tunisia	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tr	tur	792	TURKEY	Turkey	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tm	tkm	795	TURKMENISTAN	Turkmenistan	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tc	tca	796	TURKS AND CAICOS ISLANDS	Turks and Caicos Islands	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+tv	tuv	798	TUVALU	Tuvalu	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ug	uga	800	UGANDA	Uganda	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ua	ukr	804	UKRAINE	Ukraine	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ae	are	784	UNITED ARAB EMIRATES	United Arab Emirates	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+gb	gbr	826	UNITED KINGDOM	United Kingdom	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+um	umi	581	UNITED STATES MINOR OUTLYING ISLANDS	United States Minor Outlying Islands	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+uy	ury	858	URUGUAY	Uruguay	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+uz	uzb	860	UZBEKISTAN	Uzbekistan	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+vu	vut	548	VANUATU	Vanuatu	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ve	ven	862	VENEZUELA	Venezuela	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+vn	vnm	704	VIET NAM	Viet Nam	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+vg	vgb	092	VIRGIN ISLANDS, BRITISH	Virgin Islands, British	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+vi	vir	850	VIRGIN ISLANDS, U.S.	Virgin Islands, U.S.	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+wf	wlf	876	WALLIS AND FUTUNA	Wallis and Futuna	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+eh	esh	732	WESTERN SAHARA	Western Sahara	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ye	yem	887	YEMEN	Yemen	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+zm	zmb	894	ZAMBIA	Zambia	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+zw	zwe	716	ZIMBABWE	Zimbabwe	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+ax	ala	248	ÅLAND ISLANDS	Åland Islands	\N	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+us	usa	840	UNITED STATES	United States	reg_01KKB79PXYZ123	\N	2026-03-10 06:27:20.29+00	2026-03-10 06:27:20.29+00	\N
+in	ind	356	INDIA	India	reg_01KKB79PXYZ123	\N	2026-03-10 06:27:20.289+00	2026-03-10 06:27:20.289+00	\N
 \.
 
 
@@ -5098,7 +5103,7 @@ COPY public.return_reason (id, value, label, description, metadata, parent_retur
 --
 
 COPY public.sales_channel (id, name, description, is_disabled, metadata, created_at, updated_at, deleted_at) FROM stdin;
-sc_01KKB6VT2GA936E202BCVNT0DC	Default Sales Channel	Created by Medusa	f	\N	2026-03-10 11:57:33.072+05:30	2026-03-10 11:57:33.072+05:30	\N
+sc_01KKB6VT2GA936E202BCVNT0DC	Default Sales Channel	Created by Medusa	f	\N	2026-03-10 06:27:33.072+00	2026-03-10 06:27:33.072+00	\N
 \.
 
 
@@ -5107,7 +5112,7 @@ sc_01KKB6VT2GA936E202BCVNT0DC	Default Sales Channel	Created by Medusa	f	\N	2026-
 --
 
 COPY public.sales_channel_stock_location (sales_channel_id, stock_location_id, id, created_at, updated_at, deleted_at) FROM stdin;
-sc_01KKB6VT2GA936E202BCVNT0DC	sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	scloc_01KMQ2E3CTDJK9KVNDGY436NTS	2026-03-27 12:46:44.569451+05:30	2026-03-27 12:46:44.569451+05:30	\N
+sc_01KKB6VT2GA936E202BCVNT0DC	sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	scloc_01KMQ2E3CTDJK9KVNDGY436NTS	2026-03-27 07:16:44.569451+00	2026-03-27 07:16:44.569451+00	\N
 \.
 
 
@@ -5116,8 +5121,8 @@ sc_01KKB6VT2GA936E202BCVNT0DC	sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	scloc_01KMQ2E3CTDJ
 --
 
 COPY public.script_migrations (id, script_name, created_at, finished_at) FROM stdin;
-1	migrate-product-shipping-profile.js	2026-03-10 11:57:20.750613+05:30	2026-03-10 11:57:20.768676+05:30
-2	migrate-tax-region-provider.js	2026-03-10 11:57:20.770736+05:30	2026-03-10 11:57:20.776428+05:30
+1	migrate-product-shipping-profile.js	2026-03-10 06:27:20.750613+00	2026-03-10 06:27:20.768676+00
+2	migrate-tax-region-provider.js	2026-03-10 06:27:20.770736+00	2026-03-10 06:27:20.776428+00
 \.
 
 
@@ -5126,8 +5131,8 @@ COPY public.script_migrations (id, script_name, created_at, finished_at) FROM st
 --
 
 COPY public.service_zone (id, name, metadata, fulfillment_set_id, created_at, updated_at, deleted_at) FROM stdin;
-serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	India Shipping	\N	fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	2026-03-27 12:49:46.886+05:30	2026-03-27 12:49:46.886+05:30	\N
-serzo_01KMQ4TBQYYJTSQXDA2THYY07V	Default Zone	\N	fuset_01KMQ2FTWPXCYAYM88E94SV3A9	2026-03-27 13:28:23.487+05:30	2026-03-27 13:28:23.487+05:30	\N
+serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	India Shipping	\N	fuset_01KMQ2GRFHF46DE7YV0YKCYXFJ	2026-03-27 07:19:46.886+00	2026-03-27 07:19:46.886+00	\N
+serzo_01KMQ4TBQYYJTSQXDA2THYY07V	Default Zone	\N	fuset_01KMQ2FTWPXCYAYM88E94SV3A9	2026-03-27 07:58:23.487+00	2026-03-27 07:58:23.487+00	\N
 \.
 
 
@@ -5136,8 +5141,8 @@ serzo_01KMQ4TBQYYJTSQXDA2THYY07V	Default Zone	\N	fuset_01KMQ2FTWPXCYAYM88E94SV3A
 --
 
 COPY public.shipping_option (id, name, price_type, service_zone_id, shipping_profile_id, provider_id, data, metadata, shipping_option_type_id, created_at, updated_at, deleted_at) FROM stdin;
-so_01KMQ4W15RZ7A2BD20QZPSFR56	Pay on Delivery	flat	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	sp_01KKB6VE1XDK6CBQ378CHJNVF3	manual_manual	\N	\N	sotype_01KMQ4W15R6MD11E5Z6GK2PB9G	2026-03-27 13:29:18.201+05:30	2026-03-27 13:29:18.201+05:30	\N
-so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	Standard Delivery	flat	serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	sp_01KKB6VE1XDK6CBQ378CHJNVF3	manual_manual	\N	\N	sotype_01KMYGBJGW152JXYQNVJ4Y54MV	2026-03-30 10:04:42.845+05:30	2026-03-30 10:04:42.845+05:30	\N
+so_01KMQ4W15RZ7A2BD20QZPSFR56	Pay on Delivery	flat	serzo_01KMQ4TBQYYJTSQXDA2THYY07V	sp_01KKB6VE1XDK6CBQ378CHJNVF3	manual_manual	\N	\N	sotype_01KMQ4W15R6MD11E5Z6GK2PB9G	2026-03-27 07:59:18.201+00	2026-03-27 07:59:18.201+00	\N
+so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	Standard Delivery	flat	serzo_01KMQ2KNE5MD69P6KVX8GTX0JJ	sp_01KKB6VE1XDK6CBQ378CHJNVF3	manual_manual	\N	\N	sotype_01KMYGBJGW152JXYQNVJ4Y54MV	2026-03-30 04:34:42.845+00	2026-03-30 04:34:42.845+00	\N
 \.
 
 
@@ -5146,7 +5151,7 @@ so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	Standard Delivery	flat	serzo_01KMQ2KNE5MD69P6KVX8G
 --
 
 COPY public.shipping_option_price_set (shipping_option_id, price_set_id, id, created_at, updated_at, deleted_at) FROM stdin;
-so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	pset_01KMYGBJHAZDWKS1MHRTYCNND4	sops_01KMYGBJHSSPFJQ71YQTS7C2Y8	2026-03-30 10:04:42.873463+05:30	2026-03-30 10:04:42.873463+05:30	\N
+so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	pset_01KMYGBJHAZDWKS1MHRTYCNND4	sops_01KMYGBJHSSPFJQ71YQTS7C2Y8	2026-03-30 04:34:42.873463+00	2026-03-30 04:34:42.873463+00	\N
 \.
 
 
@@ -5155,8 +5160,8 @@ so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	pset_01KMYGBJHAZDWKS1MHRTYCNND4	sops_01KMYGBJHSSPF
 --
 
 COPY public.shipping_option_rule (id, attribute, operator, value, shipping_option_id, created_at, updated_at, deleted_at) FROM stdin;
-sorul_01KMQ4W15RBME3GFC3K90NZ8KG	region_id	eq	"reg_01KKB79PXYZ123"	so_01KMQ4W15RZ7A2BD20QZPSFR56	2026-03-27 13:29:18.201+05:30	2026-03-27 13:29:18.201+05:30	\N
-sorul_01KMYGBJGWCV2SCHAP7NEPN2S0	enabled_in_store	eq	"true"	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	2026-03-30 10:04:42.845+05:30	2026-03-30 10:04:42.845+05:30	\N
+sorul_01KMQ4W15RBME3GFC3K90NZ8KG	region_id	eq	"reg_01KKB79PXYZ123"	so_01KMQ4W15RZ7A2BD20QZPSFR56	2026-03-27 07:59:18.201+00	2026-03-27 07:59:18.201+00	\N
+sorul_01KMYGBJGWCV2SCHAP7NEPN2S0	enabled_in_store	eq	"true"	so_01KMYGBJGWC35PVQPRQZ7CZ1GZ	2026-03-30 04:34:42.845+00	2026-03-30 04:34:42.845+00	\N
 \.
 
 
@@ -5165,8 +5170,8 @@ sorul_01KMYGBJGWCV2SCHAP7NEPN2S0	enabled_in_store	eq	"true"	so_01KMYGBJGWC35PVQP
 --
 
 COPY public.shipping_option_type (id, label, description, code, created_at, updated_at, deleted_at) FROM stdin;
-sotype_01KMQ4W15R6MD11E5Z6GK2PB9G	Standard	Pay on delivery	standard	2026-03-27 13:29:18.2+05:30	2026-03-27 13:29:18.2+05:30	\N
-sotype_01KMYGBJGW152JXYQNVJ4Y54MV	Standard Delivery	Standard delivery to your address	standard-delivery	2026-03-30 10:04:42.845+05:30	2026-03-30 10:04:42.845+05:30	\N
+sotype_01KMQ4W15R6MD11E5Z6GK2PB9G	Standard	Pay on delivery	standard	2026-03-27 07:59:18.2+00	2026-03-27 07:59:18.2+00	\N
+sotype_01KMYGBJGW152JXYQNVJ4Y54MV	Standard Delivery	Standard delivery to your address	standard-delivery	2026-03-30 04:34:42.845+00	2026-03-30 04:34:42.845+00	\N
 \.
 
 
@@ -5175,7 +5180,7 @@ sotype_01KMYGBJGW152JXYQNVJ4Y54MV	Standard Delivery	Standard delivery to your ad
 --
 
 COPY public.shipping_profile (id, name, type, metadata, created_at, updated_at, deleted_at) FROM stdin;
-sp_01KKB6VE1XDK6CBQ378CHJNVF3	Default Shipping Profile	default	\N	2026-03-10 11:57:20.765+05:30	2026-03-10 11:57:20.765+05:30	\N
+sp_01KKB6VE1XDK6CBQ378CHJNVF3	Default Shipping Profile	default	\N	2026-03-10 06:27:20.765+00	2026-03-10 06:27:20.765+00	\N
 \.
 
 
@@ -5184,7 +5189,7 @@ sp_01KKB6VE1XDK6CBQ378CHJNVF3	Default Shipping Profile	default	\N	2026-03-10 11:
 --
 
 COPY public.stock_location (id, created_at, updated_at, deleted_at, name, address_id, metadata) FROM stdin;
-sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	2026-03-27 12:45:40.62+05:30	2026-03-27 12:45:40.621+05:30	\N	The Blissful Soul Warehouse	laddr_01KMQ2C4Y1PRX2KX143B20NHKQ	\N
+sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	2026-03-27 07:15:40.62+00	2026-03-27 07:15:40.621+00	\N	The Blissful Soul Warehouse	laddr_01KMQ2C4Y1PRX2KX143B20NHKQ	\N
 \.
 
 
@@ -5193,7 +5198,7 @@ sloc_01KMQ2C4Y3EYJDZ1G9RWFVQAB5	2026-03-27 12:45:40.62+05:30	2026-03-27 12:45:40
 --
 
 COPY public.stock_location_address (id, created_at, updated_at, deleted_at, address_1, address_2, company, city, country_code, phone, province, postal_code, metadata) FROM stdin;
-laddr_01KMQ2C4Y1PRX2KX143B20NHKQ	2026-03-27 12:45:40.617+05:30	2026-03-27 12:45:40.617+05:30	\N	Shakti Nagar			Delhi	in	+919811611341		110007	\N
+laddr_01KMQ2C4Y1PRX2KX143B20NHKQ	2026-03-27 07:15:40.617+00	2026-03-27 07:15:40.617+00	\N	Shakti Nagar			Delhi	in	+919811611341		110007	\N
 \.
 
 
@@ -5202,7 +5207,7 @@ laddr_01KMQ2C4Y1PRX2KX143B20NHKQ	2026-03-27 12:45:40.617+05:30	2026-03-27 12:45:
 --
 
 COPY public.store (id, name, default_sales_channel_id, default_region_id, default_location_id, metadata, created_at, updated_at, deleted_at) FROM stdin;
-store_01KKB6VT2QYJT1MRFKYN3AWWS4	Medusa Store	sc_01KKB6VT2GA936E202BCVNT0DC	reg_01KKB79PXYZ123	\N	\N	2026-03-10 11:57:33.078867+05:30	2026-03-10 11:57:33.078867+05:30	\N
+store_01KKB6VT2QYJT1MRFKYN3AWWS4	Medusa Store	sc_01KKB6VT2GA936E202BCVNT0DC	reg_01KKB79PXYZ123	\N	\N	2026-03-10 06:27:33.078867+00	2026-03-10 06:27:33.078867+00	\N
 \.
 
 
@@ -5211,8 +5216,8 @@ store_01KKB6VT2QYJT1MRFKYN3AWWS4	Medusa Store	sc_01KKB6VT2GA936E202BCVNT0DC	reg_
 --
 
 COPY public.store_currency (id, currency_code, is_default, store_id, created_at, updated_at, deleted_at) FROM stdin;
-stocur_01KKGVTYSNF2ZM6AKK4J6AHBCA	eur	f	store_01KKB6VT2QYJT1MRFKYN3AWWS4	2026-03-12 16:40:17.383929+05:30	2026-03-12 16:40:17.383929+05:30	\N
-stocur_01KKGVTYSNQ64ZTBK8FBTB7WYX	inr	t	store_01KKB6VT2QYJT1MRFKYN3AWWS4	2026-03-12 16:40:17.383929+05:30	2026-03-12 16:40:17.383929+05:30	\N
+stocur_01KKGVTYSNF2ZM6AKK4J6AHBCA	eur	f	store_01KKB6VT2QYJT1MRFKYN3AWWS4	2026-03-12 11:10:17.383929+00	2026-03-12 11:10:17.383929+00	\N
+stocur_01KKGVTYSNQ64ZTBK8FBTB7WYX	inr	t	store_01KKB6VT2QYJT1MRFKYN3AWWS4	2026-03-12 11:10:17.383929+00	2026-03-12 11:10:17.383929+00	\N
 \.
 
 
@@ -5229,7 +5234,7 @@ COPY public.store_locale (id, locale_code, store_id, created_at, updated_at, del
 --
 
 COPY public.tax_provider (id, is_enabled, created_at, updated_at, deleted_at) FROM stdin;
-tp_system	t	2026-03-10 11:57:20.285+05:30	2026-03-10 11:57:20.285+05:30	\N
+tp_system	t	2026-03-10 06:27:20.285+00	2026-03-10 06:27:20.285+00	\N
 \.
 
 
@@ -5262,7 +5267,7 @@ COPY public.tax_region (id, provider_id, country_code, province_code, parent_id,
 --
 
 COPY public."user" (id, first_name, last_name, email, avatar_url, metadata, created_at, updated_at, deleted_at) FROM stdin;
-user_01KKB74WTDX61HPKGPNXZ0K7SA	\N	\N	admin@admin.com	\N	\N	2026-03-10 12:02:30.797+05:30	2026-03-10 12:02:30.797+05:30	\N
+user_01KKB74WTDX61HPKGPNXZ0K7SA	\N	\N	admin@admin.com	\N	\N	2026-03-10 06:32:30.797+00	2026-03-10 06:32:30.797+00	\N
 \.
 
 
@@ -5302,7 +5307,7 @@ COPY public.workflow_execution (id, workflow_id, transaction_id, execution, cont
 -- Name: link_module_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.link_module_migrations_id_seq', 38, true);
+SELECT pg_catalog.setval('public.link_module_migrations_id_seq', 323, true);
 
 
 --
@@ -9280,7 +9285,7 @@ CREATE INDEX "IDX_workflow_execution_transaction_id" ON public.workflow_executio
 -- Name: IDX_workflow_execution_updated_at_retention_time; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX "IDX_workflow_execution_updated_at_retention_time" ON public.workflow_execution USING btree (updated_at, retention_time) WHERE ((deleted_at IS NULL) AND (retention_time IS NOT NULL) AND ((state)::text = ANY ((ARRAY['done'::character varying, 'failed'::character varying, 'reverted'::character varying])::text[])));
+CREATE INDEX "IDX_workflow_execution_updated_at_retention_time" ON public.workflow_execution USING btree (updated_at, retention_time) WHERE ((deleted_at IS NULL) AND (retention_time IS NOT NULL) AND ((state)::text = ANY (ARRAY[('done'::character varying)::text, ('failed'::character varying)::text, ('reverted'::character varying)::text])));
 
 
 --
@@ -10011,5 +10016,5 @@ ALTER TABLE ONLY public.store_locale
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 635cpOC1P1nuwGi76j9HIrQ2HlfefbPa3cgYOtArgXrgDfbHdlQvvMwhcmhZez9
+\unrestrict lnFP3GZRkOaezwYsU3ZNN09GYqtETmz5bHDPrEAkPd3CUbY9EEtRjVy3XFTnlhE
 
