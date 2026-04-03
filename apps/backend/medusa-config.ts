@@ -45,5 +45,20 @@ module.exports = defineConfig({
         ],
       },
     },
+    notification: {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/notification-smtp",
+            id: "google-smtp",
+            options: {
+              channels: ["email"],
+              scope: "all"
+            },
+          },
+        ],
+      },
+    },
   },
 })
