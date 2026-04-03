@@ -20,9 +20,10 @@ export default async function orderInvoiceHandler({
     },
     "sender": {
         "company": "The Blissful Soul",
-        "address": "Your Address",
-        "city": "Mumbai",
-        "country": "India"
+        "address": "Shakti Nagar",
+        "city": "Delhi",
+        "country": "India",
+        "zip": "110007"
     },
     "client": {
         "company": `${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`,

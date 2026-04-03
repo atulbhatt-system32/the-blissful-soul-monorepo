@@ -6,6 +6,7 @@ import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const ShippingAddress = ({
   customer,
@@ -112,6 +113,20 @@ const ShippingAddress = ({
             onSelect={setFormAddress}
           />
         </Container>
+      )}
+
+      {!customer && (
+        <div className="mb-6 p-4 bg-pink-50 rounded-xl border border-pink-100 flex items-center justify-between">
+          <p className="text-pink-700 text-sm font-medium">
+            Returning customer? Sign in for a faster experience.
+          </p>
+          <LocalizedClientLink 
+            href="/account/login" 
+            className="text-pink-500 hover:text-pink-600 text-sm font-bold underline"
+          >
+            Log in
+          </LocalizedClientLink>
+        </div>
       )}
       
       {isDigitalOnly ? (

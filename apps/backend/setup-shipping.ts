@@ -50,18 +50,18 @@ export default async function ({ container }: ExecArgs) {
     const option = createdOptions[0]
     logger.info(`Created Shipping Option: ${option.id} - ${option.name}`)
 
-    // Create a price set with ₹0 (free shipping)
+    // Create a price set with ₹199 (flat rate)
     const priceSet = await pricingModule.createPriceSets([
       {
         prices: [
           {
-            amount: 0,
+            amount: 19900,
             currency_code: region.currency_code,
           }
         ]
       }
     ])
-    logger.info(`Created Price Set: ${priceSet[0].id}`)
+    logger.info(`Created Price Set: ${priceSet[0].id} with amount 19900`)
 
     // Link shipping option to price set via remote link
     await remoteLink.create({

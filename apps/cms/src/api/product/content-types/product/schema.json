@@ -54,6 +54,14 @@
         },
         "thumbnail_url": {
             "type": "string"
+        },
+        "rating": {
+            "type": "decimal",
+            "default": 5
+        },
+        "review_count": {
+            "type": "integer",
+            "default": 0
         }
     }
 }
