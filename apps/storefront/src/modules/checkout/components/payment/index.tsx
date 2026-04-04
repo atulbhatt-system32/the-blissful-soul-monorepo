@@ -71,9 +71,17 @@ const Payment = ({
       const providerId = razorpayProvider?.id || availablePaymentMethods?.[0]?.id || "pp_razorpay_razorpay"
 
       // Initialize payment session with FRESH cart
-      await initiatePaymentSession(freshCart, {
+      // Pass cart in data so the Razorpay provider can access it via input.data.cart
+      const paymentCollectionResp = await initiatePaymentSession(freshCart, {
         provider_id: providerId,
-      })
+        data: { cart: freshCart },
+      } as any)
+
+      // Extract Razorpay order ID from the payment session
+      const paymentSession = (paymentCollectionResp as any)?.payment_collection?.payment_sessions?.find(
+        (s: any) => s.provider_id?.toLowerCase().includes("razorpay")
+      )
+      const razorpayOrderId = paymentSession?.data?.id
 
       // Check Razorpay SDK
       if (typeof window === "undefined" || !(window as any).Razorpay) {
@@ -88,6 +96,7 @@ const Payment = ({
       // Open Razorpay popup
       const options = {
         key: razorpayKey,
+        order_id: razorpayOrderId,
         amount: (cart.total || 0) * 100,
         currency: cart.currency_code?.toUpperCase() || "INR",
         name: "The Blissful Soul",

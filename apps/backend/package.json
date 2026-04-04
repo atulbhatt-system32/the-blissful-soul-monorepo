@@ -31,7 +31,7 @@
     "@medusajs/icons": "2.1.2",
     "@medusajs/medusa": "2.13.1",
     "@medusajs/ui": "4.1.5",
-    "@sgftech/payment-razorpay": "^2.1.11",
+    "@tsc_tech/medusa-plugin-razorpay-payment": "^0.0.11",
     "axios": "^1.13.6",
     "easyinvoice": "^3.0.47",
     "express": "^4.18.2",

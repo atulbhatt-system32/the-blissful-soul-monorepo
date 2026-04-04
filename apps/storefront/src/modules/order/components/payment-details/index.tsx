@@ -1,4 +1,5 @@
 import { Container, Heading, Text } from "@medusajs/ui"
+import { CreditCard } from "@medusajs/icons"
 
 import { isStripeLike, paymentInfoMap } from "@lib/constants"
 import Divider from "@modules/common/components/divider"
@@ -28,7 +29,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                 className="txt-medium text-ui-fg-subtle"
                 data-testid="payment-method"
               >
-                {paymentInfoMap[payment.provider_id].title}
+                {paymentInfoMap[payment.provider_id]?.title ?? payment.provider_id}
               </Text>
             </div>
             <div className="flex flex-col w-2/3">
@@ -37,7 +38,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
               </Text>
               <div className="flex gap-2 txt-medium text-ui-fg-subtle items-center">
                 <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
-                  {paymentInfoMap[payment.provider_id].icon}
+                  {paymentInfoMap[payment.provider_id]?.icon ?? <CreditCard />}
                 </Container>
                 <Text data-testid="payment-amount">
                   {isStripeLike(payment.provider_id) && payment.data?.card_last4

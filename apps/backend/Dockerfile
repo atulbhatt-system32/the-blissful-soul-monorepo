@@ -17,4 +17,4 @@ WORKDIR /app/apps/backend
 EXPOSE 9000
 
 # Run migrations and setup before starting
-CMD ["sh", "-c", "pnpm exec medusa db:migrate && pnpm exec medusa exec ./src/scripts/create-region.ts && pnpm exec medusa develop"]
+CMD ["sh", "-c", "pnpm exec medusa db:migrate && pnpm exec medusa develop"]

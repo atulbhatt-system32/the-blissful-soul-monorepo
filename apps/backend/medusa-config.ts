@@ -19,12 +19,11 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "@sgftech/payment-razorpay",
+            resolve: "@tsc_tech/medusa-plugin-razorpay-payment/providers/razorpay",
             id: "razorpay",
             options: {
               key_id: process.env.RAZORPAY_ID,
               key_secret: process.env.RAZORPAY_SECRET,
-              receipt: true,
             },
           },
         ],
