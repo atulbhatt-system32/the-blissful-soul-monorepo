@@ -478,3 +478,98 @@ export async function listCartOptions() {
     cache: "force-cache",
   })
 }
+
+/**
+ * Specialized cart creation for the booking wizard.
+ */
+export async function createBookingCart({
+  variantId,
+  email,
+  firstName,
+  lastName,
+  phone,
+  countryCode,
+}: {
+  variantId: string
+  email: string
+  firstName: string
+  lastName: string
+  phone: string
+  countryCode: string
+}) {
+  const region = await getRegion(countryCode)
+  if (!region) throw new Error("Region not found")
+
+  const headers = await getAuthHeaders()
+
+  // 1. Create a specialized cart
+  const { cart } = await sdk.store.cart.create(
+    { region_id: region.id, email },
+    {},
+    headers
+  )
+
+  // 2. Add the session item
+  await sdk.store.cart.createLineItem(
+    cart.id,
+    { variant_id: variantId, quantity: 1 },
+    {},
+    headers
+  )
+
+  // 3. Update address (needed for tax/shipping calculation even if digital)
+  const addressPayload = {
+    first_name: firstName,
+    last_name: lastName,
+    phone: phone,
+    address_1: "Digital Delivery",
+    city: "Online",
+    country_code: countryCode,
+    postal_code: "000000",
+  }
+
+  const updatedCart = await sdk.store.cart.update(
+    cart.id,
+    {
+      email: email, // Re-affirm email just in case
+      shipping_address: addressPayload,
+      billing_address: addressPayload,
+    },
+    {},
+    headers
+  ).then(({ cart }) => cart)
+
+  try {
+    // 4. Initiate Razorpay Payment Session
+    await sdk.store.payment.initiatePaymentSession(
+      updatedCart,
+      { provider_id: "razorpay" },
+      {},
+      headers
+    )
+
+    // 5. Retrieve cart again to get updated payment_collection
+    return await retrieveCart(cart.id) as HttpTypes.StoreCart
+  } catch (error: any) {
+    console.error("Initiate Payment Session Error:", error.message || error)
+    if (error.response?.data) {
+      console.error("Medusa API Error Response:", JSON.stringify(error.response.data, null, 2))
+    }
+    throw new Error(`Payment Initialization Failed: ${error.message}`)
+  }
+}
+
+/**
+ * Completes a specific cart by ID.
+ */
+export async function completeCartAction(cartId: string) {
+  const headers = await getAuthHeaders()
+  
+  return await sdk.store.cart
+    .complete(cartId, {}, headers)
+    .then(async (res) => {
+      revalidateTag("orders")
+      return res
+    })
+    .catch(medusaError)
+}

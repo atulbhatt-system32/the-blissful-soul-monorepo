@@ -94,6 +94,7 @@ export default async function Footer() {
           </Text>
           <div className="flex items-center gap-x-6 text-xs text-gray-500 font-medium">
              <LocalizedClientLink href="/terms" className="hover:text-white transition-colors">Terms of Service</LocalizedClientLink>
+             <LocalizedClientLink href="/refund-policy" className="hover:text-white transition-colors">Refund Policy</LocalizedClientLink>
              <LocalizedClientLink href="/privacy" className="hover:text-white transition-colors">Privacy Policy</LocalizedClientLink>
           </div>
         </div>

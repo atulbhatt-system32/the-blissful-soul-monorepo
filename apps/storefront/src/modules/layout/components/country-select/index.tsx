@@ -69,7 +69,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
         onChange={handleChange}
         defaultValue={
           countryCode
-            ? options?.find((o) => o?.country === countryCode)
+            ? (options?.find((o) => o?.country === countryCode) as CountryOption | undefined)
             : undefined
         }
       >

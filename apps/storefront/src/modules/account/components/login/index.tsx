@@ -3,6 +3,7 @@ import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useActionState } from "react"
 
 type Props = {
@@ -55,6 +56,13 @@ const Login = ({ setCurrentView }: Props) => {
         >
           Join us
         </button>
+        .
+      </span>
+      <span className="text-center text-ui-fg-base text-small-regular mt-2">
+        Ordered as a guest?{" "}
+        <LocalizedClientLink href="/order/lookup" className="underline">
+          Track your order
+        </LocalizedClientLink>
         .
       </span>
     </div>

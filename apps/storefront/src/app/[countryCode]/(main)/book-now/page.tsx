@@ -3,6 +3,7 @@ import { getRegion } from "@lib/data/regions"
 import { listProducts } from "@lib/data/products"
 import { listCategories } from "@lib/data/categories"
 import BookNowClient from "@modules/booking/components/book-now-wizard"
+import { retrieveCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
   title: "Book Now | The Blissful Soul",
@@ -20,6 +21,7 @@ export default async function BookNowPage(props: {
   const { service_id } = searchParams
   
   const region = await getRegion(countryCode)
+  const customer = await retrieveCustomer()
 
   if (!region) {
     return null
@@ -58,6 +60,7 @@ export default async function BookNowPage(props: {
           region={region} 
           initialServiceId={service_id} 
           countryCode={countryCode}
+          customer={customer}
         />
       </section>
     </div>

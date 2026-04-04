@@ -55,6 +55,9 @@ export default async function Nav() {
             <LocalizedClientLink href="/store" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
               Shop Crystals
             </LocalizedClientLink>
+            <LocalizedClientLink href="/order/lookup" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
+              Track Order
+            </LocalizedClientLink>
             <LocalizedClientLink href="/contact" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
               Contact Us
             </LocalizedClientLink>

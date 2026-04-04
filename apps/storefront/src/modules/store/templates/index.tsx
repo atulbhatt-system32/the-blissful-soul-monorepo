@@ -9,12 +9,16 @@ import PaginatedProducts from "./paginated-products"
 const StoreTemplate = ({
   sortBy,
   page,
+  limit,
+  view,
   countryCode,
   heroTitle,
   heroSubtitle,
 }: {
   sortBy?: SortOptions
   page?: string
+  limit?: string
+  view?: string
   countryCode: string
   heroTitle?: string
   heroSubtitle?: string
@@ -44,13 +48,15 @@ const StoreTemplate = ({
                 Home / {heroTitle || "Show Crystals"}
              </div>
              
-             <RefinementList sortBy={sort} />
+             <RefinementList sortBy={sort} limit={limit} view={view} />
           </div>
 
           <Suspense fallback={<SkeletonProductGrid />}>
             <PaginatedProducts
               sortBy={sort}
               page={pageNumber}
+              limit={limit}
+              view={view}
               countryCode={countryCode}
             />
           </Suspense>

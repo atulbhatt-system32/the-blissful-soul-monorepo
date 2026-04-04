@@ -74,6 +74,7 @@ module.exports = {
       fontFamily: {
         serif: ["Playfair Display", "serif"],
         sans: [
+          "var(--font-roboto)",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",

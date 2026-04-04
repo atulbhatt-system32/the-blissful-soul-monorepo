@@ -110,3 +110,54 @@ export const declineTransferRequest = async (id: string, token: string) => {
     .then(({ order }) => ({ success: true, error: null, order }))
     .catch((err) => ({ success: false, error: err.message, order: null }))
 }
+export const lookupOrder = async (
+  state: {
+    success: boolean
+    error: string | null
+    order: HttpTypes.StoreOrder | null
+  },
+  formData: FormData
+): Promise<{
+  success: boolean
+  error: string | null
+  order: HttpTypes.StoreOrder | null
+}> => {
+  const displayIdString = (formData.get("display_id") as string).replace("#", "").trim()
+  const email = (formData.get("email") as string).trim()
+
+  if (!displayIdString || !email) {
+    return {
+      success: false,
+      error: "Order ID and Email are required",
+      order: null,
+    }
+  }
+
+  const displayId = parseInt(displayIdString)
+  if (isNaN(displayId)) {
+    return {
+      success: false,
+      error: "Invalid Order ID format",
+      order: null,
+    }
+  }
+
+  const headers = await getAuthHeaders()
+
+  return await sdk.client
+    .fetch<{ order: any }>(`/store/orders/lookup`, {
+      method: "POST",
+      body: {
+        display_id: displayId,
+        email,
+      },
+      headers,
+    })
+    .then(({ order }) => {
+      return { success: true, error: null, order }
+    })
+    .catch((err) => {
+      console.error("Order lookup error:", err)
+      return { success: false, error: "Order not found", order: null }
+    })
+}

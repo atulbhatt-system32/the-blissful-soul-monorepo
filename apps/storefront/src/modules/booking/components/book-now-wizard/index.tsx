@@ -7,6 +7,7 @@ import { addToCart } from "@lib/data/cart"
 import { useRouter } from "next/navigation"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
 import { fetchAvailableSlots } from "@lib/data/calcom"
+import GuestAutoRegister from "@modules/order/components/guest-auto-register"
 
 type BookNowProps = {
   categories: any[]
@@ -14,6 +15,7 @@ type BookNowProps = {
   region: HttpTypes.StoreRegion
   initialServiceId?: string
   countryCode: string
+  customer?: HttpTypes.StoreCustomer | null
 }
 
 const STEPS = ["Service", "Time", "Details", "Payment", "Done"]
@@ -34,9 +36,13 @@ export default function BookNowClient({
   products,
   region,
   initialServiceId,
-  countryCode
+  countryCode,
+  customer
 }: BookNowProps) {
   const router = useRouter()
+//... // skipping all the logic, wait, I MUST provide the replacement exactly on the lines targeted or it will delete the middle part!!
+
+// Let me use a smaller targeted replacement. I'll split it into two replacement calls.
   const [currentStep, setCurrentStep] = useState(1)
 
   // Form State
@@ -435,10 +441,21 @@ export default function BookNowClient({
           </p>
           <button 
             onClick={() => router.push(`/${countryCode}`)}
-            className="px-8 py-3 bg-black text-white rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-800 transition-colors"
+            className="px-8 py-3 bg-black text-white rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-800 transition-colors mb-10"
           >
             Return Home
           </button>
+          
+          {!customer && (
+             <div className="mt-8 pt-8 border-t border-gray-100">
+               <GuestAutoRegister 
+                 email={details.email} 
+                 firstName={details.firstName} 
+                 lastName={details.lastName}
+                 phone={details.phone}
+               />
+             </div>
+          )}
         </div>
       )}
 

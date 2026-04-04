@@ -10,6 +10,8 @@ import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
 import SessionBooking from "@modules/order/components/session-booking"
+import GuestAutoRegister from "@modules/order/components/guest-auto-register"
+import { retrieveCustomer } from "@lib/data/customer"
 
 type OrderCompletedTemplateProps = {
   order: HttpTypes.StoreOrder
@@ -21,6 +23,7 @@ export default async function OrderCompletedTemplate({
   const cookies = await nextCookies()
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
+  const customer = await retrieveCustomer()
 
   // Check if order contains a session
   const sessionItems = order.items?.filter((item: any) => {
@@ -42,6 +45,15 @@ export default async function OrderCompletedTemplate({
       <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         
+        {!customer && (
+          <GuestAutoRegister 
+            email={order.email || ""} 
+            firstName={order.shipping_address?.first_name || ""} 
+            lastName={order.shipping_address?.last_name || ""}
+            phone={order.shipping_address?.phone || ""}
+          />
+        )}
+        
         {hasSession && calLink && (
           <div className="w-full bg-pink-50/50 p-8 rounded-2xl border border-pink-100 shadow-sm mb-6">
             <Heading level="h2" className="text-pink-900 font-serif mb-4 text-center">
@@ -53,7 +65,7 @@ export default async function OrderCompletedTemplate({
             <SessionBooking 
               calLink={calLink} 
               customerName={`${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`}
-              customerEmail={order.email}
+              customerEmail={order.email || ""}
             />
           </div>
         )}

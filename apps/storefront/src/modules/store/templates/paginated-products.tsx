@@ -21,6 +21,8 @@ export default async function PaginatedProducts({
   categoryId,
   productsIds,
   countryCode,
+  limit,
+  view,
 }: {
   sortBy?: SortOptions
   page: number
@@ -28,9 +30,13 @@ export default async function PaginatedProducts({
   categoryId?: string
   productsIds?: string[]
   countryCode: string
+  limit?: string
+  view?: string
 }) {
+  const currentLimit = limit ? parseInt(limit) : 12
+
   const queryParams: PaginatedProductsParams = {
-    limit: 12,
+    limit: currentLimit,
   }
 
   if (collectionId) {
@@ -64,12 +70,23 @@ export default async function PaginatedProducts({
     countryCode,
   })
 
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+  const totalPages = Math.ceil(count / currentLimit)
+
+  // Configure grid layout based on view property
+  let gridClasses = "grid w-full gap-x-6 gap-y-8"
+  if (view === "2") {
+    gridClasses += " grid-cols-2"
+  } else if (view === "4") {
+    gridClasses += " grid-cols-2 small:grid-cols-4"
+  } else {
+    // Default is 3 
+    gridClasses += " grid-cols-2 small:grid-cols-3"
+  }
 
   return (
     <>
       <ul
-        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
+        className={gridClasses}
         data-testid="products-list"
       >
         {products.map((p) => {
