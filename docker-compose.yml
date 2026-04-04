@@ -44,7 +44,7 @@ services:
     env_file:
       - ./apps/storefront/.env
     environment:
-      - MEDUSA_BACKEND_URL=http://host.docker.internal:9000
+      - MEDUSA_BACKEND_URL=http://backend:9000
       - STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
     depends_on:
