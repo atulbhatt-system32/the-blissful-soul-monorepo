@@ -155,6 +155,30 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
           `,
         },
       },
+      {
+        to: "mratulbhatt97@gmail.com",
+        channel: "email",
+        template: "booking-admin-notification",
+        data: {
+          subject: `NEW BOOKING: ${firstName} for ${bookingDate} at ${bookingTime}`,
+          html_body: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #e0f2f1; border-radius: 8px;">
+              <h2>New Session Booked! ✅</h2>
+              <p>A new booking has been confirmed via Razorpay.</p>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr><td><strong>Customer:</strong></td><td>${firstName} ${lastName}</td></tr>
+                <tr><td><strong>Email:</strong></td><td>${email}</td></tr>
+                <tr><td><strong>Phone:</strong></td><td>${phone}</td></tr>
+                <tr><td><strong>Date:</strong></td><td>${bookingDate}</td></tr>
+                <tr><td><strong>Time:</strong></td><td>${bookingTime}</td></tr>
+                <tr><td><strong>Order ID:</strong></td><td>#${order.display_id || order.id}</td></tr>
+                <tr><td><strong>Razorpay ID:</strong></td><td>${razorpayPaymentId}</td></tr>
+              </table>
+              <p>Please prepare for the session accordingly.</p>
+            </div>
+          `,
+        },
+      }
     ])
 
     console.log(`[Booking Confirmation] Email sent successfully to ${email}`)
