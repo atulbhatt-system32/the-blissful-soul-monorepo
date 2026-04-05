@@ -25,9 +25,21 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
   return (
     <div className="bg-white flex flex-col" data-testid="order-card">
-      <div className="uppercase text-large-semi mb-1">
-        #<span data-testid="order-display-id">{order.display_id}</span>
+      <div className="flex items-center gap-x-3 mb-1">
+        <div className="uppercase text-large-semi">
+          #<span data-testid="order-display-id">{order.display_id}</span>
+        </div>
+        {(order.metadata as any)?.is_session && (
+          <span className="bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider">
+            Session
+          </span>
+        )}
       </div>
+      {(order.metadata as any)?.booking_date && (
+        <div className="text-small-regular text-pink-500 font-medium mb-1">
+          Scheduled for: {(order.metadata as any).booking_date} @ {(order.metadata as any).booking_time}
+        </div>
+      )}
       <div className="flex items-center divide-x divide-gray-200 text-small-regular text-ui-fg-base">
         <span className="pr-2" data-testid="order-created-at">
           {new Date(order.created_at).toDateString()}

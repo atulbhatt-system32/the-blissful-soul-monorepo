@@ -108,6 +108,7 @@ export default function MedusaCheckoutPayment({
                   razorpayPaymentId: response.razorpay_payment_id,
                   bookingDate: date,
                   bookingTime: time,
+                  price: price,
                 }),
               })
               console.log("Confirmation email triggered.")
