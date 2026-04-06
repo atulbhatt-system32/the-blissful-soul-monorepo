@@ -74,10 +74,11 @@ export default function MedusaCheckoutPayment({
           
           // Always call onSuccess — never let Cal.com or backend errors block the user
           try {
+            let calBookingId = null
             // 1. Create Cal.com booking only if we have a slug
             if (eventSlug) {
               try {
-                await createCalBooking({
+                const calResult = await createCalBooking({
                   startTime: slotIsoStart,
                   attendeeName: `${details.firstName} ${details.lastName}`,
                   attendeeEmail: details.email,
@@ -85,14 +86,15 @@ export default function MedusaCheckoutPayment({
                   eventSlug: eventSlug,
                   notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
                 })
-                console.log("Cal.com booking created successfully")
+                calBookingId = calResult?.uid
+                console.log("Cal.com booking created successfully:", calBookingId)
               } catch (calErr: any) {
                 console.error("Cal.com booking failed (non-blocking):", calErr?.message)
               }
             } else {
               console.warn("No eventSlug for this product — Cal.com booking skipped.")
             }
-
+ 
             // 2. Send confirmation email via Next.js API proxy (avoids CORS)
             try {
               await fetch(`/api/booking-confirmation`, {
@@ -109,6 +111,8 @@ export default function MedusaCheckoutPayment({
                   bookingDate: date,
                   bookingTime: time,
                   price: price,
+                  calBookingId,
+                  eventSlug, // Pass the event slug for rescheduling
                 }),
               })
               console.log("Confirmation email triggered.")

@@ -439,22 +439,14 @@ export default function BookNowClient({
             Thank you, {details.firstName}. Your session for <strong>{serviceObj?.title}</strong> on <strong>{new Date(selectedDate).toLocaleDateString()} at {selectedTime}</strong> has been successfully booked.
             We've sent a confirmation email to {details.email}.
           </p>
-          <button 
-            onClick={() => router.push(`/${countryCode}`)}
-            className="px-8 py-3 bg-black text-white rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-800 transition-colors mb-10"
-          >
-            Return Home
-          </button>
-          
           {!customer && (
-             <div className="mt-8 pt-8 border-t border-gray-100">
-               <GuestAutoRegister 
-                 email={details.email} 
-                 firstName={details.firstName} 
-                 lastName={details.lastName}
-                 phone={details.phone}
-               />
-             </div>
+            <div className="mt-8 pt-8 border-t border-gray-100">
+              <GuestAutoRegister 
+                email={details.email} 
+                firstName={details.firstName} 
+                lastName={details.lastName}
+              />
+            </div>
           )}
         </div>
       )}

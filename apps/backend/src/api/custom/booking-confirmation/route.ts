@@ -12,6 +12,8 @@ type BookingOrderPayload = {
   bookingDate: string
   bookingTime: string
   price: number
+  calBookingId: string
+  eventSlug: string
 }
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -26,7 +28,11 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     bookingDate,
     bookingTime,
     price,
+    calBookingId,
+    eventSlug,
   } = req.body as BookingOrderPayload
+
+  console.log(`[Booking Confirmation] Processing for ${email} | Razorpay: ${razorpayPaymentId} | Cal: ${calBookingId}`)
 
   if (!email || !razorpayPaymentId) {
     return res.status(400).json({ message: "Missing email or payment ID" })
@@ -81,10 +87,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       shipping_address: addressPayload,
       billing_address: addressPayload,
       metadata: {
+        is_session: true,
         razorpay_id: razorpayPaymentId,
         booking_date: bookingDate,
         booking_time: bookingTime,
-        is_session: true,
+        cal_booking_id: calBookingId,
+        cal_event_slug: eventSlug,
       },
     })
 

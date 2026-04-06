@@ -3,30 +3,40 @@ import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const email = req.query.email as string
+  const displayId = req.query.displayId as string
 
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" })
+  if (!email || !displayId) {
+    return res.status(400).json({ message: "Email and Booking ID are required" })
   }
 
   try {
     const orderModuleService = req.scope.resolve(Modules.ORDER) as any
 
-    // Fetch all orders for this email
-    const orders = await orderModuleService.listOrders(
-      { email },
+    // Find the specific order by display_id (Booking ID)
+    // In Medusa v2, we list with filter on display_id
+    const [orders] = await orderModuleService.listAndCountOrders(
       { 
-        order: { created_at: "DESC" },
+        display_id: parseInt(displayId),
+        email: email
+      },
+      { 
         relations: ["items"],
       }
     )
 
-    // Filter to only session bookings (orders with is_session metadata)
-    const sessionOrders = orders.filter(
-      (o: any) => o.metadata?.is_session === true
-    )
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No session found with these details." })
+    }
 
-    // Map to a clean response
-    const sessions = sessionOrders.map((order: any) => ({
+    const order = orders[0]
+
+    // Verify it's a session (security measure)
+    if (order.metadata?.is_session !== true) {
+      return res.status(404).json({ message: "This booking ID is not a healing session." })
+    }
+
+    // Map to the same structure as history API
+    const session = {
       id: order.id,
       display_id: order.display_id,
       email: order.email,
@@ -44,11 +54,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         unit_price: item.unit_price,
         product_id: item.product_id,
       })) || [],
-    }))
+    }
 
-    return res.status(200).json({ sessions })
+    return res.status(200).json({ session })
   } catch (error: any) {
-    console.error("[Booking History] Error:", error.message)
-    return res.status(500).json({ message: "Failed to fetch booking history", error: error.message })
+    console.error("[Booking Lookup] Error:", error.message)
+    return res.status(500).json({ message: "Lookup failed", error: error.message })
   }
 }
