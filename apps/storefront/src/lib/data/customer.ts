@@ -231,7 +231,7 @@ export const updateCustomerAddress = async (
     last_name: formData.get("last_name") as string,
     company: formData.get("company") as string,
     address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
+    address_2: "",
     city: formData.get("city") as string,
     postal_code: formData.get("postal_code") as string,
     province: formData.get("province") as string,
@@ -258,4 +258,54 @@ export const updateCustomerAddress = async (
     .catch((err) => {
       return { success: false, error: err.toString() }
     })
+}
+
+/**
+ * Request a password reset email for a customer.
+ * First checks if the customer exists in our DB before triggering the reset flow.
+ */
+export async function requestPasswordReset(email: string) {
+  try {
+    // 1. Check if the customer actually exists before triggering the reset
+    const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const checkRes = await fetch(`${backendUrl}/custom/check-account?email=${encodeURIComponent(email)}`)
+    const checkData = await checkRes.json()
+
+    if (!checkData.exists) {
+      console.log(`[Password Reset] No account found for ${email}. Blocking reset.`)
+      return { success: false, error: "No account found with this email address." }
+    }
+
+    // 2. Customer exists — proceed with the actual reset
+    await sdk.auth.resetPassword("customer", "emailpass", { identifier: email })
+    return { success: true }
+  } catch (error: any) {
+    console.error("[Password Reset] Error requesting token:", error.message || error)
+    return { success: false, error: error.message || "Failed to request password reset. Please try again." }
+  }
+}
+
+/**
+ * Set a new password using the token sent via email.
+ */
+export async function resetPassword(email: string, token: string, newPassword: string) {
+  try {
+    const loginToken = await sdk.auth.resetPassword("customer", "emailpass", { 
+      identifier: email, 
+      token, 
+      password: newPassword 
+    })
+    
+    if (loginToken) {
+       await setAuthToken(loginToken as string)
+       const customerCacheTag = await getCacheTag("customers")
+       revalidateTag(customerCacheTag)
+       return { success: true }
+    }
+    
+    return { success: false, error: "Reset failed. Maybe the token expired." }
+  } catch (error: any) {
+    console.error("[Password Reset] Error resetting password:", error.message || error)
+    return { success: false, error: error.message || "Failed to reset password. Please try again." }
+  }
 }

@@ -41,9 +41,18 @@ const Login = ({ setCurrentView }: Props) => {
             required
             data-testid="password-input"
           />
+          <div className="flex justify-end -mt-1">
+             <button
+                type="button"
+                onClick={() => setCurrentView(LOGIN_VIEW.FORGOT_PASSWORD)}
+                className="text-xsmall-regular text-[#2C1E36] hover:underline font-medium"
+             >
+                Forgot password?
+             </button>
+          </div>
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
-        <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
+        <SubmitButton data-testid="sign-in-button" className="w-full mt-4">
           Sign in
         </SubmitButton>
       </form>

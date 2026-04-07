@@ -30,6 +30,7 @@ export default class SmtpNotificationService extends AbstractNotificationProvide
     notification: ProviderSendNotificationDTO
   ): Promise<ProviderSendNotificationResultsDTO> {
     const { to, template, data, attachments } = notification
+    console.log("[SMTP Provider] Attempting to send email to:", to)
 
     try {
       // 2. Prepare the email
@@ -41,6 +42,8 @@ export default class SmtpNotificationService extends AbstractNotificationProvide
         html: (data as any)?.html_body || "<b>Your order has been updated.</b>",
         attachments: (attachments as any) || []
       }
+      
+      console.log("[SMTP Provider] Mail options:", JSON.stringify(mailOptions, null, 2))
 
       // 3. Send email via Google SMTP
       const info = await this.transporter.sendMail(mailOptions)
