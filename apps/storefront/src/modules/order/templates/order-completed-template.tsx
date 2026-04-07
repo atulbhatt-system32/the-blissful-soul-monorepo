@@ -50,7 +50,6 @@ export default async function OrderCompletedTemplate({
             email={order.email || ""} 
             firstName={order.shipping_address?.first_name || ""} 
             lastName={order.shipping_address?.last_name || ""}
-            phone={order.shipping_address?.phone || ""}
           />
         )}
         
