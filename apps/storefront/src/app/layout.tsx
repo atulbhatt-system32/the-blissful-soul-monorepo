@@ -3,6 +3,8 @@ import { Metadata } from "next"
 import { Roboto } from "next/font/google"
 import "styles/globals.css"
 
+import { WishlistProvider } from "@lib/context/wishlist-context"
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
@@ -17,7 +19,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light" className={roboto.variable}>
       <body className="font-sans">
-        <main className="relative">{props.children}</main>
+        <WishlistProvider>
+          <main className="relative">{props.children}</main>
+        </WishlistProvider>
       </body>
     </html>
   )

@@ -11,6 +11,7 @@ import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 import { addToCart } from "@lib/data/cart"
 import { useParams, useRouter } from "next/navigation"
+import { useWishlist } from "@lib/context/wishlist-context"
 
 export default function ProductPreview({
   product,
@@ -27,6 +28,7 @@ export default function ProductPreview({
   const params = useParams()
   const countryCode = params.countryCode as string
   const [isAdding, setIsAdding] = useState(false)
+  const { toggleWishlist, isWishlisted } = useWishlist()
 
   let preferredVariantId: string | undefined = undefined
   let matchingVariant: HttpTypes.StoreProductVariant | undefined = undefined
@@ -120,13 +122,37 @@ export default function ProductPreview({
           )}
           
           <div className="p-2">
-             <Thumbnail
-              thumbnail={product.thumbnail}
-              images={product.images}
-              size="full"
-              isFeatured={isFeatured}
-              className="!rounded-xl overflow-hidden aspect-square grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500"
-            />
+          <Thumbnail
+            thumbnail={product.thumbnail}
+            images={product.images}
+            size="full"
+            isFeatured={isFeatured}
+            className="!rounded-xl overflow-hidden aspect-square grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500"
+          />
+
+          {/* Wishlist Button Overlay */}
+          <button
+            onClick={(e) => {
+               e.preventDefault()
+               toggleWishlist(product.id as string)
+            }}
+            className="absolute bottom-2 right-2 z-20 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg border border-black/[0.05] text-[#2C1E36] hover:scale-110 active:scale-95 transition-all group"
+          >
+             <svg 
+               xmlns="http://www.w3.org/2000/svg" 
+               width="20" 
+               height="20" 
+               viewBox="0 0 24 24" 
+               fill={isWishlisted(product.id as string) ? "currentColor" : "none"} 
+               stroke="currentColor" 
+               strokeWidth="1.5" 
+               strokeLinecap="round" 
+               strokeLinejoin="round"
+               className={isWishlisted(product.id as string) ? "text-[#C5A059]" : "text-[#2C1E36]"}
+             >
+               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+             </svg>
+          </button>
           </div>
           
           <div className="p-5 flex flex-col items-center text-center">
