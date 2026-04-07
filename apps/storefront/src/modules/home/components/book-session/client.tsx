@@ -14,9 +14,9 @@ type BookSessionClientProps = {
 }
 
 const tabs = [
-  { key: "top", label: "⭐ Top Services" },
-  { key: "audio", label: "📞 Audio Session" },
-  { key: "video", label: "🎥 Video Session" },
+  { key: "top", label: "Top Services", icon: "⭐" },
+  { key: "audio", label: "Audio Session", icon: "📞" },
+  { key: "video", label: "Video Session", icon: "🎥" },
 ]
 
 const BookSessionClient = ({
@@ -37,53 +37,59 @@ const BookSessionClient = ({
   const currentProducts = productMap[activeTab] || []
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-[#FAF9F6]">
       <div className="content-container">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-serif text-pink-900 mb-6 uppercase tracking-tight">
+        <div className="text-center mb-16">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block animate-in fade-in slide-in-from-bottom-2 duration-700">
+             SESSIONS
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-12 uppercase tracking-tight leading-tight">
             {title}
           </h2>
 
-          {/* Tabs */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-6 py-2 rounded-full border text-xs font-bold uppercase tracking-widest transition-all ${
-                  activeTab === tab.key
-                    ? "bg-black text-white"
-                    : "border-gray-200 text-gray-500 hover:border-pink-300"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          {/* Luxury Filter UI */}
+          <div className="inline-flex flex-wrap justify-center items-center p-1.5 bg-[#F5F4F0] rounded-[32px] shadow-sm border border-[#2C1E36]/5 animate-in fade-in zoom-in-95 duration-500">
+             {tabs.map((tab) => (
+               <button 
+                 key={tab.key}
+                 onClick={() => setActiveTab(tab.key)}
+                 className={`px-6 md:px-10 py-3 rounded-[24px] text-[13px] md:text-[14px] font-bold transition-all duration-300 flex items-center gap-2 ${
+                   activeTab === tab.key 
+                     ? 'bg-[#2C1E36] text-white border-[1.5px] border-[#C5A059] shadow-xl scale-105' 
+                     : 'text-[#665D6B] hover:text-[#2C1E36] hover:bg-[#2C1E36]/5'
+                 }`}
+               >
+                 <span className="text-base">{tab.icon}</span>
+                 {tab.label}
+               </button>
+             ))}
           </div>
         </div>
 
-        {currentProducts.length > 0 ? (
-          <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-            {currentProducts.map((product) => (
-              <li key={product.id}>
-                <ProductPreview product={product} region={region} isFeatured categoryHint={activeTab} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-            <p className="text-gray-400 font-serif italic">
-              No services available in this category yet.
-            </p>
-          </div>
-        )}
+        <div className="min-h-[400px]">
+          {currentProducts.length > 0 ? (
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              {currentProducts.map((product) => (
+                <li key={product.id}>
+                  <ProductPreview product={product} region={region} isFeatured categoryHint={activeTab} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center py-24 bg-white/50 backdrop-blur-sm rounded-[40px] border border-dashed border-[#2C1E36]/10 animate-in fade-in duration-500">
+              <p className="text-[#665D6B]/50 font-serif italic text-lg">
+                No services available in this category yet.
+              </p>
+            </div>
+          )}
+        </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-20">
           <LocalizedClientLink
             href="/book-session"
-            className="inline-block text-xs font-bold uppercase tracking-[0.3em] border-b-2 border-pink-500 pb-1 text-pink-900"
+            className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
           >
-            Show More
+            Explore All Sessions &rarr;
           </LocalizedClientLink>
         </div>
       </div>

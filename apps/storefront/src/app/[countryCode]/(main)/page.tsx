@@ -51,13 +51,13 @@ export default async function Home(props: {
       <BentoHero />
 
       {/* Curated Intro Section */}
-      <section className="pb-24 md:pb-32 pt-20 bg-[#1A0E22]">
-        <div className="content-container text-center flex flex-col items-center gap-y-7">
+      <section className="py-12 md:py-16 bg-[#1A0E22]">
+        <div className="content-container text-center flex flex-col items-center gap-y-6">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
              CURATED FOR YOU
           </span>
-          <div className="flex flex-col gap-y-5 max-w-3xl">
-            <h2 className="font-serif text-3xl md:text-[44px] text-white leading-tight font-semibold">
+          <div className="flex flex-col gap-y-4 max-w-3xl">
+            <h2 className="font-serif text-3xl md:text-[40px] text-white leading-tight font-semibold">
               Crystals and sessions chosen for depth, clarity, and everyday ritual.
             </h2>
             <p className="text-white/40 text-[14px] md:text-[15px] max-w-lg mx-auto leading-relaxed font-sans font-medium">
@@ -66,7 +66,7 @@ export default async function Home(props: {
           </div>
           <LocalizedClientLink 
             href="/store"
-            className="bg-[#C5A059] text-[#120B15] px-10 py-3.5 rounded-full text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-4"
+            className="bg-[#C5A059] text-[#120B15] px-10 py-3.5 rounded-full text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-2"
           >
             Browse the shop
           </LocalizedClientLink>
@@ -74,21 +74,26 @@ export default async function Home(props: {
       </section>
 
       {/* Hot Seller Section */}
-      {/* Hot Seller Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-24 md:py-32">
         <div className="content-container">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-pink-900 mb-4 uppercase tracking-tight">
+          <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
+               FAVOURITES
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-6 uppercase tracking-tight leading-tight">
               {homepageData?.hot_seller_title || "Hot Seller"}
             </h2>
-            <div className="h-1 w-20 bg-pink-500 mx-auto rounded-full" />
+            <div className="h-0.5 w-24 bg-[#C5A059] mx-auto rounded-full" />
           </div>
           
           <HotSellers hotSellers={homepageData?.hot_sellers} region={region} />
           
-          <div className="mt-12 text-center">
-            <LocalizedClientLink href="/store" className="inline-block px-8 py-3 border border-pink-500 text-pink-900 rounded-full font-serif font-bold hover:bg-pink-500 hover:text-white transition-all uppercase tracking-widest text-xs">
-              SEE ALL
+          <div className="mt-20 text-center">
+            <LocalizedClientLink 
+              href="/store" 
+              className="inline-block px-12 py-4 border border-[#2C1E36]/10 text-[#2C1E36] rounded-full font-bold hover:bg-[#2C1E36] hover:text-white transition-all uppercase tracking-[0.3em] text-[10px] shadow-sm hover:shadow-xl active:scale-95"
+            >
+              Discover All &rarr;
             </LocalizedClientLink>
           </div>
         </div>
@@ -104,16 +109,28 @@ export default async function Home(props: {
       />
 
       {/* Shop Healing Crystals Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-24 md:py-32">
         <div className="content-container">
-           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-pink-900 mb-4 uppercase tracking-tight">
+           <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
+               COLLECTION
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-6 uppercase tracking-tight leading-tight">
               {homepageData?.healing_crystals_title || "Shop Healing Crystals"}
             </h2>
-            <div className="h-1 w-20 bg-pink-500 mx-auto rounded-full" />
+            <div className="h-0.5 w-24 bg-[#C5A059] mx-auto rounded-full" />
           </div>
           
           <HealingCrystals products={homepageData?.healing_crystals} region={region} />
+          
+          <div className="mt-20 text-center">
+            <LocalizedClientLink 
+              href="/store" 
+              className="inline-block px-12 py-4 border border-[#2C1E36]/10 text-[#2C1E36] rounded-full font-bold hover:bg-[#2C1E36] hover:text-white transition-all uppercase tracking-[0.3em] text-[10px] shadow-sm hover:shadow-xl active:scale-95"
+            >
+              Explore Collection &rarr;
+            </LocalizedClientLink>
+          </div>
         </div>
       </section>
 

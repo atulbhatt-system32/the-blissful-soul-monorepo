@@ -35,58 +35,73 @@ export default async function AboutPage() {
   const quote = aboutData?.quote || "Healing is a journey of coming back home to yourself."
 
   return (
-    <div className="bg-[#FAF9F6]">
+    <div className="bg-[#FBFAF8] min-h-screen relative overflow-hidden">
+      {/* Decorative Accents */}
+      <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-[#C5A059]/5 rounded-full blur-[120px] -mr-64 pointer-events-none"></div>
+      <div className="absolute bottom-[10%] left-0 w-[400px] h-[400px] bg-[#2C1E36]/5 rounded-full blur-[100px] -ml-48 pointer-events-none"></div>
+
       {/* Hero Section */}
-      <section className="bg-[#1A0E22] py-16 md:py-24 flex flex-col items-center justify-center text-center">
-        <div className="content-container flex flex-col items-center gap-y-7">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
-             THE MASTER
+      <section className="bg-[#1A0E22] py-16 md:py-20 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none"></div>
+        <div className="content-container flex flex-col items-center gap-y-7 relative z-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-bold text-[#C5A059] font-sans">
+             THE LINEAGE
           </span>
-          <div className="flex flex-col gap-y-5 max-w-3xl">
-            <h1 className="font-serif text-4xl md:text-[60px] text-white leading-tight font-semibold">
-              About the Master
+          <div className="flex flex-col gap-y-5 max-w-4xl">
+            <h1 className="font-serif text-4xl md:text-[64px] text-white leading-[1.1] font-medium tracking-tight">
+              About the <span className="italic font-normal text-[#C5A059]">Master</span>
             </h1>
-            <p className="text-white/40 text-[14px] md:text-[16px] max-w-lg mx-auto leading-relaxed font-sans font-medium">
-              Tarot, astrology, therapy, and holistic guidance — rooted in compassion and experience.
+            <p className="text-white/40 text-base md:text-lg max-w-xl mx-auto leading-relaxed font-sans font-medium">
+              A synthesis of psychological depth, cosmic wisdom, and holistic healing — guided by Master Pragya Vijh.
             </p>
           </div>
         </div>
       </section>
 
       {/* Profile Section */}
-      <section className="py-20 md:py-32">
+      <section className="py-24 md:py-40">
         <div className="content-container">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24">
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-16 lg:gap-24">
             {/* Image side */}
-            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-              <div className="relative w-full aspect-square max-w-md rounded-2xl overflow-hidden shadow-2xl border-2 border-pink-50">
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end animate-in fade-in slide-in-from-left-8 duration-1000">
+              <div className="relative w-full aspect-[4/5] max-w-md rounded-[2.5rem] overflow-hidden shadow-[0_32px_80px_rgba(44,30,54,0.15)] border-[12px] border-white group">
                 <Image 
                   src={profileImage}
                   alt={name}
                   fill 
-                  className="object-cover" 
+                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-105" 
                 />
+                <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-[2.5rem]"></div>
               </div>
             </div>
 
             {/* Text side */}
-            <div className="w-full lg:w-1/2 flex flex-col items-start text-pink-900 px-4 md:px-0">
-              <div className="space-y-6">
+            <div className="w-full lg:w-1/2 flex flex-col items-start px-4 md:px-0 animate-in fade-in slide-in-from-right-8 duration-1000">
+               <div className="mb-12">
+                  <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.4em] mb-4 block">Biography</span>
+                  <h2 className="text-3xl md:text-4xl font-serif text-[#2C1E36] font-medium italic">Meet Pragya Vijh</h2>
+                  <div className="w-16 h-0.5 bg-[#C5A059] mt-6"></div>
+               </div>
+
+              <div className="space-y-8">
                 {bioPoints.map((text: string, idx: number) => (
-                  <div key={idx} className="flex items-start gap-4">
-                    <span className="mt-2 w-2 h-2 bg-pink-400 rounded-full flex-shrink-0" />
-                    <p className="text-lg leading-relaxed font-serif text-justify">
+                  <div key={idx} className="flex items-start gap-6 group">
+                    <span className="mt-1.5 w-5 h-5 flex items-center justify-center bg-[#F5F4F0] rounded-full flex-shrink-0 text-[#C5A059] transition-all group-hover:bg-[#2C1E36] group-hover:text-white border border-[#C5A059]/20 shadow-sm">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <p className="text-lg leading-relaxed font-sans text-[#665D6B] opacity-90 group-hover:opacity-100 transition-opacity">
                       {text}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-12 flex items-center gap-6">
-                 <LocalizedClientLink href={ctaLink} className="inline-block px-10 py-4 bg-pink-400 text-white rounded-full font-serif font-black uppercase tracking-widest hover:bg-pink-500 transition-all shadow-lg hover:shadow-2xl">
-                    {ctaText}
+              <div className="mt-16 w-full flex items-center justify-center lg:justify-start gap-8">
+                 <LocalizedClientLink href={ctaLink} className="group relative px-14 py-5 bg-[#2C1E36] text-white rounded-full font-bold uppercase tracking-[0.2em] text-[11px] overflow-hidden transition-all shadow-2xl shadow-purple-900/20 active:scale-95">
+                    <span className="relative z-10">{ctaText}</span>
+                    <div className="absolute inset-0 bg-[#C5A059] translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                  </LocalizedClientLink>
-                 <div className="h-1 w-20 bg-pink-100 rounded-full" />
+                 <div className="hidden md:block h-px w-24 bg-gradient-to-r from-[#C5A059]/40 to-transparent" />
               </div>
             </div>
           </div>
@@ -94,12 +109,16 @@ export default async function AboutPage() {
       </section>
 
       {/* Quote Section (Extra Branding) */}
-      <section className="py-20 bg-pink-50/20 text-center">
-         <div className="content-container max-w-4xl px-4">
-            <h2 className="text-3xl md:text-5xl font-serif italic text-pink-900/40 mb-8 leading-tight line-clamp-4">
-               &quot;{quote}&quot;
-            </h2>
-            <div className="h-0.5 w-16 bg-pink-300 mx-auto" />
+      <section className="py-32 bg-[#2C1E36] relative overflow-hidden">
+         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02]"></div>
+         <div className="content-container max-w-5xl px-4 relative z-10">
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[#C5A059] text-5xl font-serif mb-8">&ldquo;</span>
+              <h2 className="text-3xl md:text-5xl font-serif italic text-white/90 mb-12 leading-[1.3] max-w-4xl tracking-tight">
+                {quote}
+              </h2>
+              <div className="h-px w-24 bg-[#C5A059]/30" />
+            </div>
          </div>
       </section>
     </div>
