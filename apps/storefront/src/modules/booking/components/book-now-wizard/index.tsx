@@ -146,7 +146,7 @@ export default function BookNowClient({
             return (
               <div 
                 key={step} 
-                className={`text-[10px] md:text-sm font-bold uppercase ${isActive ? 'text-pink-500' : isCompleted ? 'text-pink-400' : 'text-gray-400'}`}
+                className={`text-[10px] md:text-sm font-bold uppercase ${isActive ? 'text-[#2C1E36]' : isCompleted ? 'text-[#2C1E36]/70' : 'text-gray-400'}`}
               >
                 {stepNum}. {step}
               </div>
@@ -159,7 +159,7 @@ export default function BookNowClient({
             return (
               <div 
                 key={idx} 
-                className={`h-full flex-1 ${stepNum <= currentStep ? 'bg-pink-400' : 'bg-transparent'}`}
+                className={`h-full flex-1 ${stepNum <= currentStep ? 'bg-[#2C1E36]' : 'bg-transparent'}`}
               ></div>
             )
           })}
@@ -173,14 +173,14 @@ export default function BookNowClient({
             
             {/* Category */}
             <div>
-              <label className="block text-pink-500 text-sm font-bold mb-2">Category</label>
+              <label className="block text-[#2C1E36] text-sm font-bold mb-2">Category</label>
               <select 
                 value={selectedCategory}
                 onChange={(e) => {
                   setSelectedCategory(e.target.value)
                   setSelectedService("") // reset service when cat changes
                 }}
-                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-pink-300 bg-transparent text-gray-800"
+                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
               >
                 <option value="">Select Category</option>
                 {categories.map((c) => (
@@ -191,11 +191,11 @@ export default function BookNowClient({
 
             {/* Service */}
             <div>
-              <label className="block text-pink-500 text-sm font-bold mb-2">Service</label>
+              <label className="block text-[#2C1E36] text-sm font-bold mb-2">Service</label>
               <select 
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
-                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-pink-300 bg-transparent text-gray-800"
+                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
                 disabled={!selectedCategory}
               >
                 <option value="">Select Service</option>
@@ -213,11 +213,11 @@ export default function BookNowClient({
 
             {/* Employee */}
             <div>
-              <label className="block text-pink-500 text-sm font-bold mb-2">Employee</label>
+              <label className="block text-[#2C1E36] text-sm font-bold mb-2">Employee</label>
               <select 
                 value={selectedEmployee}
                 onChange={(e) => setSelectedEmployee(e.target.value)}
-                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-pink-300 bg-transparent text-gray-800"
+                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
               >
                 {EMPLOYEES.map((e) => (
                   <option key={e.id} value={e.id}>{e.name}</option>
@@ -227,13 +227,13 @@ export default function BookNowClient({
 
             {/* Date */}
             <div>
-              <label className="block text-pink-500 text-sm font-bold mb-2">I'm available on or after</label>
+              <label className="block text-[#2C1E36] text-sm font-bold mb-2">I'm available on or after</label>
               <input 
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300 text-gray-800"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
               />
             </div>
 
@@ -243,7 +243,7 @@ export default function BookNowClient({
             <button 
               disabled={!isStep1Valid}
               onClick={handleNext}
-              className="px-10 py-3 bg-pink-400 text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:bg-pink-500 transition-colors"
+              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
             >
               Next
             </button>
@@ -254,7 +254,7 @@ export default function BookNowClient({
       {/* STEP 2: TIME */}
       {currentStep === 2 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <h3 className="text-xl font-serif text-gray-800 mb-2">Select a Time for <span className="text-pink-500">{new Date(selectedDate).toDateString()}</span></h3>
+          <h3 className="text-xl font-serif text-gray-800 mb-2">Select a Time for <span className="text-[#2C1E36]">{new Date(selectedDate).toDateString()}</span></h3>
           
           {/* Date picker for quick navigation */}
           <div className="mb-6">
@@ -264,14 +264,14 @@ export default function BookNowClient({
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
-              className="border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300 text-gray-800"
+              className="border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
             />
           </div>
 
           {/* Loading State */}
           {slotsLoading && (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mb-4"></div>
+              <div className="w-10 h-10 border-4 border-[#2C1E36]/20 border-t-[#2C1E36] rounded-full animate-spin mb-4"></div>
               <p className="text-gray-500 text-sm">Fetching available slots...</p>
             </div>
           )}
@@ -297,7 +297,7 @@ export default function BookNowClient({
                     setSelectedTime(slot.time)
                     setSelectedSlotIso(slot.isoStart)
                   }}
-                  className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${selectedTime === slot.time && selectedSlotIso === slot.isoStart ? 'border-pink-400 bg-pink-50 text-pink-600' : 'border-gray-100 bg-white text-gray-600 hover:border-pink-200'}`}
+                  className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${selectedTime === slot.time && selectedSlotIso === slot.isoStart ? 'border-[#2C1E36] bg-[#2C1E36]/5 text-[#2C1E36]' : 'border-gray-100 bg-white text-gray-600 hover:border-[#2C1E36]/20'}`}
                 >
                   {slot.time}
                 </button>
@@ -310,7 +310,7 @@ export default function BookNowClient({
             <button 
               disabled={!isStep2Valid}
               onClick={handleNext}
-              className="px-10 py-3 bg-pink-400 text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:bg-pink-500 transition-colors"
+              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
             >
               Next
             </button>
@@ -331,7 +331,7 @@ export default function BookNowClient({
                   type="text" 
                   value={details.firstName}
                   onChange={(e) => setDetails({...details, firstName: e.target.value})}
-                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300"
+                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
                 />
               </div>
               <div>
@@ -340,7 +340,7 @@ export default function BookNowClient({
                   type="text" 
                   value={details.lastName}
                   onChange={(e) => setDetails({...details, lastName: e.target.value})}
-                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300"
+                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
                 />
               </div>
             </div>
@@ -351,7 +351,7 @@ export default function BookNowClient({
                 type="email" 
                 value={details.email}
                 onChange={(e) => setDetails({...details, email: e.target.value})}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
               />
             </div>
             
@@ -361,7 +361,7 @@ export default function BookNowClient({
                 type="tel" 
                 value={details.phone}
                 onChange={(e) => setDetails({...details, phone: e.target.value})}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-pink-300"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
               />
             </div>
           </div>
@@ -371,7 +371,7 @@ export default function BookNowClient({
             <button 
               disabled={!isStep3Valid}
               onClick={handleNext}
-              className="px-10 py-3 bg-pink-400 text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:bg-pink-500 transition-colors"
+              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
             >
               Proceed to Payment
             </button>
@@ -394,7 +394,7 @@ export default function BookNowClient({
               <span className="text-gray-600">Date & Time:</span>
               <span className="font-medium text-right">{new Date(selectedDate).toLocaleDateString()}, {selectedTime}</span>
             </div>
-            <div className="flex justify-between mb-2 text-pink-600 font-bold mt-4 pt-4 border-t">
+            <div className="flex justify-between mb-2 text-[#2C1E36] font-bold mt-4 pt-4 border-t">
               <span>Total:</span>
               <span>
                 {/* For mock purpose we display price text, in production Medusa cart calculates it */}

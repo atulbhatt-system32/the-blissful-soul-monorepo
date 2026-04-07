@@ -37,32 +37,53 @@ export default function BookSessionClient({
 
   const currentProducts = productMap[activeTab] || []
 
+  const displayTabs = [
+    { key: "all", label: "Top" },
+    { key: "audio", label: "Audio" },
+    { key: "video", label: "Video" },
+  ]
+
   return (
     <div className="bg-[#FAF9F6]">
       {/* Hero Section */}
-      <section className="bg-[#0A0A0A] py-24 md:py-32 flex items-center justify-center text-center">
-        <h1 className="text-white text-5xl md:text-7xl font-serif uppercase tracking-tight">
-          {heroTitle}
-        </h1>
+      <section className="bg-[#1A0E22] py-12 md:py-16 flex flex-col items-center justify-center text-center">
+        <div className="content-container flex flex-col items-center gap-y-7">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
+             SESSIONS
+          </span>
+          <div className="flex flex-col gap-y-5 max-w-3xl">
+            <h1 className="font-serif text-3xl md:text-[42px] text-white leading-tight font-semibold">
+              Our services
+            </h1>
+            <p className="text-white/40 text-[14px] md:text-[16px] max-w-2xl mx-auto leading-relaxed font-sans font-medium">
+              Choose audio or video sessions — tarot, kundali, therapy, and full astrology readings.
+            </p>
+          </div>
+          <a 
+            href="/contact"
+            className="bg-[#C5A059] text-[#1A0E22] px-8 py-3 rounded-xl text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-2"
+          >
+            Questions? Contact us
+          </a>
+        </div>
       </section>
 
       {/* Category Section */}
       <section className="py-20">
         <div className="content-container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-serif text-pink-900 mb-8 uppercase tracking-tight">
-              {sectionTitle}
-            </h2>
-            
-            {/* Tabs */}
-            <div className="flex flex-wrap justify-center gap-4 mb-16">
-               {tabs.map((tab) => (
+            {/* Tabs Filter UI */}
+            <div className="inline-flex items-center p-1.5 bg-[#F5F4F0] rounded-[32px] mb-16 shadow-inner">
+               {displayTabs.map((tab) => (
                  <button 
                    key={tab.key}
                    onClick={() => setActiveTab(tab.key)}
-                   className={`flex items-center gap-2 px-8 py-3 rounded-lg border text-xs font-bold uppercase tracking-widest transition-all ${activeTab === tab.key ? 'bg-black text-white' : 'bg-white border-gray-200 text-gray-500 hover:border-pink-300'}`}
+                   className={`px-10 py-3 rounded-[24px] text-[14px] font-bold transition-all duration-300 ${
+                     activeTab === tab.key 
+                       ? 'bg-[#2C1E36] text-white border-[1.5px] border-[#C5A059] shadow-lg scale-105' 
+                       : 'text-[#6B6670] hover:text-[#2C1E36]'
+                   }`}
                  >
-                   {tab.icon}
                    {tab.label}
                  </button>
                ))}
@@ -70,18 +91,19 @@ export default function BookSessionClient({
           </div>
 
           {/* Services Grid */}
-          {currentProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {currentProducts.map((product) => (
-                <ProductPreview key={product.id} product={product} region={region} isFeatured categoryHint={activeTab} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-              <p className="text-gray-400 font-serif italic mb-2">No services available in this category yet.</p>
-              <button onClick={() => setActiveTab("all")} className="text-pink-500 text-sm font-bold border-b border-pink-500">View Top Services</button>
-            </div>
-          )}
+          <div className="min-h-[400px]">
+            {currentProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {currentProducts.map((product) => (
+                  <ProductPreview key={product.id} product={product} region={region} isFeatured categoryHint={activeTab} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center py-24 bg-white/50 backdrop-blur-sm rounded-[32px] border border-dashed border-gray-200">
+                <p className="text-gray-400 font-sans text-sm font-medium">No sessions in this category yet.</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>

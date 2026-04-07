@@ -5,6 +5,15 @@ import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import BentoHero from "@modules/home/components/bento-hero"
+import { getHomepageData } from "@lib/data/strapi"
+import HeroSlideshow from "@modules/home/components/hero-slideshow"
+import BookSession from "@modules/home/components/book-session"
+import Testimonials from "@modules/home/components/testimonials"
+import WelcomePopup from "@modules/home/components/welcome-popup"
+import HotSellers from "@modules/home/components/hot-sellers"
+import HealingCrystals from "@modules/home/components/healing-crystals"
+import StatsBar from "@modules/layout/components/stats-bar"
 
 export const metadata: Metadata = {
   title: "Medusa Next.js Starter Template",
@@ -12,15 +21,7 @@ export const metadata: Metadata = {
     "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
 }
 
-import BrandHero from "@modules/home/components/brand-hero"
-import { getHomepageData } from "@lib/data/strapi"
-import HeroSlideshow from "@modules/home/components/hero-slideshow"
-import BookSession from "@modules/home/components/book-session"
-import Testimonials from "@modules/home/components/testimonials"
-import StatsBar from "@modules/home/components/stats-bar"
-import WelcomePopup from "@modules/home/components/welcome-popup"
-import HotSellers from "@modules/home/components/hot-sellers"
-import HealingCrystals from "@modules/home/components/healing-crystals"
+
 
 export default async function Home(props: {
   params: Promise<{ countryCode: string }>
@@ -47,15 +48,32 @@ export default async function Home(props: {
       <WelcomePopup data={homepageData?.pop_up} />
 
       {/* Hero Section */}
-      {heroSlides.length > 0 ? (
-        <HeroSlideshow slides={heroSlides} />
-      ) : (
-        <BrandHero />
-      )}
+      <BentoHero />
 
-      {/* Stats Bar */}
-      <StatsBar stats={homepageData?.stats} />
+      {/* Curated Intro Section */}
+      <section className="pb-24 md:pb-32 pt-20 bg-[#1A0E22]">
+        <div className="content-container text-center flex flex-col items-center gap-y-7">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
+             CURATED FOR YOU
+          </span>
+          <div className="flex flex-col gap-y-5 max-w-3xl">
+            <h2 className="font-serif text-3xl md:text-[44px] text-white leading-tight font-semibold">
+              Crystals and sessions chosen for depth, clarity, and everyday ritual.
+            </h2>
+            <p className="text-white/40 text-[14px] md:text-[15px] max-w-lg mx-auto leading-relaxed font-sans font-medium">
+              Every piece is selected to support your journey — from wearable energy to one-on-one guidance with Master Pragya Vijh.
+            </p>
+          </div>
+          <LocalizedClientLink 
+            href="/store"
+            className="bg-[#C5A059] text-[#120B15] px-10 py-3.5 rounded-full text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-4"
+          >
+            Browse the shop
+          </LocalizedClientLink>
+        </div>
+      </section>
 
+      {/* Hot Seller Section */}
       {/* Hot Seller Section */}
       <section className="py-16 md:py-24">
         <div className="content-container">
@@ -99,11 +117,13 @@ export default async function Home(props: {
         </div>
       </section>
 
-      {/* Testimonials */}
       <Testimonials 
         title={homepageData?.testimonials_title} 
         testimonials={homepageData?.testimonials} 
       />
+
+      {/* Stats Bar (Counter) - Home Page Only */}
+      <StatsBar />
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react"
 import Image from "next/image"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Autoplay } from "swiper/modules"
 import type { Swiper as SwiperType } from "swiper"
@@ -63,83 +64,72 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
     : defaultTestimonials
 
   return (
-    <section className="py-20 bg-pink-50/20 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full blur-[100px] opacity-30 -z-1" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-100 rounded-full blur-[120px] opacity-30 -z-1" />
+    <section className="py-24 md:py-32 bg-[#FAF9F6] relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-100/30 rounded-full blur-[120px] -z-1" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-pink-50/40 rounded-full blur-[150px] -z-1" />
       
       <div className="content-container text-center relative z-10">
-        <h2 className="text-4xl md:text-5xl font-serif text-pink-900 mb-16 uppercase tracking-tight">
-          {sectionTitle}
-        </h2>
+        <div className="flex flex-col items-center gap-y-4 mb-20">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-pink-600">
+             WHAT THEY SAY
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#130E14] tracking-tight">
+            {sectionTitle}
+          </h2>
+        </div>
         
         <div className="relative max-w-6xl mx-auto px-4">
-          {/* Prev Arrow */}
-          <button
-            onClick={() => swiperRef.current?.slidePrev()}
-            aria-label="Previous testimonial"
-            className="absolute -left-2 md:-left-6 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full text-pink-600 hover:scale-110 transition-transform border border-pink-200 bg-white shadow-md"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-
           <Swiper
             modules={[Navigation, Autoplay]}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            autoplay={{ delay: 6000, disableOnInteraction: false }}
             loop={data.length > 3}
-            speed={500}
-            spaceBetween={32}
+            speed={800}
+            spaceBetween={40}
             slidesPerView={1}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
             onSwiper={(swiper) => { swiperRef.current = swiper }}
-            className="!px-4"
+            className="!px-4 !pb-12"
           >
             {data.map((t, idx) => (
               <SwiperSlide key={idx}>
-                <div className="flex flex-col items-center group py-4">
-                  <div className="relative w-24 h-24 mb-6 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
+                <div className="flex flex-col items-center bg-white p-10 rounded-[40px] shadow-sm border border-black/5 hover:shadow-xl hover:shadow-black/5 transition-all duration-700 min-h-[400px] group">
+                  <div className="relative w-28 h-28 mb-8 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500">
                     <Image src={t.image} alt={t.name} fill className="object-cover" />
                   </div>
                   
-                  <div className="flex gap-1 mb-4 text-yellow-500">
+                  <div className="flex gap-1 mb-6 text-[#D4AF37]">
                     {[...Array(t.rating)].map((_, i) => (
-                      <svg key={i} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg key={i} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     ))}
                   </div>
                   
-                  <p className="text-pink-800 text-sm leading-relaxed mb-6 italic opacity-80 line-clamp-4">
-                    &quot;{t.text}&quot;
-                  </p>
+                  <div className="relative">
+                    <span className="absolute -top-6 -left-4 text-6xl text-pink-100 font-serif opacity-50">&ldquo;</span>
+                    <p className="text-[#130E14]/70 text-base leading-relaxed mb-8 italic line-clamp-4 font-medium px-2">
+                      {t.text}
+                    </p>
+                  </div>
                   
-                  <h4 className="font-serif text-pink-950 font-bold uppercase tracking-widest text-[10px] sm:text-[12px] whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2">
-                    {t.name}
-                  </h4>
-                  <div className="h-0.5 w-8 bg-pink-300 mt-2 opacity-50 group-hover:w-12 transition-all duration-300 mr-1 sm:mr-2 flex-shrink-0" />
+                  <div className="mt-auto pt-6 border-t border-black/5 w-full">
+                    <h4 className="font-serif text-[#130E14] font-bold uppercase tracking-[0.2em] text-[11px]">
+                      {t.name}
+                    </h4>
+                  </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* Next Arrow */}
-          <button
-            onClick={() => swiperRef.current?.slideNext()}
-            aria-label="Next testimonial"
-            className="absolute -right-2 md:-right-6 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full text-pink-600 hover:scale-110 transition-transform border border-pink-200 bg-white shadow-md"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
+          {/* Navigation Dots/Arrows could be added here if needed, but keeping it clean */}
         </div>
         
-        <div className="mt-12">
-           <button className="px-6 py-2 border border-pink-500 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-pink-500 hover:bg-pink-500 hover:text-white transition-all">
-             View Customer Reviews
-           </button>
+        <div className="mt-16">
+           <LocalizedClientLink href="/contact" className="px-10 py-4 bg-[#130E14] text-white rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-black transition-all shadow-lg shadow-black/10">
+              Share Your Journey With Us
+           </LocalizedClientLink>
         </div>
       </div>
     </section>

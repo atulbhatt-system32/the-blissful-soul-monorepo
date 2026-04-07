@@ -68,7 +68,7 @@ export default function MedusaCheckoutPayment({
           email: details.email,
           contact: details.phone,
         },
-        theme: { color: "#ec4899" },
+        theme: { color: "#2C1E36" },
         handler: async function (response: any) {
           console.log("Payment successful:", response.razorpay_payment_id)
           
@@ -94,7 +94,7 @@ export default function MedusaCheckoutPayment({
             } else {
               console.warn("No eventSlug for this product — Cal.com booking skipped.")
             }
- 
+
             // 2. Send confirmation email via Next.js API proxy (avoids CORS)
             try {
               await fetch(`/api/booking-confirmation`, {
@@ -160,7 +160,7 @@ export default function MedusaCheckoutPayment({
           Cancel
         </Button>
         <Button
-          className="w-2/3 py-3 bg-pink-500 hover:bg-pink-600 border-none text-white text-md uppercase font-bold"
+          className="w-2/3 py-3 bg-[#2C1E36] hover:opacity-90 border-none text-white text-md uppercase font-bold"
           size="large"
           onClick={handleBookingPayment}
           isLoading={isProcessing}

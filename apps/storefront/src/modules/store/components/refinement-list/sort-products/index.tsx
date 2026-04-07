@@ -22,32 +22,35 @@ const SortProducts = ({
   sortBy,
   setQueryParams,
 }: SortProductsProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setQueryParams("sortBy", e.target.value as SortOptions)
-  }
+  const options = [
+    { value: "latest", label: "Latest" },
+    { value: "price_asc", label: "Price ↑" },
+    { value: "price_desc", label: "Price ↓" },
+    { value: "default", label: "Name" },
+  ]
 
-  // Ensure sortBy maps to one of our allowed options, or fallback to default
-  const currentValue = sortOptions.some(o => o.value === sortBy) ? sortBy : "default"
+  const activeSort = options.some(o => o.value === sortBy) ? sortBy : "latest"
 
   return (
-    <div className="relative" data-testid={dataTestId}>
-      <select 
-        value={currentValue} 
-        onChange={handleChange}
-        className="appearance-none bg-[#333333] text-white text-xs py-2.5 pl-4 pr-10 rounded-md shadow-sm outline-none cursor-pointer focus:ring-0 focus:border-transparent border-none border-transparent"
-        style={{
-          backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'right 10px center',
-          backgroundSize: '16px'
-        }}
-      >
-        {sortOptions.map((option) => (
-          <option key={option.value} value={option.value} className="bg-[#333333] text-white py-1">
-            {option.label}
-          </option>
+    <div className="flex items-center gap-x-3" data-testid={dataTestId}>
+      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mr-2 font-sans">
+        Sort
+      </span>
+      <div className="flex items-center gap-2">
+        {options.map((opt) => (
+          <button
+            key={opt.value}
+            onClick={() => setQueryParams("sortBy", opt.value as SortOptions)}
+            className={`px-6 py-2.5 rounded-[24px] text-[11px] font-bold uppercase tracking-wider transition-all duration-300 border-[1.5px] ${
+              activeSort === opt.value
+                ? 'bg-[#2C1E36] text-white border-[#C5A059] shadow-md scale-105'
+                : 'bg-white text-[#6B6670] border-gray-100 hover:border-[#2C1E36]/20'
+            }`}
+          >
+            {opt.label}
+          </button>
         ))}
-      </select>
+      </div>
     </div>
   )
 }

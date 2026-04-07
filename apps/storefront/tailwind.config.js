@@ -21,6 +21,19 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        metal: {
+          DEFAULT: "hsl(var(--metal))",
+          muted: "hsl(var(--metal-muted))",
+        },
+        inverse: "hsl(var(--surface-inverse))",
+        muted: "hsl(var(--muted))",
+        border: "hsl(var(--border-subtle))",
         pink: {
           50: '#FDF2F8',
           100: '#FCE7F3',
@@ -56,6 +69,9 @@ module.exports = {
         circle: "9999px",
         full: "9999px",
       },
+      boxShadow: {
+        bento: "0 10px 40px -10px hsl(270 28% 8% / 0.07)",
+      },
       maxWidth: {
         "8xl": "100rem",
       },
@@ -72,9 +88,8 @@ module.exports = {
         "3xl": "2rem",
       },
       fontFamily: {
-        serif: ["Playfair Display", "serif"],
+        serif: ["Cormorant Garamond", "serif"],
         sans: [
-          "var(--font-roboto)",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",

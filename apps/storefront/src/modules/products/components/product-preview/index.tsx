@@ -100,7 +100,7 @@ export default function ProductPreview({
   }
 
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(255,192,203,0.1)] hover:shadow-[0_8px_30px_rgba(255,192,203,0.2)] transition-all duration-500 border border-pink-100 flex flex-col h-full hover:-translate-y-1">
+    <div className="group relative bg-white rounded-[32px] overflow-hidden shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_45px_rgba(19,14,20,0.12)] transition-all duration-700 border border-black/[0.03] flex flex-col h-full hover:-translate-y-2">
       <LocalizedClientLink href={`/products/${product.handle}`} className="flex-grow">
         <div data-testid="product-wrapper" className="relative">
           {/* Discount Badge */}
@@ -130,7 +130,7 @@ export default function ProductPreview({
           </div>
           
           <div className="p-5 flex flex-col items-center text-center">
-            <Text className="font-serif text-pink-950 text-lg mb-2 group-hover:text-pink-600 transition-colors line-clamp-2 leading-tight" data-testid="product-title">
+            <Text className="font-serif text-[#130E14] text-xl mb-4 group-hover:text-pink-600 transition-colors line-clamp-2 leading-tight px-2" data-testid="product-title">
               {product.title}
             </Text>
             
@@ -157,7 +157,7 @@ export default function ProductPreview({
         <button 
           onClick={handleBooking}
           disabled={isAdding}
-          className="w-full py-4 bg-[#e47ca1] text-white rounded-xl font-bold hover:bg-pink-500 shadow-[0_4px_15px_rgba(228,124,161,0.3)] hover:shadow-[0_6px_20px_rgba(228,124,161,0.4)] disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-widest text-[11px] flex items-center justify-center gap-x-2"
+          className="w-full py-4 bg-[#2C1E36] text-white rounded-[24px] font-bold hover:opacity-90 shadow-lg shadow-black/5 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-500 uppercase tracking-widest text-[11px] flex items-center justify-center gap-x-2 active:scale-95"
         >
           {isAdding ? (
             <>

@@ -1,38 +1,21 @@
 "use client"
 
 import React from "react"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay } from "swiper/modules"
-
-import "swiper/css"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const PromotionBanner = () => {
-  const announcements = [
-    "Buy 2 Products and Get 1 Free",
-    "Shop for ₹1499 or more for a free Wealth Attraction Bag! It will be added to your cart automatically"
-  ]
-
   return (
-    <div className="w-full bg-[#EC4899] text-white py-1.5 overflow-hidden border-b border-white/10">
-      <div className="max-w-[1440px] mx-auto">
-        <Swiper
-          modules={[Autoplay]}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          loop={true}
-          className="h-full w-full"
-        >
-          {announcements.map((text, idx) => (
-            <SwiperSlide key={idx} className="flex items-center justify-center text-center">
-              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-medium leading-tight px-4 block truncate">
-                {text}
-              </span>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+    <div className="w-full bg-[#2C1E36] text-white py-2.5 overflow-hidden border-b border-white/5">
+      <div className="content-container flex items-center justify-center text-center">
+        <span className="text-[10px] md:text-[11px] uppercase tracking-[0.12em] font-medium leading-tight">
+          Free Money Potli on orders ₹1499+ · Buy any 3 products, get 1 free — applied in cart 
+          <LocalizedClientLink href="/store" className="ml-2 hover:text-white/80 transition-colors font-serif italic normal-case tracking-normal underline decoration-white/30 underline-offset-4">
+            Shop crystals
+          </LocalizedClientLink>
+        </span>
       </div>
     </div>
   )
 }
 
 export default PromotionBanner
-

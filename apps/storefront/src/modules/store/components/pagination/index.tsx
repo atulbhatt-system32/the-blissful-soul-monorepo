@@ -35,9 +35,9 @@ export function Pagination({
   ) => (
     <button
       key={p}
-      className={clx("w-10 h-10 flex items-center justify-center rounded-lg text-sm font-bold transition-all", {
-        "bg-pink-400 text-white shadow-lg": isCurrent,
-        "bg-white text-pink-900 border border-pink-100 hover:bg-pink-50": !isCurrent,
+      className={clx("w-10 h-10 flex items-center justify-center rounded-xl text-[13px] font-bold transition-all duration-300 border-[1.5px]", {
+        "bg-[#2C1E36] text-white border-[#C5A059] shadow-lg scale-110 z-10": isCurrent,
+        "bg-white text-[#2C1E36] border-gray-100 hover:border-[#2C1E36]/30 hover:bg-[#2C1E36]/5": !isCurrent,
       })}
       disabled={isCurrent}
       onClick={() => handlePageChange(p)}

@@ -12,94 +12,107 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="bg-black border-t border-white/5 w-full pt-20 pb-10">
-      <div className="content-container flex flex-col w-full text-white">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-          {/* Brand Info */}
-          <div className="flex flex-col gap-y-6">
-            <LocalizedClientLink href="/" className="flex items-center">
-               <Image src="/logo.png" alt="The Blissful Soul" width={180} height={70} className="object-contain" />
-            </LocalizedClientLink>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs font-serif italic text-justify px-2 line-clamp-4">
-              Your soulful destination for crystals, tarot, and holistic healing. Embrace the energy of the universe with our curated spiritual collections.
+    <footer className="w-full">
+      <div className="bg-[#120B15] border-t border-white/5 w-full pt-8 md:pt-10 pb-8">
+        <div className="content-container flex flex-col w-full text-white">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-x-12 gap-y-16 mb-8 md:mb-10 mt-4">
+            
+            {/* Brand & Newsletter Column */}
+            <div className="flex flex-col gap-y-10">
+              <div className="flex flex-col gap-y-6">
+                <LocalizedClientLink href="/" className="flex flex-col items-start translate-x-[-1px]">
+                    <span className="font-serif text-[24px] text-white leading-tight font-medium tracking-tight">
+                      The Blissful Soul
+                    </span>
+                </LocalizedClientLink>
+                <p className="text-white/50 text-[13px] leading-[1.7] max-w-[280px] font-sans">
+                  Healing crystals, sessions, and guidance — curated with care in Delhi and online.
+                </p>
+              </div>
+
+              {/* Newsletter section */}
+              <div className="flex flex-col gap-y-5">
+                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#C5A059] font-sans">
+                  NEWSLETTER
+                </span>
+                <p className="text-white/40 text-[13px] font-sans">
+                  Occasional drops and session openings.
+                </p>
+                <div className="flex items-center gap-3 max-w-sm mt-1">
+                  <input 
+                     type="email" 
+                     placeholder="Your email" 
+                     className="flex-1 bg-white/[0.03] border border-white/10 rounded-full py-3 px-6 text-sm focus:outline-none focus:border-[#C5A059]/50 transition-colors placeholder:text-white/20 font-sans"
+                  />
+                  <button className="bg-[#C5A059] text-[#120B15] px-8 py-3 rounded-full text-sm font-bold font-sans hover:opacity-90 transition-all shadow-lg active:scale-95">
+                    Join
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Column */}
+            <div className="flex flex-col gap-y-8">
+              <span className="text-[11px] uppercase tracking-[0.5em] font-bold text-[#C5A059] font-sans">
+                CONTACT
+              </span>
+              <div className="flex flex-col gap-y-6 text-[15px] text-white/50 font-sans leading-relaxed">
+                 <p className="max-w-[200px]">
+                   The Blissful Soul, Shakti Nagar, Delhi 110007
+                 </p>
+                 <p className="tracking-wide text-white/60">
+                   +91 98116 11341
+                 </p>
+                 <p className="break-all opacity-90 text-white/60">
+                   theblissfulsoul27@gmail.com
+                 </p>
+              </div>
+            </div>
+
+            {/* Explore Column */}
+            <div className="flex flex-col gap-y-8">
+               <span className="text-[11px] uppercase tracking-[0.5em] font-bold text-[#C5A059] font-sans">
+                EXPLORE
+              </span>
+              <ul className="flex flex-col gap-y-4 text-[15px] text-white/50 font-sans">
+                  <li><LocalizedClientLink href="/about" className="hover:text-[#C5A059] transition-colors">About Master</LocalizedClientLink></li>
+                  <li><LocalizedClientLink href="/book-session" className="hover:text-[#C5A059] transition-colors">Book a session</LocalizedClientLink></li>
+                  <li><LocalizedClientLink href="/store" className="hover:text-[#C5A059] transition-colors">Shop crystals</LocalizedClientLink></li>
+                  <li><LocalizedClientLink href="/contact" className="hover:text-[#C5A059] transition-colors">Contact</LocalizedClientLink></li>
+              </ul>
+            </div>
+
+            {/* Legal Column */}
+            <div className="flex flex-col justify-between h-full">
+              <div className="flex flex-col gap-y-8">
+                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#C5A059] font-sans">
+                  LEGAL
+                </span>
+                <ul className="flex flex-col gap-y-4 text-[15px] text-white/50 font-sans">
+                    <li><LocalizedClientLink href="/terms" className="hover:text-[#C5A059] transition-colors">Terms</LocalizedClientLink></li>
+                    <li><LocalizedClientLink href="/privacy" className="hover:text-[#C5A059] transition-colors">Privacy</LocalizedClientLink></li>
+                    <li><LocalizedClientLink href="/refund-policy" className="hover:text-[#C5A059] transition-colors">Refund policy</LocalizedClientLink></li>
+                    <li><LocalizedClientLink href="/shipping-policy" className="hover:text-[#C5A059] transition-colors">Shipping policy</LocalizedClientLink></li>
+                </ul>
+              </div>
+              
+              {/* Instagram Icon as seen in image */}
+              <div className="mt-12 flex items-center gap-x-4">
+                 <a href="https://www.instagram.com/pragya.vijh_astrotalks/" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:border-[#C5A059] hover:text-[#C5A059] transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                 </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom copyright */}
+          <div className="pt-10 border-t border-white/5 flex justify-center items-center">
+            <p className="text-[11px] text-white/30 font-medium font-sans tracking-[0.2em] text-center uppercase">
+              © {new Date().getFullYear()} The Blissful Soul. All rights reserved.
             </p>
-            <div className="flex items-center gap-x-4 px-2">
-               {/* Social links */}
-               <a href="https://www.instagram.com/pragya.vijh_astrotalks/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-pink-500 transition-all shadow-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-               </a>
-               <a href="https://www.facebook.com/pragyavijh/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-pink-500 transition-all shadow-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-               </a>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="flex flex-col gap-y-6">
-            <span className="font-serif text-lg font-bold text-white uppercase tracking-widest">
-              Quick Links
-            </span>
-            <ul className="flex flex-col gap-y-3 text-sm text-gray-400">
-                <li><LocalizedClientLink href="/" className="hover:text-pink-400 transition-colors">Home</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/about" className="hover:text-pink-400 transition-colors">About Master</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/book-session" className="hover:text-pink-400 transition-colors">Book Your Service</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/store" className="hover:text-pink-400 transition-colors">Shop Now</LocalizedClientLink></li>
-                <li><a href="https://www.instagram.com/pragya.vijh_astrotalks/" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-colors">Instagram</a></li>
-                <li><a href="https://www.facebook.com/pragyavijh/" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-colors">Facebook</a></li>
-                <li><LocalizedClientLink href="/contact" className="hover:text-pink-400 transition-colors">Contact Us</LocalizedClientLink></li>
-            </ul>
-          </div>
-
-          {/* Shop Categories */}
-          <div className="flex flex-col gap-y-6">
-             <span className="font-serif text-lg font-bold text-white uppercase tracking-widest">
-              Shop Categories
-            </span>
-            <ul className="flex flex-col gap-y-3 text-sm text-gray-400">
-               {productCategories?.slice(0, 5).map(c => (
-                 <li key={c.id}>
-                    <LocalizedClientLink href={`/categories/${c.handle}`} className="hover:text-pink-400 transition-colors">
-                      {c.name}
-                    </LocalizedClientLink>
-                 </li>
-               ))}
-            </ul>
-          </div>
-
-          {/* Contact info */}
-          <div className="flex flex-col gap-y-6">
-             <span className="font-serif text-lg font-bold text-white uppercase tracking-widest">
-              Contact Us
-            </span>
-            <div className="flex flex-col gap-y-4 text-sm text-gray-400">
-               <div className="flex items-start gap-x-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  <span>Phone: +919811611341</span>
-               </div>
-               <div className="flex items-start gap-x-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                  <span>Email: theblissfulsoul27@gmail.com</span>
-               </div>
-               <div className="flex items-start gap-x-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span className="leading-relaxed">The Blissful Soul Shakti Nagar, Delhi 110007</span>
-               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-y-4">
-          <Text className="text-xs text-gray-500 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2">
-            © {new Date().getFullYear()} The Blissful Soul. All rights reserved.
-          </Text>
-          <div className="flex items-center gap-x-6 text-xs text-gray-500 font-medium">
-             <LocalizedClientLink href="/terms" className="hover:text-white transition-colors">Terms of Service</LocalizedClientLink>
-             <LocalizedClientLink href="/refund-policy" className="hover:text-white transition-colors">Refund Policy</LocalizedClientLink>
-             <LocalizedClientLink href="/privacy" className="hover:text-white transition-colors">Privacy Policy</LocalizedClientLink>
           </div>
         </div>
       </div>
     </footer>
   )
 }
-

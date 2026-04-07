@@ -35,12 +35,22 @@ export default async function AboutPage() {
   const quote = aboutData?.quote || "Healing is a journey of coming back home to yourself."
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#FAF9F6]">
       {/* Hero Section */}
-      <section className="bg-[#0A0A0A] py-24 md:py-32 flex items-center justify-center text-center">
-        <h1 className="text-white text-5xl md:text-7xl font-serif uppercase tracking-tight">
-          {heroTitle}
-        </h1>
+      <section className="bg-[#1A0E22] py-16 md:py-24 flex flex-col items-center justify-center text-center">
+        <div className="content-container flex flex-col items-center gap-y-7">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
+             THE MASTER
+          </span>
+          <div className="flex flex-col gap-y-5 max-w-3xl">
+            <h1 className="font-serif text-4xl md:text-[60px] text-white leading-tight font-semibold">
+              About the Master
+            </h1>
+            <p className="text-white/40 text-[14px] md:text-[16px] max-w-lg mx-auto leading-relaxed font-sans font-medium">
+              Tarot, astrology, therapy, and holistic guidance — rooted in compassion and experience.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Profile Section */}

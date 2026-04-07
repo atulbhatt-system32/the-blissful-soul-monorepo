@@ -22,65 +22,108 @@ export default async function Nav() {
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
       <PromotionBanner />
-      <header className="relative h-20 mx-auto border-b duration-200 bg-white border-ui-border-base">
+      <header className="sticky top-0 z-[100] h-24 mx-auto border-b border-metal/10 duration-200 bg-background/85 backdrop-blur-md transition-all">
         <nav className="content-container flex items-center justify-between w-full h-full">
-          {/* Logo */}
+          {/* Logo Section */}
           <div className="flex-1 basis-0 h-full flex items-center">
             <LocalizedClientLink
               href="/"
-              className="flex items-center gap-2"
+              className="flex flex-col items-start"
               data-testid="nav-store-link"
             >
-              <Image 
-                src="/logo.png" 
-                alt="The Blissful Soul" 
-                width={150} 
-                height={60} 
-                className="object-contain max-h-16"
-              />
+              <span className="font-serif text-xl md:text-2xl text-primary leading-tight font-medium">
+                The Blissful Soul
+              </span>
+              <span className="text-[9px] md:text-[10px] text-primary/80 uppercase tracking-[0.3em] font-sans font-bold -mt-1">
+                HEALING & CRYSTALS
+              </span>
             </LocalizedClientLink>
           </div>
 
-          {/* Navigation Links (Desktop) */}
-          <div className="hidden lg:flex items-center gap-x-8 h-full">
-            <LocalizedClientLink href="/" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              Home
-            </LocalizedClientLink>
-            <LocalizedClientLink href="/about" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              About Master
-            </LocalizedClientLink>
-            <LocalizedClientLink href="/book-session" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              Book Your Session
-            </LocalizedClientLink>
-            <LocalizedClientLink href="/store" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              Shop Crystals
-            </LocalizedClientLink>
-            <LocalizedClientLink href="/order/lookup" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              Track Order
-            </LocalizedClientLink>
-            <LocalizedClientLink href="/contact" className="font-serif text-sm uppercase tracking-widest hover:text-pink-600 transition-colors" activeClassName="text-pink-600 font-bold">
-              Contact Us
-            </LocalizedClientLink>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-x-5 h-full flex-1 basis-0 justify-end">
-            <div className="flex items-center gap-x-4">
-               <SearchToggle countryCode={currentLocale || "in"} />
-              
-               <LocalizedClientLink
-                className="hover:text-pink-600 transition-colors hidden sm:block"
-                href="/account"
-                data-testid="nav-account-link"
+          {/* Centered Navigation */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="flex items-center gap-x-1 bg-white/20 rounded-full px-1 py-1 border border-black/5 shadow-sm">
+              <LocalizedClientLink 
+                href="/" 
+                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
+                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Home
+              </LocalizedClientLink>
+              <LocalizedClientLink 
+                href="/about" 
+                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
+                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+              >
+                About
+              </LocalizedClientLink>
+              <LocalizedClientLink 
+                href="/book-session" 
+                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
+                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+              >
+                Book your session
+              </LocalizedClientLink>
+              <LocalizedClientLink 
+                href="/store" 
+                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
+                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+              >
+                Shop Crystals
+              </LocalizedClientLink>
+              <LocalizedClientLink 
+                href="/contact" 
+                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
+                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+              >
+                Contact
+              </LocalizedClientLink>
+            </div>
+          </div>
+
+          {/* Action Icons Section */}
+          <div className="flex items-center gap-x-1.5 h-full flex-1 basis-0 justify-end">
+            <div className="flex items-center">
+               <SearchToggle countryCode={currentLocale || "in"} />
+               
+               {/* Track Order Icon */}
+               <LocalizedClientLink
+                className="text-foreground hover:text-primary transition-colors hidden md:block p-2"
+                href="/order/lookup"
+                title="Track Order"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/><circle cx="18.5" cy="17.5" r="3.5"/><polyline points="17 17.5 18 18.5 20 16.5"/>
+                </svg>
               </LocalizedClientLink>
 
-              <div className="relative bg-pink-100 p-2 rounded-full text-pink-600 hover:bg-pink-200 transition-colors">
+               {/* Wishlist Icon */}
+               <LocalizedClientLink
+                className="text-foreground hover:text-primary transition-colors hidden sm:block p-2"
+                href="/wishlist"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </LocalizedClientLink>
+
+               {/* Cart Icon wrapper */}
+               <div className="relative text-foreground hover:text-primary transition-all p-2 flex items-center justify-center">
                 <Suspense fallback={<span>0</span>}>
                   <CartButton />
                 </Suspense>
               </div>
+
+              {/* Account Icon */}
+              <LocalizedClientLink
+                className="text-foreground hover:text-primary transition-colors hidden sm:block p-2"
+                href="/account"
+                data-testid="nav-account-link"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </LocalizedClientLink>
             </div>
             
             {/* Mobile Menu */}
