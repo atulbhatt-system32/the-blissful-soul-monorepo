@@ -68,6 +68,7 @@ jobs:
     environment: production
     permissions:
       contents: read # Required for actions/checkout to get config files
+      packages: read # Required for docker login to pull images from GHCR
     steps:
       - name: Checkout code (for config files)
         uses: actions/checkout@v4
