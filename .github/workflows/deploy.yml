@@ -121,32 +121,31 @@ jobs:
             mkdir -p "$APP_DIR"
             cd "$APP_DIR"
 
-            # Write secrets to .env from GitHub Actions secrets (regenerated on every deploy)
-            cat > .env <<EOF
-            POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-            POSTGRES_USER=${POSTGRES_USER:-postgres}
-            POSTGRES_DB=${POSTGRES_DB:-medusa_db}
-            POSTGRES_HOST=postgres
-            POSTGRES_PORT=5432
-            REPO_OWNER=${REPO_OWNER}
-            IMAGE_TAG=${IMAGE_TAG}
-            BACKEND_JWT_SECRET=${BACKEND_JWT_SECRET}
-            BACKEND_COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
-            BACKEND_CORS_ORIGIN=${PUBLIC_URL}
-            CMS_API_TOKEN=${CMS_API_TOKEN}
-            CMS_APP_KEYS=${CMS_APP_KEYS}
-            CMS_API_TOKEN_SALT=${CMS_API_TOKEN_SALT}
-            CMS_ADMIN_JWT_SECRET=${CMS_ADMIN_JWT_SECRET}
-            CMS_TRANSFER_TOKEN_SALT=${CMS_TRANSFER_TOKEN_SALT}
-            CMS_ENCRYPTION_KEY=${CMS_ENCRYPTION_KEY}
-            CMS_JWT_SECRET=${CMS_JWT_SECRET}
-            RAZORPAY_ID=${RAZORPAY_ID}
-            RAZORPAY_SECRET=${RAZORPAY_SECRET}
-            RAZORPAY_ACCOUNT=${RAZORPAY_ACCOUNT}
-            RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
-            GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
-            GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
-            EOF
+            # Write secrets to .env safely (regenerated on every deploy)
+            true > .env
+            printf "POSTGRES_PASSWORD=%s\n" "${POSTGRES_PASSWORD}" >> .env
+            printf "POSTGRES_USER=%s\n" "${POSTGRES_USER:-postgres}" >> .env
+            printf "POSTGRES_DB=%s\n" "${POSTGRES_DB:-medusa_db}" >> .env
+            printf "POSTGRES_HOST=%s\n" "172.18.0.3" >> .env
+            printf "POSTGRES_PORT=%s\n" "5432" >> .env
+            printf "REPO_OWNER=%s\n" "${REPO_OWNER}" >> .env
+            printf "IMAGE_TAG=%s\n" "${IMAGE_TAG}" >> .env
+            printf "BACKEND_JWT_SECRET=%s\n" "${BACKEND_JWT_SECRET}" >> .env
+            printf "BACKEND_COOKIE_SECRET=%s\n" "${BACKEND_COOKIE_SECRET}" >> .env
+            printf "BACKEND_CORS_ORIGIN=%s\n" "${PUBLIC_URL}" >> .env
+            printf "CMS_API_TOKEN=%s\n" "${CMS_API_TOKEN}" >> .env
+            printf "CMS_APP_KEYS=%s\n" "${CMS_APP_KEYS}" >> .env
+            printf "CMS_API_TOKEN_SALT=%s\n" "${CMS_API_TOKEN_SALT}" >> .env
+            printf "CMS_ADMIN_JWT_SECRET=%s\n" "${CMS_ADMIN_JWT_SECRET}" >> .env
+            printf "CMS_TRANSFER_TOKEN_SALT=%s\n" "${CMS_TRANSFER_TOKEN_SALT}" >> .env
+            printf "CMS_ENCRYPTION_KEY=%s\n" "${CMS_ENCRYPTION_KEY}" >> .env
+            printf "CMS_JWT_SECRET=%s\n" "${CMS_JWT_SECRET}" >> .env
+            printf "RAZORPAY_ID=%s\n" "${RAZORPAY_ID}" >> .env
+            printf "RAZORPAY_SECRET=%s\n" "${RAZORPAY_SECRET}" >> .env
+            printf "RAZORPAY_ACCOUNT=%s\n" "${RAZORPAY_ACCOUNT}" >> .env
+            printf "RAZORPAY_WEBHOOK_SECRET=%s\n" "${RAZORPAY_WEBHOOK_SECRET}" >> .env
+            printf "GOOGLE_SMTP_USER=%s\n" "${GOOGLE_SMTP_USER}" >> .env
+            printf "GOOGLE_SMTP_PASS=%s\n" "${GOOGLE_SMTP_PASS}" >> .env
             chmod 600 .env
 
             # Token hygiene (off-disk via stdin)
