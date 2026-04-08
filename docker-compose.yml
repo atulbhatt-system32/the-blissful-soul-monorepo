@@ -24,7 +24,11 @@ services:
     env_file:
       - ./apps/backend/.env
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/medusa_db?sslmode=disable
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-medusa_db}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=http://localhost:9000
       - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
