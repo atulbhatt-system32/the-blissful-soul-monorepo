@@ -9,7 +9,7 @@ export default async function strapiProductSync({
     const product = await productService.retrieveProduct(event.data.id)
 
     const strapiUrl = process.env.STRAPI_URL || "http://localhost:1337"
-    const strapiToken = process.env.STRAPI_API_TOKEN
+    const strapiToken = process.env.CMS_API_TOKEN
 
     try {
         // 1. Check if product exists in Strapi

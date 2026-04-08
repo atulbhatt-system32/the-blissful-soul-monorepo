@@ -38,7 +38,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 
       <div className="mt-4">
         <a
-          href={`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"}/store/orders/${order.id}/invoice`}
+          href={`${process.env.NEXT_PUBLIC_STOREFRONT_MEDUSA_URL || "http://localhost:9000"}/store/orders/${order.id}/invoice`}
           target="_blank"
           rel="noreferrer"
         >

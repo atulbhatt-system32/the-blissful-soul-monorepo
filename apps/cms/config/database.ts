@@ -2,7 +2,7 @@ import path from 'path';
 import type { Core } from '@strapi/strapi';
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database => {
-  const client = env('DATABASE_CLIENT', 'sqlite');
+  const client = env('CMS_DATABASE_CLIENT', 'sqlite');
 
   const connections = {
     mysql: {
@@ -45,7 +45,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database 
     },
     sqlite: {
       connection: {
-        filename: path.join(__dirname, '..', '..', env('DATABASE_FILENAME', '.tmp/data.db')),
+        filename: path.join(__dirname, '..', '..', env('CMS_DATABASE_FILENAME', '.tmp/data.db')),
       },
       useNullAsDefault: true,
     },

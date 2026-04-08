@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Email and password are required" }, { status: 400 })
     }
 
-    const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
 
     // Forward to backend custom registration
     const response = await fetch(`${backendUrl}/custom/guest-register`, {

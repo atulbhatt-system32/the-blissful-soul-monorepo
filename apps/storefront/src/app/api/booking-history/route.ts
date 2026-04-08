@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ sessions: [] })
     }
 
-    const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
     const response = await fetch(
       `${backendUrl}/custom/booking-history?email=${encodeURIComponent(email)}`,
       { cache: "no-store" }

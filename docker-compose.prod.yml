@@ -32,6 +32,19 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-medusa_db}?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=https://theblissfulsoul.in/api
+      - JWT_SECRET=${BACKEND_JWT_SECRET}
+      - COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
+      - BACKEND_CORS_ORIGIN=${BACKEND_CORS_ORIGIN}
+      - STRAPI_URL=http://cms:1337
+      - CMS_API_TOKEN=${CMS_API_TOKEN}
+      - MEDUSA_ADMIN_ONBOARDING_TYPE=nextjs
+      - MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=storefront
+      - RAZORPAY_ID=${RAZORPAY_ID}
+      - RAZORPAY_SECRET=${RAZORPAY_SECRET}
+      - RAZORPAY_ACCOUNT=${RAZORPAY_ACCOUNT}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
+      - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
+      - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
     depends_on:
       - postgres
       - redis
@@ -42,7 +55,7 @@ services:
           memory: 1g
           cpus: '1.0'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9000/health"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:9000/health', (r) => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -51,10 +64,10 @@ services:
   storefront:
     image: ghcr.io/${REPO_OWNER}/the-blissful-soul-storefront:${IMAGE_TAG:-latest}
     environment:
-      - MEDUSA_BACKEND_URL=http://backend:9000
-      - STRAPI_URL=http://cms:1337
+      - STOREFRONT_MEDUSA_URL=http://backend:9000
+      - STOREFRONT_STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=https://theblissfulsoul.in/cms
-      - STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
+      - STRAPI_API_TOKEN=${CMS_API_TOKEN}
     restart: always
     depends_on:
       backend:
@@ -67,7 +80,7 @@ services:
           memory: 512m
           cpus: '0.5'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8001/"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8001/', (r) => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -76,14 +89,14 @@ services:
   cms:
     image: ghcr.io/${REPO_OWNER}/the-blissful-soul-cms:${IMAGE_TAG:-latest}
     environment:
-      - APP_KEYS=${APP_KEYS}
-      - API_TOKEN_SALT=${API_TOKEN_SALT}
-      - ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
-      - TRANSFER_TOKEN_SALT=${TRANSFER_TOKEN_SALT}
-      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
-      - JWT_SECRET=${JWT_SECRET}
-      - DATABASE_CLIENT=sqlite
-      - DATABASE_FILENAME=.tmp/data.db
+      - APP_KEYS=${CMS_APP_KEYS}
+      - API_TOKEN_SALT=${CMS_API_TOKEN_SALT}
+      - ADMIN_JWT_SECRET=${CMS_ADMIN_JWT_SECRET}
+      - TRANSFER_TOKEN_SALT=${CMS_TRANSFER_TOKEN_SALT}
+      - ENCRYPTION_KEY=${CMS_ENCRYPTION_KEY}
+      - JWT_SECRET=${CMS_JWT_SECRET}
+      - CMS_DATABASE_CLIENT=sqlite
+      - CMS_DATABASE_FILENAME=.tmp/data.db
     volumes:
       - cms_data:/app/apps/cms/.tmp
       - ./apps/cms/public/uploads:/app/apps/cms/public/uploads
@@ -94,7 +107,7 @@ services:
           memory: 1g
           cpus: '1.0'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/_health"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:1337/_health', (r) => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"]
       interval: 10s
       timeout: 5s
       retries: 5

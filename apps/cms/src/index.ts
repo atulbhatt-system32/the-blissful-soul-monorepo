@@ -30,7 +30,7 @@ export default {
         description: 'Medusa Synchronization Token'
       });
       console.log('--- STRAPI API TOKEN CREATED for Medusa sync ---');
-      console.log('STRAPI_API_TOKEN=' + medusaToken.accessKey);
+      console.log('CMS_API_TOKEN=' + medusaToken.accessKey);
       console.log('------------------------------------------------');
     }
   },

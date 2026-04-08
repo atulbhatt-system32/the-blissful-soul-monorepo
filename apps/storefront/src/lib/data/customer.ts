@@ -267,7 +267,7 @@ export const updateCustomerAddress = async (
 export async function requestPasswordReset(email: string) {
   try {
     // 1. Check if the customer actually exists before triggering the reset
-    const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
     const checkRes = await fetch(`${backendUrl}/custom/check-account?email=${encodeURIComponent(email)}`)
     const checkData = await checkRes.json()
 

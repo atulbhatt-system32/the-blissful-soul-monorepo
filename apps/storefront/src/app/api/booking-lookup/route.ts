@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "Email and Booking ID are required" }, { status: 400 })
     }
 
-    const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
     const response = await fetch(
       `${backendUrl}/custom/booking-lookup?email=${encodeURIComponent(email)}&displayId=${displayId}`,
       { cache: "no-store" }

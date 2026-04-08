@@ -27,6 +27,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/medusa_db?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=http://localhost:9000
+      - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
     depends_on:
       - postgres
       - redis
@@ -44,8 +45,8 @@ services:
     env_file:
       - ./apps/storefront/.env
     environment:
-      - MEDUSA_BACKEND_URL=http://backend:9000
-      - STRAPI_URL=http://cms:1337
+      - STOREFRONT_MEDUSA_URL=http://backend:9000
+      - STOREFRONT_STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
     depends_on:
       - backend
