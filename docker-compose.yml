@@ -28,6 +28,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=http://localhost:9000
       - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
+      - STRAPI_URL=http://cms:1337
     depends_on:
       - postgres
       - redis
