@@ -1,5 +1,5 @@
 FROM node:20-slim
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.5.2
 
 WORKDIR /app
 
@@ -9,12 +9,17 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 # Copy backend app files
 COPY apps/backend ./apps/backend
 
-# Install dependencies for the whole monorepo
-RUN pnpm install
+# Install dependencies (frozen to ensure reproducible builds)
+RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/apps/backend
+RUN pnpm run build
+
+# Run as non-root
+RUN chown -R node:node /app
+USER node
 
 EXPOSE 9000
 
-# Run migrations and setup before starting
-CMD ["sh", "-c", "pnpm exec medusa db:migrate && pnpm exec medusa develop"]
+# Run migrations and start in production mode
+CMD ["sh", "-c", "pnpm exec medusa db:migrate && pnpm exec medusa start"]

@@ -3,7 +3,7 @@ FROM node:20-slim
 # Install build tools for better-sqlite3 native compilation
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g pnpm@10.5.2
+RUN npm install -g pnpm
 
 WORKDIR /app
 
@@ -13,19 +13,14 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 # Copy cms app files
 COPY apps/cms ./apps/cms
 
-# Install dependencies (frozen to ensure reproducible builds)
-RUN pnpm install --frozen-lockfile
+# Install dependencies for the whole monorepo
+RUN pnpm install
 
-# Force rebuild better-sqlite3 for this platform
+# Force rebuild better-sqlite3 for this platform (lockfile is Mac-generated)
 RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && npx --yes node-gyp rebuild
 
 WORKDIR /app/apps/cms
-RUN pnpm run build
-
-# Run as non-root
-RUN chown -R node:node /app
-USER node
 
 EXPOSE 1337
 
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "run", "develop"]

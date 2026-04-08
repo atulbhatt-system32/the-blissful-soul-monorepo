@@ -1,0 +1,151 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Point 1: Least Privilege - Disable all permissions globally
+permissions: {}
+
+# Point 5: Prevent concurrent deployments
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # Point: Max job duration
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false # Point 9: Don't kill other builds if one fails
+      matrix:
+        app: [backend, storefront, cms]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@6524b0ad6f248a637207432095f68f84457e5b53 # v3.11.0
+
+      - name: Build and push ${{ matrix.app }}
+        uses: docker/build-push-action@471d197146477038e12d12efff487c91d8e1a620 # v6.15.0
+        with:
+          context: .
+          file: ./apps/${{ matrix.app }}/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:latest
+            ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # Point: Max job duration
+    environment: production
+    permissions:
+      contents: read # Required for actions/checkout to get config files
+    steps:
+      - name: Checkout code (for config files)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Copy config files via SCP
+        uses: appleboy/scp-action@d047a0640d21e0501f22e70ecf62c575086d0426 # v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.prod.yml,nginx/"
+          target: "app" # Relative to $HOME
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@0193bb9e8d197c366e4a2e5576a084c7db345524 # v1.2.0
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB
+          script: |
+            set -euo pipefail
+
+            # Point: Explicit project scoping and portable paths
+            export COMPOSE_PROJECT_NAME=blissful-soul
+            export APP_DIR="$HOME/app"
+            export REPO_OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+            export IMAGE_TAG="${GITHUB_SHA}"
+
+            mkdir -p "$APP_DIR"
+            cd "$APP_DIR"
+
+            # Write secrets to .env from GitHub Actions secrets (regenerated on every deploy)
+            cat > .env <<EOF
+            POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            POSTGRES_USER=${POSTGRES_USER:-postgres}
+            POSTGRES_DB=${POSTGRES_DB:-medusa_db}
+            EOF
+            chmod 600 .env
+
+            # Token hygiene (off-disk via stdin)
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+            
+            # Rollback Prep
+            echo "Backing up current images..."
+            for app in backend storefront cms; do
+              IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
+              if docker image inspect "$IMAGE_BASE:latest" >/dev/null 2>&1; then
+                docker tag "$IMAGE_BASE:latest" "$IMAGE_BASE:previous"
+              fi
+            done
+            
+            echo "Pulling latest images..."
+            docker compose -f docker-compose.prod.yml pull
+            
+            echo "Deploying version $IMAGE_TAG..."
+            # Point: Healthcheck-aware startup (--wait) and clean orchestration
+            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 120 --remove-orphans; then
+              echo "Deployment failed health checks! Initiating rollback..."
+              export IMAGE_TAG="previous"
+              docker compose -f docker-compose.prod.yml up -d
+              exit 1
+            fi
+            
+            # Robust Health Check (Version-agnostic jq parsing)
+            echo "Performing final health verification..."
+            PERSISTENT_SERVICES=("backend" "storefront" "cms" "nginx" "postgres" "redis")
+            
+            for service in "${PERSISTENT_SERVICES[@]}"; do
+              # Point: Use jq -s to handle both single objects and arrays for maximum compatibility
+              STATE=$(docker compose -f docker-compose.prod.yml ps --format json "$service" | jq -s -r 'if type=="array" then .[0] else . end | .State // empty')
+              if [ "$STATE" != "running" ]; then
+                echo "Error: Service $service is in state '$STATE' (expected 'running')"
+                docker compose -f docker-compose.prod.yml logs "$service" --tail 30
+                
+                echo "Initiating emergency rollback..."
+                export IMAGE_TAG="previous"
+                docker compose -f docker-compose.prod.yml up -d
+                exit 1
+              fi
+            done
+            
+            echo "Deployment successful."
+            docker logout ghcr.io
+            
+            # Point: Project-Scoped image pruning
+            docker image prune -f --filter "label=com.docker.compose.project=blissful-soul"

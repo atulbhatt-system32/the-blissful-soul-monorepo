@@ -36,6 +36,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Docker files (dev variants not needed in image)
+**/Dockerfile.dev
+docker-compose*.yml
+nginx/
+
+# CI
+.github/
+
 # Env files
 .env
 .env.*

@@ -18,7 +18,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: apps/backend/Dockerfile
+      dockerfile: apps/backend/Dockerfile.dev
     ports:
       - "9000:9000"
     env_file:
@@ -38,7 +38,7 @@ services:
   storefront:
     build:
       context: .
-      dockerfile: apps/storefront/Dockerfile
+      dockerfile: apps/storefront/Dockerfile.dev
     ports:
       - "8001:8001"
     env_file:
@@ -58,7 +58,7 @@ services:
   cms:
     build:
       context: .
-      dockerfile: apps/cms/Dockerfile
+      dockerfile: apps/cms/Dockerfile.dev
     ports:
       - "1337:1337"
     env_file:
