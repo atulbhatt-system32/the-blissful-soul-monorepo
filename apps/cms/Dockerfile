@@ -16,8 +16,9 @@ COPY apps/cms ./apps/cms
 # Install dependencies (frozen to ensure reproducible builds)
 RUN pnpm install --frozen-lockfile
 
-# Force rebuild better-sqlite3 for this platform
-RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && npx --yes node-gyp rebuild
+# Force rebuild better-sqlite3 for this platform (suppress known benign warnings)
+RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && \
+    CXXFLAGS="-Wno-cast-function-type -Wno-implicit-fallthrough" npx --yes node-gyp rebuild
 
 WORKDIR /app/apps/cms
 RUN pnpm run build
