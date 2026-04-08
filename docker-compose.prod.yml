@@ -48,8 +48,8 @@ services:
       - POSTGRES_PORT=5432
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=https://theblissfulsoul.in/api
-      - JWT_SECRET=${BACKEND_JWT_SECRET}
-      - COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
+      - BACKEND_JWT_SECRET=${BACKEND_JWT_SECRET}
+      - BACKEND_COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
       - BACKEND_CORS_ORIGIN=${BACKEND_CORS_ORIGIN}
       - STRAPI_URL=http://cms:1337
       - CMS_API_TOKEN=${CMS_API_TOKEN}
@@ -61,6 +61,7 @@ services:
       - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
       - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
       - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
+      - MEDUSA_ADMIN_DISABLE=true
     depends_on:
       postgres:
         condition: service_healthy
