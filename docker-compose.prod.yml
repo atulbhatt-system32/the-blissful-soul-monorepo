@@ -61,7 +61,6 @@ services:
       - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
       - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
       - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
-      - MEDUSA_ADMIN_DISABLE=true
     depends_on:
       postgres:
         condition: service_healthy
