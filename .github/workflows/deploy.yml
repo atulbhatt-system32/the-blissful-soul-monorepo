@@ -126,7 +126,7 @@ jobs:
             printf "POSTGRES_PASSWORD=%s\n" "${POSTGRES_PASSWORD}" >> .env
             printf "POSTGRES_USER=%s\n" "${POSTGRES_USER:-postgres}" >> .env
             printf "POSTGRES_DB=%s\n" "${POSTGRES_DB:-medusa_db}" >> .env
-            printf "POSTGRES_HOST=%s\n" "172.18.0.3" >> .env
+            printf "POSTGRES_HOST=%s\n" "postgres" >> .env
             printf "POSTGRES_PORT=%s\n" "5432" >> .env
             printf "REPO_OWNER=%s\n" "${REPO_OWNER}" >> .env
             printf "IMAGE_TAG=%s\n" "${IMAGE_TAG}" >> .env
