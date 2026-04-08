@@ -94,7 +94,7 @@ services:
           memory: 1g
           cpus: '1.0'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/admin/healthcheck"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/_health"]
       interval: 10s
       timeout: 5s
       retries: 5

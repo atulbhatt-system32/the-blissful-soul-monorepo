@@ -146,8 +146,20 @@ jobs:
             # Point: Healthcheck-aware startup (--wait) and clean orchestration
             if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 120 --remove-orphans; then
               echo "Deployment failed health checks! Initiating rollback..."
-              export IMAGE_TAG="previous"
-              docker compose -f docker-compose.prod.yml up -d
+              HAS_PREVIOUS=true
+              for app in backend storefront cms; do
+                IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
+                if ! docker image inspect "$IMAGE_BASE:previous" >/dev/null 2>&1; then
+                  HAS_PREVIOUS=false
+                  break
+                fi
+              done
+              if [ "$HAS_PREVIOUS" = "true" ]; then
+                export IMAGE_TAG="previous"
+                docker compose -f docker-compose.prod.yml up -d
+              else
+                echo "No previous images available for rollback (first deploy). Manual intervention required."
+              fi
               exit 1
             fi
             
@@ -163,8 +175,20 @@ jobs:
                 docker compose -f docker-compose.prod.yml logs "$service" --tail 30
                 
                 echo "Initiating emergency rollback..."
-                export IMAGE_TAG="previous"
-                docker compose -f docker-compose.prod.yml up -d
+                HAS_PREVIOUS=true
+                for app in backend storefront cms; do
+                  IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
+                  if ! docker image inspect "$IMAGE_BASE:previous" >/dev/null 2>&1; then
+                    HAS_PREVIOUS=false
+                    break
+                  fi
+                done
+                if [ "$HAS_PREVIOUS" = "true" ]; then
+                  export IMAGE_TAG="previous"
+                  docker compose -f docker-compose.prod.yml up -d
+                else
+                  echo "No previous images available for rollback (first deploy). Manual intervention required."
+                fi
                 exit 1
               fi
             done
