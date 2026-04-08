@@ -13,6 +13,7 @@ COPY apps/backend ./apps/backend
 RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/apps/backend
+ENV NODE_ENV=production
 RUN pnpm run build
 
 # Run as non-root
