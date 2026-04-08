@@ -54,6 +54,7 @@ services:
       - MEDUSA_BACKEND_URL=http://backend:9000
       - STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=https://theblissfulsoul.in/cms
+      - STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
     restart: always
     depends_on:
       backend:
@@ -74,6 +75,15 @@ services:
 
   cms:
     image: ghcr.io/${REPO_OWNER}/the-blissful-soul-cms:${IMAGE_TAG:-latest}
+    environment:
+      - APP_KEYS=${APP_KEYS}
+      - API_TOKEN_SALT=${API_TOKEN_SALT}
+      - ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
+      - TRANSFER_TOKEN_SALT=${TRANSFER_TOKEN_SALT}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=.tmp/data.db
     volumes:
       - cms_data:/app/apps/cms/.tmp
       - ./apps/cms/public/uploads:/app/apps/cms/public/uploads

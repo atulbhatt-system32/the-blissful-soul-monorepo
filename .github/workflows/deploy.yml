@@ -30,10 +30,10 @@ jobs:
         app: [backend, storefront, cms]
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
       
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -70,10 +70,10 @@ jobs:
       contents: read # Required for actions/checkout to get config files
     steps:
       - name: Checkout code (for config files)
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Copy config files via SCP
-        uses: appleboy/scp-action@d047a0640d21e0501f22e70ecf62c575086d0426 # v0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -82,16 +82,23 @@ jobs:
           target: "app" # Relative to $HOME
 
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@0193bb9e8d197c366e4a2e5576a084c7db345524 # v1.2.0
+        uses: appleboy/ssh-action@v1.2.0
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          APP_KEYS: ${{ secrets.APP_KEYS }}
+          API_TOKEN_SALT: ${{ secrets.API_TOKEN_SALT }}
+          ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
+          TRANSFER_TOKEN_SALT: ${{ secrets.TRANSFER_TOKEN_SALT }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB
+          envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB,STRAPI_API_TOKEN,APP_KEYS,API_TOKEN_SALT,ADMIN_JWT_SECRET,TRANSFER_TOKEN_SALT,ENCRYPTION_KEY,JWT_SECRET
           script: |
             set -euo pipefail
 
@@ -109,6 +116,13 @@ jobs:
             POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             POSTGRES_USER=${POSTGRES_USER:-postgres}
             POSTGRES_DB=${POSTGRES_DB:-medusa_db}
+            STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
+            APP_KEYS=${APP_KEYS}
+            API_TOKEN_SALT=${API_TOKEN_SALT}
+            ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
+            TRANSFER_TOKEN_SALT=${TRANSFER_TOKEN_SALT}
+            ENCRYPTION_KEY=${ENCRYPTION_KEY}
+            JWT_SECRET=${JWT_SECRET}
             EOF
             chmod 600 .env
 
