@@ -23,6 +23,9 @@ RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && \
 WORKDIR /app/apps/cms
 RUN pnpm run build
 
+# Pre-create the SQLite data directory so the named volume inherits correct ownership
+RUN mkdir -p /app/apps/cms/.tmp
+
 # Run as non-root
 RUN chown -R node:node /app
 USER node
