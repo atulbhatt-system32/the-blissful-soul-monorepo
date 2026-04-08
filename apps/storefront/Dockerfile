@@ -34,6 +34,6 @@ RUN pnpm run build
 RUN chown -R node:node /app
 USER node
 
-EXPOSE 8001
+EXPOSE 8000
 
 CMD ["pnpm", "run", "start"]

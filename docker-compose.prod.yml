@@ -48,7 +48,7 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - REDIS_URL=redis://redis:6379
-      - BACKEND_URL=https://theblissfulsoul.in/api
+      - BACKEND_URL=http://187.127.148.114/api
       - BACKEND_JWT_SECRET=${BACKEND_JWT_SECRET}
       - BACKEND_COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
       - BACKEND_CORS_ORIGIN=${BACKEND_CORS_ORIGIN}
@@ -85,7 +85,7 @@ services:
     environment:
       - STOREFRONT_MEDUSA_URL=http://backend:9000
       - STOREFRONT_STRAPI_URL=http://cms:1337
-      - NEXT_PUBLIC_STRAPI_URL=https://theblissfulsoul.in/cms
+      - NEXT_PUBLIC_STRAPI_URL=http://187.127.148.114/cms
       - STRAPI_API_TOKEN=${CMS_API_TOKEN}
     restart: always
     depends_on:
