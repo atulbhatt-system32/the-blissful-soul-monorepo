@@ -3,9 +3,6 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
 module.exports = defineConfig({
-  admin: {
-    disable: process.env.NODE_ENV === 'production',
-  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL || `postgresql://${process.env.POSTGRES_USER}:${encodeURIComponent(process.env.POSTGRES_PASSWORD || '')}@${process.env.POSTGRES_HOST || 'postgres'}:${process.env.POSTGRES_PORT || '5432'}/${process.env.POSTGRES_DB}?sslmode=disable`,
     redisUrl: process.env.REDIS_URL,
