@@ -9,26 +9,6 @@ import type { Swiper as SwiperType } from "swiper"
 
 import "swiper/css"
 
-const defaultTestimonials = [
-  {
-    name: "Tripti Jain",
-    text: "Vesta healings have become like a case band in my life, her tarot changes how I think about things. She has problems but she keeps her light.",
-    image: "/pyramid.png",
-    rating: 5
-  },
-  {
-    name: "Subhi Kaur",
-    text: "I just had a really enlightening session with Pragya regarding my personal life, she helped me organize my life and gave me clarity. Loved my time with her.",
-    image: "/pyramid.png",
-    rating: 5
-  },
-  {
-    name: "Rubi Verma",
-    text: "The prediction done by Master Pragya was so accurate that I was shocked. The remedies suggested are working like wonders now. Would love to connect with you more.",
-    image: "/pyramid.png",
-    rating: 5
-  }
-]
 
 type TestimonialItem = {
   name: string
@@ -36,6 +16,11 @@ type TestimonialItem = {
   rating: number
   image?: {
     url: string
+    data?: {
+      attributes: {
+        url: string
+      }
+    }
   } | string | null
 }
 
@@ -51,17 +36,46 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
   const sectionTitle = title || "Client Testimonials"
   
   const data = testimonials && testimonials.length > 0
-    ? testimonials.map(t => ({
-        name: t.name,
-        text: t.text,
-        rating: t.rating || 5,
-        image: typeof t.image === "string" 
-          ? t.image 
-          : t.image?.url 
-            ? `${STRAPI_URL}${t.image.url}` 
-            : "/pyramid.png"
-      }))
-    : defaultTestimonials
+    ? testimonials.map(t => {
+        // Handle Strapi's nested media structure
+        let imageUrl = "/pyramid.png";
+        
+        if (typeof t.image === "string") {
+          imageUrl = t.image;
+        } else if (t.image?.url) {
+          imageUrl = `${STRAPI_URL}${t.image.url}`;
+        } else if (t.image?.data?.attributes?.url) {
+          imageUrl = `${STRAPI_URL}${t.image.data.attributes.url}`;
+        }
+
+        return {
+          name: t.name,
+          text: t.text,
+          rating: t.rating || 5,
+          image: imageUrl
+        };
+      })
+    : []
+
+  if (data.length === 0) {
+    return (
+      <section className="py-24 md:py-32 bg-[#FAF9F6] relative overflow-hidden">
+        <div className="content-container text-center">
+          <div className="flex flex-col items-center gap-y-4 mb-8">
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059]">
+               WHAT THEY SAY
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#130E14] tracking-tight">
+              {sectionTitle}
+            </h2>
+          </div>
+          <div className="max-w-2xl mx-auto py-16 bg-white/50 border border-dashed border-[#2C1E36]/10 rounded-[40px]">
+             <p className="text-[#2C1E36]/40 font-serif italic text-lg">Your journeys are the heart of this sanctuary. Stories from seekers will appear here soon.</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="py-24 md:py-32 bg-[#FAF9F6] relative overflow-hidden">

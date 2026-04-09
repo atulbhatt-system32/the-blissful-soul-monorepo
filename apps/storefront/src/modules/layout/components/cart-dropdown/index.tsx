@@ -75,18 +75,18 @@ const CartDropdown = ({
 
   return (
     <div
-      className="h-full z-50"
+      className="relative z-50 flex items-center"
       onMouseEnter={openAndCancel}
       onMouseLeave={close}
     >
-      <Popover className="relative h-full">
-        <PopoverButton className="h-full focus:outline-none">
-          <div className="relative group/cart">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-colors group-hover/cart:text-primary">
+      <Popover className="relative flex items-center justify-center">
+        <PopoverButton className="focus:outline-none p-2 transition-all hover:opacity-80">
+          <div className="relative group/cart flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-colors group-hover/cart:text-primary pt-0.5">
               <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
             </svg>
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-metal text-foreground text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-background">
+              <span className="absolute -top-1.5 -right-1.5 bg-[#2C1E36] text-white text-[8px] font-black w-4 h-4 flex items-center justify-center rounded-full border border-background shadow-sm">
                 {totalItems}
               </span>
             )}

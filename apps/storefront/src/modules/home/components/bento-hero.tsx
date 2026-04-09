@@ -71,15 +71,18 @@ const BentoHero = () => {
 
           {/* Right Column Stack */}
           <div className="flex flex-col gap-6 md:gap-8">
-            {/* Product Card placeholder */}
+            {/* Sacred Collection Card */}
             <motion.div 
               variants={cardVariants}
-              className="flex-1 bg-[#F4EFEA]/80 backdrop-blur-sm rounded-[40px] flex items-center justify-center p-8 min-h-[220px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#E8DFD5]/40 group relative overflow-hidden"
+              className="flex-1 bg-[#F4EFEA]/80 backdrop-blur-sm rounded-[40px] flex items-center justify-center p-8 min-h-[220px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#E8DFD5]/40 group relative overflow-hidden cursor-pointer"
             >
-               <span className="font-sans text-xl text-[#8E7964] font-medium z-10 transition-transform group-hover:scale-105 duration-500">
-                  Product
-               </span>
-               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+               <LocalizedClientLink href="/store" className="flex flex-col items-center gap-y-2 z-10 transition-transform group-hover:scale-105 duration-500">
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C5A059]">TREASURES</span>
+                  <span className="font-serif text-2xl text-[#2C1E36] font-medium">
+                     Sacred Collection
+                  </span>
+               </LocalizedClientLink>
+               <div className="absolute inset-0 bg-gradient-to-tr from-[#C5A059]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </motion.div>
 
             {/* Shop Card */}

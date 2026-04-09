@@ -116,15 +116,18 @@ const ShippingAddress = ({
       )}
 
       {!customer && (
-        <div className="mb-6 p-4 bg-pink-50 rounded-xl border border-pink-100 flex items-center justify-between">
-          <p className="text-pink-700 text-sm font-medium">
-            Returning customer? Sign in for a faster experience.
-          </p>
+        <div className="mb-8 p-6 bg-[#2C1E36] rounded-[2rem] border border-white/5 flex items-center justify-between shadow-xl shadow-purple-900/10 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="flex flex-col gap-y-1">
+            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Already A Seeker?</span>
+            <p className="text-white text-sm font-medium">
+              Sign in for a faster, divine checkout experience.
+            </p>
+          </div>
           <LocalizedClientLink 
             href="/account/login" 
-            className="text-pink-500 hover:text-pink-600 text-sm font-bold underline"
+            className="text-[#C5A059] hover:text-[#C5A059]/80 text-[11px] uppercase tracking-[0.2em] font-black border-b-2 border-[#C5A059]/30 hover:border-[#C5A059] transition-all pb-0.5"
           >
-            Log in
+            Enter Sanctuary
           </LocalizedClientLink>
         </div>
       )}

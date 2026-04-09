@@ -8,13 +8,6 @@ export const metadata: Metadata = {
   description: "Learn more about Master Pragya Vijh, the founder of The Blissful Soul, a leading expert in astrology and psychology.",
 }
 
-const defaultBioPoints = [
-  "Master Pragya Vijh has been awarded as the Most Profound Astrologer and Psychologist in Delhi. Being the founder CEO of The blissful Soul, she is a leading expert in optimizing your mental health, emotional fitness and stability in life.",
-  "Master Pragya Vijh is a highly sought-after psychologist and tarot reader and has held top positions in organizational setups in Delhi, India having guided more than 25,000 individuals till date.",
-  "Her educational background can be well traced from top Universities like University of Delhi and Amity University for her studies of Psychology.",
-  "Followed by infinite courses in the astrological field of Reiki healing, Chakra balancing, Tarot courses from worldwide based institutes."
-]
-
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
 export default async function AboutPage() {
@@ -24,15 +17,15 @@ export default async function AboutPage() {
   const name = aboutData?.name || "Master Pragya Vijh"
   const profileImage = aboutData?.profile_image?.url 
     ? `${STRAPI_URL}${aboutData.profile_image.url}` 
-    : "/master-pragya.png"
+    : "/master-placeholder.png"
   
   const bioPoints = aboutData?.bio_points?.length > 0 
     ? aboutData.bio_points.map((bp: any) => bp.text)
-    : defaultBioPoints
+    : []
 
   const ctaText = aboutData?.cta_text || "Get in Touch"
   const ctaLink = aboutData?.cta_link || "/contact"
-  const quote = aboutData?.quote || "Healing is a journey of coming back home to yourself."
+  const quote = aboutData?.quote || ""
 
   return (
     <div className="bg-[#FBFAF8] min-h-screen relative overflow-hidden">
@@ -83,8 +76,8 @@ export default async function AboutPage() {
                   <div className="w-16 h-0.5 bg-[#C5A059] mt-6"></div>
                </div>
 
-              <div className="space-y-8">
-                {bioPoints.map((text: string, idx: number) => (
+              <div className="space-y-8 w-full">
+                {bioPoints.length > 0 ? bioPoints.map((text: string, idx: number) => (
                   <div key={idx} className="flex items-start gap-6 group">
                     <span className="mt-1.5 w-5 h-5 flex items-center justify-center bg-[#F5F4F0] rounded-full flex-shrink-0 text-[#C5A059] transition-all group-hover:bg-[#2C1E36] group-hover:text-white border border-[#C5A059]/20 shadow-sm">
                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -93,7 +86,11 @@ export default async function AboutPage() {
                       {text}
                     </p>
                   </div>
-                ))}
+                )) : (
+                  <div className="py-10 px-8 border border-dashed border-[#2C1E36]/10 rounded-3xl text-center">
+                    <p className="text-[#665D6B]/50 font-serif italic text-lg">The story of Master Pragya is being transcribed with divine care. Check back soon for her journey.</p>
+                  </div>
+                )}
               </div>
 
               <div className="mt-16 w-full flex items-center justify-center lg:justify-start gap-8">

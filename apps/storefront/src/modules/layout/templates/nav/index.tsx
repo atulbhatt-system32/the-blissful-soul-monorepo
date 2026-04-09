@@ -107,12 +107,10 @@ export default async function Nav() {
                 </svg>
               </LocalizedClientLink>
 
-               {/* Cart Icon wrapper */}
-               <div className="relative text-foreground hover:text-primary transition-all p-2 flex items-center justify-center">
-                <Suspense fallback={<span>0</span>}>
-                  <CartButton />
-                </Suspense>
-              </div>
+               {/* Cart Icon */}
+               <Suspense fallback={<span>0</span>}>
+                 <CartButton />
+               </Suspense>
 
               {/* Account Icon */}
               <LocalizedClientLink

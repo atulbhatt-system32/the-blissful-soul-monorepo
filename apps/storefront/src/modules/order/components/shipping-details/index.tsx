@@ -45,7 +45,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Connection</span>
           <div className="flex flex-col text-sm text-[#2C1E36] font-medium">
              <span>{order.shipping_address?.phone}</span>
-             <span className="text-gray-400 font-bold mt-1 text-[11px]">{order.email}</span>
+             <span className="text-gray-400 font-bold mt-1 text-[11px] break-all">{order.email}</span>
           </div>
         </div>
 

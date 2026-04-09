@@ -28,28 +28,12 @@ export default async function HealingCrystals({
     }
   }
 
-  // 2. If nothing from CMS, use fallback but EXCLUDE sessions
-  if (pricedProducts.length === 0) {
-    const {
-      response: { products: defaultProducts },
-    } = await listProducts({
-      regionId: region.id,
-      queryParams: {
-        fields: "*variants.calculated_price",
-      },
-    })
-
-    const excludeHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
-    pricedProducts = (defaultProducts || []).filter((p) => 
-      !p.tags?.some((t: any) => t.value === "session") &&
-      !p.categories?.some((c: any) => excludeHandles.includes(c.handle))
-    ).slice(0, 4)
-  }
-
+  // 2. If nothing from CMS, show empty state
   if (pricedProducts.length === 0) {
      return (
-      <div className="text-center py-12">
-        <p className="text-pink-800/60 font-serif italic">No healing crystals available.</p>
+      <div className="text-center py-20 bg-gray-50/50 rounded-[40px] border border-dashed border-gray-200">
+        <p className="text-[#2C1E36]/40 font-serif italic text-lg">Our physical treasures are currently being sanctified.</p>
+        <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">New arrivals coming soon to the shop</p>
       </div>
     )
   }
