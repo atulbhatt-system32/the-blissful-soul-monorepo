@@ -87,7 +87,7 @@ services:
       - STOREFRONT_MEDUSA_URL=http://backend:9000
       - STOREFRONT_STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=https://klickvert.com/cms
-      - STRAPI_API_TOKEN=${CMS_API_TOKEN}
+      - CMS_API_TOKEN=${CMS_API_TOKEN}
       - COOKIE_SECURE=${COOKIE_SECURE:-true}
     restart: always
     depends_on:

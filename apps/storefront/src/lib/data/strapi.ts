@@ -21,7 +21,8 @@ export async function getStrapiProduct(medusaId: string) {
 
         const data = await response.json()
         return data.data?.[0] || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching Strapi product:", error)
         return null
     }
@@ -59,7 +60,8 @@ export async function getHomepageData() {
 
         const data = await response.json()
         return data.data || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching homepage data:", error)
         return null
     }
@@ -84,7 +86,8 @@ export async function getAboutPageData() {
 
         const data = await response.json()
         return data.data || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching about page data:", error)
         return null
     }
@@ -107,7 +110,8 @@ export async function getContactPageData() {
 
         const data = await response.json()
         return data.data || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching contact page data:", error)
         return null
     }
@@ -133,7 +137,8 @@ export async function getBookSessionPageData() {
 
         const data = await response.json()
         return data.data || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching book session page data:", error)
         return null
     }
@@ -157,7 +162,8 @@ export async function getStorePageData() {
 
         const data = await response.json()
         return data.data || null
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching store page data:", error)
         return null
     }
