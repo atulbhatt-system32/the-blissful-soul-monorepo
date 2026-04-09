@@ -24,13 +24,12 @@ export default async function Profile() {
   }
 
   return (
-    <div className="w-full" data-testid="profile-page-wrapper">
-      <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Profile</h1>
-        <p className="text-base-regular">
-          View and update your profile information, including your name, email,
-          and phone number. You can also update your billing address, or change
-          your password.
+    <div className="w-full max-w-4xl mx-auto px-4 small:px-8" data-testid="profile-page-wrapper">
+      <div className="mb-12 flex flex-col gap-y-2">
+        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Sanctum Identity</span>
+        <h1 className="text-4xl font-serif text-[#2C1E36] font-bold">Your Profile</h1>
+        <p className="text-sm text-gray-500 italic max-w-lg leading-relaxed mt-2">
+          Refine your essence. Manage your personal identification and secure delivery preferences within your digital sanctuary.
         </p>
       </div>
       <div className="flex flex-col gap-y-8 w-full">

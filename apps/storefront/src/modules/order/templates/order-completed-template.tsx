@@ -41,8 +41,8 @@ export default async function OrderCompletedTemplate({
   const calLink = (firstSession?.variant?.metadata?.cal_link || firstSession?.variant?.product?.metadata?.cal_link) as string | undefined
 
   return (
-    <div className="py-6 min-h-[calc(100vh-64px)]">
-      <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">
+    <div className="py-12 min-h-screen bg-[#fdfcfb]">
+      <div className="content-container flex flex-col justify-center items-center gap-y-12 max-w-4xl h-full w-full">
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         
         {!customer && (
@@ -52,43 +52,69 @@ export default async function OrderCompletedTemplate({
             lastName={order.shipping_address?.last_name || ""}
           />
         )}
+
+        <div className="flex flex-col items-center text-center gap-y-4 animate-in fade-in slide-in-from-top-6 duration-1000">
+           <div className="bg-[#C5A059]/10 p-4 rounded-full mb-2">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+           </div>
+           <span className="text-[10px] uppercase tracking-[0.4em] font-black text-[#C5A059]">Order Sanctified</span>
+           <Heading level="h1" className="text-5xl font-serif text-[#2C1E36] font-bold leading-tight">
+             Thank you for your trust.
+           </Heading>
+           <p className="text-gray-500 italic text-lg max-w-lg">
+             Your treasures have been secured. A confirmation of this divine exchange has been sent to your digital portal.
+           </p>
+        </div>
         
         {hasSession && calLink && (
-          <div className="w-full bg-pink-50/50 p-8 rounded-2xl border border-pink-100 shadow-sm mb-6">
-            <Heading level="h2" className="text-pink-900 font-serif mb-4 text-center">
-              Schedule Your Session
-            </Heading>
-            <p className="text-pink-700 text-center mb-8 italic">
-              Thank you for your purchase! Please select a convenient time slot below to finalize your booking.
-            </p>
-            <SessionBooking 
-              calLink={calLink} 
-              customerName={`${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`}
-              customerEmail={order.email || ""}
-            />
+          <div className="w-full bg-[#2C1E36] p-10 md:p-14 rounded-[3rem] border border-white/5 shadow-2xl shadow-purple-900/20 text-white animate-in zoom-in-95 duration-700">
+            <div className="flex flex-col items-center mb-10 text-center gap-y-2">
+              <span className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C5A059]">Action Required</span>
+              <Heading level="h2" className="text-3xl font-serif text-white font-bold">
+                Schedule Your Session
+              </Heading>
+              <p className="text-purple-200/70 italic text-sm mt-2">
+                Your journey begins with a conversation. Please choose a moment for our energies to meet.
+              </p>
+            </div>
+            <div className="bg-white rounded-[2rem] p-4 text-black">
+              <SessionBooking 
+                calLink={calLink} 
+                customerName={`${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`}
+                customerEmail={order.email || ""}
+              />
+            </div>
           </div>
         )}
 
         <div
-          className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-10"
+          className="flex flex-col gap-y-12 max-w-4xl h-full bg-white w-full p-8 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-sm"
           data-testid="order-complete-container"
         >
-          <Heading
-            level="h1"
-            className="flex flex-col gap-y-3 text-ui-fg-base text-3xl mb-4 text-center"
-          >
-            <span>Thank you!</span>
-            <span>Your order was placed successfully.</span>
-          </Heading>
           <OrderDetails order={order} />
-          <Heading level="h2" className="flex flex-row text-3xl-regular">
-            Summary
-          </Heading>
-          <Items order={order} />
-          <CartTotals totals={order} />
-          <ShippingDetails order={order} />
-          <PaymentDetails order={order} />
-          <Help />
+          
+          <div className="flex flex-col gap-y-4">
+            <div className="flex items-center gap-x-4">
+               <Heading level="h2" className="text-2xl font-serif text-[#2C1E36] font-bold">
+                 Summary
+               </Heading>
+               <div className="h-px flex-1 bg-gray-100" />
+            </div>
+            <Items order={order} />
+          </div>
+
+          <div className="bg-[#2C1E36]/5 p-8 rounded-[2rem] border border-[#2C1E36]/10">
+             <CartTotals totals={order} />
+          </div>
+
+          <div className="flex flex-col gap-y-12">
+            <ShippingDetails order={order} />
+            <PaymentDetails order={order} />
+          </div>
+
+          <div className="pt-8 border-t border-gray-100">
+            <Help />
+          </div>
         </div>
       </div>
     </div>

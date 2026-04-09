@@ -106,7 +106,7 @@ const Payment = ({
           email: cart.email || "",
           contact: cart.shipping_address?.phone || "",
         },
-        theme: { color: "#ec4899" },
+        theme: { color: "#2C1E36" },
         handler: async function () {
           try {
             await placeOrder()
@@ -146,49 +146,43 @@ const Payment = ({
   }, [isOpen])
 
   return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
-            {
-              "opacity-50 pointer-events-none select-none": !isOpen,
-            }
-          )}
-        >
-          Payment
-        </Heading>
-        {!isOpen &&
-          cart?.shipping_address &&
-          cart?.billing_address &&
-          cart?.email && (
-            <Text>
-              <button
-                onClick={handleEdit}
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-                data-testid="edit-payment-button"
-              >
-                Edit
-              </button>
-            </Text>
-          )}
+    <div className="bg-transparent">
+      <div className="flex flex-row items-center justify-between mb-8">
+        <div className="flex flex-col gap-y-1">
+           <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Step III</span>
+           <Heading
+             level="h2"
+             className={clx(
+               "flex flex-row text-3xl font-serif text-[#2C1E36] font-bold gap-x-2 items-center",
+               {
+                 "opacity-50": !isOpen,
+               }
+             )}
+           >
+             Exchange
+             {paymentDone && (
+               <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+               </div>
+             )}
+           </Heading>
+        </div>
       </div>
 
       {isOpen && (
-        <div>
-          <div className="mb-6 p-5 bg-gray-50 rounded-xl border border-gray-200">
-            <div className="flex items-center justify-between mb-3">
-              <Text className="txt-medium-plus text-ui-fg-base font-semibold">
-                Order Total
-              </Text>
-              <Text className="text-xl font-bold text-pink-500">
+        <div className="animate-in fade-in slide-in-from-top-2 duration-500 pb-8">
+          <div className="mb-8 p-8 bg-[#2C1E36]/5 rounded-[2.5rem] border border-[#2C1E36]/10 flex flex-col gap-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
+                 Energy Exchange Total
+              </span>
+              <span className="text-3xl font-serif font-black text-[#2C1E36]">
                 {total}
-              </Text>
+              </span>
             </div>
-            <Text className="txt-small text-ui-fg-muted">
-              Click below to pay securely via Razorpay (UPI, Cards, Netbanking)
-            </Text>
+            <p className="text-sm text-gray-500 italic leading-relaxed">
+              Your transaction is encrypted and secure. We accept UPI, Cards, and Netbanking through our trusted partner, Razorpay.
+            </p>
           </div>
 
           <ErrorMessage
@@ -198,17 +192,23 @@ const Payment = ({
 
           <Button
             size="large"
-            className="mt-4 w-full bg-pink-500 hover:bg-pink-600 border-none text-white font-bold uppercase tracking-wider"
+            className="w-full rounded-xl py-4 h-auto text-[11px] uppercase tracking-[0.2em] font-black transition-all shadow-xl active:scale-95 shadow-purple-900/10 bg-[#2C1E36] text-white hover:opacity-90"
             onClick={handlePayNow}
             isLoading={isLoading}
             data-testid="submit-payment-button"
           >
-            Pay Now
+            Finalize Sacred Order
           </Button>
+          
+          <div className="mt-6 flex items-center justify-center gap-x-4 opacity-40">
+             <span className="text-[8px] uppercase tracking-[0.3em] font-bold">Encrypted Connection</span>
+             <div className="h-px w-8 bg-black/20" />
+             <span className="text-[8px] uppercase tracking-[0.3em] font-bold">Trusted Exchange</span>
+          </div>
         </div>
       )}
 
-      <Divider className="mt-8" />
+      <div className="h-px w-full bg-gray-100 mt-12 mb-12" />
     </div>
   )
 }
