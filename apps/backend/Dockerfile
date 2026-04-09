@@ -18,7 +18,8 @@ WORKDIR /app/apps/backend
 RUN pnpm run build
 
 # Install production dependencies inside the build output (required by Medusa docs)
-RUN cd .medusa/server && npm install --production
+# --legacy-peer-deps matches pnpm's peer dep resolution used above
+RUN cd .medusa/server && npm install --omit=dev --legacy-peer-deps
 
 # Verify admin build is present
 RUN test -f .medusa/server/public/admin/index.html || (echo "ERROR: Admin build missing. medusa build did not produce admin assets." && exit 1)
