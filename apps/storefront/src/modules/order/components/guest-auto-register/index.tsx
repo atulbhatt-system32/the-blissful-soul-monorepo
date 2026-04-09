@@ -1,7 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type GuestAutoRegisterProps = {
   email: string
@@ -65,32 +65,40 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
   }
 
   if (checkLoading) {
-    return <div className="mt-8 animate-pulse text-gray-400 text-sm italic">Checking account status...</div>
+    return (
+      <div className="mt-8 flex items-center justify-center gap-2 text-gray-400 text-sm italic">
+        <div className="w-4 h-4 border-2 border-gray-200 border-t-gray-400 rounded-full animate-spin"></div>
+        Checking account status...
+      </div>
+    )
   }
 
   if (hasAccount) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6 mt-8 shadow-sm">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
+      <div className="bg-[#2C1E36]/5 border border-[#2C1E36]/10 rounded-2xl p-6 md:p-8 mt-4 shadow-sm animate-in fade-in duration-500">
+        <div className="flex flex-col items-center text-center">
+          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md mb-4 border border-[#2C1E36]/5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#2C1E36]">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
-          <div>
-            <h3 className="font-bold text-gray-900 text-lg">Welcome back, {firstName}!</h3>
-            <p className="text-sm text-gray-500">You already have an account with us.</p>
-          </div>
-        </div>
-        <div className="mt-4 flex flex-col sm:flex-row items-center gap-4">
-          <p className="text-sm text-gray-600">Log in to view all your session details in one place.</p>
+          <h3 className="font-serif text-2xl text-[#2C1E36] mb-1">Welcome back, {firstName}!</h3>
+          <p className="text-gray-500 mb-6">You already have an account with us. Log in to view all your session details in one place.</p>
+          
           <button 
-            onClick={() => router.push("/account/sessions")}
-            className="whitespace-nowrap bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow-md shadow-blue-100"
+            onClick={() => router.push("/account")}
+            className="w-full max-w-sm bg-[#2C1E36] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#2C1E36]/10 uppercase tracking-widest text-sm"
           >
-            Go to Sessions
+            Login to View Sessions
           </button>
+          
+          <LocalizedClientLink 
+            href="/account/sessions"
+            className="mt-6 text-sm font-semibold text-[#2C1E36]/70 hover:text-[#2C1E36] hover:underline transition-colors"
+          >
+            Or lookup this session as guest
+          </LocalizedClientLink>
         </div>
       </div>
     )
@@ -111,19 +119,19 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
   }
 
   return (
-    <div className="bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-100 rounded-2xl p-6 mt-8 shadow-sm">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500 font-bold">
+    <div className="bg-gradient-to-br from-[#2C1E36]/5 to-transparent border border-[#2C1E36]/10 rounded-2xl p-6 md:p-8 mt-4 shadow-sm">
+      <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+        <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md border border-[#2C1E36]/5 flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#2C1E36]">
             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
             <circle cx="8.5" cy="7" r="4" />
             <line x1="20" y1="8" x2="20" y2="14" />
             <line x1="23" y1="11" x2="17" y2="11" />
           </svg>
         </div>
-        <div>
-          <h3 className="font-bold text-gray-900 text-lg">Secure your session</h3>
-          <p className="text-sm text-gray-500">Pick a password to easily track and reschedule your bookings.</p>
+        <div className="text-center md:text-left">
+          <h3 className="font-serif text-2xl text-[#2C1E36] mb-1">Secure your session</h3>
+          <p className="text-gray-500">Pick a password to easily track and reschedule your bookings anytime.</p>
         </div>
       </div>
 
@@ -133,28 +141,37 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Choose a password"
+            placeholder="Choose a master password"
             required
             minLength={6}
-            className="w-full px-4 py-2.5 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400"
+            className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#2C1E36]/20 focus:border-[#2C1E36]/30 outline-none transition-all placeholder:text-gray-400"
           />
         </div>
         <button
           type="submit"
           disabled={loading || !password}
-          className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow-md shadow-pink-100 disabled:bg-gray-300 disabled:shadow-none font-sans"
+          className="bg-[#2C1E36] hover:opacity-90 text-white font-bold px-8 py-4 rounded-xl transition-all shadow-lg shadow-[#2C1E36]/10 disabled:bg-gray-300 disabled:shadow-none uppercase tracking-widest text-sm"
         >
           {loading ? "Creating..." : "Save Password"}
         </button>
       </form>
 
       {error && (
-        <p className="mt-3 text-sm text-red-500 font-medium">{error}</p>
+        <p className="mt-3 text-sm text-red-500 font-medium text-center">{error}</p>
       )}
 
-      <p className="mt-4 text-[11px] text-gray-400 leading-relaxed italic">
-        *By setting a password, you enable easy cancellations and date changes for all your "The Blissful Soul" sessions.
-      </p>
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <p className="text-[11px] text-gray-400 leading-relaxed italic text-center max-w-sm">
+          *By setting a password, you enable easy cancellations and date changes for all your "The Blissful Soul" sessions.
+        </p>
+        
+        <LocalizedClientLink 
+          href="/account/sessions"
+          className="text-sm font-semibold text-[#2C1E36]/70 hover:text-[#2C1E36] hover:underline transition-colors"
+        >
+          Or lookup this session as guest
+        </LocalizedClientLink>
+      </div>
     </div>
   )
 }

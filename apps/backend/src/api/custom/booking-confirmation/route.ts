@@ -158,7 +158,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               <p style="color: #333;">Thank you for trusting <strong>The Blissful Soul</strong> on your journey. 🙏</p>
               
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;" />
-              <p style="color: #999; font-size: 12px;">If you have any questions, please contact us at support@theblissfulsoil.com</p>
+              <p style="color: #999; font-size: 12px;">If you have any questions, please contact us at support@theblissfulsoul.com</p>
             </div>
           `,
         },

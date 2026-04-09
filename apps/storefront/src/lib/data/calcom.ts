@@ -26,32 +26,23 @@ export async function fetchAvailableSlots(
   timeZone: string = "Asia/Kolkata",
   eventSlug?: string // Added to support dynamic event types
 ): Promise<{ time: string; isoStart: string }[]> {
-  const username = process.env.NEXT_PUBLIC_CAL_USERNAME
-  const targetSlug = eventSlug || process.env.NEXT_PUBLIC_CAL_EVENT_SLUG
-
-  if (!username || !targetSlug) {
-    throw new Error(
-      "Cal.com username or event slug not configured. Ensure NEXT_PUBLIC_CAL_USERNAME is set and an event slug is provided."
-    )
+  
+  const params = new URLSearchParams({
+    date,
+    timeZone,
+  })
+  if (eventSlug) {
+    params.set("eventSlug", eventSlug)
   }
 
-  const params = new URLSearchParams({
-    eventTypeSlug: targetSlug,
-    username: username,
-    start: date,
-    end: date,
-    timeZone: timeZone,
-  })
-
-  const response = await fetch(`${CAL_API_BASE}/slots?${params.toString()}`, {
+  const response = await fetch(`/api/calcom-slots?${params.toString()}`, {
     method: "GET",
-    headers: getCalHeaders("2024-09-04"),
   })
 
   if (!response.ok) {
-    const errorText = await response.text()
-    console.error("Cal.com slots API error:", response.status, errorText)
-    throw new Error(`Failed to fetch slots: ${response.status}`)
+    const errorData = await response.json().catch(() => ({}))
+    console.error("Cal.com proxy slots API error:", response.status, errorData)
+    throw new Error(errorData.message || `Failed to fetch slots: ${response.status}`)
   }
 
   const json = await response.json()
@@ -170,7 +161,7 @@ async function resolveEventTypeId(eventSlug?: string): Promise<number | null> {
 
   try {
     const response = await fetch(
-      `${CAL_API_BASE}/event-types?username=${username}`,
+      `${CAL_API_BASE}/event-types`,
       {
         method: "GET",
         headers: getCalHeaders("2024-09-04"),
@@ -180,7 +171,8 @@ async function resolveEventTypeId(eventSlug?: string): Promise<number | null> {
     if (!response.ok) return null
 
     const json = await response.json()
-    const eventTypes = json.data?.eventTypeGroups?.[0]?.eventTypes || json.data || []
+    // In v2, the data might be in json.data or directly in json
+    const eventTypes = json.data || json || []
 
     const matched = Array.isArray(eventTypes)
       ? eventTypes.find((et: any) => et.slug === targetSlug)

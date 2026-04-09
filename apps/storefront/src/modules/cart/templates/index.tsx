@@ -13,33 +13,42 @@ const CartTemplate = ({
   customer: HttpTypes.StoreCustomer | null
 }) => {
   return (
-    <div className="py-12">
+    <div className="py-12 bg-white min-h-[calc(100vh-64px)] animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="content-container" data-testid="cart-container">
         {cart?.items?.length ? (
-          <div className="grid grid-cols-1 small:grid-cols-[1fr_360px] gap-x-40">
-            <div className="flex flex-col bg-white py-6 gap-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-x-16 gap-y-12">
+            <div className="flex flex-col gap-y-8">
+              <div className="flex flex-col gap-y-1">
+                 <h1 className="text-4xl font-serif text-[#2C1E36] font-bold">Your Selection</h1>
+                 <p className="text-gray-400 text-xs italic">Review your gathered treasures before checkout.</p>
+              </div>
+
               {!customer && (
-                <>
+                <div className="bg-[#2C1E36]/5 p-6 rounded-2xl border border-[#2C1E36]/10">
                   <SignInPrompt />
-                  <Divider />
-                </>
+                </div>
               )}
-              <ItemsTemplate cart={cart} />
+              
+              <div className="bg-white rounded-[2.5rem] border border-gray-100 p-6 md:p-8 shadow-xl shadow-purple-900/5">
+                <ItemsTemplate cart={cart} />
+              </div>
             </div>
+            
             <div className="relative">
-              <div className="flex flex-col gap-y-8 sticky top-12">
+              <div className="sticky top-12">
                 {cart && cart.region && (
-                  <>
-                    <div className="bg-white py-6">
+                  <div className="bg-[#2C1E36] p-6 md:p-8 rounded-[2.5rem] shadow-2xl shadow-purple-900/20 overflow-hidden relative group">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-white/10 transition-colors duration-700" />
+                    <div className="relative z-10">
                       <Summary cart={cart as any} />
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
           </div>
         ) : (
-          <div>
+          <div className="py-24">
             <EmptyCartMessage />
           </div>
         )}

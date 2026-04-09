@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
 import { fetchAvailableSlots } from "@lib/data/calcom"
 import GuestAutoRegister from "@modules/order/components/guest-auto-register"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type BookNowProps = {
   categories: any[]
@@ -115,7 +116,7 @@ export default function BookNowClient({
     }
 
     loadSlots()
-  }, [selectedDate])
+  }, [selectedDate, selectedService])
 
   // Filter products by selected category
   const filteredProducts = products.filter((p) => {
@@ -126,12 +127,30 @@ export default function BookNowClient({
   // Selected Service details
   const serviceObj = products.find((p) => p.id === selectedService)
 
-  const handleNext = () => setCurrentStep((p) => Math.min(p + 1, 5))
+  const handleNext = () => {
+    if (currentStep === 3) {
+      // Step 3 Validation
+      if (!details.firstName.trim() || !details.lastName.trim()) {
+        alert("Please enter your full name.")
+        return
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(details.email)) {
+        alert("Please enter a valid email address.")
+        return
+      }
+      if (details.phone.length < 10) {
+        alert("Please enter a valid phone number (at least 10 digits).")
+        return
+      }
+    }
+    setCurrentStep((p) => Math.min(p + 1, 5))
+  }
   const handlePrev = () => setCurrentStep((p) => Math.max(p - 1, 1))
 
   const isStep1Valid = selectedService && selectedCategory && selectedDate && selectedEmployee
   const isStep2Valid = selectedTime !== ""
-  const isStep3Valid = details.firstName && details.lastName && details.email && details.phone
+  const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && details.phone.trim() !== ""
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-10">
@@ -439,8 +458,23 @@ export default function BookNowClient({
             Thank you, {details.firstName}. Your session for <strong>{serviceObj?.title}</strong> on <strong>{new Date(selectedDate).toLocaleDateString()} at {selectedTime}</strong> has been successfully booked.
             We've sent a confirmation email to {details.email}.
           </p>
+
+          {customer && (
+            <div className="flex flex-col items-center gap-4">
+              <LocalizedClientLink
+                href="/account/sessions"
+                className="w-full max-w-sm py-4 bg-[#2C1E36] text-white rounded-xl font-bold uppercase tracking-widest text-sm hover:opacity-90 transition-all shadow-lg shadow-[#2C1E36]/10 flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                Go to My Sessions
+              </LocalizedClientLink>
+            </div>
+          )}
+
           {!customer && (
-            <div className="mt-8 pt-8 border-t border-gray-100">
+            <div className="mt-8 pt-6 border-t border-gray-100">
               <GuestAutoRegister 
                 email={details.email} 
                 firstName={details.firstName} 
