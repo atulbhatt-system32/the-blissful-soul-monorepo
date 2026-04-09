@@ -2,6 +2,7 @@ import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 import Image from "next/image"
+import { getContactPageData } from "@lib/data/strapi"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
@@ -10,6 +11,7 @@ export default async function Footer() {
     fields: "*products",
   })
   const productCategories = await listCategories()
+  const contactData = await getContactPageData()
 
   return (
     <footer className="w-full">
@@ -57,14 +59,14 @@ export default async function Footer() {
                 CONTACT
               </span>
               <div className="flex flex-col gap-y-6 text-[15px] text-white/50 font-sans leading-relaxed">
-                 <p className="max-w-[200px]">
-                   The Blissful Soul, Shakti Nagar, Delhi 110007
+                 <p className="max-w-[200px] whitespace-pre-line">
+                   {contactData?.address || "The Blissful Soul, Shakti Nagar, Delhi 110007"}
                  </p>
                  <p className="tracking-wide text-white/60">
-                   +91 98116 11341
+                   {contactData?.phone || "+91 98116 11341"}
                  </p>
                  <p className="break-all opacity-90 text-white/60">
-                   theblissfulsoul27@gmail.com
+                   {contactData?.email || "theblissfulsoul27@gmail.com"}
                  </p>
               </div>
             </div>

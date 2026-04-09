@@ -91,23 +91,22 @@ export default async function ContactPage() {
               </form>
             </div>
 
-            {/* Social Column */}
+             {/* Social Column */}
             <div className="w-full lg:w-2/5 flex flex-col items-start lg:items-center text-left lg:text-center justify-start lg:pl-16">
                 <div className="space-y-8 w-full max-w-sm">
                   <div className="text-[#2C1E36] space-y-8 font-sans">
                      <div className="space-y-2">
                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-2 block">Location</span>
-                        <p className="text-xl font-serif text-[#2C1E36] leading-relaxed italic opacity-80">
-                           The Blissful Soul<br/>
-                           Shakti Nagar, Delhi 110007
+                        <p className="text-xl font-serif text-[#2C1E36] leading-relaxed italic opacity-80 whitespace-pre-line">
+                           {contactData?.address || "Shakti Nagar, Delhi 110007"}
                         </p>
                      </div>
                      
                      <div className="flex flex-col lg:items-center gap-6 pt-4 border-t border-[#2C1E36]/5">
                        <div className="space-y-1">
                           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C5A059] mb-1 block">Quick Connect</span>
-                          <p className="text-lg font-serif italic text-[#2C1E36]">+91 98116 11341</p>
-                          <p className="text-sm font-sans opacity-60">theblissfulsoul27@gmail.com</p>
+                          <p className="text-lg font-serif italic text-[#2C1E36]">{contactData?.phone || "+91 98116 11341"}</p>
+                          <p className="text-sm font-sans opacity-60">{email}</p>
                        </div>
                      </div>
                   </div>
