@@ -167,7 +167,7 @@ jobs:
             
             echo "Deploying version $IMAGE_TAG..."
             # Point: Healthcheck-aware startup (--wait) and clean orchestration
-            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 120 --remove-orphans; then
+            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 300 --remove-orphans; then
               echo "Deployment failed health checks! Initiating rollback..."
               HAS_PREVIOUS=true
               for app in backend storefront cms; do
