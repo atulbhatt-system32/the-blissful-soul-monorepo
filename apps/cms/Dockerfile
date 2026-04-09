@@ -10,11 +10,14 @@ WORKDIR /app
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-# Copy cms app files
-COPY apps/cms ./apps/cms
+# Copy ONLY cms package.json to avoid busting cache on code changes
+COPY apps/cms/package.json ./apps/cms/
 
 # Install dependencies (frozen to ensure reproducible builds)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --filter cms... --frozen-lockfile
+
+# Now copy the cms app source code
+COPY apps/cms ./apps/cms
 
 # Force rebuild better-sqlite3 for this platform (suppress known benign warnings)
 RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && \

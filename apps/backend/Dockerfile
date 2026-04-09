@@ -6,11 +6,14 @@ WORKDIR /app
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-# Copy backend app files
-COPY apps/backend ./apps/backend
+# Copy ONLY backend package.json to avoid busting cache on code changes
+COPY apps/backend/package.json ./apps/backend/
 
 # Install dependencies (frozen to ensure reproducible builds)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --filter backend... --frozen-lockfile
+
+# Now copy the backend app source code
+COPY apps/backend ./apps/backend
 
 WORKDIR /app/apps/backend
 

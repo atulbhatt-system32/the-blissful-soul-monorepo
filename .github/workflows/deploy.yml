@@ -59,8 +59,8 @@ jobs:
             NEXT_PUBLIC_CAL_EVENT_SLUG=${{ secrets.NEXT_PUBLIC_CAL_EVENT_SLUG }}
             NEXT_PUBLIC_RAZORPAY_KEY=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY }}
             CMS_PUBLIC_URL=${{ secrets.PUBLIC_URL }}/cms
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ github.workflow }}-${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.app }}
 
   deploy:
     needs: build-and-push

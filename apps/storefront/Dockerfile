@@ -6,11 +6,14 @@ WORKDIR /app
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 
-# Copy storefront app files
-COPY apps/storefront ./apps/storefront
+# Copy ONLY storefront package.json to avoid busting cache on code changes
+COPY apps/storefront/package.json ./apps/storefront/
 
 # Install dependencies (frozen to ensure reproducible builds)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --filter storefront... --frozen-lockfile
+
+# Now copy the storefront app source code
+COPY apps/storefront ./apps/storefront
 
 WORKDIR /app/apps/storefront
 
