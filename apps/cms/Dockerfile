@@ -21,6 +21,8 @@ RUN cd /app/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && \
     CXXFLAGS="-Wno-cast-function-type -Wno-implicit-fallthrough" npx --yes node-gyp rebuild
 
 WORKDIR /app/apps/cms
+ARG CMS_PUBLIC_URL
+ENV CMS_PUBLIC_URL=$CMS_PUBLIC_URL
 RUN pnpm run build
 
 # Pre-create the SQLite data directory so the named volume inherits correct ownership

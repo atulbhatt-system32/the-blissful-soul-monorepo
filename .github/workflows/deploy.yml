@@ -58,6 +58,7 @@ jobs:
             NEXT_PUBLIC_CAL_USERNAME=${{ secrets.NEXT_PUBLIC_CAL_USERNAME }}
             NEXT_PUBLIC_CAL_EVENT_SLUG=${{ secrets.NEXT_PUBLIC_CAL_EVENT_SLUG }}
             NEXT_PUBLIC_RAZORPAY_KEY=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY }}
+            CMS_PUBLIC_URL=${{ secrets.PUBLIC_URL }}/cms
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
