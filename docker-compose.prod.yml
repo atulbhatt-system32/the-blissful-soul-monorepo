@@ -63,6 +63,8 @@ services:
       - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
       - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
       - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
+    volumes:
+      - ./apps/backend/static:/app/apps/backend/.medusa/server/static
     depends_on:
       postgres:
         condition: service_healthy
@@ -116,6 +118,7 @@ services:
       - CMS_TRANSFER_TOKEN_SALT=${CMS_TRANSFER_TOKEN_SALT}
       - CMS_ENCRYPTION_KEY=${CMS_ENCRYPTION_KEY}
       - CMS_JWT_SECRET=${CMS_JWT_SECRET}
+      - CMS_PUBLIC_URL=${CMS_PUBLIC_URL}
       - CMS_DATABASE_CLIENT=sqlite
       - CMS_DATABASE_FILENAME=.tmp/data.db
     volumes:
