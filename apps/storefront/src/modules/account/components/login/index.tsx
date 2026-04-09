@@ -15,12 +15,14 @@ const Login = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm w-full flex flex-col items-center"
+      className="max-w-sm w-full flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-700"
       data-testid="login-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-8">
-        Sign in to access an enhanced shopping experience.
+      <h1 className="text-3xl font-serif text-[#2C1E36] mb-4 text-center">
+        Welcome Back
+      </h1>
+      <p className="text-center text-sm text-gray-500 mb-8 max-w-[280px]">
+        Sign in to your account to continue your personal healing journey.
       </p>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -52,8 +54,8 @@ const Login = ({ setCurrentView }: Props) => {
           </div>
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
-        <SubmitButton data-testid="sign-in-button" className="w-full mt-4">
-          Sign in
+        <SubmitButton data-testid="sign-in-button" className="w-full mt-10 bg-[#2C1E36] text-white rounded-2xl py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all">
+          Authorize Session
         </SubmitButton>
       </form>
       <span className="text-center text-ui-fg-base text-small-regular mt-6">

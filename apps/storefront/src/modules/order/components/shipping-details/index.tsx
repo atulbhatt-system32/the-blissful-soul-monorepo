@@ -10,68 +10,67 @@ type ShippingDetailsProps = {
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
   return (
-    <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
-        Delivery
-      </Heading>
-      <div className="flex items-start gap-x-8">
+    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div
-          className="flex flex-col w-1/3"
+          className="flex flex-col gap-y-2"
           data-testid="shipping-address-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">
-            Shipping Address
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.first_name}{" "}
-            {order.shipping_address?.last_name}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.address_1}{" "}
-            {order.shipping_address?.address_2}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.postal_code},{" "}
-            {order.shipping_address?.city}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.country_code?.toUpperCase()}
-          </Text>
+          <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Destination</span>
+          <div className="flex flex-col text-sm text-[#2C1E36] font-medium leading-relaxed italic">
+            <span className="font-black not-italic text-base mb-1 font-serif">
+              {order.shipping_address?.first_name}{" "}
+              {order.shipping_address?.last_name}
+            </span>
+            <span>
+              {order.shipping_address?.address_1}
+            </span>
+            {order.shipping_address?.address_2 && (
+              <span>{order.shipping_address?.address_2}</span>
+            )}
+            <span>
+              {order.shipping_address?.postal_code},{" "}
+              {order.shipping_address?.city}
+            </span>
+            <span>
+              {order.shipping_address?.country_code?.toUpperCase()}
+            </span>
+          </div>
         </div>
 
         <div
-          className="flex flex-col w-1/3 "
+          className="flex flex-col gap-y-2"
           data-testid="shipping-contact-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Contact</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.phone}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">{order.email}</Text>
+          <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Connection</span>
+          <div className="flex flex-col text-sm text-[#2C1E36] font-medium">
+             <span>{order.shipping_address?.phone}</span>
+             <span className="text-gray-400 font-bold mt-1 text-[11px]">{order.email}</span>
+          </div>
         </div>
 
         <div
-          className="flex flex-col w-1/3"
+          className="flex flex-col gap-y-2"
           data-testid="shipping-method-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
+          <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Service</span>
+          <div className="flex flex-col text-sm text-[#2C1E36] font-black uppercase tracking-wider">
             {order.shipping_methods?.[0] ? (
               <>
-                {(order as any).shipping_methods[0].name} (
-                {convertToLocale({
-                  amount: order.shipping_methods[0].total ?? 0,
-                  currency_code: order.currency_code,
-                })}
-                )
+                <span>{(order as any).shipping_methods[0].name}</span>
+                <span className="text-[#C5A059] text-[11px] mt-1">
+                  {convertToLocale({
+                    amount: order.shipping_methods[0].total ?? 0,
+                    currency_code: order.currency_code,
+                  })}
+                </span>
               </>
             ) : (
-              "Standard Delivery"
+              <span>Standard Logistics</span>
             )}
-          </Text>
+          </div>
         </div>
       </div>
-      <Divider className="mt-8" />
     </div>
   )
 }

@@ -9,6 +9,7 @@ import CountrySelect from "@modules/checkout/components/country-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import Spinner from "@modules/common/icons/spinner"
+import MapPin from "@modules/common/icons/map-pin"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -65,29 +66,38 @@ const EditAddress: React.FC<EditAddressProps> = ({
     <>
       <div
         className={clx(
-          "border rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between transition-colors",
+          "bg-white p-6 md:p-8 rounded-[2rem] border transition-all hover:shadow-md animate-in fade-in slide-in-from-bottom-2 duration-500 flex flex-col justify-between min-h-[240px]",
           {
-            "border-gray-900": isActive,
+            "border-[#2C1E36] ring-1 ring-[#2C1E36]/10 shadow-lg shadow-purple-900/5": isActive,
+            "border-gray-100": !isActive
           }
         )}
         data-testid="address-container"
       >
         <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-4">
+             <div className="w-8 h-8 rounded-xl bg-[#2C1E36]/5 flex items-center justify-center text-[#2C1E36]">
+                <MapPin size={16} />
+             </div>
+             <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Saved Location</span>
+          </div>
+
           <Heading
-            className="text-left text-base-semi"
+            className="text-left font-serif text-[#2C1E36] font-bold text-xl mb-3"
             data-testid="address-name"
           >
             {address.first_name} {address.last_name}
           </Heading>
-          {address.company && (
-            <Text
-              className="txt-compact-small text-ui-fg-base"
-              data-testid="address-company"
-            >
-              {address.company}
-            </Text>
-          )}
-          <Text className="flex flex-col text-left text-base-regular mt-2">
+          
+          <div className="flex flex-col gap-y-1 text-gray-500 text-sm italic">
+            {address.company && (
+              <Text
+                className="font-bold text-[#2C1E36]/60 not-italic mb-1"
+                data-testid="address-company"
+              >
+                {address.company}
+              </Text>
+            )}
             <span data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}
@@ -99,19 +109,20 @@ const EditAddress: React.FC<EditAddressProps> = ({
               {address.province && `${address.province}, `}
               {address.country_code?.toUpperCase()}
             </span>
-          </Text>
+          </div>
         </div>
-        <div className="flex items-center gap-x-4">
+        
+        <div className="flex items-center gap-x-6 mt-8 pt-6 border-t border-gray-50">
           <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
+            className="text-[11px] uppercase tracking-widest font-bold text-[#2C1E36] flex items-center gap-x-2 border-b-2 border-transparent hover:border-[#2C1E36] transition-all pb-1"
             onClick={open}
             data-testid="address-edit-button"
           >
             <Edit />
-            Edit
+            Modify
           </button>
           <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
+            className="text-[11px] uppercase tracking-widest font-bold text-gray-400 flex items-center gap-x-2 hover:text-red-500 transition-all pb-1"
             onClick={removeAddress}
             data-testid="address-delete-button"
           >

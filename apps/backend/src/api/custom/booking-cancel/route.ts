@@ -19,6 +19,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(404).json({ message: "Order not found" })
     }
 
+    if (order.status === "canceled") {
+      return res.status(400).json({ message: "This session is already canceled" })
+    }
+
     // 2. Check cancellation policy (24 hours notice)
     const bookingDate = order.metadata?.booking_date
     const bookingTime = order.metadata?.booking_time
@@ -46,7 +50,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const calBookingId = order.metadata?.cal_booking_id
     if (calBookingId) {
       try {
-        const calApiKey = process.env.NEXT_PUBLIC_CAL_API_KEY
+        const calApiKey = process.env.CAL_API_KEY
         await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/cancel`, {
           method: "POST",
           headers: {
@@ -54,7 +58,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             "cal-api-version": "2024-08-13",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ reason: "Cancelled by customer via dashboard" })
+          body: JSON.stringify({ cancellationReason: "Cancelled by customer via dashboard" })
         })
         console.log(`[Booking Cancel] Cal.com event ${calBookingId} cancelled.`)
       } catch (calErr: any) {

@@ -17,15 +17,14 @@ const Register = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm flex flex-col items-center"
+      className="max-w-sm flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-700"
       data-testid="register-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">
-        Become a Medusa Store Member
+      <h1 className="text-3xl font-serif text-[#2C1E36] mb-4 text-center">
+        Create Your Account
       </h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        Create your Medusa Store Member profile, and get access to an enhanced
-        shopping experience.
+      <p className="text-center text-sm text-gray-500 mb-8 max-w-[280px]">
+        Join The Blissful Soul community for a curated healing experience.
       </p>
       <form className="w-full flex flex-col" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -68,25 +67,25 @@ const Register = ({ setCurrentView }: Props) => {
           />
         </div>
         <ErrorMessage error={message} data-testid="register-error" />
-        <span className="text-center text-ui-fg-base text-small-regular mt-6">
-          By creating an account, you agree to Medusa Store&apos;s{" "}
+        <span className="text-center text-gray-400 text-[11px] mt-8 leading-relaxed">
+          By joining, you agree to The Blissful Soul&apos;s{" "}
           <LocalizedClientLink
             href="/content/privacy-policy"
-            className="underline"
+            className="text-[#2C1E36] font-bold underline underline-offset-4"
           >
             Privacy Policy
           </LocalizedClientLink>{" "}
           and{" "}
           <LocalizedClientLink
             href="/content/terms-of-use"
-            className="underline"
+            className="text-[#2C1E36] font-bold underline underline-offset-4"
           >
             Terms of Use
           </LocalizedClientLink>
           .
         </span>
-        <SubmitButton className="w-full mt-6" data-testid="register-button">
-          Join
+        <SubmitButton className="w-full mt-10 bg-[#2C1E36] text-white rounded-2xl py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all" data-testid="register-button">
+          Create Account
         </SubmitButton>
       </form>
       <span className="text-center text-ui-fg-base text-small-regular mt-6">

@@ -1,22 +1,29 @@
 import { Heading, Text } from "@medusajs/ui"
-
-import InteractiveLink from "@modules/common/components/interactive-link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const EmptyCartMessage = () => {
   return (
-    <div className="py-48 px-2 flex flex-col justify-center items-start" data-testid="empty-cart-message">
+    <div className="py-24 px-2 flex flex-col justify-center items-center text-center animate-in fade-in zoom-in duration-1000" data-testid="empty-cart-message">
+       <div className="w-32 h-32 bg-[#2C1E36]/5 rounded-full flex items-center justify-center text-[#2C1E36] mb-8 relative">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <div className="absolute top-0 right-0 w-8 h-8 bg-[#C5A059] rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+             <span className="text-[12px] font-black text-[#2C1E36]">0</span>
+          </div>
+       </div>
       <Heading
         level="h1"
-        className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+        className="text-5xl font-serif text-[#2C1E36] font-bold mb-4"
       >
-        Cart
+        Your Vessel is Empty
       </Heading>
-      <Text className="text-base-regular mt-4 mb-6 max-w-[32rem]">
-        You don&apos;t have anything in your cart. Let&apos;s change that, use
-        the link below to start browsing our products.
+      <div className="w-16 h-1 bg-[#C5A059]/20 mb-6 rounded-full" />
+      <Text className="text-base text-gray-400 italic mb-12 max-w-[320px] leading-relaxed">
+        It appears you haven&apos;t gathered any treasures yet. Every profound journey begins with a single, intentional selection.
       </Text>
       <div>
-        <InteractiveLink href="/store">Explore products</InteractiveLink>
+        <LocalizedClientLink href="/store" className="bg-[#2C1E36] text-white px-12 py-5 rounded-2xl text-[12px] uppercase tracking-[0.25em] font-black hover:bg-[#C5A059] hover:text-[#2C1E36] transition-all shadow-2xl shadow-purple-900/20 active:scale-95 inline-block">
+           Commence Exploration
+        </LocalizedClientLink>
       </div>
     </div>
   )

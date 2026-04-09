@@ -25,6 +25,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(404).json({ message: "Order not found" })
     }
 
+    if (order.status === "canceled") {
+      return res.status(400).json({ message: "Cannot reschedule a canceled session" })
+    }
+
     // 2. Check policy (24 hours notice for rescheduling)
     const oldDate = order.metadata?.booking_date
     const oldTime = order.metadata?.booking_time
@@ -50,7 +54,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const calBookingId = order.metadata?.cal_booking_id
     if (calBookingId) {
       try {
-        const calApiKey = process.env.NEXT_PUBLIC_CAL_API_KEY
+        const calApiKey = process.env.CAL_API_KEY
         await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/reschedule`, {
           method: "POST",
           headers: {
@@ -102,6 +106,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               <p style="margin: 5px 0;"><strong>New Time:</strong> ${newDate} at ${newTime}</p>
               <p style="margin: 5px 0; color: #718096; font-size: 13px;">Original Time: ${oldDate} at ${oldTime}</p>
             </div>
+            
             <p>See you then!</p>
             <p>The Blissful Soul</p>
           </div>
