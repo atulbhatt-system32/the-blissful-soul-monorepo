@@ -221,5 +221,6 @@ jobs:
             echo "Deployment successful."
             docker logout ghcr.io
             
-            # Point: Project-Scoped image pruning
-            docker image prune -f --filter "label=com.docker.compose.project=blissful-soul"
+            # Point: Continuous cleanup to prevent disk accumulation
+            # Removes unused images older than 7 days, providing a safety window for rollbacks
+            docker image prune -af --filter "until=168h"
