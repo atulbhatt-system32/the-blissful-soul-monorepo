@@ -45,22 +45,47 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     // 3. Find Auth Identity
     const identities = await (authModuleService as any).listAuthIdentities({
-      provider_identities: {
-        entity_id: email.toLowerCase()
-      }
+      // Fetch all identities for this scope if necessary or filter later
     })
 
-    if (!identities || identities.length === 0 || !identities[0]?.id) {
-      return res.status(400).json({ message: "No valid email/password configured for this account.", details: identities })
+    const targetIdentity = identities.find((ident: any) => {
+      if (ident.provider_identities && Array.isArray(ident.provider_identities)) {
+        return ident.provider_identities.some((pi: any) => pi.entity_id === email.toLowerCase())
+      }
+      return false
+    })
+
+    if (!targetIdentity) {
+      // 4a. Guest User Upgrade: Create a new Auth Identity seamlessly
+      const newAuthIdentity = await (authModuleService as any).createAuthIdentities({
+        provider_id: "emailpass",
+        entity_id: email.toLowerCase(),
+        scope: "customer",
+        provider_metadata: {
+          password: password
+        }
+      })
+
+      const remoteLink = req.scope.resolve("remoteLink") as any
+      try {
+        await remoteLink.create({
+          [Modules.AUTH]: { auth_identity_id: newAuthIdentity.id },
+          [Modules.CUSTOMER]: { customer_id: customer.id }
+        })
+      } catch (linkError: any) {
+        // Safe to ignore if link exists
+      }
+      console.log(`[Password Reset Update] Guest user upgraded to registered user: ${email}`)
+    } else {
+      // 4b. Registered User Upgrade: Update the existing Auth Identity
+      await (authModuleService as any).updateAuthIdentities({
+        id: targetIdentity.id,
+        provider_metadata: {
+          password: password
+        }
+      })
+      console.log(`[Password Reset Update] Updated existing password for: ${email}`)
     }
-
-    // 4. Update the password
-    await (authModuleService as any).updateAuthIdentities({
-      id: identities[0].id,
-      provider_metadata: {
-        password: password
-      }
-    })
 
     // 5. Clear the token so it cannot be reused
     await customerModuleService.updateCustomers(customer.id, {
