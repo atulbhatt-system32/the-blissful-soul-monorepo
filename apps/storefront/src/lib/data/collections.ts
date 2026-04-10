@@ -43,7 +43,8 @@ export const listCollections = async (
 }
 
 export const getCollectionByHandle = async (
-  handle: string
+  handle: string,
+  options: { cache?: RequestCache } = {}
 ): Promise<HttpTypes.StoreCollection> => {
   const next = {
     ...(await getCacheOptions("collections")),
@@ -53,7 +54,7 @@ export const getCollectionByHandle = async (
     .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
       query: { handle, fields: "*products" },
       next,
-      cache: "force-cache",
+      cache: options.cache || "force-cache",
     })
     .then(({ collections }) => collections[0])
 }

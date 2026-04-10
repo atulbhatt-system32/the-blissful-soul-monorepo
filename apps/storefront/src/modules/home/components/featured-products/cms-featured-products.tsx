@@ -33,7 +33,7 @@ export default async function CMSFeaturedProducts({
 
   // 2. Fallback to Medusa Collection by handle
   if (pricedProducts.length === 0 && collectionHandle) {
-    const collection = await getCollectionByHandle(collectionHandle)
+    const collection = await getCollectionByHandle(collectionHandle, { cache: "no-store" })
     
     if (collection) {
       const { 

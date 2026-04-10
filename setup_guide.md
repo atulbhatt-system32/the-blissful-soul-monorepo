@@ -45,3 +45,21 @@ docker-compose up -d --build storefront
 ```
 
 🎉 **Everything is now connected! Your storefront at [localhost:8001](http://localhost:8001) will finally be error-free.** 🏎️💨🏆
+
+---
+
+## Step 4: Maintenance & Manual Product Sync
+
+While products sync automatically whenever you **Create** or **Update** them in Medusa, you can manually force a full synchronization if needed.
+
+### **Manual Sync Endpoint**
+If your Strapi CMS is empty and you want to push all products from Medusa instantly, visit the following URL in your browser (while logged into the Medusa Admin):
+
+**Production:**
+`https://klickvert.com/admin/sync-strapi`
+
+**Development (Local):**
+`http://localhost:9000/admin/sync-strapi`
+
+> [!NOTE]
+> You must be logged in to the Medusa Admin dashboard in the same browser session for this link to work, as it is a protected admin route.

@@ -33,7 +33,7 @@ export default async function HealingCrystals({
 
   // 2. If no Strapi products, try fetching from Medusa Collection by handle
   if (pricedProducts.length === 0 && collectionHandle) {
-    const collection = await getCollectionByHandle(collectionHandle)
+    const collection = await getCollectionByHandle(collectionHandle, { cache: "no-store" })
     
     if (collection) {
       const { 
