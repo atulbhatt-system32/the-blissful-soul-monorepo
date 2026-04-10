@@ -1,19 +1,22 @@
 import { listProducts } from "@lib/data/products"
 import { HttpTypes } from "@medusajs/types"
 import ProductPreview from "@modules/products/components/product-preview"
+import { getCollectionByHandle } from "@lib/data/collections"
 
 export default async function HotSellers({
-  hotSellers,
+  hotSellers: strapiHotSellers,
   region,
+  collectionHandle = "hot-sellers",
 }: {
-  hotSellers: any[]
+  hotSellers?: any[] | null
   region: HttpTypes.StoreRegion
+  collectionHandle?: string
 }) {
   let pricedProducts: HttpTypes.StoreProduct[] = []
 
-  if (hotSellers && hotSellers.length > 0) {
-    // 1. Fetch products selected in CMS
-    const medusaIds = hotSellers.map((ps) => ps.medusa_id).filter(Boolean)
+  // 1. Try fetching from Strapi first if provided
+  if (strapiHotSellers && strapiHotSellers.length > 0) {
+    const medusaIds = strapiHotSellers.map((ps) => ps.medusa_id).filter(Boolean)
     if (medusaIds.length > 0) {
       const {
         response: { products: fetched },
@@ -28,7 +31,26 @@ export default async function HotSellers({
     }
   }
 
-  // 2. If nothing from CMS, show empty state
+  // 2. If no Strapi products, try fetching from Medusa Collection by handle
+  if (pricedProducts.length === 0 && collectionHandle) {
+    const collection = await getCollectionByHandle(collectionHandle)
+    
+    if (collection) {
+      const { 
+        response: { products: collectionProducts } 
+      } = await listProducts({
+        regionId: region.id,
+        queryParams: {
+          collection_id: [collection.id],
+          limit: 4,
+          fields: "*variants.calculated_price",
+        }
+      })
+      pricedProducts = collectionProducts || []
+    }
+  }
+
+  // 3. Fallback: Empty state
   if (pricedProducts.length === 0) {
      return (
       <div className="text-center py-20 bg-gray-50/50 rounded-[40px] border border-dashed border-gray-200">

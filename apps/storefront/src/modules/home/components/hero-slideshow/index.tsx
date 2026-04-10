@@ -77,7 +77,7 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
               <div className="relative flex h-full w-full items-center justify-center">
                 <div className="absolute inset-0 z-0">
                   <Image
-                    src={`${STRAPI_URL}${(slide.image as HeroImage).url}`}
+                    src={(slide.image as HeroImage).url.startsWith("http") ? (slide.image as HeroImage).url : `${STRAPI_URL}${(slide.image as HeroImage).url}`}
                     alt={slide.title || "Hero image"}
                     fill
                     priority={slideIndex === 0}

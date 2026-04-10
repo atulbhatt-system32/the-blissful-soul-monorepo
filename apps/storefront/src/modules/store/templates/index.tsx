@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import StoreSearch from "@modules/store/components/search"
 
 import PaginatedProducts from "./paginated-products"
 
@@ -11,6 +12,7 @@ const StoreTemplate = ({
   page,
   limit,
   view,
+  q,
   countryCode,
   heroTitle,
   heroSubtitle,
@@ -19,6 +21,7 @@ const StoreTemplate = ({
   page?: string
   limit?: string
   view?: string
+  q?: string
   countryCode: string
   heroTitle?: string
   heroSubtitle?: string
@@ -84,7 +87,7 @@ const StoreTemplate = ({
                     Shop Crystals
                   </h1>
                   <span className="text-sm text-gray-400 font-medium font-sans">
-                    0 pieces
+                    {/* Items count removed temporarily or handle via dynamic if available */}
                   </span>
                 </div>
                 
@@ -92,18 +95,7 @@ const StoreTemplate = ({
               </div>
 
               {/* Search Bar */}
-              <div className="flex items-center gap-x-2 max-w-2xl w-full">
-                <div className="relative flex-1 group">
-                  <input 
-                    type="text" 
-                    placeholder="Search crystals..."
-                    className="w-full bg-white border border-gray-100 py-3.5 px-6 rounded-[32px] text-sm focus:outline-none focus:border-[#2C1E36]/30 transition-all font-sans italic"
-                  />
-                </div>
-                <button className="bg-[#2C1E36] text-white px-8 py-3.5 rounded-[32px] text-[13px] font-bold uppercase tracking-widest hover:opacity-90 transition-all shadow-lg active:scale-95 whitespace-nowrap">
-                  Search
-                </button>
-              </div>
+              <StoreSearch initialQuery={q} />
             </div>
 
             <Suspense fallback={<SkeletonProductGrid />}>
@@ -112,6 +104,7 @@ const StoreTemplate = ({
                 page={pageNumber}
                 limit={limit}
                 view={view}
+                q={q}
                 countryCode={countryCode}
               />
             </Suspense>
@@ -121,5 +114,6 @@ const StoreTemplate = ({
     </div>
   )
 }
+
 
 export default StoreTemplate

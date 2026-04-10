@@ -64,7 +64,7 @@ const ResetPasswordTemplate = ({ token, email }: Props) => {
 
         <h1 className="text-3xl md:text-4xl font-serif text-[#2C1E36] mb-3 text-center font-bold tracking-tight">New Password</h1>
         <p className="text-[#665D6B] text-base text-center mb-10 max-w-[280px]">
-          Create a secure new password for <span className="font-semibold block text-[#2C1E36] mt-1 italic">${email}</span>
+          Create a secure new password for <span className="font-semibold block text-[#2C1E36] mt-1 italic">{email}</span>
         </p>
         
         {success ? (

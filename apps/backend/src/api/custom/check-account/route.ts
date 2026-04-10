@@ -14,7 +14,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     // Check if a customer with this email exists
     const [customers] = await customerModuleService.listAndCountCustomers({ email })
     
-    return res.status(200).json({ exists: customers.length > 0 })
+    if (customers.length > 0) {
+      console.log(`[Check Account] Metadata for ${email}:`, JSON.stringify(customers[0].metadata, null, 2))
+    }
+    
+    return res.status(200).json({ exists: customers.length > 0, metadata: customers[0]?.metadata })
     
   } catch (error: any) {
     console.error("[Check Account] Error:", error.message)

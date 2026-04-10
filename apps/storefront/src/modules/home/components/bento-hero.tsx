@@ -4,7 +4,7 @@ import React from "react"
 import { motion } from "framer-motion"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-const BentoHero = () => {
+const BentoHero = ({ data }: { data?: any }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -43,22 +43,22 @@ const BentoHero = () => {
           >
             <div className="flex flex-col gap-y-6">
               <span className="text-[11px] md:text-[12px] uppercase tracking-[0.25em] font-semibold text-[#C5A059] font-sans">
-                WELCOME
+                {data?.welcome_label || "WELCOME"}
               </span>
               <h1 className="font-serif text-[32px] md:text-[48px] text-[#2C1E36] leading-[1.15] tracking-tight max-w-xl font-semibold">
-                Heal, manifest & align with Master Pragya Vijh
+                {data?.main_title || "Heal, manifest & align with Master Pragya Vijh"}
               </h1>
               <p className="text-[#665D6B] text-[14px] md:text-[15px] leading-[1.65] max-w-md font-sans font-medium">
-                Premium healing crystals, bracelets, pyramids — and personal audio & video sessions for clarity and growth.
+                {data?.main_subtitle || "Premium healing crystals, bracelets, pyramids — and personal audio & video sessions for clarity and growth."}
               </p>
             </div>
             
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <LocalizedClientLink 
-                href="/book-session" 
+                href={data?.main_cta_link || "/book-session"} 
                 className="bg-[#2C1E36] text-white px-8 py-3.5 rounded-full font-medium text-[14px] hover:opacity-90 transition-all shadow-lg active:scale-95 font-sans"
               >
-                Book now
+                {data?.main_cta_text || "Book now"}
               </LocalizedClientLink>
               <LocalizedClientLink 
                 href="/about" 
@@ -76,10 +76,10 @@ const BentoHero = () => {
               variants={cardVariants}
               className="flex-1 bg-[#F4EFEA]/80 backdrop-blur-sm rounded-[40px] flex items-center justify-center p-8 min-h-[220px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#E8DFD5]/40 group relative overflow-hidden cursor-pointer"
             >
-               <LocalizedClientLink href="/store" className="flex flex-col items-center gap-y-2 z-10 transition-transform group-hover:scale-105 duration-500">
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C5A059]">TREASURES</span>
+               <LocalizedClientLink href={data?.treasures_link || "/store"} className="flex flex-col items-center gap-y-2 z-10 transition-transform group-hover:scale-105 duration-500">
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C5A059]">{data?.treasures_label || "TREASURES"}</span>
                   <span className="font-serif text-2xl text-[#2C1E36] font-medium">
-                     Sacred Collection
+                     {data?.treasures_title || "Sacred Collection"}
                   </span>
                </LocalizedClientLink>
                <div className="absolute inset-0 bg-gradient-to-tr from-[#C5A059]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -92,21 +92,21 @@ const BentoHero = () => {
             >
               <div className="flex flex-col gap-y-4">
                 <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#5A8A6A] font-sans">
-                  SHOP
+                  {data?.shop_label || "SHOP"}
                 </span>
                 <h3 className="font-serif text-[22px] text-[#2C1E36] font-semibold leading-tight">
-                  Crystals & tools
+                  {data?.shop_title || "Crystals & tools"}
                 </h3>
                 <p className="text-[#665D6B] text-[14px] font-sans font-medium">
-                  Bracelets, pyramids, tumbles & more.
+                  {data?.shop_subtitle || "Bracelets, pyramids, tumbles & more."}
                 </p>
               </div>
               
               <LocalizedClientLink 
-                href="/store" 
+                href={data?.shop_cta_link || "/store"} 
                 className="bg-[#2C1E36] text-white px-7 py-3 rounded-full font-medium text-[14px] self-start hover:opacity-90 transition-all shadow-md font-sans mt-6 inline-block"
               >
-                Explore shop
+                {data?.shop_cta_text || "Explore shop"}
               </LocalizedClientLink>
             </motion.div>
           </div>
