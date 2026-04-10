@@ -74,26 +74,21 @@ export default function MedusaCheckoutPayment({
           
           // Always call onSuccess — never let Cal.com or backend errors block the user
           try {
-            let calBookingId = null
             // 1. Create Cal.com booking only if we have a slug
-            if (eventSlug) {
-              try {
-                const calResult = await createCalBooking({
-                  startTime: slotIsoStart,
-                  attendeeName: `${details.firstName} ${details.lastName}`,
-                  attendeeEmail: details.email,
-                  attendeeTimeZone: "Asia/Kolkata",
-                  eventSlug: eventSlug,
-                  notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
-                })
-                calBookingId = calResult?.uid
-                console.log("Cal.com booking created successfully:", calBookingId)
-              } catch (calErr: any) {
-                console.error("Cal.com booking failed (non-blocking):", calErr?.message)
-              }
-            } else {
-              console.warn("No eventSlug for this product — Cal.com booking skipped.")
+            if (!eventSlug) {
+              throw new Error("CRITICAL: Missing eventSlug. Please check product metadata 'cal_link' in Medusa admin.");
             }
+            
+            const calResult = await createCalBooking({
+              startTime: slotIsoStart,
+              attendeeName: `${details.firstName} ${details.lastName}`,
+              attendeeEmail: details.email,
+              attendeeTimeZone: "Asia/Kolkata",
+              eventSlug: eventSlug,
+              notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
+            })
+            const calBookingId = calResult?.uid
+            console.log("Cal.com booking created successfully:", calBookingId)
 
             // 2. Send confirmation email via Next.js API proxy (avoids CORS)
             try {
@@ -119,12 +114,14 @@ export default function MedusaCheckoutPayment({
             } catch (emailErr: any) {
               console.error("Email trigger failed (non-blocking):", emailErr?.message)
             }
+            // Always advance to success screen if everything worked
+            onSuccess()
+
           } catch (err: any) {
             console.error("Post-payment processing error:", err?.message)
-          } finally {
-            // Always advance to success screen
-            onSuccess()
-          }
+            setError(err?.message || "Payment succeeded, but we failed to register the booking on Cal.com. Please contact support.")
+            setIsProcessing(false)
+          } 
         },
         modal: {
           ondismiss: function () {

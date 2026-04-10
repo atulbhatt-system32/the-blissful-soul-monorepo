@@ -37,7 +37,7 @@ const BookSessionClient = ({
   const currentProducts = productMap[activeTab] || []
 
   return (
-    <section className="py-20 bg-[#FAF9F6]">
+    <section className="pt-20 pb-12 bg-[#FAF9F6]">
       <div className="content-container">
         <div className="text-center mb-16">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block animate-in fade-in slide-in-from-bottom-2 duration-700">
@@ -84,7 +84,7 @@ const BookSessionClient = ({
           )}
         </div>
 
-        <div className="text-center mt-20">
+        <div className="text-center mt-12">
           <LocalizedClientLink
             href="/book-session"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"

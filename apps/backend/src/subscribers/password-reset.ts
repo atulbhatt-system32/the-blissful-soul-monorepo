@@ -104,5 +104,5 @@ export default async function passwordResetHandler({
 }
 
 export const config: SubscriberConfig = {
-  event: "auth.password_reset",
+  event: ["auth.password_reset", "customer.password_reset", "user.password_reset"],
 }

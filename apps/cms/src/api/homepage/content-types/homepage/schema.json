@@ -80,6 +80,16 @@
             "type": "relation",
             "relation": "oneToMany",
             "target": "api::product.product"
+        },
+        "intro_section": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.intro-section"
+        },
+        "featured_products": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product"
         }
     }
 }

@@ -1,11 +1,11 @@
 import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
+import CMSFeaturedProducts from "@modules/home/components/featured-products/cms-featured-products"
 import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import BentoHero from "@modules/home/components/bento-hero"
 import { getHomepageData } from "@lib/data/strapi"
 import HeroSlideshow from "@modules/home/components/hero-slideshow"
 import BookSession from "@modules/home/components/book-session"
@@ -20,8 +20,6 @@ export const metadata: Metadata = {
   description:
     "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
 }
-
-
 
 export default async function Home(props: {
   params: Promise<{ countryCode: string }>
@@ -47,36 +45,52 @@ export default async function Home(props: {
       {/* Welcome Popup (conditionally renders based on CMS data) */}
       <WelcomePopup data={homepageData?.pop_up} />
 
-      {/* Hero Section */}
-      <BentoHero />
+      {/* Hero Section - Keep Slider, Remove Bento Banner */}
+      <HeroSlideshow slides={heroSlides} />
 
       {/* Curated Intro Section */}
       <section className="py-12 md:py-16 bg-[#1A0E22]">
         <div className="content-container text-center flex flex-col items-center gap-y-6">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
-             CURATED FOR YOU
+             {homepageData?.intro_section?.label || "CURATED FOR YOU"}
           </span>
           <div className="flex flex-col gap-y-4 max-w-3xl">
             <h2 className="font-serif text-3xl md:text-[40px] text-white leading-tight font-semibold">
-              Crystals and sessions chosen for depth, clarity, and everyday ritual.
+              {homepageData?.intro_section?.heading || "Crystals and sessions chosen for depth, clarity, and everyday ritual."}
             </h2>
             <p className="text-white/40 text-[14px] md:text-[15px] max-w-lg mx-auto leading-relaxed font-sans font-medium">
-              Every piece is selected to support your journey — from wearable energy to one-on-one guidance with Master Pragya Vijh.
+              {homepageData?.intro_section?.description || "Every piece is selected to support your journey — from wearable energy to one-on-one guidance with Master Pragya Vijh."}
             </p>
           </div>
           <LocalizedClientLink 
-            href="/store"
+            href={homepageData?.intro_section?.button_link || "/store"}
             className="bg-[#C5A059] text-[#120B15] px-10 py-3.5 rounded-full text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-2"
           >
-            Browse the shop
+            {homepageData?.intro_section?.button_text || "Browse the shop"}
           </LocalizedClientLink>
         </div>
       </section>
 
-      {/* Hot Seller Section */}
-      <section className="py-24 md:py-32">
+      {/* Featured Products Section (New Arrivals) */}
+      <section className="py-16 md:py-20 bg-white">
         <div className="content-container">
-          <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="text-center mb-10 underline underline-offset-8 decoration-[#C5A059]/30">
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
+               {homepageData?.featured_products_label || "NEW SELECTION"}
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-6 uppercase tracking-tight leading-tight">
+              {homepageData?.featured_products_title || "New Arrivals"}
+            </h2>
+          </div>
+          
+          <CMSFeaturedProducts products={homepageData?.featured_products} region={region} />
+        </div>
+      </section>
+
+      {/* Hot Seller Section */}
+      <section className="pt-12 pb-16 md:pt-16 md:pb-20">
+        <div className="content-container">
+          <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
                FAVOURITES
             </span>
@@ -88,7 +102,7 @@ export default async function Home(props: {
           
           <HotSellers hotSellers={homepageData?.hot_sellers} region={region} />
           
-          <div className="mt-20 text-center">
+          <div className="mt-12 text-center">
             <LocalizedClientLink 
               href="/store" 
               className="inline-block px-12 py-4 border border-[#2C1E36]/10 text-[#2C1E36] rounded-full font-bold hover:bg-[#2C1E36] hover:text-white transition-all uppercase tracking-[0.3em] text-[10px] shadow-sm hover:shadow-xl active:scale-95"
@@ -109,9 +123,9 @@ export default async function Home(props: {
       />
 
       {/* Shop Healing Crystals Section */}
-      <section className="py-24 md:py-32">
+      <section className="pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="content-container">
-           <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+           <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
                COLLECTION
             </span>
@@ -123,7 +137,7 @@ export default async function Home(props: {
           
           <HealingCrystals products={homepageData?.healing_crystals} region={region} />
           
-          <div className="mt-20 text-center">
+          <div className="mt-12 text-center">
             <LocalizedClientLink 
               href="/store" 
               className="inline-block px-12 py-4 border border-[#2C1E36]/10 text-[#2C1E36] rounded-full font-bold hover:bg-[#2C1E36] hover:text-white transition-all uppercase tracking-[0.3em] text-[10px] shadow-sm hover:shadow-xl active:scale-95"

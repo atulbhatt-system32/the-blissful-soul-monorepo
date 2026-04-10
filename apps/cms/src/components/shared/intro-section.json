@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_shared_intro_sections",
+  "info": {
+    "displayName": "Intro Section",
+    "icon": "align-center"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "CURATED FOR YOU"
+    },
+    "heading": {
+      "type": "string",
+      "default": "Crystals and sessions chosen for depth, clarity, and everyday ritual."
+    },
+    "description": {
+      "type": "text",
+      "default": "Every piece is selected to support your journey — from wearable energy to one-on-one guidance with Master Pragya Vijh."
+    },
+    "button_text": {
+      "type": "string",
+      "default": "Browse the shop"
+    },
+    "button_link": {
+      "type": "string",
+      "default": "/store"
+    }
+  }
+}

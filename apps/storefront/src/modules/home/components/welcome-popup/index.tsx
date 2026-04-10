@@ -46,7 +46,9 @@ const WelcomePopup = ({ data }: PopUpProps) => {
 
   if (!isOpen || !data) return null
 
-  const imageUrl = data.image?.url ? `${STRAPI_URL}${data.image.url}` : null
+  const imageUrl = data.image?.url 
+    ? (data.image.url.startsWith("http") ? data.image.url : `${STRAPI_URL}${data.image.url}`)
+    : null
 
   return (
     <>

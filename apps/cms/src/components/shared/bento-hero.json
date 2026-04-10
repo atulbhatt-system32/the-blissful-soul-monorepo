@@ -1,0 +1,62 @@
+{
+  "collectionName": "components_shared_bento_heroes",
+  "info": {
+    "displayName": "Bento Hero",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "welcome_label": {
+      "type": "string",
+      "default": "WELCOME"
+    },
+    "main_title": {
+      "type": "string",
+      "default": "Heal, manifest & align with Master Pragya Vijh"
+    },
+    "main_subtitle": {
+      "type": "text",
+      "default": "Premium healing crystals, bracelets, pyramids — and personal audio & video sessions for clarity and growth."
+    },
+    "main_cta_text": {
+      "type": "string",
+      "default": "Book now"
+    },
+    "main_cta_link": {
+      "type": "string",
+      "default": "/book-session"
+    },
+    "treasures_label": {
+      "type": "string",
+      "default": "TREASURES"
+    },
+    "treasures_title": {
+      "type": "string",
+      "default": "Sacred Collection"
+    },
+    "treasures_link": {
+      "type": "string",
+      "default": "/store"
+    },
+    "shop_label": {
+      "type": "string",
+      "default": "SHOP"
+    },
+    "shop_title": {
+      "type": "string",
+      "default": "Crystals & tools"
+    },
+    "shop_subtitle": {
+      "type": "string",
+      "default": "Bracelets, pyramids, tumbles & more."
+    },
+    "shop_cta_text": {
+      "type": "string",
+      "default": "Explore shop"
+    },
+    "shop_cta_link": {
+      "type": "string",
+      "default": "/store"
+    }
+  }
+}

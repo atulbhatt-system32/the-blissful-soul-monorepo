@@ -46,8 +46,16 @@ export async function getHomepageData() {
                 pop_up: {
                     populate: "image"
                 },
-                hot_sellers: true,
-                healing_crystals: true
+                hot_sellers: {
+                    populate: "*"
+                },
+                healing_crystals: {
+                    populate: "*"
+                },
+                intro_section: true,
+                featured_products: {
+                    populate: "*"
+                }
             },
         })
 

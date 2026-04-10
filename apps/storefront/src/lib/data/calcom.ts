@@ -85,53 +85,20 @@ export async function createCalBooking(params: {
   attendeeEmail: string
   attendeeTimeZone?: string
   eventTypeId?: number
-  eventSlug?: string // Added support for passing the slug directly
+  eventSlug?: string
   notes?: string
 }): Promise<{ uid: string; status: string } | null> {
-  const {
-    startTime,
-    attendeeName,
-    attendeeEmail,
-    attendeeTimeZone = "Asia/Kolkata",
-    eventSlug,
-    notes,
-  } = params
-
-  // We need the eventTypeId for booking creation.
-  // If not provided, we need to resolve it from the slug.
-  let eventTypeId = params.eventTypeId
-  if (!eventTypeId) {
-    const resolvedId = await resolveEventTypeId(eventSlug)
-    eventTypeId = resolvedId ? resolvedId : undefined
-  }
-
-  if (!eventTypeId) {
-    throw new Error("Cal.com event type ID could not be resolved. Please configure it.")
-  }
-
-  const body: any = {
-    start: startTime,
-    eventTypeId: eventTypeId,
-    attendee: {
-      name: attendeeName,
-      email: attendeeEmail,
-      timeZone: attendeeTimeZone,
-    },
-  }
-
-  if (notes) {
-    body.metadata = { notes }
-  }
-
-  const response = await fetch(`${CAL_API_BASE}/bookings`, {
+  const response = await fetch(`/api/calcom-book`, {
     method: "POST",
-    headers: getCalHeaders("2024-08-13"),
-    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
   })
 
   if (!response.ok) {
     const errorText = await response.text()
-    console.error("Cal.com booking API error:", response.status, errorText)
+    console.error("Failed proxying to Cal.com:", response.status, errorText)
     throw new Error(`Failed to create booking: ${response.status}`)
   }
 
