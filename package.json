@@ -10,13 +10,5 @@
   "devDependencies": {
     "turbo": "latest"
   },
-  "packageManager": "pnpm@10.5.2",
-  "pnpm": {
-    "overrides": {
-      "react": "19.0.4",
-      "react-dom": "19.0.4",
-      "@types/react": "19.0.4",
-      "@types/react-dom": "19.0.4"
-    }
-  }
+  "packageManager": "pnpm@10.5.2"
 }

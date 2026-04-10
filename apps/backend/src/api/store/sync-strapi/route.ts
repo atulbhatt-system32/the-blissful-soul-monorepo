@@ -1,7 +1,7 @@
 import { 
   MedusaRequest, 
   MedusaResponse 
-} from "@medusajs/framework/types"
+} from "@medusajs/framework/http"
 import axios from "axios"
 
 export const GET = async (
@@ -12,14 +12,13 @@ export const GET = async (
   
   let products: any[] = []
   try {
-    const result = await productService.listProducts({}, { take: 200 })
-    products = Array.isArray(result) ? (result[0] || []) : (result || [])
-    if (!Array.isArray(products)) products = []
-  } catch {
+    const listRes = await productService.listProducts({}, { take: 200 })
+    products = Array.isArray(listRes) ? listRes : []
+  } catch (e: any) {
     try {
-      const result = await productService.listAndCountProducts({}, { take: 200 })
-      products = result[0] || []
-    } catch (e2) {
+      const [listAndCountRes] = await productService.listAndCountProducts({}, { take: 200 })
+      products = listAndCountRes || []
+    } catch (e2: any) {
       return res.json({ message: "Could not list products", error: e2.message })
     }
   }
@@ -31,7 +30,7 @@ export const GET = async (
     return res.json({ message: "ERROR: CMS_API_TOKEN is not set in backend .env" })
   }
 
-  const results = []
+  const results: any[] = []
 
   for (const product of products) {
     try {

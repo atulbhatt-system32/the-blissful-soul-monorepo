@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/types"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const GET = async (
   req: MedusaRequest,
@@ -22,7 +22,7 @@ export const GET = async (
     return res.json({ message: "ERROR: CMS_API_TOKEN is missing in backend .env" })
   }
 
-  const results = []
+  const results: any[] = []
 
   for (const product of products) {
     try {
