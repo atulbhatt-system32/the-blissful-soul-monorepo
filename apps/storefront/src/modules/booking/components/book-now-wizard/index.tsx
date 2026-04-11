@@ -15,6 +15,7 @@ type BookNowProps = {
   products: HttpTypes.StoreProduct[]
   region: HttpTypes.StoreRegion
   initialServiceId?: string
+  initialVariantId?: string
   countryCode: string
   customer?: HttpTypes.StoreCustomer | null
 }
@@ -37,6 +38,7 @@ export default function BookNowClient({
   products,
   region,
   initialServiceId,
+  initialVariantId,
   countryCode,
   customer
 }: BookNowProps) {
@@ -49,6 +51,7 @@ export default function BookNowClient({
   // Form State
   const [selectedCategory, setSelectedCategory] = useState<string>("")
   const [selectedService, setSelectedService] = useState<string>(initialServiceId || "")
+  const [selectedVariant, setSelectedVariant] = useState<string>(initialVariantId || "")
   const [selectedEmployee, setSelectedEmployee] = useState<string>(EMPLOYEES[0].id)
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0])
   const [selectedTime, setSelectedTime] = useState<string>("")
@@ -90,8 +93,9 @@ export default function BookNowClient({
       setSelectedSlotIso("")
       
       try {
-        // Look for cal_link on the product or its first variant
-        let calLink = serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
+        // Look for cal_link on the selected variant, otherwise fallback
+        const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+        let calLink = variantObj?.metadata?.cal_link || serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
         let slug: string | undefined = undefined
         
         if (typeof calLink === "string") {
@@ -116,7 +120,7 @@ export default function BookNowClient({
     }
 
     loadSlots()
-  }, [selectedDate, selectedService])
+  }, [selectedDate, selectedService, selectedVariant])
 
   // Filter products by selected category
   const filteredProducts = products.filter((p) => {
@@ -213,7 +217,16 @@ export default function BookNowClient({
               <label className="block text-[#2C1E36] text-sm font-bold mb-2">Service</label>
               <select 
                 value={selectedService}
-                onChange={(e) => setSelectedService(e.target.value)}
+                onChange={(e) => {
+                  const sId = e.target.value
+                  setSelectedService(sId)
+                  const sObj = products.find(p => p.id === sId)
+                  if (sObj && sObj.variants && sObj.variants.length > 0) {
+                    setSelectedVariant(sObj.variants[0].id)
+                  } else {
+                    setSelectedVariant("")
+                  }
+                }}
                 className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
                 disabled={!selectedCategory}
               >
@@ -229,6 +242,24 @@ export default function BookNowClient({
                 })}
               </select>
             </div>
+
+            {/* Variant / Duration Selection (If multiple) */}
+            {serviceObj && serviceObj.variants && serviceObj.variants.length > 0 && (
+              <div>
+                <label className="block text-[#2C1E36] text-sm font-bold mb-2">Options</label>
+                <select 
+                  value={selectedVariant}
+                  onChange={(e) => setSelectedVariant(e.target.value)}
+                  className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
+                >
+                  {serviceObj.variants.map((v) => {
+                    return (
+                      <option key={v.id} value={v.id}>{v.title}</option>
+                    )
+                  })}
+                </select>
+              </div>
+            )}
 
             {/* Employee */}
             <div>
@@ -416,29 +447,35 @@ export default function BookNowClient({
             <div className="flex justify-between mb-2 text-[#2C1E36] font-bold mt-4 pt-4 border-t">
               <span>Total:</span>
               <span>
-                {/* For mock purpose we display price text, in production Medusa cart calculates it */}
-                {getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'}
+                {(() => {
+                  const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+                  return variantObj?.calculated_price || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
+                })()}
               </span>
             </div>
           </div>
 
           <MedusaCheckoutPayment 
             serviceId={selectedService}
-            variantId={serviceObj?.variants?.[0]?.id || ""}
+            variantId={selectedVariant || serviceObj?.variants?.[0]?.id || ""}
             details={details}
             date={selectedDate}
             time={selectedTime}
             slotIsoStart={selectedSlotIso}
             countryCode={countryCode}
             eventSlug={(() => {
-              const calLink = serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
+              const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+              const calLink = variantObj?.metadata?.cal_link || serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
               if (typeof calLink === "string") {
                 const parts = calLink.split('/')
                 return parts[parts.length - 1]
               }
               return undefined
             })()}
-            price={getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0}
+            price={(() => {
+              const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+              return variantObj?.calculated_price_number || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0
+            })()}
             onSuccess={() => setCurrentStep(5)}
             onBack={handlePrev}
           />
