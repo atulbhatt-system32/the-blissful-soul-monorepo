@@ -89,11 +89,11 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                     leaveTo="translate-x-full"
                   >
                     <DialogPanel className="pointer-events-auto w-screen max-w-[400px]">
-                      <div className="flex h-full flex-col bg-[#1a0f21] p-6 sm:p-10 shadow-2xl">
-                        <div className="flex items-center justify-end mb-8">
+                      <div className="flex h-full flex-col bg-[#1a0f21] px-10 pt-16 pb-8 shadow-2xl">
+                        <div className="flex items-center justify-end mb-8 pr-2">
                           <button
                             type="button"
-                            className="text-[#C5A059] hover:rotate-90 transition-transform duration-300 p-2 -mr-2 outline-none"
+                            className="text-[#C5A059] hover:rotate-90 transition-transform duration-300 p-2.5 outline-none bg-white/5 rounded-full hover:bg-white/10"
                             onClick={closePopup}
                           >
                             <span className="sr-only">Close menu</span>

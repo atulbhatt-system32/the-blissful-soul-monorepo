@@ -72,7 +72,7 @@ const LoginTemplate = () => {
                 </div>
                 <button 
                   onClick={() => toggleView(LOGIN_VIEW.SIGN_IN)}
-                  className="bg-[#2C1E36] text-white px-10 py-4.5 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 active:scale-95 w-full flex items-center justify-center"
+                  className="bg-[#2C1E36] text-white px-10 h-14 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 active:scale-95 w-full flex items-center justify-center"
                 >
                   Back to Sign in
                 </button>
@@ -98,7 +98,7 @@ const LoginTemplate = () => {
                  <button 
                    type="submit"
                    disabled={loading}
-                   className="bg-[#2C1E36] text-white px-10 py-4.5 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 active:scale-95 w-full disabled:bg-gray-200 disabled:shadow-none flex items-center justify-center mt-2 h-14"
+                   className="bg-[#2C1E36] text-white px-10 h-14 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 active:scale-95 w-full disabled:bg-gray-200 disabled:shadow-none flex items-center justify-center mt-2"
                  >
                    {loading ? "Aligning..." : "Send Reset Link"}
                  </button>

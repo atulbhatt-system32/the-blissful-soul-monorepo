@@ -84,7 +84,7 @@ const Register = ({ setCurrentView }: Props) => {
           </LocalizedClientLink>
           .
         </span>
-        <SubmitButton className="w-full mt-10 bg-[#2C1E36] text-white rounded-2xl py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all" data-testid="register-button">
+        <SubmitButton className="w-full mt-10 bg-[#2C1E36] text-white rounded-2xl h-14 text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all" data-testid="register-button">
           Create Account
         </SubmitButton>
       </form>
