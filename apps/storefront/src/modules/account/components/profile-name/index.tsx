@@ -49,7 +49,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
     <form action={formAction} className="w-full overflow-visible">
       <AccountInfo
         label="Name"
-        currentInfo={`${customer.first_name} ${customer.last_name}`}
+        currentInfo={`${customer.first_name || ""} ${customer.last_name || ""}`.trim() || "Not provided"}
         isSuccess={successState}
         isError={!!state?.error}
         clearState={clearState}
