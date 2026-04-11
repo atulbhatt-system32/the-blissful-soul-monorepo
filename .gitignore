@@ -2,6 +2,9 @@
 node_modules/
 jspm_packages/
 
+# Generated files (derived from templates — do not edit directly)
+nginx/nginx.conf
+
 # Build Outputs
 dist/
 build/

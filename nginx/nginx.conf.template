@@ -1,0 +1,132 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+    client_max_body_size 50M;
+
+    # Use Docker's internal DNS resolver for dynamic service name resolution.
+    # This ensures nginx re-resolves container IPs after restarts instead of
+    # caching stale IPs from startup.
+    resolver 127.0.0.11 valid=10s;
+    resolver_timeout 5s;
+
+    # Redirect HTTP to HTTPS (main domain)
+    server {
+        listen 80;
+        server_name ${DOMAIN};
+
+        # ACME-challenge for Let's Encrypt renewal
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    # Redirect HTTP to HTTPS (backend subdomain)
+    server {
+        listen 80;
+        server_name backend.${DOMAIN};
+
+        # ACME-challenge for Let's Encrypt renewal
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    # Redirect HTTP to HTTPS (CMS subdomain)
+    server {
+        listen 80;
+        server_name cms.${DOMAIN};
+
+        # ACME-challenge for Let's Encrypt renewal
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    # HTTPS server — backend subdomain
+    server {
+        listen 443 ssl;
+        server_name backend.${DOMAIN};
+
+        ssl_certificate     /etc/letsencrypt/live/backend.${DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/backend.${DOMAIN}/privkey.pem;
+
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+            set $backend http://backend:9000;
+            proxy_pass $backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Port 443;
+        }
+    }
+
+    # HTTPS server — CMS subdomain
+    server {
+        listen 443 ssl;
+        server_name cms.${DOMAIN};
+
+        ssl_certificate     /etc/letsencrypt/live/cms.${DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/cms.${DOMAIN}/privkey.pem;
+
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+            set $cms http://cms:1337;
+            proxy_pass $cms;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+    }
+
+    # HTTPS server — main domain (storefront only)
+    server {
+        listen 443 ssl;
+        server_name ${DOMAIN};
+
+        ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+
+        # Storefront
+        location / {
+            set $storefront http://storefront:8000;
+            proxy_pass $storefront;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+    }
+}

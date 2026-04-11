@@ -88,8 +88,9 @@ module.exports = {
         "3xl": "2rem",
       },
       fontFamily: {
-        serif: ["Cormorant Garamond", "serif"],
+        serif: ["var(--font-inter)", "Inter", "serif"],
         sans: [
+          "var(--font-inter)",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",

@@ -106,7 +106,7 @@ jobs:
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_USERNAME={0}', secrets.NEXT_PUBLIC_CAL_USERNAME) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_EVENT_SLUG={0}', secrets.NEXT_PUBLIC_CAL_EVENT_SLUG) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.NEXT_PUBLIC_RAZORPAY_KEY) || '' }}
-            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://{0}/api', secrets.DOMAIN) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://backend.{0}', secrets.DOMAIN) || '' }}
             ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL=https://cms.{0}', secrets.DOMAIN) || '' }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache,mode=max,image-manifest=true,oci-mediatypes=true
@@ -123,6 +123,10 @@ jobs:
     steps:
       - name: Checkout code (for config files)
         uses: actions/checkout@v4
+
+      - name: Generate nginx config from template
+        run: |
+          DOMAIN="${{ secrets.DOMAIN }}" envsubst '${DOMAIN}' < nginx/nginx.conf.template > nginx/nginx.conf
 
       - name: Copy config files via SCP
         uses: appleboy/scp-action@v0.1.7
@@ -215,7 +219,8 @@ jobs:
             IMAGE_TAG=${IMAGE_TAG}
             BACKEND_JWT_SECRET=${BACKEND_JWT_SECRET}
             BACKEND_COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
-            BACKEND_CORS_ORIGIN=https://${DOMAIN}
+            DOMAIN=${DOMAIN}
+            BACKEND_CORS_ORIGIN=https://${DOMAIN},https://backend.${DOMAIN}
             CMS_PUBLIC_URL=https://cms.${DOMAIN}
             CMS_API_TOKEN=${CMS_API_TOKEN}
             CMS_APP_KEYS=${CMS_APP_KEYS}
@@ -268,6 +273,14 @@ jobs:
               IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
               docker tag "$IMAGE_BASE:$IMAGE_TAG" "$IMAGE_BASE:latest"
             done
+
+            echo "Ensuring SSL certificate exists for backend.${DOMAIN}..."
+            if [ ! -f "/etc/letsencrypt/live/backend.${DOMAIN}/fullchain.pem" ]; then
+              docker compose -f docker-compose.prod.yml run --rm --entrypoint certbot certbot certonly --webroot \
+                -w /var/www/certbot \
+                -d backend.${DOMAIN} \
+                --non-interactive --agree-tos --email admin@${DOMAIN}
+            fi
 
             echo "Reloading nginx to pick up new container IPs..."
             docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload
