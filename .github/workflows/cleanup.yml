@@ -1,0 +1,29 @@
+name: Cleanup Docker Images
+
+on:
+  workflow_run:
+    workflows: ["Deploy to Production"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: read
+    steps:
+      - name: Prune unused images on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -euo pipefail
+            echo "Pruning unused images older than 7 days..."
+            docker image prune -af --filter "until=168h"
+            echo "Cleanup complete."

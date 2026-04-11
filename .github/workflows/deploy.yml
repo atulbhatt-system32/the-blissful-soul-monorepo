@@ -52,15 +52,15 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:latest
             ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:${{ github.sha }}
           build-args: |
-            NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY }}
-            NEXT_PUBLIC_STRAPI_URL=${{ secrets.NEXT_PUBLIC_STRAPI_URL }}
-            NEXT_PUBLIC_CAL_API_KEY=${{ secrets.NEXT_PUBLIC_CAL_API_KEY }}
-            NEXT_PUBLIC_CAL_USERNAME=${{ secrets.NEXT_PUBLIC_CAL_USERNAME }}
-            NEXT_PUBLIC_CAL_EVENT_SLUG=${{ secrets.NEXT_PUBLIC_CAL_EVENT_SLUG }}
-            NEXT_PUBLIC_RAZORPAY_KEY=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY }}
-            CMS_PUBLIC_URL=${{ secrets.PUBLIC_URL }}/cms
-          cache-from: type=gha,scope=${{ github.workflow }}-${{ matrix.app }}
-          cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.app }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY={0}', secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_STRAPI_URL={0}', secrets.NEXT_PUBLIC_STRAPI_URL) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_API_KEY={0}', secrets.NEXT_PUBLIC_CAL_API_KEY) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_USERNAME={0}', secrets.NEXT_PUBLIC_CAL_USERNAME) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_EVENT_SLUG={0}', secrets.NEXT_PUBLIC_CAL_EVENT_SLUG) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.NEXT_PUBLIC_RAZORPAY_KEY) || '' }}
+            ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL={0}/cms', secrets.PUBLIC_URL) || '' }}
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache,mode=max,image-manifest=true,oci-mediatypes=true
 
   deploy:
     needs: build-and-push
@@ -112,6 +112,29 @@ jobs:
           envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB,BACKEND_JWT_SECRET,BACKEND_COOKIE_SECRET,PUBLIC_URL,CMS_API_TOKEN,CMS_APP_KEYS,CMS_API_TOKEN_SALT,CMS_ADMIN_JWT_SECRET,CMS_TRANSFER_TOKEN_SALT,CMS_ENCRYPTION_KEY,CMS_JWT_SECRET,RAZORPAY_ID,RAZORPAY_SECRET,RAZORPAY_ACCOUNT,RAZORPAY_WEBHOOK_SECRET,GOOGLE_SMTP_USER,GOOGLE_SMTP_PASS
           script: |
             set -euo pipefail
+
+            do_rollback() {
+              local FAILED_TAG="$IMAGE_TAG"
+              local HAS_PREVIOUS=true
+              for app in backend storefront cms; do
+                IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
+                if ! docker image inspect "$IMAGE_BASE:previous" >/dev/null 2>&1; then
+                  HAS_PREVIOUS=false
+                  break
+                fi
+              done
+              if [ "$HAS_PREVIOUS" = "true" ]; then
+                export IMAGE_TAG="previous"
+                docker compose -f docker-compose.prod.yml up -d
+              else
+                echo "No previous images available for rollback (first deploy). Manual intervention required."
+              fi
+              echo "Removing failed images for tag $FAILED_TAG..."
+              for app in backend storefront cms; do
+                docker image rm -f "ghcr.io/$REPO_OWNER/the-blissful-soul-$app:$FAILED_TAG" 2>/dev/null || true
+              done
+              exit 1
+            }
 
             # Point: Explicit project scoping and portable paths
             export COMPOSE_PROJECT_NAME=blissful-soul
@@ -169,23 +192,9 @@ jobs:
             
             echo "Deploying version $IMAGE_TAG..."
             # Point: Healthcheck-aware startup (--wait) and clean orchestration
-            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 300 --remove-orphans; then
+            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 --remove-orphans; then
               echo "Deployment failed health checks! Initiating rollback..."
-              HAS_PREVIOUS=true
-              for app in backend storefront cms; do
-                IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
-                if ! docker image inspect "$IMAGE_BASE:previous" >/dev/null 2>&1; then
-                  HAS_PREVIOUS=false
-                  break
-                fi
-              done
-              if [ "$HAS_PREVIOUS" = "true" ]; then
-                export IMAGE_TAG="previous"
-                docker compose -f docker-compose.prod.yml up -d
-              else
-                echo "No previous images available for rollback (first deploy). Manual intervention required."
-              fi
-              exit 1
+              do_rollback
             fi
             
             # Robust Health Check (Version-agnostic jq parsing)
@@ -198,29 +207,10 @@ jobs:
               if [ "$STATE" != "running" ]; then
                 echo "Error: Service $service is in state '$STATE' (expected 'running')"
                 docker compose -f docker-compose.prod.yml logs "$service" --tail 30
-                
                 echo "Initiating emergency rollback..."
-                HAS_PREVIOUS=true
-                for app in backend storefront cms; do
-                  IMAGE_BASE="ghcr.io/$REPO_OWNER/the-blissful-soul-$app"
-                  if ! docker image inspect "$IMAGE_BASE:previous" >/dev/null 2>&1; then
-                    HAS_PREVIOUS=false
-                    break
-                  fi
-                done
-                if [ "$HAS_PREVIOUS" = "true" ]; then
-                  export IMAGE_TAG="previous"
-                  docker compose -f docker-compose.prod.yml up -d
-                else
-                  echo "No previous images available for rollback (first deploy). Manual intervention required."
-                fi
-                exit 1
+                do_rollback
               fi
             done
             
             echo "Deployment successful."
             docker logout ghcr.io
-            
-            # Point: Continuous cleanup to prevent disk accumulation
-            # Removes unused images older than 7 days, providing a safety window for rollbacks
-            docker image prune -af --filter "until=168h"
