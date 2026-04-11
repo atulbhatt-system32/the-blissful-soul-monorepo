@@ -74,10 +74,22 @@ export const listProducts = async ({
     .then(({ products, count }) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
+      // Filter out products tagged as 'free-gift' or 'hidden' OR marked in metadata
+      const filteredProducts = products.filter(p => {
+        const isExcludedTag = p.tags?.some(t => {
+          const val = t.value.toLowerCase()
+          return val === "free-gift" || val === "hidden"
+        })
+        const isHiddenMetadata = p.metadata?.hidden === "true" || p.metadata?.hidden === true
+        const isFreeGiftMetadata = p.metadata?.is_free_gift === "true" || p.metadata?.is_free_gift === true
+
+        return !isExcludedTag && !isHiddenMetadata && !isFreeGiftMetadata
+      })
+
       return {
         response: {
-          products,
-          count,
+          products: filteredProducts,
+          count: count - (products.length - filteredProducts.length),
         },
         nextPage: nextPage,
         queryParams,
@@ -119,22 +131,22 @@ export const listProductsWithSort = async ({
 
   const sortedProducts = sortProducts(products, sortBy)
 
-  // Strictly exclude 'session' products from general store views
-  // We check BOTH the backwards-compatible 'session' tag AND the new Category hierarchy.
-  const excludeHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
-  const nonSessionProducts = sortedProducts.filter(
+  // Further exclude 'session' products from general store views (if they aren't already tagged 'hidden')
+  const excludeCategoryHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
+
+  const finalFilteredProducts = sortedProducts.filter(
     (p) => 
       !p.tags?.some((t: any) => t.value === "session") &&
-      !p.categories?.some((c: any) => excludeHandles.includes(c.handle))
+      !p.categories?.some((c: any) => excludeCategoryHandles.includes(c.handle))
   )
 
   const pageParam = (page - 1) * limit
 
   // Recalculate count and pagination based on the filtered list
-  const newCount = nonSessionProducts.length
+  const newCount = finalFilteredProducts.length
   const nextPage = newCount > pageParam + limit ? pageParam + limit : null
 
-  const paginatedProducts = nonSessionProducts.slice(pageParam, pageParam + limit)
+  const paginatedProducts = finalFilteredProducts.slice(pageParam, pageParam + limit)
 
   return {
     response: {

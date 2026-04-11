@@ -34,7 +34,33 @@ const BookSessionClient = ({
     video: videoProducts,
   }
 
-  const currentProducts = productMap[activeTab] || []
+  const currentItems = (productMap[activeTab] || []).flatMap(product => {
+    // If it's a session and has multiple variants, treat each variant as a card
+    if (product.variants && product.variants.length > 1) {
+      return product.variants
+        .filter(v => {
+          // 1. Respect absolute hidden flag (hides everywhere)
+          if (v.metadata?.hidden === "true" || v.metadata?.hidden === true) return false
+          
+          // 2. Specifically hide from "Top Services" tab if flagged
+          if (activeTab === "top" && (v.metadata?.hide_from_top === "true" || v.metadata?.hide_from_top === true)) return false
+
+          // 3. In Audio/Video tabs, only show matching formats
+          if (activeTab === "audio" || activeTab === "video") {
+            const variantJson = JSON.stringify(v).toLowerCase()
+            return variantJson.includes(activeTab)
+          }
+          
+          return true 
+        })
+        .map(v => ({
+          product,
+          variantId: v.id
+        }))
+    }
+    // Otherwise just show the product card as usual
+    return [{ product, variantId: undefined }]
+  })
 
   return (
     <section className="pt-20 pb-12 bg-[#FAF9F6]">
@@ -67,11 +93,17 @@ const BookSessionClient = ({
         </div>
 
         <div className="min-h-[400px]">
-          {currentProducts.length > 0 ? (
+          {currentItems.length > 0 ? (
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              {currentProducts.map((product) => (
-                <li key={product.id}>
-                  <ProductPreview product={product} region={region} isFeatured categoryHint={activeTab} />
+              {currentItems.map((item, idx) => (
+                <li key={`${item.product.id}-${item.variantId || idx}`}>
+                  <ProductPreview 
+                    product={item.product} 
+                    forceVariantId={item.variantId}
+                    region={region} 
+                    isFeatured 
+                    categoryHint={activeTab} 
+                  />
                 </li>
               ))}
             </ul>

@@ -9,20 +9,24 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import PromotionBanner from "@modules/layout/components/promotion-banner"
+import { getStorePageData } from "@lib/data/strapi"
 import SearchToggle from "@modules/layout/components/search-toggle"
 import StickyWrapper from "@modules/layout/components/sticky-wrapper"
 
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, storeConfig] = await Promise.all([
     listRegions().then((regions: HttpTypes.StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    getStorePageData(),
   ])
 
   return (
     <StickyWrapper>
-      <PromotionBanner />
+      {storeConfig?.show_announcement !== false && (
+        <PromotionBanner announcements={storeConfig?.announcements} />
+      )}
       <header className="w-full h-24 border-b border-metal/10 duration-200 !bg-white transition-all relative z-[101]">
         <nav className="content-container flex items-center justify-between w-full h-full">
           

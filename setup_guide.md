@@ -30,15 +30,16 @@ docker-compose exec cms npx strapi admin:create-user --email admin@theblisfulsou
 ---
 
 ## Step 3: Get your Token & Configure the Store!
-1.  **Login**: Go to [http://localhost:9000/app](http://localhost:9000/app) ⚙️
-2.  **Credentials**: `admin@theblisfulsoul.in` / `BlissfulSoul@123`.
-3.  **Add Store Currencies**: Go to **Settings > Store**. By default, it might be in Euros (EUR/USD). Edit the store settings to add your desired currency (e.g., `INR` - Indian Rupee) to the list of available currencies and save.
-4.  **Configure Regions**: Go to **Settings > Regions**, create your default region (e.g., "India") and assign the newly added currency (e.g., `INR`) to it.
-5.  **Set Default Store Configuration**: Go back to **Settings > Store**, ensure your store uses the newly created Region and `INR` Currency as the default.
-6.  **Create Key**: Go to **Settings > Publishable API Keys**, create "Main Storefront", and copy the token.
-7.  **Assign to publishable key**: Open the "Main Storefront" publishable key you just created. Under the **Sales Channels** or **Regions/Currencies** section (depending on your Medusa version), attach the "Default Sales Channel" so the storefront can access products and regions.
-8.  **Update .env**: Paste that token into `apps/storefront/.env` (for `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`).
-9.  **Apply Changes**: Since Next.js requires a build to inject environment variables, rebuild the storefront:
+1.  **Login to Medusa**: Go to [http://localhost:9000/app](http://localhost:9000/app) ⚙️
+2.  **Login to Strapi**: Go to [http://localhost:1337/admin](http://localhost:1337/admin) 🚀
+3.  **Credentials**: `admin@theblisfulsoul.in` / `BlissfulSoul@123` (Same for both).
+4.  **Add Store Currencies**: Go to **Settings > Store**. By default, it might be in Euros (EUR/USD). Edit the store settings to add your desired currency (e.g., `INR` - Indian Rupee) to the list of available currencies and save.
+5.  **Configure Regions**: Go to **Settings > Regions**, create your default region (e.g., "India") and assign the newly added currency (e.g., `INR`) to it.
+6.  **Set Default Store Configuration**: Go back to **Settings > Store**, ensure your store uses the newly created Region and `INR` Currency as the default.
+7.  **Create Key**: Go to **Settings > Publishable API Keys**, create "Main Storefront", and copy the token.
+8.  **Assign to publishable key**: Open the "Main Storefront" publishable key you just created. Under the **Sales Channels** or **Regions/Currencies** section (depending on your Medusa version), attach the "Default Sales Channel" so the storefront can access products and regions.
+9.  **Update .env**: Paste that token into `apps/storefront/.env` (for `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`).
+10. **Apply Changes**: Since Next.js requires a build to inject environment variables, rebuild the storefront:
 
 ```bash
 docker-compose up -d --build storefront

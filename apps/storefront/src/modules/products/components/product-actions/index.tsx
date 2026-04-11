@@ -40,6 +40,17 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
+  const selectedVariant = useMemo(() => {
+    if (!product.variants || product.variants.length === 0) {
+      return
+    }
+
+    return product.variants.find((v) => {
+      const variantOptions = optionsAsKeymap(v.options)
+      return isEqual(variantOptions, options)
+    })
+  }, [product.variants, options])
+
   const isSession = 
     product.type?.value === "session" || 
     product.tags?.some((t: any) => t.value === "session") || 
@@ -55,17 +66,6 @@ export default function ProductActions({
       setOptions(variantOptions ?? {})
     }
   }, [product.variants])
-
-  const selectedVariant = useMemo(() => {
-    if (!product.variants || product.variants.length === 0) {
-      return
-    }
-
-    return product.variants.find((v) => {
-      const variantOptions = optionsAsKeymap(v.options)
-      return isEqual(variantOptions, options)
-    })
-  }, [product.variants, options])
 
   // update the options when a variant is selected
   const setOptionValue = (optionId: string, value: string) => {

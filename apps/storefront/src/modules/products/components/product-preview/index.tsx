@@ -17,11 +17,13 @@ export default function ProductPreview({
   isFeatured,
   region,
   categoryHint,
+  forceVariantId,
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
   region: HttpTypes.StoreRegion
   categoryHint?: string
+  forceVariantId?: string
 }) {
   const router = useRouter()
   const params = useParams()
@@ -29,10 +31,14 @@ export default function ProductPreview({
   const [isAdding, setIsAdding] = useState(false)
   const { toggleWishlist, isWishlisted } = useWishlist()
 
-  let preferredVariantId: string | undefined = undefined
+  let preferredVariantId: string | undefined = forceVariantId
   let matchingVariant: HttpTypes.StoreProductVariant | undefined = undefined
 
-  if (categoryHint && product.variants) {
+  if (preferredVariantId) {
+    matchingVariant = product.variants?.find(v => v.id === preferredVariantId)
+  }
+
+  if (!matchingVariant && categoryHint && product.variants) {
     matchingVariant = product.variants.find(v => {
       // Look at the variant's options or metadata to match the categoryHint ('audio' or 'video')
       const formatOption = v.options?.find(opt => opt.value?.toLowerCase() === categoryHint.toLowerCase())
