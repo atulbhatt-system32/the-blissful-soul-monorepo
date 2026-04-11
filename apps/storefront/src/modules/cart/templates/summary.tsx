@@ -36,7 +36,7 @@ const Summary = ({ cart }: SummaryProps) => {
         </Heading>
       </div>
       
-      <div className="bg-white/5 backdrop-blur-md rounded-[1.5rem] p-4 border border-white/10">
+      <div className="bg-[#1a0f21]/80 rounded-[1.5rem] p-4 border border-white/5 shadow-inner">
         <DiscountCode cart={cart} />
       </div>
 

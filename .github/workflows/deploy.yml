@@ -183,7 +183,7 @@ jobs:
               if [ "$HAS_PREVIOUS" = "true" ]; then
                 echo "Initiating scoped rollback for: $APPS"
                 export IMAGE_TAG="previous"
-                docker compose -f docker-compose.prod.yml up -d $APPS
+                docker compose -f docker-compose.prod.yml up -d --no-deps $APPS
               else
                 echo "No previous images available for scoped rollback. Manual intervention required."
               fi
@@ -244,10 +244,10 @@ jobs:
             done
             
             echo "Pulling images for: $APPS"
-            docker compose -f docker-compose.prod.yml pull $APPS
-            
+            docker compose -f docker-compose.prod.yml pull --no-deps $APPS
+
             echo "Deploying version $IMAGE_TAG for services: $APPS"
-            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 $APPS; then
+            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 --no-deps $APPS; then
               echo "Deployment failed health checks! Initiating rollback..."
               do_rollback
             fi

@@ -85,7 +85,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             <div className="animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex w-full gap-x-2 items-center">
                 <Input
-                  className="h-10 border-white/20 bg-transparent hover:bg-white/5 text-white placeholder:text-white/30 focus:bg-white/5 focus:border-[#C5A059] focus:ring-0 rounded-xl transition-all"
+                  className="h-10 border-metal/30 bg-black/40 hover:bg-black/60 text-white caret-white placeholder:text-white/20 focus:bg-black/60 focus:border-metal focus:ring-1 focus:ring-metal/20 rounded-xl transition-all shadow-inner"
                   id="promotion-input"
                   name="code"
                   type="text"
