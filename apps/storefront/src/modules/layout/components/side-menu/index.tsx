@@ -41,10 +41,13 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
               <div className="relative flex h-full">
                 <Popover.Button
                   data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-pink-600 font-serif uppercase tracking-widest text-xs"
+                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-                  Menu
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform duration-200">
+                    <line x1="4" x2="20" y1="12" y2="12"/>
+                    <line x1="4" x2="20" y1="6" y2="6"/>
+                    <line x1="4" x2="20" y1="18" y2="18"/>
+                  </svg>
                 </Popover.Button>
               </div>
 
@@ -69,10 +72,10 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                 <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm m-2">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-white/95 backdrop-blur-xl rounded-2xl justify-between p-8 shadow-2xl border border-pink-100"
+                    className="flex flex-col h-full bg-background/95 backdrop-blur-2xl rounded-2xl justify-between p-8 shadow-2xl border border-metal/10"
                   >
                     <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close} className="text-pink-900 hover:rotate-90 transition-transform duration-300">
+                      <button data-testid="close-menu-button" onClick={close} className="text-primary hover:rotate-90 transition-transform duration-300">
                         <XMark />
                       </button>
                     </div>
@@ -82,8 +85,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           <li key={name}>
                             <LocalizedClientLink
                               href={href}
-                              className="text-2xl md:text-3xl font-serif text-pink-950 hover:text-pink-500 transition-colors"
-                              activeClassName="!text-pink-500 font-bold"
+                              className="text-2xl md:text-3xl font-serif text-primary hover:text-metal transition-colors"
+                              activeClassName="!text-metal font-bold"
                               onClick={close}
                               data-testid={`${name.toLowerCase()}-link`}
                             >
@@ -93,10 +96,10 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         )
                       })}
                     </ul>
-                    <div className="flex flex-col gap-y-6 pt-10 border-t border-pink-50">
+                    <div className="flex flex-col gap-y-6 pt-10 border-t border-metal/10">
                       {!!locales?.length && (
                         <div
-                          className="flex justify-between items-center text-pink-900/60"
+                          className="flex justify-between items-center text-primary/60"
                           onMouseEnter={languageToggleState.open}
                           onMouseLeave={languageToggleState.close}
                         >
@@ -114,7 +117,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         </div>
                       )}
                       <div
-                        className="flex justify-between items-center text-pink-900/60"
+                        className="flex justify-between items-center text-primary/60"
                         onMouseEnter={countryToggleState.open}
                         onMouseLeave={countryToggleState.close}
                       >
@@ -131,7 +134,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           )}
                         />
                       </div>
-                      <Text className="flex justify-between text-[10px] uppercase tracking-widest text-pink-900/40">
+                      <Text className="flex justify-between text-[10px] uppercase tracking-widest text-primary/40">
                         © {new Date().getFullYear()} The Blissful Soul.
                       </Text>
                     </div>

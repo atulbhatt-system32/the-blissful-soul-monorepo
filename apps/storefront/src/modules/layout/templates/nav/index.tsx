@@ -10,6 +10,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import PromotionBanner from "@modules/layout/components/promotion-banner"
 import SearchToggle from "@modules/layout/components/search-toggle"
+import StickyWrapper from "@modules/layout/components/sticky-wrapper"
 
 
 export default async function Nav() {
@@ -20,12 +21,13 @@ export default async function Nav() {
   ])
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
+    <StickyWrapper>
       <PromotionBanner />
-      <header className="sticky top-0 z-[100] h-24 mx-auto border-b border-metal/10 duration-200 bg-background/85 backdrop-blur-md transition-all">
+      <header className="h-24 mx-auto border-b border-metal/10 duration-200 bg-background/85 backdrop-blur-md transition-all">
         <nav className="content-container flex items-center justify-between w-full h-full">
-          {/* Logo Section */}
-          <div className="flex-1 basis-0 h-full flex items-center">
+          
+          {/* Left Section: Logo */}
+          <div className="flex items-center">
             <LocalizedClientLink
               href="/"
               className="flex flex-col items-start"
@@ -40,93 +42,75 @@ export default async function Nav() {
             </LocalizedClientLink>
           </div>
 
-          {/* Centered Navigation */}
-          <div className="hidden lg:flex items-center justify-center">
-            <div className="flex items-center gap-x-1 bg-white/20 rounded-full px-1 py-1 border border-black/5 shadow-sm">
-              <LocalizedClientLink 
-                href="/" 
-                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
-                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
-              >
-                Home
-              </LocalizedClientLink>
+          {/* Right Section: Navigation & Actions */}
+          <div className="flex items-center gap-x-3 md:gap-x-5">
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-x-8 mr-4">
               <LocalizedClientLink 
                 href="/about" 
-                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
-                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
               >
                 About
               </LocalizedClientLink>
               <LocalizedClientLink 
-                href="/book-session" 
-                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
-                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
-              >
-                Book your session
-              </LocalizedClientLink>
-              <LocalizedClientLink 
                 href="/store" 
-                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
-                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
               >
                 Shop Crystals
               </LocalizedClientLink>
               <LocalizedClientLink 
-                href="/contact" 
-                className="font-sans text-[13px] font-medium transition-all duration-300 h-10 flex items-center px-6 rounded-full text-foreground/70 hover:text-[#2C1E36]"
-                activeClassName="!bg-[#2C1E36] !text-white shadow-sm font-semibold"
+                href="/book-session" 
+                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
               >
-                Contact
+                Sessions
               </LocalizedClientLink>
             </div>
-          </div>
 
-          {/* Action Icons Section */}
-          <div className="flex items-center gap-x-1.5 h-full flex-1 basis-0 justify-end">
-            <div className="flex items-center">
-               <SearchToggle countryCode={currentLocale || "in"} />
+            <div className="flex items-center gap-x-1 md:gap-x-2 border-l border-metal/10 pl-3 md:pl-6">
+              {/* Desktop/Tablet Search */}
+              <div className="hidden sm:block">
+                <SearchToggle countryCode={currentLocale || "in"} />
+              </div>
                
-               {/* Track Order Icon */}
-               <LocalizedClientLink
-                className="text-foreground hover:text-primary transition-colors hidden md:block p-2"
-                href="/order/lookup"
-                title="Track Order"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/><circle cx="18.5" cy="17.5" r="3.5"/><polyline points="17 17.5 18 18.5 20 16.5"/>
-                </svg>
-              </LocalizedClientLink>
+              {/* Desktop/Tablet Cart with Dropdown */}
+              <div className="hidden sm:block">
+                <Suspense fallback={<span>0</span>}>
+                  <CartButton />
+                </Suspense>
+              </div>
 
-               {/* Wishlist Icon */}
-               <LocalizedClientLink
-                className="text-foreground hover:text-primary transition-colors hidden sm:block p-2"
-                href="/wishlist"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-              </LocalizedClientLink>
+              {/* Mobile Cart Direct Link */}
+              <div className="sm:hidden flex items-center">
+                <LocalizedClientLink 
+                  href="/cart" 
+                  className="p-3 -m-1 text-foreground hover:text-primary transition-colors flex items-center justify-center relative z-20"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                  </svg>
+                </LocalizedClientLink>
+              </div>
 
-               {/* Cart Icon */}
-               <Suspense fallback={<span>0</span>}>
-                 <CartButton />
-               </Suspense>
-
-              {/* Account Icon */}
+              {/* Account Icon - Desktop Only */}
               <LocalizedClientLink
                 className="text-foreground hover:text-primary transition-colors hidden sm:block p-2"
                 href="/account"
                 data-testid="nav-account-link"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                 </svg>
               </LocalizedClientLink>
-            </div>
-            
-            {/* Mobile Menu */}
-            <div className="lg:hidden">
-               <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+
+              {/* Mobile Search Toggle */}
+              <div className="sm:hidden">
+                <SearchToggle countryCode={currentLocale || "in"} />
+              </div>
+
+              {/* Menu trigger on extreme right */}
+              <div className="ml-0.5">
+                <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+              </div>
             </div>
           </div>
         </nav>
@@ -146,7 +130,6 @@ export default async function Nav() {
            Need help? Chat with us!
         </span>
       </a>
-    </div>
+    </StickyWrapper>
   )
-
 }

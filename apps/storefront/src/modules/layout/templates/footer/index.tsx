@@ -62,8 +62,6 @@ export default async function Footer() {
                 <ul className="flex flex-col gap-y-4 text-[15px] text-white/50 font-sans">
                     <li><LocalizedClientLink href="/terms" className="hover:text-[#C5A059] transition-colors">Terms</LocalizedClientLink></li>
                     <li><LocalizedClientLink href="/privacy" className="hover:text-[#C5A059] transition-colors">Privacy</LocalizedClientLink></li>
-                    <li><LocalizedClientLink href="/refund-policy" className="hover:text-[#C5A059] transition-colors">Refund policy</LocalizedClientLink></li>
-                    <li><LocalizedClientLink href="/shipping-policy" className="hover:text-[#C5A059] transition-colors">Shipping policy</LocalizedClientLink></li>
                 </ul>
               </div>
               
@@ -89,29 +87,6 @@ export default async function Footer() {
             </div>
           </div>
 
-          {/* Newsletter section - Moved below the main links on mobile */}
-          <div className="mt-8 mb-12 border-t border-white/5 pt-12">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-y-8">
-              <div className="flex flex-col gap-y-3">
-                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#C5A059] font-sans">
-                  NEWSLETTER
-                </span>
-                <p className="text-white/40 text-[13px] font-sans">
-                  Occasional drops and session openings. Join our community.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 w-full md:w-auto md:max-w-sm">
-                <input 
-                  type="email" 
-                  placeholder="Your email" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-full py-3.5 px-6 text-sm focus:outline-none focus:border-[#C5A059]/50 transition-colors placeholder:text-white/20 font-sans"
-                />
-                <button className="w-full bg-[#C5A059] text-[#120B15] px-8 py-3.5 rounded-full text-sm font-bold font-sans hover:opacity-90 transition-all shadow-lg active:scale-95">
-                  Join Us
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* Bottom copyright */}
           <div className="pt-10 border-t border-white/5 flex justify-center items-center">

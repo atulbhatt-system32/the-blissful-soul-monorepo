@@ -18,9 +18,10 @@ type ItemProps = {
   item: HttpTypes.StoreCartLineItem
   type?: "full" | "preview"
   currencyCode: string
+  mode?: "table" | "card"
 }
 
-const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
+const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -40,9 +41,65 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       })
   }
 
-  // TODO: Update this to grab the actual max inventory
   const maxQtyFromInventory = 10
   const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+
+  if (mode === "card") {
+    return (
+      <div className="flex flex-col gap-y-4 py-6 border-b border-gray-100 last:border-0 grow animate-in fade-in slide-in-from-bottom-2">
+        <div className="flex gap-x-4 items-start">
+          <LocalizedClientLink
+            href={`/products/${item.product_handle}`}
+            className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shadow-sm shrink-0"
+          >
+            <Thumbnail
+              thumbnail={item.thumbnail}
+              images={item.variant?.product?.images}
+              size="square"
+            />
+          </LocalizedClientLink>
+          <div className="flex flex-col gap-y-1">
+            <h3 className="text-sm font-serif font-bold text-[#2C1E36] leading-tight">
+              {item.product_title}
+            </h3>
+            <div className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
+              <LineItemOptions variant={item.variant} metadata={item.metadata} />
+            </div>
+            <div className="font-black text-xs text-[#2C1E36] mt-1">
+              <LineItemPrice
+                item={item}
+                style="tight"
+                currencyCode={currencyCode}
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between pl-24">
+          <div className="flex items-center gap-x-2">
+            <div className="bg-gray-50/80 rounded-lg border border-gray-100 p-0.5">
+              <CartItemSelect
+                value={item.quantity}
+                onChange={(value) => changeQuantity(parseInt(value.target.value))}
+                className="w-12 h-8 text-xs font-bold border-none bg-transparent focus:ring-0"
+              >
+                {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
+                  <option value={i + 1} key={i}>{i + 1}</option>
+                ))}
+              </CartItemSelect>
+            </div>
+            <button 
+              onClick={() => changeQuantity(0)}
+              className="text-[9px] uppercase tracking-widest text-gray-400 font-bold hover:text-red-500 transition-colors"
+            >
+              Remove
+            </button>
+          </div>
+          <ErrorMessage error={error} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Table.Row 
@@ -52,12 +109,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       })}
       data-testid="product-row"
     >
-      <Table.Cell className="!pl-0 py-6 w-20">
+      <Table.Cell className="!pl-0 py-4 small:py-6 w-16 small:w-20">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
           className={clx("flex overflow-hidden rounded-xl transition-all", {
-            "w-14 border border-white/10 shadow-none": type === "preview",
-            "small:w-20 w-14 border border-gray-100 shadow-sm": type === "full",
+            "w-12 small:w-14 border border-white/10 shadow-none": type === "preview",
+            "w-14 small:w-20 border border-gray-100 shadow-sm": type === "full",
           })}
         >
           <Thumbnail
@@ -69,10 +126,10 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </LocalizedClientLink>
       </Table.Cell>
 
-      <Table.Cell className="text-left py-6">
-        <div className="flex flex-col gap-y-0.5">
+      <Table.Cell className="text-left py-4 small:py-6 px-2 small:px-4">
+        <div className="flex flex-col gap-y-0.5 max-w-[120px] small:max-w-none">
           <Text
-            className={clx("text-sm font-serif font-bold", {
+            className={clx("text-xs small:text-sm font-serif font-bold leading-tight", {
               "text-[#2C1E36]": type === "full",
               "text-white": type === "preview"
             })}
@@ -80,20 +137,20 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           >
             {item.product_title}
           </Text>
-          <div className="text-[9px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
+          <div className="text-[7px] small:text-[9px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
             <LineItemOptions variant={item.variant} metadata={item.metadata} data-testid="product-variant" />
           </div>
         </div>
       </Table.Cell>
 
       {type === "full" && (
-        <Table.Cell className="py-6">
-          <div className="flex flex-col items-center gap-y-2">
-            <div className="flex items-center gap-x-1 bg-white border border-gray-100 rounded-lg p-0.5 shadow-sm">
+        <Table.Cell className="py-4 small:py-6 px-1 small:px-4">
+          <div className="flex flex-col items-center gap-y-1">
+            <div className="flex items-center gap-x-1 bg-white border border-gray-100 rounded-lg p-0 shadow-sm">
               <CartItemSelect
                 value={item.quantity}
                 onChange={(value) => changeQuantity(parseInt(value.target.value))}
-                className="w-12 h-7 text-xs font-bold border-none bg-transparent focus:ring-0"
+                className="w-10 small:w-12 h-6 small:h-7 text-[10px] small:text-xs font-bold border-none bg-transparent focus:ring-0"
                 data-testid="product-select-button"
               >
                 {Array.from(
@@ -110,7 +167,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             </div>
             <button 
               onClick={() => changeQuantity(0)}
-              className="text-[8px] uppercase tracking-widest text-gray-400 font-black hover:text-red-500 transition-colors flex items-center gap-x-1"
+              className="text-[7px] small:text-[8px] uppercase tracking-widest text-gray-400 font-black hover:text-red-500 transition-colors flex items-center gap-x-1"
             >
               Remove
             </button>
@@ -120,7 +177,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       )}
 
       {type === "full" && (
-        <Table.Cell className="hidden small:table-cell py-6 text-center">
+        <Table.Cell className="hidden small:table-cell py-4 small:py-6 text-center">
           <div className="text-[11px] font-bold text-gray-500 italic">
             <LineItemUnitPrice
               item={item}
@@ -131,7 +188,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </Table.Cell>
       )}
 
-      <Table.Cell className="!pr-0 py-6 text-right">
+      <Table.Cell className="!pr-0 py-4 small:py-6 text-right">
         <span
           className={clx("!pr-0", {
             "flex flex-col items-end h-full justify-center": type === "preview",
@@ -147,7 +204,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
               />
             </span>
           )}
-          <div className={clx("text-xs font-black", {
+          <div className={clx("text-[10px] small:text-xs font-black", {
             "text-[#2C1E36]": type === "full",
             "text-purple-100": type === "preview"
           })}>

@@ -13,13 +13,13 @@ const CartTemplate = ({
   customer: HttpTypes.StoreCustomer | null
 }) => {
   return (
-    <div className="py-12 bg-white min-h-[calc(100vh-64px)] animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="py-6 small:py-12 bg-white min-h-[calc(100vh-64px)] animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="content-container" data-testid="cart-container">
         {cart?.items?.length ? (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-x-16 gap-y-12">
             <div className="flex flex-col gap-y-8">
               <div className="flex flex-col gap-y-1">
-                 <h1 className="text-4xl font-serif text-[#2C1E36] font-bold">Your Selection</h1>
+                 <h1 className="text-3xl small:text-4xl font-serif text-[#2C1E36] font-bold">Your Selection</h1>
                  <p className="text-gray-400 text-xs italic">Review your gathered treasures before checkout.</p>
               </div>
 
@@ -27,7 +27,7 @@ const CartTemplate = ({
                 <SignInPrompt />
               )}
               
-              <div className="bg-white rounded-[2.5rem] border border-gray-100 p-6 md:p-8 shadow-xl shadow-purple-900/5">
+              <div className="bg-white rounded-3xl small:rounded-[2.5rem] border border-gray-100 p-4 small:p-8 shadow-xl shadow-purple-900/5 overflow-hidden">
                 <ItemsTemplate cart={cart} />
               </div>
             </div>
