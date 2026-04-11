@@ -124,10 +124,6 @@ jobs:
       - name: Checkout code (for config files)
         uses: actions/checkout@v4
 
-      - name: Generate nginx config from template
-        run: |
-          DOMAIN="${{ secrets.DOMAIN }}" envsubst '${DOMAIN}' < nginx/nginx.conf.template > nginx/nginx.conf
-
       - name: Copy config files via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -274,13 +270,17 @@ jobs:
               docker tag "$IMAGE_BASE:$IMAGE_TAG" "$IMAGE_BASE:latest"
             done
 
-            echo "Ensuring SSL certificate exists for backend.${DOMAIN}..."
-            if [ ! -f "/etc/letsencrypt/live/backend.${DOMAIN}/fullchain.pem" ]; then
-              docker compose -f docker-compose.prod.yml run --rm --entrypoint certbot certbot certonly --webroot \
-                -w /var/www/certbot \
-                -d backend.${DOMAIN} \
-                --non-interactive --agree-tos --email admin@${DOMAIN}
-            fi
+            echo "Ensuring SSL certificates exist..."
+            # Check for certificates for all three domains
+            for d in "${DOMAIN}" "backend.${DOMAIN}" "cms.${DOMAIN}"; do
+              if [ ! -f "/etc/letsencrypt/live/$d/fullchain.pem" ]; then
+                echo "Generating initial certificate for $d..."
+                docker compose -f docker-compose.prod.yml run --rm --entrypoint certbot certbot certonly --webroot \
+                  -w /var/www/certbot \
+                  -d "$d" \
+                  --non-interactive --agree-tos --email admin@${DOMAIN}
+              fi
+            done
 
             echo "Reloading nginx to pick up new container IPs..."
             docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload
