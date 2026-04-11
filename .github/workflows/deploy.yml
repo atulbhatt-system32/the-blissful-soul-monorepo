@@ -244,7 +244,7 @@ jobs:
             done
             
             echo "Pulling images for: $APPS"
-            docker compose -f docker-compose.prod.yml pull --no-deps $APPS
+            docker compose -f docker-compose.prod.yml pull $APPS
 
             echo "Deploying version $IMAGE_TAG for services: $APPS"
             if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 --no-deps $APPS; then

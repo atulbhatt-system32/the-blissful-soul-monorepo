@@ -23,7 +23,7 @@ export default async function Nav() {
   return (
     <StickyWrapper>
       <PromotionBanner />
-      <header className="h-24 mx-auto border-b border-metal/10 duration-200 bg-background transition-all">
+      <header className="w-full h-24 border-b border-metal/10 duration-200 !bg-white transition-all relative z-[101]">
         <nav className="content-container flex items-center justify-between w-full h-full">
           
           {/* Left Section: Logo */}

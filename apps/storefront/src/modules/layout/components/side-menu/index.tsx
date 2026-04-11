@@ -1,9 +1,9 @@
 "use client"
 
-import { Popover, PopoverPanel, Transition } from "@headlessui/react"
+import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react"
 import { ArrowRightMini, XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
-import { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
@@ -29,125 +29,129 @@ type SideMenuProps = {
 }
 
 const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+  const [isOpen, setIsOpen] = useState(false)
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
+
+  const openPopup = () => setIsOpen(true)
+  const closePopup = () => setIsOpen(false)
 
   return (
     <div className="h-full">
       <div className="flex items-center h-full">
-        <Popover className="h-full flex">
-          {({ open, close }) => (
-            <>
-              <div className="relative flex h-full">
-                <Popover.Button
-                  data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform duration-200">
-                    <line x1="4" x2="20" y1="12" y2="12"/>
-                    <line x1="4" x2="20" y1="6" y2="6"/>
-                    <line x1="4" x2="20" y1="18" y2="18"/>
-                  </svg>
-                </Popover.Button>
-              </div>
+        <button
+          data-testid="nav-menu-button"
+          onClick={openPopup}
+          className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="1.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="group-hover:scale-110 transition-transform duration-200"
+          >
+            <line x1="4" x2="20" y1="12" y2="12"/>
+            <line x1="4" x2="20" y1="6" y2="6"/>
+            <line x1="4" x2="20" y1="18" y2="18"/>
+          </svg>
+        </button>
 
-              {open && (
-                <div
-                  className="fixed inset-0 z-[50] bg-black/20 backdrop-blur-sm pointer-events-auto"
-                  onClick={close}
-                  data-testid="side-menu-backdrop"
-                />
-              )}
+        <Transition show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-[150]" onClose={closePopup}>
+            <TransitionChild
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+            </TransitionChild>
 
-              <Transition
-                show={open}
-                as={Fragment}
-                enter="transition ease-out duration-150"
-                enterFrom="opacity-0 translate-x-[-10px]"
-                enterTo="opacity-100 translate-x-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-x-0"
-                leaveTo="opacity-0 translate-x-[-10px]"
-              >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm m-2">
-                  <div
-                    data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-background/95 backdrop-blur-2xl rounded-2xl justify-between p-8 shadow-2xl border border-metal/10"
+            <div className="fixed inset-0 overflow-hidden">
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                  <TransitionChild
+                    as={Fragment}
+                    enter="transform transition ease-in-out duration-400"
+                    enterFrom="translate-x-full"
+                    enterTo="translate-x-0"
+                    leave="transform transition ease-in-out duration-300"
+                    leaveFrom="translate-x-0"
+                    leaveTo="translate-x-full"
                   >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close} className="text-primary hover:rotate-90 transition-transform duration-300">
-                        <XMark />
-                      </button>
-                    </div>
-                    <ul className="flex flex-col gap-y-4 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
-                        return (
-                          <li key={name}>
-                            <LocalizedClientLink
-                              href={href}
-                              className="text-2xl md:text-3xl font-serif text-primary hover:text-metal transition-colors"
-                              activeClassName="!text-metal font-bold"
-                              onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
-                            >
-                              {name}
-                            </LocalizedClientLink>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                    <div className="flex flex-col gap-y-6 pt-10 border-t border-metal/10">
-                      {!!locales?.length && (
-                        <div
-                          className="flex justify-between items-center text-primary/60"
-                          onMouseEnter={languageToggleState.open}
-                          onMouseLeave={languageToggleState.close}
-                        >
-                          <LanguageSelect
-                            toggleState={languageToggleState}
-                            locales={locales}
-                            currentLocale={currentLocale}
-                          />
-                          <ArrowRightMini
-                            className={clx(
-                              "transition-transform duration-150",
-                              languageToggleState.state ? "-rotate-90" : ""
-                            )}
-                          />
+                    <DialogPanel className="pointer-events-auto w-screen max-w-[400px]">
+                      <div className="flex h-full flex-col bg-[#1a0f21] p-6 sm:p-10 shadow-2xl">
+                        <div className="flex items-center justify-end mb-8">
+                          <button
+                            type="button"
+                            className="text-[#C5A059] hover:rotate-90 transition-transform duration-300 p-2 -mr-2 outline-none"
+                            onClick={closePopup}
+                          >
+                            <span className="sr-only">Close menu</span>
+                            <XMark aria-hidden="true" className="h-6 w-6" />
+                          </button>
                         </div>
-                      )}
-                      <div
-                        className="flex justify-between items-center text-primary/60"
-                        onMouseEnter={countryToggleState.open}
-                        onMouseLeave={countryToggleState.close}
-                      >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={countryToggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            countryToggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
+
+                        <div className="flex-1 overflow-y-auto no-scrollbar py-2">
+                          <nav className="flex flex-col gap-y-4">
+                            {Object.entries(SideMenuItems).map(([name, href]) => (
+                              <LocalizedClientLink
+                                key={name}
+                                href={href}
+                                className="text-xl md:text-2xl font-serif text-white hover:text-[#C5A059] transition-all block py-2 border-b border-white/5 tracking-wide"
+                                activeClassName="!text-[#C5A059] font-bold"
+                                onClick={closePopup}
+                                data-testid={`${name.toLowerCase()}-link`}
+                              >
+                                {name}
+                              </LocalizedClientLink>
+                            ))}
+                          </nav>
+                        </div>
+
+                        <div className="mt-auto flex flex-col gap-y-8 pt-10 border-t border-white/10">
+                          <div className="flex flex-col gap-y-4">
+                            {!!locales?.length && (
+                              <div className="flex justify-between items-center text-white/60 hover:text-white transition-colors cursor-pointer group">
+                                <LanguageSelect
+                                  toggleState={languageToggleState}
+                                  locales={locales}
+                                  currentLocale={currentLocale}
+                                />
+                                <ArrowRightMini className={clx("transition-transform duration-150 group-hover:translate-x-1", languageToggleState.state ? "-rotate-90" : "")} />
+                              </div>
+                            )}
+                            <div className="flex justify-between items-center text-white/60 hover:text-white transition-colors cursor-pointer group">
+                              {regions && <CountrySelect toggleState={countryToggleState} regions={regions} />}
+                              <ArrowRightMini className={clx("transition-transform duration-150 group-hover:translate-x-1", countryToggleState.state ? "-rotate-90" : "")} />
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Text className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">
+                              © {new Date().getFullYear()} The Blissful Soul.
+                            </Text>
+                          </div>
+                        </div>
                       </div>
-                      <Text className="flex justify-between text-[10px] uppercase tracking-widest text-primary/40">
-                        © {new Date().getFullYear()} The Blissful Soul.
-                      </Text>
-                    </div>
-                  </div>
-                </PopoverPanel>
-              </Transition>
-            </>
-          )}
-        </Popover>
+                    </DialogPanel>
+                  </TransitionChild>
+                </div>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
       </div>
     </div>
   )
 }
-
 
 export default SideMenu

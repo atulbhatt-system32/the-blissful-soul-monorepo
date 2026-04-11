@@ -59,17 +59,17 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     <div className="w-full bg-transparent flex flex-col">
       <div className="txt-medium">
         <form action={(a) => addPromotionCode(a)} className="w-full">
-          <div className={`flex justify-center ${isOpen ? 'mb-4' : ''}`}>
+          <div className={`flex justify-start ${isOpen ? 'mb-4' : ''}`}>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="w-full text-[11px] uppercase tracking-[0.3em] font-bold text-[#C5A059] hover:text-white transition-all flex items-center justify-center gap-2 group"
+              className="group flex items-center gap-x-3 text-[11px] uppercase tracking-[0.3em] font-bold text-[#C5A059] hover:text-white transition-all"
               data-testid="add-discount-button"
             >
-              <span className="w-5 h-5 rounded-full border border-[#C5A059]/30 flex items-center justify-center group-hover:border-white transition-colors text-[#C5A059] group-hover:text-white">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#C5A059]/30 transition-colors group-hover:border-white">
                 {isOpen ? (
                   <svg width="8" height="2" viewBox="0 0 8 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M1H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 ) : (
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +83,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
           {isOpen && (
             <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="flex w-full gap-x-2 items-center">
+              <div className="flex w-full items-center gap-x-2">
                 <Input
                   className="h-10 border-metal/30 bg-black/40 hover:bg-black/60 text-white caret-white placeholder:text-white/20 focus:bg-black/60 focus:border-metal focus:ring-1 focus:ring-metal/20 rounded-xl transition-all shadow-inner"
                   id="promotion-input"
@@ -101,8 +101,8 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                   Apply
                 </SubmitButton>
               </div>
-              <p className="text-[9px] text-purple-300/60 mt-2 ml-1">
-                Try: <span className="text-purple-200">HEAL10</span>, <span className="text-purple-200">CRYSTAL20</span>
+              <p className="mt-2 text-[9px] text-purple-300/60">
+                Try: <span className="text-purple-200 uppercase">HEAL10</span>, <span className="text-purple-200 uppercase">CRYSTAL20</span>
               </p>
 
               <ErrorMessage
