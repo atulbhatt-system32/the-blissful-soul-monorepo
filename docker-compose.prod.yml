@@ -140,6 +140,8 @@ services:
 
   nginx:
     image: nginx:alpine
+    environment:
+      - DOMAIN=${DOMAIN}
     ports:
       - "80:80"
       - "443:443"
