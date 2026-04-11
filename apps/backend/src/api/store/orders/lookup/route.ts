@@ -1,5 +1,37 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
+// query.graph() in Medusa v2 does not compute order totals — they are calculated
+// dynamically and not stored as flat columns. We derive them from raw item/shipping data.
+function computeOrderTotals(order: any): any {
+  let item_subtotal = 0
+
+  for (const item of order.items || []) {
+    const unit_price = item.unit_price ?? 0
+    const quantity = item.quantity ?? 1
+    const compare_at_unit_price = item.compare_at_unit_price ?? unit_price
+
+    item.subtotal = unit_price * quantity
+    item.total = item.subtotal
+    item.original_total = compare_at_unit_price * quantity
+    item_subtotal += item.subtotal
+  }
+
+  const shipping_total = (order.shipping_methods || []).reduce(
+    (sum: number, sm: any) => sum + (sm.amount ?? 0),
+    0
+  )
+
+  order.item_subtotal = item_subtotal
+  order.subtotal = item_subtotal
+  order.shipping_total = shipping_total
+  order.shipping_subtotal = shipping_total
+  order.tax_total = 0
+  order.discount_total = 0
+  order.total = item_subtotal + shipping_total
+
+  return order
+}
+
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
@@ -35,7 +67,7 @@ export async function POST(
         pagination: { take: 5 }
       })
       console.log(`[Order Lookup] Diagnostic - Sample orders:`, allOrders?.map((o: any) => ({ id: o.display_id, email: o.email })))
-      
+
       return res.status(404).json({ message: "Order not found" })
     }
 
@@ -46,6 +78,11 @@ export async function POST(
       console.log(`[Order Lookup] No order match for email: ${email}. Available emails: ${orders.map((o: any) => o.email).join(", ")}`)
       return res.status(404).json({ message: "Order not found" })
     }
+
+    // Compute totals from raw item/shipping data since query.graph() doesn't return them
+    computeOrderTotals(order)
+
+    console.log(`[Order Lookup] Computed totals: subtotal=${order.subtotal}, total=${order.total}, shipping=${order.shipping_total}`)
 
     // Return the matching order
     res.json({ order })

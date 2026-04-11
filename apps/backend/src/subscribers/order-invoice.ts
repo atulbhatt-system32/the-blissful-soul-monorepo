@@ -5,13 +5,16 @@ export default async function orderInvoiceHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const orderService = container.resolve("order")
+  const query = container.resolve("query")
   const notificationService = container.resolve("notification")
 
   // 1. Fetch full order details
-  const order = await orderService.retrieveOrder(data.id, {
-    relations: ["items", "shipping_address", "billing_address"]
+  const { data: orders } = await (query as any).graph({
+    entity: "order",
+    fields: ["*", "items.*", "shipping_address.*", "billing_address.*", "payment_collections.payments.*"],
+    filters: { id: data.id },
   })
+  const order = orders?.[0]
 
   // 2. Generate PDF using pdfkit
   const pdfBuffer = await generateInvoice(order);

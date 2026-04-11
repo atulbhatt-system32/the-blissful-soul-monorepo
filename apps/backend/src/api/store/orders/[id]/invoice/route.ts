@@ -6,12 +6,16 @@ export async function GET(
   res: MedusaResponse
 ) {
   const { id } = req.params
-  const orderService = req.scope.resolve("order")
+  const query = req.scope.resolve("query")
 
   try {
-    const order = await orderService.retrieveOrder(id, {
-      relations: ["items", "shipping_address", "billing_address"]
+    const { data: orders } = await (query as any).graph({
+      entity: "order",
+      fields: ["*", "items.*", "shipping_address.*", "billing_address.*", "payment_collections.payments.*"],
+      filters: { id },
     })
+
+    const order = orders?.[0]
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" })

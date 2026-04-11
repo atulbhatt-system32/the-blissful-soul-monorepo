@@ -20,10 +20,11 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     currency_code,
     total,
     tax_total,
-    item_subtotal,
-    shipping_subtotal,
-    discount_subtotal,
   } = totals
+
+  const item_subtotal = totals.item_subtotal ?? (totals as any).subtotal
+  const shipping_subtotal = totals.shipping_subtotal ?? (totals as any).shipping_total
+  const discount_subtotal = totals.discount_subtotal ?? (totals as any).discount_total
 
   return (
     <div className="flex flex-col gap-y-3">

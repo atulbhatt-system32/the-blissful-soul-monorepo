@@ -151,6 +151,10 @@ export const lookupOrder = async (
         display_id: displayId,
         email,
       },
+      query: {
+        fields:
+          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
+      },
       headers,
     })
     .then(({ order }) => {

@@ -1,7 +1,7 @@
 import PDFDocument from "pdfkit"
 
 function formatCurrency(amount: number, currencyCode: string) {
-  return `${(amount / 100).toFixed(2)} ${currencyCode.toUpperCase()}`
+  return `${Number(amount).toFixed(2)} ${currencyCode.toUpperCase()}`
 }
 
 function generateHeader(doc: PDFKit.PDFDocument, order: any) {
@@ -52,7 +52,7 @@ function generateCustomerInformation(doc: PDFKit.PDFDocument, order: any) {
     .font("Helvetica-Bold")
     .text("Payment Method:", 300, 135)
     .font("Helvetica")
-    .text(order.payments?.[0]?.provider_id ? order.payments[0].provider_id.replace("_", " ").toUpperCase() : "Online Payment", 300, 155)
+    .text(order.payment_collections?.[0]?.payments?.[0]?.provider_id ? order.payment_collections[0].payments[0].provider_id.replace("_", " ").toUpperCase() : "Online Payment", 300, 155)
     .font("Helvetica-Bold")
     .text("Email:", 300, 180)
     .font("Helvetica")
@@ -90,30 +90,39 @@ function generateInvoiceTable(doc: PDFKit.PDFDocument, order: any) {
       item.title,
       formatCurrency(item.unit_price, order.currency_code),
       item.quantity.toString(),
-      formatCurrency(item.unit_price * item.quantity, order.currency_code)
+      formatCurrency(item.subtotal ?? item.unit_price * item.quantity, order.currency_code)
     )
     
     doc.moveTo(50, position + 20).lineTo(550, position + 20).lineWidth(0.5).strokeColor("#EEEEEE").stroke()
   }
 
-  // Summary section
+  // Summary section — compute subtotal from items since order-level totals
+  // may not be populated by query.graph()
+  const computedSubtotal = items.reduce((sum: number, item: any) => {
+    return sum + (item.subtotal ?? item.unit_price * item.quantity)
+  }, 0)
+  const taxTotal = order.tax_total || 0
+  const shippingTotal = order.shipping_total || 0
+  const subtotal = order.subtotal || computedSubtotal
+  const total = order.total || (subtotal + taxTotal + shippingTotal)
+
   const subtotalPosition = position + 40
   doc.font("Helvetica-Bold")
-  
+
   doc.text("Subtotal:", 370, subtotalPosition + 10, { width: 90, align: "right" })
-  doc.text(formatCurrency(order.subtotal || 0, order.currency_code), 0, subtotalPosition + 10, { align: "right" })
+  doc.text(formatCurrency(subtotal, order.currency_code), 0, subtotalPosition + 10, { align: "right" })
 
   doc.text("GST:", 370, subtotalPosition + 30, { width: 90, align: "right" })
-  doc.text(formatCurrency(order.tax_total || 0, order.currency_code), 0, subtotalPosition + 30, { align: "right" })
+  doc.text(formatCurrency(taxTotal, order.currency_code), 0, subtotalPosition + 30, { align: "right" })
 
   doc.text("Shipping:", 370, subtotalPosition + 50, { width: 90, align: "right" })
-  doc.text(formatCurrency(order.shipping_total || 0, order.currency_code), 0, subtotalPosition + 50, { align: "right" })
+  doc.text(formatCurrency(shippingTotal, order.currency_code), 0, subtotalPosition + 50, { align: "right" })
 
   doc.moveTo(370, subtotalPosition + 65).lineTo(550, subtotalPosition + 65).lineWidth(1).strokeColor("#000000").stroke()
 
   doc.fontSize(12)
   doc.text("Total:", 370, subtotalPosition + 80, { width: 90, align: "right" })
-  doc.text(formatCurrency(order.total || 0, order.currency_code), 0, subtotalPosition + 80, { align: "right" })
+  doc.text(formatCurrency(total, order.currency_code), 0, subtotalPosition + 80, { align: "right" })
   doc.fontSize(10)
 }
 
