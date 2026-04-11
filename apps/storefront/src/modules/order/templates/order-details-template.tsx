@@ -67,7 +67,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         className="flex flex-col gap-4 h-full bg-white w-full"
         data-testid="order-details-container"
       >
-        <OrderDetails order={order} showStatus />
+        <OrderDetails order={order} showStatus={true} showTrackLink={true} />
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />

@@ -1,13 +1,15 @@
 import { HttpTypes } from "@medusajs/types"
 import { Text, Button } from "@medusajs/ui"
 import InvoiceButton from "../invoice-button"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
   showStatus?: boolean
+  showTrackLink?: boolean
 }
 
-const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
+const OrderDetails = ({ order, showStatus, showTrackLink }: OrderDetailsProps) => {
   const formatStatus = (str?: string) => {
     if (!str) return ""
     const formatted = str.split("_").join(" ")
@@ -70,6 +72,32 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
             </svg>
             Download Invoice
           </InvoiceButton>
+          {showTrackLink && (
+            <LocalizedClientLink
+              href={`/order/lookup?display_id=${order.display_id}&email=${order.email}`}
+              className="w-full sm:w-auto"
+            >
+              <Button
+                variant="secondary"
+                className="w-full sm:w-auto rounded-xl px-6 py-3 h-auto text-[10px] uppercase tracking-widest font-black bg-[#C5A059]/10 text-[#C5A059] border border-[#C5A059]/20 hover:bg-[#C5A059] hover:text-white transition-all flex items-center gap-x-2"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Track Order
+              </Button>
+            </LocalizedClientLink>
+          )}
         </div>
 
         {showStatus && (

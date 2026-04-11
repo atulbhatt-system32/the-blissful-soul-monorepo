@@ -91,7 +91,7 @@ export default async function OrderCompletedTemplate({
           className="flex flex-col gap-y-12 max-w-4xl h-full bg-white w-full p-8 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-sm"
           data-testid="order-complete-container"
         >
-          <OrderDetails order={order} />
+          <OrderDetails order={order} showTrackLink={true} />
           
           <div className="flex flex-col gap-y-4">
             <div className="flex items-center gap-x-4">

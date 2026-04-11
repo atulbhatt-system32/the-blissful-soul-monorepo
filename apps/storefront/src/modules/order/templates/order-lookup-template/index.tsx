@@ -1,12 +1,12 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useEffect, useRef, startTransition } from "react"
 import { lookupOrder } from "@lib/data/orders"
 import { Heading, Text, Button } from "@medusajs/ui"
 import Input from "@modules/common/components/input"
+import { HttpTypes } from "@medusajs/types"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import { useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 
 import CartTotals from "@modules/common/components/cart-totals"
@@ -17,7 +17,15 @@ import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
 import SessionBooking from "@modules/order/components/session-booking"
 
-const OrderLookupTemplate = () => {
+const OrderLookupTemplate = ({ 
+  customer,
+  initialDisplayId,
+  initialEmail,
+}: { 
+  customer: HttpTypes.StoreCustomer | null
+  initialDisplayId?: string
+  initialEmail?: string
+}) => {
   const [state, formAction] = useActionState(lookupOrder, {
     success: false,
     error: null,
@@ -27,6 +35,19 @@ const OrderLookupTemplate = () => {
   const router = useRouter()
   const params = useParams()
   const countryCode = params.countryCode as string
+  const hasTriggered = useRef(false)
+
+  useEffect(() => {
+    if (initialDisplayId && initialEmail && !hasTriggered.current) {
+      hasTriggered.current = true
+      const formData = new FormData()
+      formData.append("display_id", initialDisplayId)
+      formData.append("email", initialEmail)
+      startTransition(() => {
+        formAction(formData)
+      })
+    }
+  }, [initialDisplayId, initialEmail, formAction])
 
   if (state.success && state.order) {
     const order = state.order
@@ -89,9 +110,11 @@ const OrderLookupTemplate = () => {
               </div>
               <div className="text-right">
                 <span className="text-xs font-bold text-gray-400 block mb-1">Status Overview</span>
-                <OrderDetails order={order} showStatus />
               </div>
             </div>
+
+            <OrderDetails order={order} showStatus showTrackLink={false} />
+
 
             <div className="space-y-12">
               <section>
@@ -133,7 +156,7 @@ const OrderLookupTemplate = () => {
               <Button 
                 variant="secondary" 
                 className="rounded-xl px-8 py-4 h-auto text-[10px] uppercase tracking-widest font-black bg-[#2C1E36]/5 text-[#2C1E36] hover:bg-[#2C1E36] hover:text-white transition-all border-none"
-                onClick={() => window.location.reload()}
+                onClick={() => window.location.href = `/${countryCode}/order/lookup`}
               >
                 Track Another Order
               </Button>
@@ -165,6 +188,7 @@ const OrderLookupTemplate = () => {
                 name="display_id"
                 type="text"
                 required
+                defaultValue={initialDisplayId}
                 data-testid="order-id-input"
               />
               <Input
@@ -173,6 +197,7 @@ const OrderLookupTemplate = () => {
                 type="email"
                 required
                 autoComplete="email"
+                defaultValue={initialEmail}
                 data-testid="email-input"
               />
             </div>
@@ -190,9 +215,9 @@ const OrderLookupTemplate = () => {
           <Button 
             variant="secondary" 
             className="rounded-xl px-10 py-4 h-auto text-[10px] uppercase tracking-widest font-black bg-[#C5A059]/5 text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all border-none"
-            onClick={() => router.push(`/${countryCode}/account`)}
+            onClick={() => router.push(`/${countryCode}/account${customer ? "/orders" : ""}`)}
           >
-            Sign In for Full History
+            {customer ? "View My Orders" : "Sign In for Full History"}
           </Button>
         </div>
       </div>

@@ -18,7 +18,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      apps: ${{ steps.set-apps.outputs.apps }}
+      any_changed: ${{ steps.set-apps.outputs.any_changed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect changed apps
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'apps/backend/**'
+            storefront:
+              - 'apps/storefront/**'
+            cms:
+              - 'apps/cms/**'
+
+      - name: Set apps matrix
+        id: set-apps
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo 'apps=["backend","storefront","cms"]' >> $GITHUB_OUTPUT
+            echo 'any_changed=true' >> $GITHUB_OUTPUT
+          else
+            APPS='${{ steps.filter.outputs.changes }}'
+            echo "apps=$APPS" >> $GITHUB_OUTPUT
+            if [ "$APPS" = "[]" ] || [ -z "$APPS" ]; then
+              echo 'any_changed=false' >> $GITHUB_OUTPUT
+            else
+              echo 'any_changed=true' >> $GITHUB_OUTPUT
+            fi
+          fi
+
   build-and-push:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15 # Point: Max job duration
     permissions:
@@ -27,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false # Point 9: Don't kill other builds if one fails
       matrix:
-        app: [backend, storefront, cms]
+        app: ${{ fromJson(needs.detect-changes.outputs.apps) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,7 +105,8 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache,mode=max,image-manifest=true,oci-mediatypes=true
 
   deploy:
-    needs: build-and-push
+    needs: [detect-changes, build-and-push]
+    if: needs.detect-changes.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15 # Point: Max job duration
     environment: production
