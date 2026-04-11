@@ -14,10 +14,7 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
  */
 const nextConfig = {
   output: "standalone",
-  experimental: {
-    // Required for standalone output to correctly trace deps from the monorepo root
-    outputFileTracingRoot: path.join(__dirname, "../../"),
-  },
+  outputFileTracingRoot: path.join(__dirname, "../../"),
   reactStrictMode: true,
   logging: {
     fetches: {
