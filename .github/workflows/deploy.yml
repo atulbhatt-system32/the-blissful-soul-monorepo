@@ -40,15 +40,22 @@ jobs:
               - 'apps/storefront/**'
             cms:
               - 'apps/cms/**'
+            global:
+              - '.github/workflows/deploy.yml'
+              - 'docker-compose.prod.yml'
+              - 'nginx/**'
 
       - name: Set apps matrix
         id: set-apps
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ steps.filter.outputs.global }}" = "true" ]; then
+            echo "Force deploying all apps due to manual trigger or global config change."
             echo 'apps=["backend","storefront","cms"]' >> $GITHUB_OUTPUT
             echo 'any_changed=true' >> $GITHUB_OUTPUT
           else
             APPS='${{ steps.filter.outputs.changes }}'
+            # Remove 'global' from the changes list if it exists to avoid matrix errors
+            echo "Apps to deploy: $APPS"
             echo "apps=$APPS" >> $GITHUB_OUTPUT
             if [ "$APPS" = "[]" ] || [ -z "$APPS" ]; then
               echo 'any_changed=false' >> $GITHUB_OUTPUT
@@ -240,7 +247,7 @@ jobs:
             docker compose -f docker-compose.prod.yml pull $APPS
             
             echo "Deploying version $IMAGE_TAG for services: $APPS"
-            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 --remove-orphans $APPS; then
+            if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 $APPS; then
               echo "Deployment failed health checks! Initiating rollback..."
               do_rollback
             fi
