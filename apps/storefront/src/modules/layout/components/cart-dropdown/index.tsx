@@ -174,14 +174,13 @@ const CartDropdown = ({
                               </div>
                             </div>
                           </div>
-                          <button
+                          <div
                             className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"
-                            onClick={() => {}} 
                           >
                              <DeleteButton id={item.id} className="text-inherit" data-testid="cart-item-remove-button">
                                 Remove
                              </DeleteButton>
-                          </button>
+                          </div>
                         </div>
                       </div>
                     ))}

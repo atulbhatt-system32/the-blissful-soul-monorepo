@@ -22,7 +22,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     }
 
     const customer = customers[0]
-    
+
     console.log(`[Password Reset Update] validating token for: ${email}`)
 
     // 2. Verify Token and Expiry securely
@@ -43,47 +43,78 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(400).json({ message: "Invalid reset token structure." })
     }
 
-    // 3. Find Auth Identity
-    const identities = await (authModuleService as any).listAuthIdentities({
-      // Fetch all identities for this scope if necessary or filter later
-    })
+    const normalizedEmail = email.toLowerCase()
 
-    const targetIdentity = identities.find((ident: any) => {
-      if (ident.provider_identities && Array.isArray(ident.provider_identities)) {
-        return ident.provider_identities.some((pi: any) => pi.entity_id === email.toLowerCase())
-      }
-      return false
-    })
+    // 3. Update password via the emailpass provider which handles hashing (scrypt-kdf).
+    //    updateProvider calls the provider's update() method, which hashes the password
+    //    and stores it in provider_metadata.password on the ProviderIdentity.
+    const { success: updateSuccess } = await (authModuleService as any).updateProvider(
+      "emailpass",
+      { entity_id: normalizedEmail, password }
+    )
 
-    if (!targetIdentity) {
-      // 4a. Guest User Upgrade: Create a new Auth Identity seamlessly
+    const remoteLink = req.scope.resolve("remoteLink") as any
+
+    if (!updateSuccess) {
+      // 4a. Guest User Upgrade: No emailpass ProviderIdentity exists yet.
+      //     Create the AuthIdentity with the correct structure, then immediately
+      //     call updateProvider so the password is hashed by the provider.
       const newAuthIdentity = await (authModuleService as any).createAuthIdentities({
-        provider_id: "emailpass",
-        entity_id: email.toLowerCase(),
-        scope: "customer",
-        provider_metadata: {
-          password: password
-        }
+        provider_identities: [
+          {
+            entity_id: normalizedEmail,
+            provider: "emailpass",
+          },
+        ],
       })
 
-      const remoteLink = req.scope.resolve("remoteLink") as any
+      // Now set the password through the provider so it is properly hashed
+      await (authModuleService as any).updateProvider("emailpass", {
+        entity_id: normalizedEmail,
+        password,
+      })
+
+      // Set app_metadata.customer_id so Medusa can build a valid JWT (actor_id).
+      // Without this, login succeeds but the token has actor_id: "" and
+      // GET /store/customers/me returns 401.
+      await (authModuleService as any).updateAuthIdentities({
+        id: newAuthIdentity.id,
+        app_metadata: { customer_id: customer.id },
+      })
+
       try {
         await remoteLink.create({
           [Modules.AUTH]: { auth_identity_id: newAuthIdentity.id },
           [Modules.CUSTOMER]: { customer_id: customer.id }
         })
       } catch (linkError: any) {
-        // Safe to ignore if link exists
+        // Safe to ignore if the link already exists
       }
       console.log(`[Password Reset Update] Guest user upgraded to registered user: ${email}`)
     } else {
-      // 4b. Registered User Upgrade: Update the existing Auth Identity
-      await (authModuleService as any).updateAuthIdentities({
-        id: targetIdentity.id,
-        provider_metadata: {
-          password: password
+      // 4b. Auth identity exists. Ensure app_metadata.customer_id is set —
+      //     it may be missing for users whose auth identity was created by older
+      //     broken code (missing link causes actor_id: "" in the JWT).
+      const [existingIdentities] = await (authModuleService as any).listAndCountAuthIdentities(
+        { provider_identities: { entity_id: normalizedEmail, provider: "emailpass" } },
+        { relations: ["provider_identities"] }
+      )
+      const existingIdentity = existingIdentities?.[0]
+      if (existingIdentity && !existingIdentity.app_metadata?.customer_id) {
+        await (authModuleService as any).updateAuthIdentities({
+          id: existingIdentity.id,
+          app_metadata: { customer_id: customer.id },
+        })
+        try {
+          await remoteLink.create({
+            [Modules.AUTH]: { auth_identity_id: existingIdentity.id },
+            [Modules.CUSTOMER]: { customer_id: customer.id }
+          })
+        } catch (linkError: any) {
+          // Safe to ignore if the link already exists
         }
-      })
+        console.log(`[Password Reset Update] Fixed missing customer link for: ${email}`)
+      }
       console.log(`[Password Reset Update] Updated existing password for: ${email}`)
     }
 

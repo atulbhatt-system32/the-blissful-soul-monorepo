@@ -45,13 +45,19 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
 
   return (
-    <Table.Row className="w-full border-b border-gray-50 last:border-0 group hover:bg-gray-50/10 transition-colors" data-testid="product-row">
+    <Table.Row 
+      className={clx("w-full border-b last:border-0 group transition-colors", {
+        "border-gray-50 bg-ui-bg-base hover:bg-gray-50/10": type === "full",
+        "border-white/5 bg-transparent hover:bg-white/5": type === "preview"
+      })}
+      data-testid="product-row"
+    >
       <Table.Cell className="!pl-0 py-6 w-20">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
-          className={clx("flex overflow-hidden rounded-xl border border-gray-100 shadow-sm", {
-            "w-14": type === "preview",
-            "small:w-20 w-14": type === "full",
+          className={clx("flex overflow-hidden rounded-xl transition-all", {
+            "w-14 border border-white/10 shadow-none": type === "preview",
+            "small:w-20 w-14 border border-gray-100 shadow-sm": type === "full",
           })}
         >
           <Thumbnail
@@ -66,7 +72,10 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       <Table.Cell className="text-left py-6">
         <div className="flex flex-col gap-y-0.5">
           <Text
-            className="text-sm font-serif text-[#2C1E36] font-bold"
+            className={clx("text-sm font-serif font-bold", {
+              "text-[#2C1E36]": type === "full",
+              "text-white": type === "preview"
+            })}
             data-testid="product-title"
           >
             {item.product_title}
@@ -138,7 +147,10 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
               />
             </span>
           )}
-          <div className="text-xs font-black text-[#2C1E36]">
+          <div className={clx("text-xs font-black", {
+            "text-[#2C1E36]": type === "full",
+            "text-purple-100": type === "preview"
+          })}>
             <LineItemPrice
               item={item}
               style="tight"

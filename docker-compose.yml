@@ -2,9 +2,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: medusa_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -24,11 +24,12 @@ services:
     env_file:
       - ./apps/backend/.env
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-medusa_db}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=http://localhost:9000
       - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
@@ -46,7 +47,7 @@ services:
       context: .
       dockerfile: apps/storefront/Dockerfile.dev
     ports:
-      - "8000:8000"
+      - "8001:8001"
     env_file:
       - ./apps/storefront/.env
     environment:

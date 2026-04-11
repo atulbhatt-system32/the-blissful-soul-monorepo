@@ -58,6 +58,7 @@ jobs:
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_USERNAME={0}', secrets.NEXT_PUBLIC_CAL_USERNAME) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_EVENT_SLUG={0}', secrets.NEXT_PUBLIC_CAL_EVENT_SLUG) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.NEXT_PUBLIC_RAZORPAY_KEY) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL={0}/api', secrets.PUBLIC_URL) || '' }}
             ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL={0}/cms', secrets.PUBLIC_URL) || '' }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache,mode=max,image-manifest=true,oci-mediatypes=true

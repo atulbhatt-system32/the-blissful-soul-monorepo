@@ -1,5 +1,6 @@
 import { Button } from "@medusajs/ui"
 import { useMemo } from "react"
+import InvoiceButton from "@modules/order/components/invoice-button"
 
 import Thumbnail from "@modules/products/components/thumbnail"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -111,31 +112,29 @@ const OrderCard = ({ order }: OrderCardProps) => {
       </div>
 
       <div className="flex flex-col sm:flex-row justify-end items-center gap-4 pt-6 border-t border-gray-50">
-        <a
-          href={`${process.env.NEXT_PUBLIC_STOREFRONT_MEDUSA_URL || "http://localhost:9000"}/store/orders/${order.id}/invoice`}
-          target="_blank"
-          rel="noreferrer"
-          className="w-full sm:w-auto"
+        <InvoiceButton
+          orderId={order.id}
+          displayId={order.display_id ?? ""}
+          variant="secondary"
+          className="w-full sm:w-auto rounded-xl px-6 py-3 h-auto text-[10px] uppercase tracking-widest font-black bg-gray-50 text-gray-500 hover:bg-[#2C1E36] hover:text-white transition-all flex items-center justify-center gap-x-2 border-none"
         >
-          <Button variant="secondary" className="w-full sm:w-auto rounded-xl px-6 py-3 h-auto text-[10px] uppercase tracking-widest font-black bg-gray-50 text-gray-500 hover:bg-[#2C1E36] hover:text-white transition-all flex items-center justify-center gap-x-2 border-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" x2="12" y1="15" y2="3" />
-            </svg>
-            Invoice
-          </Button>
-        </a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" x2="12" y1="15" y2="3" />
+          </svg>
+          Invoice
+        </InvoiceButton>
         <LocalizedClientLink href={`/account/orders/details/${order.id}`} className="w-full sm:w-auto">
           <Button data-testid="order-details-link" variant="secondary" className="w-full sm:w-auto rounded-xl px-8 py-3 h-auto text-[10px] uppercase tracking-[0.2em] font-black bg-[#2C1E36] text-white hover:opacity-90 shadow-lg shadow-purple-900/10 border-none">
             Detailed History

@@ -4,6 +4,7 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
+import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import {
   getAuthHeaders,
@@ -125,6 +126,14 @@ export async function login(_currentState: unknown, formData: FormData) {
   } catch (error: any) {
     return error.toString()
   }
+
+  // Extract countryCode from the current request path (e.g. /in/account → "in")
+  // and redirect so the browser does a full navigation with the new JWT cookie,
+  // causing the account layout to re-render and show the dashboard.
+  const headersList = await headers()
+  const pathname = headersList.get("next-url") || ""
+  const countryCode = pathname.match(/^\/([a-z]{2})\//)?.[1] ?? "in"
+  redirect(`/${countryCode}/account`)
 }
 
 export async function signout(countryCode: string) {
