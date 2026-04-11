@@ -40,7 +40,13 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
-  const isSession = product.type?.value === "session" || product.tags?.some((t: any) => t.value === "session") || product.metadata?.is_service === true || product.metadata?.is_service === "true"
+  const isSession = 
+    product.type?.value === "session" || 
+    product.tags?.some((t: any) => t.value === "session") || 
+    product.metadata?.is_service === true || 
+    product.metadata?.is_service === "true" ||
+    selectedVariant?.metadata?.is_service === true ||
+    selectedVariant?.metadata?.is_service === "true"
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -130,8 +136,8 @@ export default function ProductActions({
 
     try {
       if (isSession) {
-        // Direct to book-now layout for sessions
-        router.push(`/${countryCode}/book-now?service_id=${product.id}`)
+        // Direct to book-now layout for sessions, carrying over the variant
+        router.push(`/${countryCode}/book-now?service_id=${product.id}&variant_id=${selectedVariant.id}`)
       } else {
         // Standard add to cart process
         await addToCart({

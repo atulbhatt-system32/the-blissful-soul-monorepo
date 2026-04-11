@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 
 export default async function BookNowPage(props: {
   params: Promise<{ countryCode: string }>
-  searchParams: Promise<{ service_id?: string }>
+  searchParams: Promise<{ service_id?: string; variant_id?: string }>
 }) {
   const params = await props.params
   const searchParams = await props.searchParams
 
   const { countryCode } = params
-  const { service_id } = searchParams
+  const { service_id, variant_id } = searchParams
   
   const region = await getRegion(countryCode)
   const customer = await retrieveCustomer()
@@ -59,6 +59,7 @@ export default async function BookNowPage(props: {
           products={products} 
           region={region} 
           initialServiceId={service_id} 
+          initialVariantId={variant_id}
           countryCode={countryCode}
           customer={customer}
         />
