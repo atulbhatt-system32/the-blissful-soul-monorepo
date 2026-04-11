@@ -61,7 +61,7 @@ export default async function HotSellers({
   }
 
   return (
-    <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+    <ul className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
       {pricedProducts.map((product) => (
         <li key={product.id}>
           <ProductPreview product={product} region={region} isFeatured />
