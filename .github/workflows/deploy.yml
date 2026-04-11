@@ -101,13 +101,13 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:${{ github.sha }}
           build-args: |
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY={0}', secrets.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY) || '' }}
-            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_STRAPI_URL={0}', secrets.NEXT_PUBLIC_STRAPI_URL) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_STRAPI_URL=https://cms.{0}', secrets.DOMAIN) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_API_KEY={0}', secrets.NEXT_PUBLIC_CAL_API_KEY) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_USERNAME={0}', secrets.NEXT_PUBLIC_CAL_USERNAME) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_EVENT_SLUG={0}', secrets.NEXT_PUBLIC_CAL_EVENT_SLUG) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.NEXT_PUBLIC_RAZORPAY_KEY) || '' }}
-            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL={0}/api', secrets.PUBLIC_URL) || '' }}
-            ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL={0}/cms', secrets.PUBLIC_URL) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://{0}/api', secrets.DOMAIN) || '' }}
+            ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL=https://cms.{0}', secrets.DOMAIN) || '' }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache,mode=max,image-manifest=true,oci-mediatypes=true
 
@@ -141,7 +141,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           BACKEND_JWT_SECRET: ${{ secrets.BACKEND_JWT_SECRET }}
           BACKEND_COOKIE_SECRET: ${{ secrets.BACKEND_COOKIE_SECRET }}
-          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          DOMAIN: ${{ secrets.DOMAIN }}
           CMS_API_TOKEN: ${{ secrets.CMS_API_TOKEN }}
           CMS_APP_KEYS: ${{ secrets.CMS_APP_KEYS }}
           CMS_API_TOKEN_SALT: ${{ secrets.CMS_API_TOKEN_SALT }}
@@ -160,7 +160,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB,BACKEND_JWT_SECRET,BACKEND_COOKIE_SECRET,PUBLIC_URL,CMS_API_TOKEN,CMS_APP_KEYS,CMS_API_TOKEN_SALT,CMS_ADMIN_JWT_SECRET,CMS_TRANSFER_TOKEN_SALT,CMS_ENCRYPTION_KEY,CMS_JWT_SECRET,RAZORPAY_ID,RAZORPAY_SECRET,RAZORPAY_ACCOUNT,RAZORPAY_WEBHOOK_SECRET,GOOGLE_SMTP_USER,GOOGLE_SMTP_PASS,CHANGED_APPS
+          envs: GITHUB_REPOSITORY_OWNER,GITHUB_SHA,GITHUB_ACTOR,POSTGRES_PASSWORD,POSTGRES_USER,POSTGRES_DB,BACKEND_JWT_SECRET,BACKEND_COOKIE_SECRET,DOMAIN,CMS_API_TOKEN,CMS_APP_KEYS,CMS_API_TOKEN_SALT,CMS_ADMIN_JWT_SECRET,CMS_TRANSFER_TOKEN_SALT,CMS_ENCRYPTION_KEY,CMS_JWT_SECRET,RAZORPAY_ID,RAZORPAY_SECRET,RAZORPAY_ACCOUNT,RAZORPAY_WEBHOOK_SECRET,GOOGLE_SMTP_USER,GOOGLE_SMTP_PASS,CHANGED_APPS
           script: |
             set -euo pipefail
 
@@ -215,8 +215,8 @@ jobs:
             IMAGE_TAG=${IMAGE_TAG}
             BACKEND_JWT_SECRET=${BACKEND_JWT_SECRET}
             BACKEND_COOKIE_SECRET=${BACKEND_COOKIE_SECRET}
-            BACKEND_CORS_ORIGIN=${PUBLIC_URL}
-            CMS_PUBLIC_URL=${PUBLIC_URL}/cms
+            BACKEND_CORS_ORIGIN=https://${DOMAIN}
+            CMS_PUBLIC_URL=https://cms.${DOMAIN}
             CMS_API_TOKEN=${CMS_API_TOKEN}
             CMS_APP_KEYS=${CMS_APP_KEYS}
             CMS_API_TOKEN_SALT=${CMS_API_TOKEN_SALT}
