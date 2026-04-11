@@ -136,7 +136,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           Invoice
         </InvoiceButton>
         <LocalizedClientLink href={`/account/orders/details/${order.id}`} className="w-full sm:w-auto">
-          <Button data-testid="order-details-link" variant="secondary" className="w-full sm:w-auto rounded-xl px-8 py-3 h-auto text-[10px] uppercase tracking-[0.2em] font-black bg-[#2C1E36] text-white hover:opacity-90 shadow-lg shadow-purple-900/10 border-none">
+          <Button data-testid="order-details-link" variant="secondary" className="w-full sm:w-auto rounded-xl px-8 py-3 h-auto text-[10px] uppercase tracking-[0.2em] font-black bg-[#2C1E36] text-white hover:bg-[#2C1E36] hover:opacity-90 shadow-lg shadow-purple-900/10 border-none">
             Detailed History
           </Button>
         </LocalizedClientLink>
