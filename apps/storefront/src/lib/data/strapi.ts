@@ -1,5 +1,30 @@
 import qs from "qs"
 
+export interface HomepageData {
+    hero_slideshow?: any[]
+    pop_up?: any
+    intro_section?: {
+        label?: string
+        heading?: string
+        description?: string
+        button_text?: string
+        button_link?: string
+    }
+    featured_products_label?: string
+    featured_products_title?: string
+    featured_products?: any[]
+    hot_seller_title?: string
+    hot_sellers?: any[]
+    healing_crystals_title?: string
+    healing_crystals?: any[]
+    book_session_title?: string
+    tarot_services?: any[]
+    audio_sessions?: any[]
+    video_sessions?: any[]
+    testimonials_title?: string
+    testimonials?: any[]
+}
+
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
 const STRAPI_TOKEN = process.env.CMS_API_TOKEN
 
@@ -20,7 +45,7 @@ export async function getStrapiProduct(medusaId: string) {
         })
 
         const data = await response.json()
-        return data.data?.[0] || null
+        return (data.data?.[0] as any) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching Strapi product:", error)
@@ -33,7 +58,10 @@ export async function getHomepageData() {
         const query = qs.stringify({
             populate: {
                 hero_slideshow: {
-                    populate: "*"
+                    populate: {
+                        image: true,
+                        mobile_image: true
+                    }
                 },
                 seo: true,
                 stats: true,
@@ -59,7 +87,8 @@ export async function getHomepageData() {
             },
         })
 
-        const response = await fetch(`${STRAPI_URL}/api/homepage?${query}`, {
+        const url = `${STRAPI_URL}/api/homepage?${query}`;
+        const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
@@ -67,7 +96,7 @@ export async function getHomepageData() {
         })
 
         const data = await response.json()
-        return data.data || null
+        return (data.data as HomepageData) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching homepage data:", error)
@@ -93,7 +122,7 @@ export async function getAboutPageData() {
         })
 
         const data = await response.json()
-        return data.data || null
+        return (data.data as any) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching about page data:", error)
@@ -117,7 +146,7 @@ export async function getContactPageData() {
         })
 
         const data = await response.json()
-        return data.data || null
+        return (data.data as any) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching contact page data:", error)
@@ -144,7 +173,7 @@ export async function getBookSessionPageData() {
         })
 
         const data = await response.json()
-        return data.data || null
+        return (data.data as any) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching book session page data:", error)
@@ -169,7 +198,7 @@ export async function getStorePageData() {
         })
 
         const data = await response.json()
-        return data.data || null
+        return (data.data as any) || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching store page data:", error)

@@ -29,6 +29,13 @@
             ],
             "required": true
         },
+        "mobile_image": {
+            "type": "media",
+            "multiple": true,
+            "allowedTypes": [
+                "images"
+            ]
+        },
         "theme": {
             "type": "enumeration",
             "enum": [
