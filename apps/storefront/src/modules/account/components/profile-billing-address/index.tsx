@@ -91,7 +91,7 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
 
   return (
     <form action={formAction} onReset={() => clearState()} className="w-full">
-      <input type="hidden" name="addressId" value={billingAddress?.id} />
+      <input type="hidden" name="addressId" value={billingAddress?.id ?? ""} />
       <AccountInfo
         label="Billing address"
         currentInfo={currentInfo}
@@ -171,9 +171,10 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             name="country_code"
             defaultValue={billingAddress?.country_code || undefined}
             required
+            label="Country"
+            placeholder="Select country"
             data-testid="billing-country-code-select"
           >
-            <option value="">-</option>
             {regionOptions.map((option, i) => {
               return (
                 <option key={i} value={option?.value}>
