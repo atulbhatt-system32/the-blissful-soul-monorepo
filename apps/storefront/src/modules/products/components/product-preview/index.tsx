@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Text, Badge } from "@medusajs/ui"
 import { Clock } from "@medusajs/icons"
-import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -76,7 +75,7 @@ export default function ProductPreview({
   const displayLabel = matchingVariant?.metadata?.label || product.metadata?.label || fallbackLabel
   const displayDuration = matchingVariant?.metadata?.duration || product.metadata?.duration || fallbackDuration
 
-  const isSession = product.type?.value === "session" || product.tags?.some((t: any) => t.value === "session") || product.metadata?.is_service === true || product.metadata?.is_service === "true"
+  const isSession = product.type?.value === "session" || product.tags?.some((t) => t.value === "session") || product.metadata?.is_service === true || product.metadata?.is_service === "true"
 
   const handleBooking = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -88,7 +87,7 @@ export default function ProductPreview({
         router.push(`/${countryCode}/book-now?service_id=${product.id}`)
       } else {
         await addToCart({
-          variantId: preferredVariantId || product.variants![0].id,
+          variantId: preferredVariantId || product.variants?.[0]?.id || "",
           quantity: 1,
           countryCode,
         })
@@ -102,66 +101,66 @@ export default function ProductPreview({
   }
 
   return (
-    <div className="group relative bg-white rounded-[32px] overflow-hidden shadow-[0_4px_25px_rgba(44,30,54,0.04)] hover:shadow-[0_20px_60px_rgba(44,30,54,0.12)] transition-all duration-700 border border-[#2C1E36]/[0.05] flex flex-col h-full hover:-translate-y-2">
+    <div className="group relative bg-white rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_4px_25px_rgba(44,30,54,0.04)] hover:shadow-[0_20px_60px_rgba(44,30,54,0.12)] transition-all duration-700 border border-[#2C1E36]/[0.05] flex flex-col h-full hover:-translate-y-2">
       <LocalizedClientLink href={`/products/${product.handle}`} className="flex-grow">
         <div data-testid="product-wrapper" className="relative">
           {/* Discount Badge */}
           {Number(displayPrice?.percentage_diff) > 0 && (
-            <div className="absolute top-4 left-4 z-10 bg-[#2C1E36] text-[#C5A059] text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg border border-[#C5A059]/20">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 z-10 bg-[#2C1E36] text-[#C5A059] text-[9px] md:text-[10px] font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg border border-[#C5A059]/20">
               -{displayPrice?.percentage_diff}%
             </div>
           )}
 
           {/* Session Type Badge (Metadata) */}
           {!!displayLabel && (
-            <div className="absolute top-4 right-4 z-10">
-              <Badge className="text-[10px] font-bold uppercase tracking-wider !rounded-full !bg-white/95 !text-[#2C1E36] border border-[#2C1E36]/10 shadow-sm backdrop-blur-sm px-4 py-1.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse"></span>
-                {(displayLabel as string)}
+            <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
+              <Badge className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider !rounded-full !bg-white/95 !text-[#2C1E36] border border-[#2C1E36]/10 shadow-sm backdrop-blur-sm px-2 md:px-4 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5">
+                <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-[#C5A059]"></span>
+                 {String(displayLabel)}
               </Badge>
             </div>
           )}
           
-          <div className="p-3">
+          <div className="p-2 md:p-3">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
             size="full"
             isFeatured={isFeatured}
-            className="!rounded-[24px] overflow-hidden aspect-square grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 scale-[0.99] group-hover:scale-100"
+            className="!rounded-[18px] md:!rounded-[24px] overflow-hidden aspect-square grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 scale-[0.99] group-hover:scale-100"
           />
 
           {/* Wishlist Button Overlay */}
           <button
             onClick={(e) => {
                e.preventDefault()
-               toggleWishlist(product.id as string)
+               toggleWishlist(product.id)
             }}
-            className="absolute bottom-4 right-4 z-20 w-11 h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-2xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
+            className="absolute bottom-3 right-3 md:bottom-4 md:right-4 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-2xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
           >
              <svg 
                xmlns="http://www.w3.org/2000/svg" 
-               width="20" 
-               height="20" 
+               width="16" 
+               height="16" 
                viewBox="0 0 24 24" 
-               fill={isWishlisted(product.id as string) ? "currentColor" : "none"} 
+               fill={isWishlisted(product.id) ? "currentColor" : "none"} 
                stroke="currentColor" 
                strokeWidth="1.5" 
                strokeLinecap="round" 
                strokeLinejoin="round"
-               className={isWishlisted(product.id as string) ? "text-[#C5A059]" : "text-[#2C1E36]"}
+               className={isWishlisted(product.id) ? "text-[#C5A059]" : "text-[#2C1E36]"}
              >
                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
              </svg>
           </button>
           </div>
           
-          <div className="p-6 flex flex-col items-center text-center">
-            <Text className="font-serif text-[#2C1E36] text-[20px] md:text-[22px] mb-4 group-hover:text-[#C5A059] transition-colors line-clamp-2 leading-[1.2] px-2 font-medium" data-testid="product-title">
+          <div className="p-4 md:p-6 flex flex-col items-center text-center">
+            <Text className="font-serif text-[#2C1E36] text-[14px] md:text-[22px] mb-2 md:mb-4 group-hover:text-[#C5A059] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-medium" data-testid="product-title">
               {product.title}
             </Text>
             
-            <div className="flex flex-col items-center gap-y-4 mb-2">
+            <div className="flex flex-col items-center gap-y-2 md:gap-y-4 mb-2">
               {displayPrice && (
                 <div className="flex items-center gap-x-2">
                    <PreviewPrice price={displayPrice} />
@@ -170,9 +169,9 @@ export default function ProductPreview({
               
               {/* Session Duration (Metadata) */}
               {!!displayDuration && (
-                <div className="flex items-center gap-x-2 text-[#665D6B] text-[11px] font-bold tracking-[0.1em] uppercase bg-[#F5F4F0] px-4 py-1.5 rounded-full border border-[#2C1E36]/5">
-                  <Clock className="text-[#C5A059] w-3.5 h-3.5" />
-                  <span>{(displayDuration as string)}</span>
+                <div className="flex items-center gap-x-1.5 md:gap-x-2 text-[#665D6B] text-[9px] md:text-[11px] font-bold tracking-[0.1em] uppercase bg-[#F5F4F0] px-3 md:px-4 py-1 md:py-1.5 rounded-full border border-[#2C1E36]/5">
+                  <Clock className="text-[#C5A059] w-3 md:w-3.5 h-3 md:h-3.5" />
+                   <span>{String(displayDuration)}</span>
                 </div>
               )}
             </div>
@@ -180,11 +179,11 @@ export default function ProductPreview({
         </div>
       </LocalizedClientLink>
 
-      <div className="px-6 pb-8 mt-auto">
+      <div className="px-4 md:px-6 pb-6 md:pb-8 mt-auto">
         <button 
           onClick={handleBooking}
           disabled={isAdding}
-          className="w-full py-4 bg-[#2C1E36] text-white rounded-[20px] font-bold hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-x-3 active:scale-95"
+          className="w-full py-3 md:py-4 bg-[#2C1E36] text-white rounded-[16px] md:rounded-[20px] font-bold hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-[0.05em] md:tracking-[0.2em] text-[9px] md:text-[11px] flex items-center justify-center gap-x-1 md:gap-x-3 active:scale-95"
         >
           {isAdding ? (
             <>
@@ -193,7 +192,7 @@ export default function ProductPreview({
             </>
           ) : (
             <>
-               <span className="font-sans">{isSession ? "SELECT SESSION" : "ADD TO BASKET"}</span>
+               <span className="font-sans">{isSession ? <span className="hidden sm:inline">SELECT </span> : <span className="hidden sm:inline">ADD TO </span>}{isSession ? "SESSION" : "BASKET"}</span>
                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#C5A059]"><path d="m9 18 6-6-6-6"/></svg>
             </>
           )}

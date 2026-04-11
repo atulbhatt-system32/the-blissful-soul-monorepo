@@ -1,12 +1,10 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Navigation, Pagination } from "swiper/modules"
-import type { Swiper as SwiperType } from "swiper"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import Link from "next/link"
 
 import "swiper/css"
 
@@ -21,25 +19,51 @@ interface HeroProps {
     cta_text?: string
     cta_link?: string
     image: HeroImage | HeroImage[]
+    mobile_image?: HeroImage | HeroImage[]
     theme?: "dark" | "light"
   }>
 }
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
-function getImages(image: HeroImage | HeroImage[] | null | undefined): HeroImage[] {
+function getImages(image: any): HeroImage[] {
   if (!image) return []
-  if (Array.isArray(image)) return image.filter(Boolean)
-  return [image]
+  const wrap = (img: any): HeroImage | null => {
+    if (!img) return null
+    // Handle Strapi 5 data/attributes structure if present, otherwise assume flat
+    const url = img.url || img.attributes?.url || img.data?.attributes?.url
+    return url ? { url } : null
+  }
+
+  if (Array.isArray(image)) return image.map(wrap).filter((img): img is HeroImage => img !== null)
+  const single = wrap(image)
+  return single ? [single] : []
 }
 
 const HeroSlideshow = ({ slides }: HeroProps) => {
-  const swiperRef = useRef<SwiperType | null>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   // Flatten all images out, so uploading multiple images inside a single CMS slide creates multiple Swiper slides.
   const allSlides = (slides || []).flatMap(slide => {
     const images = getImages(slide.image)
-    return images.map(img => ({ ...slide, image: img }))
+    const mobileImages = getImages(slide.mobile_image)
+    
+    if (images.length === 0) return []
+    
+    return images.map((img, idx) => ({ 
+      ...slide, 
+      image: img,
+      mobile_image: mobileImages[idx] || mobileImages[0] || null 
+    }))
   })
 
   const totalSlides = allSlides.length
@@ -61,27 +85,34 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
           nextEl: '.hero-button-next',
         }}
         pagination={{
-          el: '.hero-pagination',
-          clickable: true,
-          renderBullet: function (index, className) {
-            return `<span class="${className} w-3 h-3 rounded-full border border-white/50 transition-all duration-300 bg-white/40 hover:bg-white/80 inline-block mx-1"></span>`;
-          },
+            el: '.hero-pagination',
+            clickable: true,
+            renderBullet: function (index, className) {
+              return `<span class="${className} w-3 h-3 rounded-full border border-white/50 transition-all duration-300 bg-white/40 hover:bg-white/80 inline-block mx-1"></span>`;
+            },
         }}
-        onSwiper={(swiper) => { swiperRef.current = swiper }}
-        onRealIndexChange={(swiper) => setActiveIndex(swiper.realIndex)}
         className="h-full w-full"
       >
         {allSlides.map((slide, slideIndex) => {
+          const desktopUrl = (slide.image as HeroImage).url.startsWith("http") ? (slide.image as HeroImage).url : `${STRAPI_URL}${(slide.image as HeroImage).url}`
+          const mobileUrl = slide.mobile_image 
+            ? ((slide.mobile_image as HeroImage).url.startsWith("http") ? (slide.mobile_image as HeroImage).url : `${STRAPI_URL}${(slide.mobile_image as HeroImage).url}`) 
+            : desktopUrl
+          
+          const currentImageUrl = isMobile ? mobileUrl : desktopUrl
+
           return (
             <SwiperSlide key={slideIndex}>
               <div className="relative flex h-full w-full items-center justify-center">
                 <div className="absolute inset-0 z-0">
                   <Image
-                    src={(slide.image as HeroImage).url.startsWith("http") ? (slide.image as HeroImage).url : `${STRAPI_URL}${(slide.image as HeroImage).url}`}
+                    key={currentImageUrl}
+                    src={currentImageUrl}
                     alt={slide.title || "Hero image"}
                     fill
                     priority={slideIndex === 0}
                     className="object-cover"
+                    sizes="100vw"
                   />
                   <div className="absolute inset-0 bg-black/30" />
                 </div>
@@ -94,12 +125,12 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     className={slide.theme === "light" ? "text-gray-900" : "text-white"}
                   >
                     {slide.title && (
-                      <h1 className="text-5xl md:text-7xl font-bold mb-4 uppercase tracking-tighter">
+                      <h1 className="text-4xl md:text-7xl font-bold mb-4 uppercase tracking-tighter">
                         {slide.title}
                       </h1>
                     )}
                     {slide.subtitle && (
-                      <p className="text-xl md:text-2xl mb-8 font-medium max-w-2xl mx-auto opacity-90">
+                      <p className="text-lg md:text-2xl mb-8 font-medium max-w-2xl mx-auto opacity-90 px-4 md:px-0">
                         {slide.subtitle}
                       </p>
                     )}
