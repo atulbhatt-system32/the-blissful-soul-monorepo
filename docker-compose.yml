@@ -2,9 +2,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: medusa_db
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-medusa_db}
     ports:
       - "5432:5432"
     volumes:
@@ -24,6 +24,7 @@ services:
     env_file:
       - ./apps/backend/.env
     environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-medusa_db}?sslmode=disable
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_DB=${POSTGRES_DB:-medusa_db}
@@ -31,7 +32,7 @@ services:
       - POSTGRES_PORT=5432
       - REDIS_URL=redis://redis:6379
       - BACKEND_URL=http://localhost:9000
-      - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
+      - BACKEND_CORS_ORIGIN=${PUBLIC_URL}:8000,${PUBLIC_URL}:8001,${PUBLIC_URL}:5173,${PUBLIC_URL}:9000
       - STRAPI_URL=http://cms:1337
     depends_on:
       - postgres
@@ -46,13 +47,14 @@ services:
       context: .
       dockerfile: apps/storefront/Dockerfile.dev
     ports:
-      - "8000:8000"
+      - "8000:8001"
     env_file:
       - ./apps/storefront/.env
     environment:
       - STOREFRONT_MEDUSA_URL=http://backend:9000
       - STOREFRONT_STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+      - CMS_API_TOKEN=${CMS_API_TOKEN:-58df11f55f063847e27817aa38dde2c63f063a7c3040e50b76d97dfc73ee072ff4fa46423043f83a91d1f7e36c2e50c7bff29ecc70c4ab1185801770851ae96da3682bdb3ad36ac0f456a80df47401b1507e539aa96cadf4b1fdbad11076c7d1e29299977220686474b10408ee37a6b22dd313e882b47e27cdbab50ce88cba69}
     depends_on:
       - backend
       - cms

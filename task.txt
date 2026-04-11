@@ -1,0 +1,67 @@
+TODO : List
+1 - razorpay issue fix - done
+2 - favicon update - done 
+3 - dicount percentage conditional rendering - done 
+4 - remove shop now button  - done 
+5 - match the card ui as per the image - done 
+6 - add popup free money potely 
+7 - match the footer style - done 
+8 - use correct whatsapp icon - done
+9 - image not showing in medusa and web page - Fixed 
+
+
+
+fix payment and make sure complete flow is working 
+customer login and register flow 
+invoice generation
+setup email via gmail using smtp 
+
+
+1 order flow fix and customer login - done
+2 better ui in invoice generation and add gst into invoice - done
+3 add filter for products - done
+4 add invoice option in order page  - done
+5 implement all the offers and discounts
+6 update master photo in about page - done
+7 test conditional shipping charges 
+8 in home page in medusa admin panel change welcome text to blissful soul 
+9 sessions booking should also show in order history - done  
+10 match the fonts - done
+11 make reschedule functionality and cancelation for appointments - done 
+12 session reminder message for bookings - done 1 hour both side reminder
+13 add refund policy page - done
+
+why every page loading taking so much time every tab every page taking so much time to open how can we optimize
+
+
+
+
+1 - in product page search bar not working fix - done 
+2 - in cms home page schema is not updated fix  - done 
+3 - sync medusa with strapi now product will come with single script dont have to manualy add - done 
+4 curl -X GET http://localhost:9000/admin/sync-strapi
+5 - instead of running this command i made a button in medusa admin pannel to handle this
+6 now product willl show automatic in stari connectiy complete
+
+cal_link = 30-min-session 
+
+Changes Implemented:
+Bento Hero (CMS Link): I added a "Bento Hero" component to Strapi. You can now edit the main title, the subtitle, and all button links for the top section directly from the CMS.
+Intro Section (CMS Link): The dark section ("Curated for you") is now dynamic. You can update the heading and description in Strapi.
+Featured Products Enabled: I added the missing relationship in Strapi so you can now choose exactly which products show up in the "New Selection" section.
+Performance & Search:
+Page Speed: Optimized all page loads. They will now load instantly from the cache (revalidating every 60 seconds).
+Product Search: The search bar on the Store page is now fully functional.
+
+
+Automatic Reflection: Whenever you add a product to one of these collections in the Medusa Admin, it will automatically reflect in the section on your Home Page.
+Strapi as "Override": If you manually select products in Strapi, those will take priority. If you leave the Strapi section empty, it will automatically pull the live products from your Medusa collection.
+
+
+
+https://klickvert.com/admin/sync-strapi to sync all the products in browsers 
+
+
+
+
+and fix the footer as well in in mobile screen jion use buttion will come bwlew and one more thing fix ui cards for mobile screen 
