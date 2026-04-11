@@ -269,5 +269,8 @@ jobs:
               docker tag "$IMAGE_BASE:$IMAGE_TAG" "$IMAGE_BASE:latest"
             done
 
+            echo "Reloading nginx to pick up new container IPs..."
+            docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload
+
             echo "Deployment successful."
             docker logout ghcr.io
