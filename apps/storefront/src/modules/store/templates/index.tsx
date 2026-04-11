@@ -6,6 +6,7 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import StoreSearch from "@modules/store/components/search"
 
 import PaginatedProducts from "./paginated-products"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const StoreTemplate = ({
   sortBy,
@@ -31,73 +32,41 @@ const StoreTemplate = ({
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen">
-      <div className="content-container py-12 md:py-20" data-testid="category-container">
-        <div className="flex flex-col lg:flex-row gap-x-16">
-          
-          {/* Sidebar */}
-          <aside className="w-full lg:w-1/5 flex flex-col gap-y-12 mb-12 lg:mb-0">
-            {/* Categories */}
-            <div className="flex flex-col gap-y-6">
-              <h3 className="text-[10px] font-bold text-[#C5A059] uppercase tracking-[0.3em] font-sans">
-                Categories
-              </h3>
-              <ul className="flex flex-col gap-y-4">
-                <li className="relative pl-4">
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#C5A059] rounded-full"></div>
-                  <button className="text-sm font-bold text-[#2C1E36] hover:text-[#C5A059] transition-colors">
-                    All
-                  </button>
-                </li>
-              </ul>
+      <div className="content-container !px-3 md:!px-8 py-8 md:py-16" data-testid="category-container">
+        {/* Main Content */}
+        <div className="w-full">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-x-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-8">
+            <LocalizedClientLink href="/" className="hover:text-[#2C1E36] transition-colors">
+              Home
+            </LocalizedClientLink>
+            <span className="text-gray-300">/</span>
+            <span className="text-[#2C1E36]/60">Shop Crystals</span>
+          </nav>
+
+          {/* Header Content */}
+          <div className="flex flex-col gap-y-6 md:gap-y-10">
+            <div className="flex flex-col gap-y-1">
+              <h1 className="text-3xl md:text-[48px] font-serif text-[#2C1E36] leading-tight">
+                Shop Crystals
+              </h1>
+              <div className="h-1 w-16 md:w-20 bg-[#C5A059] rounded-full mt-2"></div>
             </div>
 
-            {/* Product Type */}
-            <div className="flex flex-col gap-y-6">
-              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] font-sans">
-                Product Type
-              </h3>
-              <ul className="flex flex-col gap-y-4">
-                <li className="relative pl-4">
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#C5A059] rounded-full"></div>
-                  <button className="text-sm font-bold text-[#2C1E36] hover:text-[#C5A059] transition-colors font-sans">
-                    All types
-                  </button>
-                </li>
-                <li className="pl-4">
-                  <button className="text-sm font-medium text-gray-500 hover:text-[#2C1E36] transition-colors font-sans">
-                    Physical
-                  </button>
-                </li>
-                <li className="pl-4">
-                  <button className="text-sm font-medium text-gray-500 hover:text-[#2C1E36] transition-colors font-sans">
-                    Digital
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </aside>
-
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Header Content */}
-            <div className="flex flex-col gap-y-8 mb-12">
-              <div className="flex flex-col md:flex-row md:items-end justify-between items-start gap-y-6">
-                <div className="flex flex-col gap-y-2">
-                  <h1 className="text-4xl md:text-[44px] font-serif text-[#2C1E36] leading-tight">
-                    Shop Crystals
-                  </h1>
-                  <span className="text-sm text-gray-400 font-medium font-sans">
-                    {/* Items count removed temporarily or handle via dynamic if available */}
-                  </span>
-                </div>
-                
-                <RefinementList sortBy={sort} limit={limit} view={view} />
+            {/* Combined Search & Sort Toolbar */}
+            <div className="flex flex-row items-center gap-2 md:gap-4 w-full">
+              <div className="flex-1 relative z-[20]">
+                <StoreSearch initialQuery={q} />
               </div>
-
-              {/* Search Bar */}
-              <StoreSearch initialQuery={q} />
+              <div className="relative z-[40] flex items-center shrink-0">
+                <div className="md:bg-white/70 md:backdrop-blur-md p-0 md:p-3 md:rounded-[32px] md:border md:border-gray-100 md:shadow-xl md:shadow-[#2C1E36]/5 flex items-center">
+                  <RefinementList sortBy={sort} limit={limit} view={view} />
+                </div>
+              </div>
             </div>
+          </div>
 
+          <div className="mt-16">
             <Suspense fallback={<SkeletonProductGrid />}>
               <PaginatedProducts
                 sortBy={sort}

@@ -69,50 +69,47 @@ const RefinementList = ({ sortBy, limit = "12", view = "3", 'data-testid': dataT
   }
 
   return (
-    <div className="flex items-center gap-4 md:gap-8 flex-wrap" data-testid={dataTestId}>
-      {/* Show Per Page */}
-      <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
-        <span>Show :</span>
-        {showOptions.map((opt, index) => (
-          <span key={opt} className="flex flex-row items-center">
-            <button
-              onClick={() => setQueryParams("limit", opt)}
-              className={`hover:text-black transition-colors ${limit === opt ? "text-black font-bold" : ""}`}
-            >
-              {opt}
-            </button>
-            {index < showOptions.length - 1 && <span className="ml-2">/</span>}
-          </span>
+    <div className="flex items-center gap-4 md:gap-8 flex-wrap relative z-[40]" data-testid={dataTestId}>
+      {/* Show Per Page - Hidden on Mobile */}
+      <div className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2C1E36]">
+        <span className="mr-1">Show:</span>
+        <div className="flex items-center bg-white rounded-full px-3 py-1 border border-gray-100 shadow-md">
+          {showOptions.map((opt, index) => (
+            <div key={opt} className="flex items-center">
+              <button
+                onClick={() => setQueryParams("limit", opt)}
+                className={`transition-all px-2 text-xs font-bold ${limit === opt ? "text-[#C5A059] scale-110" : "text-[#2C1E36]/50 hover:text-[#C5A059]"}`}
+              >
+                {opt}
+              </button>
+              {index < showOptions.length - 1 && <span className="text-gray-100 font-light mx-1">|</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* View Toggles - Hidden on Mobile */}
+      <div className="hidden md:flex items-center gap-1 bg-white rounded-full p-1 border border-gray-100 shadow-md">
+        {[
+          { id: "2", icon: <GridIcon2 /> },
+          { id: "3", icon: <GridIcon3 /> },
+          { id: "4", icon: <GridIcon4 /> }
+        ].map((v) => (
+          <button 
+            key={v.id}
+            onClick={() => setQueryParams("view", v.id)}
+            className={`p-2 rounded-full transition-all duration-300 ${view === v.id ? "bg-[#2C1E36] text-[#C5A059] shadow-inner" : "text-[#2C1E36]/40 hover:text-[#2C1E36] hover:bg-gray-100"}`}
+            aria-label={`${v.id} Columns`}
+          >
+            {v.icon}
+          </button>
         ))}
       </div>
 
-      {/* View Toggles */}
-      <div className="flex items-center gap-3 text-gray-400">
-        <button 
-          onClick={() => setQueryParams("view", "2")}
-          className={`hover:text-black transition-colors ${view === "2" ? "text-black" : ""}`}
-          aria-label="2 Columns"
-        >
-          <GridIcon2 />
-        </button>
-        <button 
-          onClick={() => setQueryParams("view", "3")}
-          className={`hover:text-black transition-colors ${view === "3" ? "text-black" : ""}`}
-          aria-label="3 Columns"
-        >
-          <GridIcon3 />
-        </button>
-        <button 
-          onClick={() => setQueryParams("view", "4")}
-          className={`hover:text-black transition-colors ${view === "4" ? "text-black" : ""}`}
-          aria-label="4 Columns"
-        >
-          <GridIcon4 />
-        </button>
+      {/* Sort Dropdown - Always Visible */}
+      <div className="w-full md:w-auto flex justify-center md:justify-start">
+        <SortProducts sortBy={sortBy} setQueryParams={setQueryParams} />
       </div>
-
-      {/* Sort Dropdown */}
-      <SortProducts sortBy={sortBy} setQueryParams={setQueryParams} />
     </div>
   )
 }
