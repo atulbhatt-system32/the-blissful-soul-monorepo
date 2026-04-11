@@ -51,6 +51,16 @@ const nextConfig = {
         hostname: "theblissfulsoul.in",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "backend.klickvert.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "klickvert.com",
+        pathname: "/api/static/**",
+      },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
           {
