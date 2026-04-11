@@ -114,26 +114,6 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
         </div>
       </section>
 
-      {/* Light Google Reviews Section */}
-      <section className="relative overflow-hidden bg-[#FDFCFB] py-10 md:py-14 border-y border-metal/10">
-        {/* Subtle Grid Pattern Background */}
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px)] bg-[size:60px_60px]"></div>
-
-        <div className="content-container relative z-10 flex flex-col items-center">
-          <motion.div
-             initial={{ opacity: 0, scale: 0.95 }}
-             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-             transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <a 
-              href="#" 
-              className="bg-[#F0EEEB] text-[#2C2830] px-10 py-3 rounded-full text-sm font-medium transition-all hover:bg-[#E8E4DF] shadow-sm inline-flex items-center font-sans tracking-wide"
-            >
-              Google reviews
-            </a>
-          </motion.div>
-        </div>
-      </section>
     </div>
   )
 }
