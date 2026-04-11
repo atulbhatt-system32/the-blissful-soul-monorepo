@@ -256,12 +256,6 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
         <p className="text-gray-500 text-lg max-w-sm">
           We couldn&apos;t find any active bookings for <strong>{email}</strong>.
         </p>
-        <button
-          onClick={() => { setEmail(""); setSessions([]); }}
-          className="mt-4 px-8 py-3 text-[#2C1E36] font-bold border-2 border-[#2C1E36]/10 rounded-xl hover:bg-[#2C1E36]/5 transition-all text-sm uppercase tracking-widest"
-        >
-          Try a different email
-        </button>
       </div>
     )
   }

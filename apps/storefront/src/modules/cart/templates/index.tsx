@@ -24,9 +24,7 @@ const CartTemplate = ({
               </div>
 
               {!customer && (
-                <div className="bg-[#2C1E36]/5 p-6 rounded-2xl border border-[#2C1E36]/10">
-                  <SignInPrompt />
-                </div>
+                <SignInPrompt />
               )}
               
               <div className="bg-white rounded-[2.5rem] border border-gray-100 p-6 md:p-8 shadow-xl shadow-purple-900/5">

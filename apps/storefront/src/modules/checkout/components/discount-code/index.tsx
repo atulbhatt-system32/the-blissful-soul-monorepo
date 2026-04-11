@@ -59,22 +59,33 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     <div className="w-full bg-transparent flex flex-col">
       <div className="txt-medium">
         <form action={(a) => addPromotionCode(a)} className="w-full">
-          <Label className="flex gap-x-1 mb-2 items-center">
+          <div className={`flex justify-center ${isOpen ? 'mb-4' : ''}`}>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="text-[11px] uppercase tracking-widest font-black text-[#C5A059] hover:text-white transition-colors"
+              className="w-full text-[11px] uppercase tracking-[0.3em] font-bold text-[#C5A059] hover:text-white transition-all flex items-center justify-center gap-2 group"
               data-testid="add-discount-button"
             >
+              <span className="w-5 h-5 rounded-full border border-[#C5A059]/30 flex items-center justify-center group-hover:border-white transition-colors text-[#C5A059] group-hover:text-white">
+                {isOpen ? (
+                  <svg width="8" height="2" viewBox="0 0 8 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                ) : (
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 1V7M1 4H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                )}
+              </span>
               Have a Promotion Code?
             </button>
-          </Label>
+          </div>
 
           {isOpen && (
             <div className="animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex w-full gap-x-2 items-center">
                 <Input
-                  className="h-10 border-white/20 bg-white/5 text-white placeholder:text-white/30 focus:border-[#C5A059] focus:ring-0 rounded-xl"
+                  className="h-10 border-white/20 bg-transparent hover:bg-white/5 text-white placeholder:text-white/30 focus:bg-white/5 focus:border-[#C5A059] focus:ring-0 rounded-xl transition-all"
                   id="promotion-input"
                   name="code"
                   type="text"
