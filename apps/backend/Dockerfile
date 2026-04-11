@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:20-slim AS builder
 RUN npm install -g pnpm@10.5.2
 
 WORKDIR /app
@@ -9,7 +9,7 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 # Copy ONLY backend package.json to avoid busting cache on code changes
 COPY apps/backend/package.json ./apps/backend/
 
-# Install dependencies (frozen to ensure reproducible builds)
+# Install all dependencies (frozen to ensure reproducible builds)
 RUN pnpm install --filter backend... --frozen-lockfile
 
 # Now copy the backend app source code
@@ -27,13 +27,17 @@ RUN cd .medusa/server && npm install --omit=dev --legacy-peer-deps
 # Verify admin build is present
 RUN test -f .medusa/server/public/admin/index.html || (echo "ERROR: Admin build missing. medusa build did not produce admin assets." && exit 1)
 
-# Run as non-root
-RUN chown -R node:node /app
-USER node
+# ── Runtime stage ─────────────────────────────────────────────────────────────
+# Ships only the compiled output — no source, no dev deps, no pnpm.
+FROM node:20-slim AS runtime
 
 ENV NODE_ENV=production
 WORKDIR /app/apps/backend/.medusa/server
+
+# --chown avoids a slow recursive chown pass over the full tree
+COPY --from=builder --chown=node:node /app/apps/backend/.medusa/server ./
+
+USER node
 EXPOSE 9000
 
-# Run migrations from build output dir, then start from build output dir
 CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]

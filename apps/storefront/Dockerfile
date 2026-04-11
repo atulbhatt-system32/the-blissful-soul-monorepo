@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:20-slim AS builder
 RUN npm install -g pnpm@10.5.2
 
 WORKDIR /app
@@ -33,10 +33,24 @@ ENV NEXT_PUBLIC_RAZORPAY_KEY=$NEXT_PUBLIC_RAZORPAY_KEY
 
 RUN pnpm run build
 
-# Run as non-root
-RUN chown -R node:node /app
-USER node
+# ── Runtime stage ─────────────────────────────────────────────────────────────
+# Standalone output contains only the traced runtime dependencies — no source,
+# no dev deps, no pnpm. Typically 70-80% smaller than a full build image.
+FROM node:20-slim AS runtime
 
+ENV NODE_ENV=production
+ENV PORT=8000
+ENV HOSTNAME=0.0.0.0
+
+WORKDIR /app
+
+# outputFileTracingRoot points to the monorepo root, so standalone mirrors that
+# structure: server entry is at apps/storefront/server.js inside the output.
+COPY --from=builder --chown=node:node /app/apps/storefront/.next/standalone ./
+COPY --from=builder --chown=node:node /app/apps/storefront/.next/static ./apps/storefront/.next/static
+COPY --from=builder --chown=node:node /app/apps/storefront/public ./apps/storefront/public
+
+USER node
 EXPOSE 8000
 
-CMD ["pnpm", "run", "start"]
+CMD ["node", "apps/storefront/server.js"]
