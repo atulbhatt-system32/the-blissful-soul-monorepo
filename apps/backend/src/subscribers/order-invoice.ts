@@ -21,6 +21,7 @@ export default async function orderInvoiceHandler({
   const pdfBase64 = pdfBuffer.toString("base64");
 
   // 3. Send Notification with Attachment
+  const storefrontUrl = process.env.STOREFRONT_URL || 'https://klickvert.com'
   await (notificationService as any).createNotifications([
     {
       to: order.email,
@@ -31,7 +32,7 @@ export default async function orderInvoiceHandler({
         html_body: `
           <p>Hi ${order.shipping_address?.first_name}, thank you for your order!</p>
           <p><strong>Order ID: #${order.display_id}</strong></p>
-          <p>To track your order status, <a href="http://localhost:8001/order/lookup">click here</a>.</p>
+          <p>To track your order status, <a href="${storefrontUrl}/order/lookup">click here</a>.</p>
           <p>Your invoice is attached to this email.</p>
         `,
       },

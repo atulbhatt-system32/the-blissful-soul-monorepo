@@ -49,7 +49,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     }
     
     // 4. Construct Content
-    const storefrontUrl = process.env.STOREFRONT_URL || 'http://localhost:8001'
+    const storefrontUrl = process.env.STOREFRONT_URL || 'https://klickvert.com'
     const resetUrl = `${storefrontUrl}/account/reset-password?token=${token}&email=${email}`
 
     const htmlBody = `

@@ -39,7 +39,7 @@ export default async function passwordResetHandler({
   }
 
   // 3. Prepare the reset URL (Storefront runs on 8001)
-  const storefrontUrl = process.env.STOREFRONT_URL || 'http://localhost:8001'
+  const storefrontUrl = process.env.STOREFRONT_URL || 'https://klickvert.com'
   const resetUrl = `${storefrontUrl}/account/reset-password?token=${token}&email=${email}`
 
   // 4. Create email body
