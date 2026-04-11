@@ -57,8 +57,8 @@ server {
     listen 443 ssl;
     server_name backend.${DOMAIN};
 
-    ssl_certificate     /etc/letsencrypt/live/backend.${DOMAIN}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/backend.${DOMAIN}/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
@@ -81,8 +81,8 @@ server {
     listen 443 ssl;
     server_name cms.${DOMAIN};
 
-    ssl_certificate     /etc/letsencrypt/live/cms.${DOMAIN}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/cms.${DOMAIN}/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;

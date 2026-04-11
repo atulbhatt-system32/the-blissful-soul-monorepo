@@ -142,6 +142,7 @@ services:
     image: nginx:alpine
     environment:
       - DOMAIN=${DOMAIN}
+      - NGINX_ENVSUBST_FILTER=DOMAIN
     ports:
       - "80:80"
       - "443:443"
