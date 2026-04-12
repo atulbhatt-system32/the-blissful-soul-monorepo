@@ -26,7 +26,11 @@ const Payment = ({
   const router = useRouter()
   const pathname = usePathname()
 
-  const isOpen = searchParams.get("step") === "payment"
+  const step = searchParams.get("step")
+  const isPaymentStep = step === "payment"
+
+  // Open if explicitly on payment step, or if no step is specified, and address & shipping are complete
+  const isOpen = isPaymentStep || (!step && !!cart.shipping_address?.address_1 && (cart.shipping_methods?.length ?? 0) > 0)
 
   // Load Razorpay SDK
   useEffect(() => {

@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation"
 import ProductSummaryCounters from "../product-summary-counters"
 import QuantitySelector from "../quantity-selector"
 import { useWishlist } from "@lib/context/wishlist-context"
-import { Heart } from "@medusajs/icons"
+import { Heart, Check } from "@medusajs/icons"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -223,11 +223,21 @@ export default function ProductActions({
             </div>
             
             {selectedVariant.manage_inventory && (selectedVariant.inventory_quantity || 0) > 0 && (
-              <Text className={clx("text-[10px] md:text-xs", (selectedVariant.inventory_quantity || 0) < 10 ? "text-rose-500 font-bold" : "text-ui-fg-subtle")}>
-                {(selectedVariant.inventory_quantity || 0) < 10 
-                  ? `Only ${selectedVariant.inventory_quantity} left in stock!` 
-                  : `${selectedVariant.inventory_quantity} in stock`}
-              </Text>
+              <div className="flex items-center gap-x-1.5">
+                {(selectedVariant.inventory_quantity || 0) >= 10 && (
+                  <Check className="text-emerald-600 w-3.5 h-3.5" />
+                )}
+                <Text className={clx(
+                  "text-[10px] md:text-xs", 
+                  (selectedVariant.inventory_quantity || 0) < 10 
+                    ? "text-rose-500 font-bold" 
+                    : "text-emerald-600 font-medium"
+                )}>
+                  {(selectedVariant.inventory_quantity || 0) < 10 
+                    ? `Only ${selectedVariant.inventory_quantity} left in stock!` 
+                    : `${selectedVariant.inventory_quantity} in stock`}
+                </Text>
+              </div>
             )}
           </div>
         )}

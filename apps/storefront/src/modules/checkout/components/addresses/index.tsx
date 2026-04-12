@@ -28,7 +28,11 @@ const Addresses = ({
   const router = useRouter()
   const pathname = usePathname()
 
-  const isOpen = searchParams.get("step") === "address"
+  const step = searchParams.get("step")
+  const isAddressStep = step === "address"
+  
+  // Open if explicitly on address step, or if no step is specified and address/email is incomplete
+  const isOpen = isAddressStep || (!step && (!cart?.shipping_address?.address_1 || !cart?.email))
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address
@@ -52,7 +56,7 @@ const Addresses = ({
              className="flex flex-row text-3xl font-serif text-[#2C1E36] font-bold gap-x-2 items-center"
            >
              {isDigitalOnly ? "Identity" : "Destination"}
-             {!isOpen && (
+             {!isOpen && cart?.shipping_address?.address_1 && cart?.email && (
                <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                </div>
