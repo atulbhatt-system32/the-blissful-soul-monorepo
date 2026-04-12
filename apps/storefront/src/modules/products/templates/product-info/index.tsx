@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
-import { BlocksRenderer } from "@strapi/blocks-react-renderer"
+import { Heading } from "@medusajs/ui"
+import ProductDescription from "@modules/products/components/product-description"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type ProductInfoProps = {
@@ -28,17 +28,10 @@ const ProductInfo = ({ product, strapiContent }: ProductInfoProps) => {
           {product.title}
         </Heading>
 
-        {strapiContent?.rich_description && Array.isArray(strapiContent.rich_description) && strapiContent.rich_description.length > 0 ? (
-          <div className="text-medium text-ui-fg-subtle prose prose-sm max-w-none" data-testid="product-description">
-            <BlocksRenderer content={strapiContent.rich_description} />
+        {strapiContent?.rich_description && Array.isArray(strapiContent.rich_description) && strapiContent.rich_description.length > 0 && (
+          <div className="text-medium text-ui-fg-subtle" data-testid="product-description">
+            <ProductDescription content={strapiContent.rich_description} />
           </div>
-        ) : (
-          <Text
-            className="text-medium text-ui-fg-subtle"
-            data-testid="product-description"
-          >
-            {product.description}
-          </Text>
         )}
       </div>
     </div>
