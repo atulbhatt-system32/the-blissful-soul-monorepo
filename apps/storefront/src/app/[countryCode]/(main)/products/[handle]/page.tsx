@@ -134,7 +134,7 @@ export default async function ProductPage(props: Props) {
       region={region}
       countryCode={params.countryCode}
       images={images}
-      strapiContent={strapiProduct?.attributes}
+      strapiContent={strapiProduct}
       storeConfig={storeConfig}
     />
   )
