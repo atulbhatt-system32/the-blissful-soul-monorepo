@@ -12,7 +12,7 @@ export const config: MiddlewaresConfig = {
     },
     {
       matcher: "/store/payment-collections*",
-      bodyParserConfig: {
+      bodyParser: {
         sizeLimit: "10mb",
       },
     },
