@@ -12,11 +12,13 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
+import ProductSummaryCounters from "../product-summary-counters"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   disabled?: boolean
+  storeConfig?: any
 }
 
 const optionsAsKeymap = (
@@ -31,6 +33,7 @@ const optionsAsKeymap = (
 export default function ProductActions({
   product,
   disabled,
+  storeConfig,
 }: ProductActionsProps) {
   const router = useRouter()
   const pathname = usePathname()
@@ -179,6 +182,7 @@ export default function ProductActions({
         </div>
 
         <ProductPrice product={product} variant={selectedVariant} />
+        <ProductSummaryCounters productId={product.id} storeConfig={storeConfig} />
 
         <Button
           onClick={handleAction}
