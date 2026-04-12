@@ -1,70 +1,71 @@
 {
-    "kind": "collectionType",
-    "collectionName": "products",
-    "info": {
-        "singularName": "product",
-        "pluralName": "products",
-        "displayName": "Product",
-        "description": "Enriched product content synced from Medusa"
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Enriched product content synced from Medusa"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "medusa_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
     },
-    "options": {
-        "draftAndPublish": true
+    "title": {
+      "type": "string",
+      "required": true
     },
-    "attributes": {
-        "medusa_id": {
-            "type": "string",
-            "unique": true,
-            "required": true
-        },
-        "title": {
-            "type": "string",
-            "required": true
-        },
-        "handle": {
-            "type": "string",
-            "unique": true,
-            "required": true
-        },
-        "description": {
-            "type": "richtext"
-        },
-        "rich_description": {
-            "type": "blocks"
-        },
-        "content": {
-            "type": "richtext"
-        },
-        "seo": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.seo"
-        },
-        "thumbnail": {
-            "type": "media",
-            "multiple": false,
-            "required": false,
-            "allowedTypes": [
-                "images"
-            ]
-        },
-        "images": {
-            "type": "media",
-            "multiple": true,
-            "required": false,
-            "allowedTypes": [
-                "images"
-            ]
-        },
-        "thumbnail_url": {
-            "type": "string"
-        },
-        "rating": {
-            "type": "decimal",
-            "default": 5
-        },
-        "review_count": {
-            "type": "integer",
-            "default": 0
-        }
+    "rich_description": {
+      "type": "blocks"
+    },
+    "handle": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "decimal",
+      "default": 5
+    },
+    "review_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "description": {
+      "type": "richtext"
     }
+  }
 }
