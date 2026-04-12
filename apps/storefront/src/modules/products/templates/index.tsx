@@ -1,5 +1,4 @@
 import React, { Suspense } from "react"
-import { BlocksRenderer } from "@strapi/blocks-react-renderer"
 
 import ImageGallery from "@modules/products/components/image-gallery"
 import ProductActions from "@modules/products/components/product-actions"
@@ -41,19 +40,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         data-testid="product-container"
       >
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
+          <ProductInfo product={product} strapiContent={strapiContent} />
           <ProductTabs product={product} />
         </div>
         <div className="block w-full relative">
           <ImageGallery images={images} />
-          {strapiContent?.rich_description && (
-            <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-              <h3 className="text-xl font-bold mb-4">Designer's Note</h3>
-              <div className="prose prose-sm text-gray-700 max-w-none">
-                <BlocksRenderer content={strapiContent.rich_description} />
-              </div>
-            </div>
-          )}
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
           <ProductOnboardingCta />

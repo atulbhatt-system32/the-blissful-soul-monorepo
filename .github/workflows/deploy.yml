@@ -105,7 +105,7 @@ jobs:
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_API_KEY={0}', secrets.NEXT_PUBLIC_CAL_API_KEY) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_USERNAME={0}', secrets.NEXT_PUBLIC_CAL_USERNAME) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_CAL_EVENT_SLUG={0}', secrets.NEXT_PUBLIC_CAL_EVENT_SLUG) || '' }}
-            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.NEXT_PUBLIC_RAZORPAY_KEY) || '' }}
+            ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_RAZORPAY_KEY={0}', secrets.RAZORPAY_ID) || '' }}
             ${{ matrix.app == 'storefront' && format('NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://backend.{0}', secrets.DOMAIN) || '' }}
             ${{ matrix.app == 'cms' && format('CMS_PUBLIC_URL=https://cms.{0}', secrets.DOMAIN) || '' }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/the-blissful-soul-${{ matrix.app }}:cache
