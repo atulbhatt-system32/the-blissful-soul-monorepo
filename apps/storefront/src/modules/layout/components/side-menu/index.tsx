@@ -19,6 +19,7 @@ const SideMenuItems = {
   "Track Order": "/order/lookup",
   Contact: "/contact",
   Account: "/account",
+  Wishlist: "/wishlist",
   Cart: "/cart",
 }
 

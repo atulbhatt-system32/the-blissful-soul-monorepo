@@ -1,7 +1,9 @@
 import PDFDocument from "pdfkit"
 
 function formatCurrency(amount: number, currencyCode: string) {
-  return `${Number(amount).toFixed(2)} ${currencyCode.toUpperCase()}`
+  const code = (currencyCode || "INR").toUpperCase()
+  const val = isNaN(Number(amount)) ? 0 : Number(amount)
+  return `${val.toFixed(2)} ${code}`
 }
 
 function generateHeader(doc: PDFKit.PDFDocument, order: any) {
@@ -103,8 +105,11 @@ function generateInvoiceTable(doc: PDFKit.PDFDocument, order: any) {
   }, 0)
   const taxTotal = order.tax_total || 0
   const shippingTotal = order.shipping_total || 0
+  const discountTotal = order.discount_total || 0
   const subtotal = order.subtotal || computedSubtotal
-  const total = order.total || (subtotal + taxTotal + shippingTotal)
+  const total = order.total || (subtotal + taxTotal + shippingTotal - discountTotal)
+
+  const shippingMethodName = order.shipping_methods?.[0]?.name || "Shipping"
 
   const subtotalPosition = position + 40
   doc.font("Helvetica-Bold")
@@ -112,17 +117,27 @@ function generateInvoiceTable(doc: PDFKit.PDFDocument, order: any) {
   doc.text("Subtotal:", 370, subtotalPosition + 10, { width: 90, align: "right" })
   doc.text(formatCurrency(subtotal, order.currency_code), 0, subtotalPosition + 10, { align: "right" })
 
-  doc.text("GST:", 370, subtotalPosition + 30, { width: 90, align: "right" })
-  doc.text(formatCurrency(taxTotal, order.currency_code), 0, subtotalPosition + 30, { align: "right" })
+  let currentY = subtotalPosition + 30
 
-  doc.text("Shipping:", 370, subtotalPosition + 50, { width: 90, align: "right" })
-  doc.text(formatCurrency(shippingTotal, order.currency_code), 0, subtotalPosition + 50, { align: "right" })
+  if (discountTotal > 0) {
+    doc.text("Discount:", 370, currentY, { width: 90, align: "right" })
+    doc.text(`- ${formatCurrency(discountTotal, order.currency_code)}`, 0, currentY, { align: "right" })
+    currentY += 20
+  }
 
-  doc.moveTo(370, subtotalPosition + 65).lineTo(550, subtotalPosition + 65).lineWidth(1).strokeColor("#000000").stroke()
+  doc.text("GST:", 370, currentY, { width: 90, align: "right" })
+  doc.text(formatCurrency(taxTotal, order.currency_code), 0, currentY, { align: "right" })
+  currentY += 20
+
+  doc.text(`${shippingMethodName}:`, 370, currentY, { width: 90, align: "right" })
+  doc.text(formatCurrency(shippingTotal, order.currency_code), 0, currentY, { align: "right" })
+  currentY += 20
+
+  doc.moveTo(370, currentY + 5).lineTo(550, currentY + 5).lineWidth(1).strokeColor("#000000").stroke()
 
   doc.fontSize(12)
-  doc.text("Total:", 370, subtotalPosition + 80, { width: 90, align: "right" })
-  doc.text(formatCurrency(total, order.currency_code), 0, subtotalPosition + 80, { align: "right" })
+  doc.text("Total:", 370, currentY + 20, { width: 90, align: "right" })
+  doc.text(formatCurrency(total, order.currency_code), 0, currentY + 20, { align: "right" })
   doc.fontSize(10)
 }
 

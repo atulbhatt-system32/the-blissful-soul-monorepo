@@ -24,7 +24,7 @@ import { getLocale } from "@lib/data/locale-actions"
 export async function retrieveCart(cartId?: string, fields?: string) {
   const id = cartId || (await getCartId())
   fields ??=
-    "*items, *region, *items.variant, *items.variant.product, *items.variant.product.images, *items.metadata, +items.total, *promotions, +shipping_methods.name"
+    "*items, *region, *items.variant, *items.variant.product, *items.variant.product.type, *items.variant.product.tags, *items.variant.product.images, *items.metadata, +items.total, *promotions, +shipping_methods.name"
 
   if (!id) {
     return null
@@ -385,6 +385,20 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
   }
 
   const isDigitalOnly = formData.get("is_digital_only") === "true"
+  
+  if (isDigitalOnly) {
+    try {
+      const { shipping_options } = await listCartOptions()
+      if (shipping_options?.length) {
+        // Prefer free shipping for digital items, otherwise take the first one
+        const option = shipping_options.find(o => o.amount === 0 || o.price_type === "calculated") || shipping_options[0]
+        await setShippingMethod({ cartId, shippingMethodId: option.id })
+      }
+    } catch (err: any) {
+      console.error("[setAddresses] Failed to auto-select shipping for digital cart:", err.message)
+    }
+  }
+
   const nextStep = isDigitalOnly ? "payment" : "delivery"
 
   redirect(

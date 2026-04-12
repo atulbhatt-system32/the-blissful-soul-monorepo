@@ -18,6 +18,7 @@ export default function medusaError(error: any): never {
   } else {
     // Something happened in setting up the request that triggered an Error
     const message = error.message || "An unexpected error occurred"
+    console.error(`[Medusa SDK] Request failed: ${message}`, error)
     throw new Error(message.charAt(0).toUpperCase() + message.slice(1) + (message.endsWith(".") ? "" : "."))
   }
 }
