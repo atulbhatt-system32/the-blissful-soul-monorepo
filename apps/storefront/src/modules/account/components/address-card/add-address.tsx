@@ -24,6 +24,7 @@ const AddAddress = ({
 
   const [formState, formAction] = useActionState(addCustomerAddress, {
     isDefaultShipping: addresses.length === 0,
+    isDefaultBilling: false,
     success: false,
     error: null,
   })
@@ -48,25 +49,56 @@ const AddAddress = ({
 
   return (
     <>
-      <button
-        className="bg-gray-50/50 p-6 md:p-8 rounded-[2rem] border border-dashed border-gray-200 transition-all hover:bg-white hover:border-[#C5A059] flex flex-col items-center justify-center min-h-[240px] group animate-in fade-in slide-in-from-bottom-2 duration-500"
+      <Button
+        className="bg-[#2C1E36] text-white rounded-xl px-4 sm:px-6 py-2.5 h-auto text-[11px] uppercase tracking-widest font-black transition-all hover:opacity-90 shadow-lg shadow-purple-900/10 active:scale-95 flex items-center gap-x-2"
         onClick={open}
         data-testid="add-address-button"
       >
-        <div className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#2C1E36] mb-4 group-hover:bg-[#2C1E36] group-hover:text-white transition-all shadow-sm">
-           <Plus />
-        </div>
-        <span className="text-sm font-serif text-[#2C1E36] font-bold">Add New Address</span>
-        <span className="text-[10px] uppercase tracking-widest text-gray-400 mt-1 font-bold">Secure Shipping</span>
-      </button>
+        <Plus size={16} />
+        <span className="hidden sm:inline">Add Address</span>
+      </Button>
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title>
-          <Heading className="mb-2">Add address</Heading>
+          <Heading className="mb-2">Add New address</Heading>
         </Modal.Title>
         <form action={formAction}>
           <Modal.Body>
             <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-3 mb-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Set as Primary Address For</span>
+                <div className="flex gap-x-8">
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="shipping" 
+                      defaultChecked={true}
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Shipping</span>
+                  </label>
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="billing" 
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Billing</span>
+                  </label>
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="other" 
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">None</span>
+                  </label>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-x-2">
                 <Input
                   label="First name"
@@ -134,6 +166,7 @@ const AddAddress = ({
               <Input
                 label="Phone"
                 name="phone"
+                type="phone"
                 autoComplete="phone"
                 data-testid="phone-input"
               />
@@ -153,12 +186,12 @@ const AddAddress = ({
                 type="reset"
                 variant="secondary"
                 onClick={close}
-                className="h-10"
+                className="h-10 px-8 rounded-xl text-[11px] uppercase tracking-widest font-black"
                 data-testid="cancel-button"
               >
                 Cancel
               </Button>
-              <SubmitButton data-testid="save-button">Save</SubmitButton>
+              <SubmitButton data-testid="save-button" className="px-8 rounded-xl h-10 text-[11px] uppercase tracking-widest font-black">Save</SubmitButton>
             </div>
           </Modal.Footer>
         </form>

@@ -66,7 +66,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
     <>
       <div
         className={clx(
-          "bg-white p-6 md:p-8 rounded-[2rem] border transition-all hover:shadow-md animate-in fade-in slide-in-from-bottom-2 duration-500 flex flex-col justify-between min-h-[240px]",
+          "bg-white p-6 md:p-8 rounded-[2.5rem] border transition-all hover:shadow-lg hover:shadow-purple-900/5 animate-in fade-in slide-in-from-bottom-2 duration-500 flex flex-col md:flex-row md:items-center md:justify-between gap-6",
           {
             "border-[#2C1E36] ring-1 ring-[#2C1E36]/10 shadow-lg shadow-purple-900/5": isActive,
             "border-gray-100": !isActive
@@ -75,14 +75,22 @@ const EditAddress: React.FC<EditAddressProps> = ({
         data-testid="address-container"
       >
         <div className="flex flex-col">
-          <div className="flex items-center gap-2 mb-4">
-             <div className="w-8 h-8 rounded-xl bg-[#2C1E36]/5 flex items-center justify-center text-[#2C1E36]">
-                <MapPin size={16} />
-             </div>
-             <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Saved Location</span>
-          </div>
-
-          <Heading
+          {(address.is_default_shipping || address.is_default_billing) && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {address.is_default_shipping && (
+                <span className="bg-[#2C1E36] text-white text-[9px] uppercase tracking-widest px-3 py-1 rounded-full font-black shadow-sm flex items-center gap-1 scale-95 origin-left">
+                  <span className="w-1 h-1 rounded-full bg-[#C5A059] animate-pulse"></span>
+                  Primary Shipping
+                </span>
+              )}
+              {address.is_default_billing && (
+                <span className="bg-[#C5A059] text-white text-[9px] uppercase tracking-widest px-3 py-1 rounded-full font-black shadow-sm flex items-center gap-1 scale-95 origin-left">
+                  <span className="w-1 h-1 rounded-full bg-white"></span>
+                  Primary Billing
+                </span>
+              )}
+            </div>
+          )}    <Heading
             className="text-left font-serif text-[#2C1E36] font-bold text-xl mb-3"
             data-testid="address-name"
           >
@@ -112,21 +120,21 @@ const EditAddress: React.FC<EditAddressProps> = ({
           </div>
         </div>
         
-        <div className="flex items-center gap-x-6 mt-8 pt-6 border-t border-gray-50">
+        <div className="flex items-center gap-x-6 md:pl-8 md:border-l border-gray-100 h-full">
           <button
-            className="text-[11px] uppercase tracking-widest font-bold text-[#2C1E36] flex items-center gap-x-2 border-b-2 border-transparent hover:border-[#2C1E36] transition-all pb-1"
+            className="text-[11px] uppercase tracking-widest font-bold text-[#2C1E36] flex items-center gap-x-2 border-b-2 border-transparent hover:border-[#2C1E36] transition-all pb-1 whitespace-nowrap"
             onClick={open}
             data-testid="address-edit-button"
           >
-            <Edit />
+            <Edit size={16} />
             Modify
           </button>
           <button
-            className="text-[11px] uppercase tracking-widest font-bold text-gray-400 flex items-center gap-x-2 hover:text-red-500 transition-all pb-1"
+            className="text-[11px] uppercase tracking-widest font-bold text-gray-400 flex items-center gap-x-2 hover:text-red-500 transition-all pb-1 whitespace-nowrap"
             onClick={removeAddress}
             data-testid="address-delete-button"
           >
-            {removing ? <Spinner /> : <Trash />}
+            {removing ? <Spinner /> : <Trash size={16} />}
             Remove
           </button>
         </div>
@@ -139,7 +147,44 @@ const EditAddress: React.FC<EditAddressProps> = ({
         <form action={formAction}>
           <input type="hidden" name="addressId" value={address.id} />
           <Modal.Body>
-            <div className="grid grid-cols-1 gap-y-2">
+            <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-3 mb-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Set as Primary Address For</span>
+                <div className="flex gap-x-8">
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="shipping" 
+                      defaultChecked={address.is_default_shipping}
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Shipping</span>
+                  </label>
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="billing" 
+                      defaultChecked={address.is_default_billing}
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Billing</span>
+                  </label>
+                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="address_type" 
+                      value="other" 
+                      defaultChecked={!address.is_default_shipping && !address.is_default_billing}
+                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
+                    />
+                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">None</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-y-2">
               <div className="grid grid-cols-2 gap-x-2">
                 <Input
                   label="First name"
@@ -220,6 +265,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 defaultValue={address.phone || undefined}
                 data-testid="phone-input"
               />
+              </div>
             </div>
             {formState.error && (
               <div className="text-rose-500 text-small-regular py-2">
@@ -233,12 +279,12 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 type="reset"
                 variant="secondary"
                 onClick={close}
-                className="h-10"
+                className="h-10 px-8 rounded-xl text-[11px] uppercase tracking-widest font-black"
                 data-testid="cancel-button"
               >
                 Cancel
               </Button>
-              <SubmitButton data-testid="save-button">Save</SubmitButton>
+              <SubmitButton data-testid="save-button" className="px-8 rounded-xl h-10 text-[11px] uppercase tracking-widest font-black">Save</SubmitButton>
             </div>
           </Modal.Footer>
         </form>
