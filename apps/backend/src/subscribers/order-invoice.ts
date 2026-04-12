@@ -15,10 +15,12 @@ export default async function orderInvoiceHandler({
       fields: [
         "*", 
         "items.*", 
+        "items.adjustments.*",
         "shipping_address.*", 
         "billing_address.*", 
         "payment_collections.payments.*",
         "shipping_methods.*",
+        "shipping_methods.adjustments.*",
         "+total",
         "+subtotal",
         "+shipping_total",

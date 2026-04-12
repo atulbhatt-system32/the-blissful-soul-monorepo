@@ -24,40 +24,54 @@ const LineItemUnitPrice = ({
     ((originalTotalAmount - totalAmount) / (originalTotalAmount || 1)) * 100
   )
 
+  const originalPrice = (original_total ?? 0) / item.quantity
+  const currentPrice = (total ?? 0) / item.quantity
+
   return (
     <div className="flex flex-col text-ui-fg-muted justify-center h-full">
-      {hasReducedPrice && showOriginal && (
+      {hasReducedPrice && item.quantity > 1 ? (
+        <span className="text-base-regular" data-testid="product-unit-price">
+          {convertToLocale({
+            amount: originalPrice,
+            currency_code: currencyCode,
+          })}
+        </span>
+      ) : (
         <>
-          <p>
-            {style === "default" && (
-              <span className="text-ui-fg-muted">Original: </span>
-            )}
-            <span
-              className="line-through"
-              data-testid="product-unit-original-price"
-            >
-              {convertToLocale({
-                amount: (original_total ?? 0) / item.quantity,
-                currency_code: currencyCode,
-              })}
-            </span>
-          </p>
-          {style === "default" && (
-            <span className="text-ui-fg-interactive">-{percentage_diff}%</span>
+          {hasReducedPrice && showOriginal && (
+            <>
+              <p>
+                {style === "default" && (
+                  <span className="text-ui-fg-muted">Original: </span>
+                )}
+                <span
+                  className="line-through"
+                  data-testid="product-unit-original-price"
+                >
+                  {convertToLocale({
+                    amount: originalPrice,
+                    currency_code: currencyCode,
+                  })}
+                </span>
+              </p>
+              {style === "default" && (
+                <span className="text-ui-fg-interactive">-{percentage_diff}%</span>
+              )}
+            </>
           )}
+          <span
+            className={clx("text-base-regular", {
+              "text-ui-fg-interactive": hasReducedPrice,
+            })}
+            data-testid="product-unit-price"
+          >
+            {convertToLocale({
+              amount: currentPrice,
+              currency_code: currencyCode,
+            })}
+          </span>
         </>
       )}
-      <span
-        className={clx("text-base-regular", {
-          "text-ui-fg-interactive": hasReducedPrice,
-        })}
-        data-testid="product-unit-price"
-      >
-        {convertToLocale({
-          amount: (total ?? 0) / item.quantity,
-          currency_code: currencyCode,
-        })}
-      </span>
     </div>
   )
 }

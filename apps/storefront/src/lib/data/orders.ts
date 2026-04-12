@@ -19,7 +19,7 @@ export const retrieveOrder = async (id: string) => {
       method: "GET",
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
+          "*payment_collections.payments,*items,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
       },
       headers,
       next,
@@ -49,7 +49,7 @@ export const listOrders = async (
         limit,
         offset,
         order: "-created_at",
-        fields: "*items,+items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
+        fields: "*items,*items.adjustments,+items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
         ...filters,
       },
       headers,
@@ -153,7 +153,7 @@ export const lookupOrder = async (
       },
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
+          "*payment_collections.payments,*items,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
       },
       headers,
     })

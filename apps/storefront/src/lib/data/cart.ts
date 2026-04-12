@@ -24,7 +24,7 @@ import { getLocale } from "@lib/data/locale-actions"
 export async function retrieveCart(cartId?: string, fields?: string) {
   const id = cartId || (await getCartId())
   fields ??=
-    "*items, *region, *items.variant, *items.variant.product, *items.variant.product.type, *items.variant.product.tags, *items.variant.product.images, *items.metadata, +items.total, *promotions, +shipping_methods.name"
+    "*items, *items.adjustments, *region, *items.variant, *items.variant.product, *items.variant.product.type, *items.variant.product.tags, *items.variant.product.images, *items.metadata, +items.total, *promotions, +shipping_methods.name"
 
   if (!id) {
     return null
@@ -557,7 +557,7 @@ export async function createBookingCart({
     // 4. Initiate Razorpay Payment Session
     await sdk.store.payment.initiatePaymentSession(
       updatedCart,
-      { provider_id: "razorpay" },
+      { provider_id: "razorpay", data: { cart: updatedCart } } as any,
       {},
       headers
     )

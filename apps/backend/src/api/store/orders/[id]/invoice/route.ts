@@ -11,7 +11,7 @@ export async function GET(
   try {
     const { data: orders } = await (query as any).graph({
       entity: "order",
-      fields: ["*", "items.*", "shipping_address.*", "billing_address.*", "payment_collections.payments.*", "shipping_methods.*", "+total", "+subtotal", "+shipping_total", "+tax_total", "+discount_total"],
+      fields: ["*", "items.*", "items.adjustments.*", "shipping_address.*", "billing_address.*", "payment_collections.payments.*", "shipping_methods.*", "shipping_methods.adjustments.*", "+total", "+subtotal", "+shipping_total", "+tax_total", "+discount_total"],
       filters: { id },
     })
 
