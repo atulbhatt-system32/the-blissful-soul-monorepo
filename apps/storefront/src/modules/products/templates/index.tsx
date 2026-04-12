@@ -18,6 +18,7 @@ type ProductTemplateProps = {
   countryCode: string
   images: HttpTypes.StoreProductImage[]
   strapiContent?: any
+  storeConfig?: any
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -26,6 +27,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   countryCode,
   images,
   strapiContent,
+  storeConfig,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -60,10 +62,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                 disabled={true}
                 product={product}
                 region={region}
+                storeConfig={storeConfig}
               />
             }
           >
-            <ProductActionsWrapper id={product.id} region={region} />
+            <ProductActionsWrapper id={product.id} region={region} storeConfig={storeConfig} />
           </Suspense>
         </div>
       </div>

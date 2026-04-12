@@ -4,12 +4,15 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
-import { getStrapiProduct } from "@lib/data/strapi"
+import { getStrapiProduct, getStorePageData } from "@lib/data/strapi"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
   searchParams: Promise<{ v_id?: string }>
 }
+
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export async function generateStaticParams() {
   try {
@@ -119,7 +122,10 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
-  const strapiProduct = await getStrapiProduct(pricedProduct.id)
+  const [strapiProduct, storeConfig] = await Promise.all([
+    getStrapiProduct(pricedProduct.id),
+    getStorePageData(),
+  ])
   const images = getImagesForVariant(pricedProduct, selectedVariantId) || []
 
   return (
@@ -129,6 +135,7 @@ export default async function ProductPage(props: Props) {
       countryCode={params.countryCode}
       images={images}
       strapiContent={strapiProduct?.attributes}
+      storeConfig={storeConfig}
     />
   )
 }

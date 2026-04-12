@@ -187,18 +187,22 @@ export async function getStorePageData() {
             populate: {
                 hero_image: true,
                 seo: true,
+                announcements: true,
             },
         })
 
-        const response = await fetch(`${STRAPI_URL}/api/store-config?${query}`, {
+        const url = `${STRAPI_URL}/api/store-config?${query}`
+        console.log("[Strapi] Fetching store config:", url)
+        
+        const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
             cache: "no-store",
         })
 
-        const data = await response.json()
-        return (data.data as any) || null
+        const json = await response.json()
+        return json.data?.attributes || json.data || null
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching store page data:", error)

@@ -124,10 +124,10 @@ const ShippingAddress = ({
             </p>
           </div>
           <LocalizedClientLink 
-            href="/account/login" 
+            href="/account" 
             className="text-[#C5A059] hover:text-[#C5A059]/80 text-[11px] uppercase tracking-[0.2em] font-black border-b-2 border-[#C5A059]/30 hover:border-[#C5A059] transition-all pb-0.5"
           >
-            Enter Sanctuary
+            Login
           </LocalizedClientLink>
         </div>
       )}
@@ -251,6 +251,7 @@ const ShippingAddress = ({
           autoComplete="tel"
           value={formData["shipping_address.phone"]}
           onChange={handleChange}
+          required
           data-testid="shipping-phone-input"
         />
       </div>

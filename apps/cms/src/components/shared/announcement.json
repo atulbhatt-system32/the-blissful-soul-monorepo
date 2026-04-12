@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_announcements",
+  "info": {
+    "displayName": "Announcement",
+    "description": "A single announcement message",
+    "icon": "megaphone"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "show_button": {
+      "type": "boolean",
+      "default": true
+    },
+    "link": {
+      "type": "string",
+      "default": "/store"
+    }
+  }
+}

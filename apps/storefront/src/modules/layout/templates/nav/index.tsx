@@ -9,20 +9,24 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import PromotionBanner from "@modules/layout/components/promotion-banner"
+import { getStorePageData } from "@lib/data/strapi"
 import SearchToggle from "@modules/layout/components/search-toggle"
+import NavLinks from "@modules/layout/components/nav-links"
 import StickyWrapper from "@modules/layout/components/sticky-wrapper"
 
-
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, storeConfig] = await Promise.all([
     listRegions().then((regions: HttpTypes.StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    getStorePageData(),
   ])
 
   return (
     <StickyWrapper>
-      <PromotionBanner />
+      {storeConfig?.show_announcement !== false && (
+        <PromotionBanner announcements={storeConfig?.announcements} />
+      )}
       <header className="w-full h-24 border-b border-metal/10 duration-200 !bg-white transition-all relative z-[101]">
         <nav className="content-container flex items-center justify-between w-full h-full">
           
@@ -45,33 +49,7 @@ export default async function Nav() {
           {/* Right Section: Navigation & Actions */}
           <div className="flex items-center gap-x-3 md:gap-x-5">
             {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center gap-x-8 mr-4">
-              <LocalizedClientLink 
-                href="/" 
-                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
-                data-testid="nav-home-link"
-              >
-                Home
-              </LocalizedClientLink>
-              <LocalizedClientLink 
-                href="/about" 
-                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
-              >
-                About
-              </LocalizedClientLink>
-              <LocalizedClientLink 
-                href="/store" 
-                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
-              >
-                Shop Crystals
-              </LocalizedClientLink>
-              <LocalizedClientLink 
-                href="/book-session" 
-                className="font-sans text-[13px] font-medium text-foreground/70 hover:text-primary transition-colors"
-              >
-                Sessions
-              </LocalizedClientLink>
-            </div>
+            <NavLinks />
 
             <div className="flex items-center gap-x-1 md:gap-x-2 border-l border-metal/10 pl-3 md:pl-6">
               {/* Desktop/Tablet Search */}

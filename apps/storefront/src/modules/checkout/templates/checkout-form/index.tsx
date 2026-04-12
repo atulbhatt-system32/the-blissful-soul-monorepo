@@ -25,9 +25,14 @@ export default async function CheckoutForm({
 
   const isDigitalOnly = cart.items?.every((item) => {
     const p = item.variant?.product as any;
+    const typeValue = (p?.type?.value || p?.type || "").toLowerCase();
+    const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || [];
+    
     return (
-      p?.type?.value === "session" || 
-      p?.tags?.some((t:any) => t.value === "session") ||
+      typeValue === "session" || 
+      typeValue === "booking" ||
+      tags.includes("session") ||
+      tags.includes("booking") ||
       p?.metadata?.is_service === true || 
       p?.metadata?.is_service === "true" ||
       item.variant?.metadata?.is_service === true

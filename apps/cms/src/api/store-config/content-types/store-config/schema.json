@@ -27,6 +27,15 @@
             "type": "component",
             "repeatable": false,
             "component": "shared.seo"
+        },
+        "announcements": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.announcement"
+        },
+        "show_announcement": {
+            "type": "boolean",
+            "default": true
         }
     }
 }
