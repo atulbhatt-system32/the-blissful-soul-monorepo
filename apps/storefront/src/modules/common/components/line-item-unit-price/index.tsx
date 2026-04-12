@@ -6,12 +6,14 @@ type LineItemUnitPriceProps = {
   item: HttpTypes.StoreCartLineItem | HttpTypes.StoreOrderLineItem
   style?: "default" | "tight"
   currencyCode: string
+  showOriginal?: boolean
 }
 
 const LineItemUnitPrice = ({
   item,
   style = "default",
   currencyCode,
+  showOriginal = true,
 }: LineItemUnitPriceProps) => {
   const { total, original_total } = item
   const totalAmount = total ?? 0
@@ -24,7 +26,7 @@ const LineItemUnitPrice = ({
 
   return (
     <div className="flex flex-col text-ui-fg-muted justify-center h-full">
-      {hasReducedPrice && (
+      {hasReducedPrice && showOriginal && (
         <>
           <p>
             {style === "default" && (

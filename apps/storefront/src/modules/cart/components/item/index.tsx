@@ -201,6 +201,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 item={item}
                 style="tight"
                 currencyCode={currencyCode}
+                showOriginal={false}
               />
             </span>
           )}

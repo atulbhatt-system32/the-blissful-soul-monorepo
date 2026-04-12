@@ -47,7 +47,11 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     try {
       await applyPromotions(codes)
     } catch (e: any) {
-      setErrorMessage(e.message)
+      let msg = e.message || "An error occurred while applying the code."
+      if (msg.toLowerCase().includes("invalid")) {
+        msg = "This promotion code is not valid. Please check and try again."
+      }
+      setErrorMessage(msg)
     }
 
     if (input) {

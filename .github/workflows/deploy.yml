@@ -201,6 +201,12 @@ jobs:
             export IMAGE_TAG="${GITHUB_SHA}"
 
             mkdir -p "$APP_DIR"
+            # Pre-create bind-mount directories with correct ownership (uid 1000 = node user in containers)
+            # Without this, Docker Compose creates them as root and the container process can't write to them
+            mkdir -p "$APP_DIR/apps/backend/static"
+            chown -R 1000:1000 "$APP_DIR/apps/backend/static"
+            mkdir -p "$APP_DIR/apps/cms/public/uploads"
+            chown -R 1000:1000 "$APP_DIR/apps/cms/public/uploads"
             cd "$APP_DIR"
 
             # Write secrets to .env
