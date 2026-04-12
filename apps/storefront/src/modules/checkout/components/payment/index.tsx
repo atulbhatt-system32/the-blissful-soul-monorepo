@@ -71,7 +71,6 @@ const Payment = ({
       const providerId = razorpayProvider?.id || availablePaymentMethods?.[0]?.id || "pp_razorpay_razorpay"
 
       // Initialize payment session with FRESH cart
-      // Pass cart in data so the Razorpay provider can access it via input.data.cart
       const paymentCollectionResp = await initiatePaymentSession(freshCart, {
         provider_id: providerId,
         data: { cart: freshCart },

@@ -10,5 +10,11 @@ export const config: MiddlewaresConfig = {
         express.static(path.resolve(process.cwd())) as any
       ],
     },
+    {
+      matcher: "/store/payment-collections*",
+      bodyParserConfig: {
+        sizeLimit: "10mb",
+      },
+    },
   ],
 }

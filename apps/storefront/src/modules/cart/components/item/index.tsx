@@ -65,6 +65,21 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
             <div className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
               <LineItemOptions variant={item.variant} metadata={item.metadata} />
             </div>
+            
+            {(item as any).adjustments && (item as any).adjustments.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {(item as any).adjustments.map((adjustment: any) => (
+                  <div 
+                    key={adjustment.id}
+                    className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
+                  >
+                     <span className="text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                       Applied: {adjustment.description || adjustment.code}
+                     </span>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="font-black text-xs text-[#2C1E36] mt-1">
               <LineItemPrice
                 item={item}
@@ -140,6 +155,21 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
           <div className="text-[7px] small:text-[9px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
             <LineItemOptions variant={item.variant} metadata={item.metadata} data-testid="product-variant" />
           </div>
+
+          {(item as any).adjustments && (item as any).adjustments.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1.5">
+              {(item as any).adjustments.map((adjustment: any) => (
+                <div 
+                  key={adjustment.id}
+                  className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive"
+                >
+                   <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                     Applied: {adjustment.description || adjustment.code}
+                   </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Table.Cell>
 

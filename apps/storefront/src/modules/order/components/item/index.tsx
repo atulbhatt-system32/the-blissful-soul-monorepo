@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { Table, Text } from "@medusajs/ui"
+import { convertToLocale } from "@lib/util/money"
 
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
@@ -32,6 +33,22 @@ const Item = ({ item, currencyCode }: ItemProps) => {
           {item.product_title}
         </Text>
         <LineItemOptions variant={item.variant} metadata={item.metadata as Record<string, unknown>} data-testid="product-variant" />
+        
+        {(item as any).adjustments && (item as any).adjustments.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-1">
+            {(item as any).adjustments.map((adjustment: any) => (
+              <div 
+                key={adjustment.id}
+                className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
+              >
+                 <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                   Applied: {adjustment.description || adjustment.code} 
+                   {adjustment.amount > 0 && ` (-${convertToLocale({ amount: adjustment.amount, currency_code: currencyCode })})`}
+                 </span>
+              </div>
+            ))}
+          </div>
+        )}
       </Table.Cell>
 
       <Table.Cell className="!pr-0">

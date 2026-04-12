@@ -9,21 +9,27 @@ function formatCurrency(amount: number, currencyCode: string) {
 function generateHeader(doc: PDFKit.PDFDocument, order: any) {
   doc
     .fillColor("#000000")
-    .fontSize(28)
+    .fontSize(22)
+    .font("Helvetica-Bold")
     .text("The Blissful Soul", 50, 50)
     .fontSize(10)
-    .fillColor("#333333")
-    .text("Premium Crystals & Services", 50, 80)
+    .font("Helvetica")
+    .fillColor("#666666")
+    .text("Premium Crystals & Services", 50, 75)
+    .text("Shakti Nagar, Delhi 110007", 50, 88)
+    .text("GSTIN: 07AAAAA0000A1Z5", 50, 101) // Placeholder GSTIN
     
     .fontSize(24)
+    .fillColor("#000000")
     .font("Helvetica-Bold")
-    .text("INVOICE", 50, 50, { align: "right" })
+    .text("TAX INVOICE", 50, 50, { align: "right" })
     .font("Helvetica")
     .fontSize(10)
-    .text(`Invoice Number: #${order.display_id}`, 50, 75, { align: "right" })
-    .text(`Date: ${new Date(order.created_at).toLocaleDateString()}`, 50, 90, { align: "right" })
+    .text(`Invoice No: INV-${order.display_id}`, 50, 80, { align: "right" })
+    .text(`Order ID: #${order.display_id}`, 50, 93, { align: "right" })
+    .text(`Date: ${new Date(order.created_at).toLocaleDateString()}`, 50, 106, { align: "right" })
     
-  doc.moveTo(50, 115).lineTo(550, 115).lineWidth(1).strokeColor("#DDDDDD").stroke()
+  doc.moveTo(50, 125).lineTo(550, 125).lineWidth(1).strokeColor("#EEEEEE").stroke()
 }
 
 function generateCustomerInformation(doc: PDFKit.PDFDocument, order: any) {
@@ -36,38 +42,62 @@ function generateCustomerInformation(doc: PDFKit.PDFDocument, order: any) {
 
   doc
     .fillColor("#000000")
-    .fontSize(12)
+    .fontSize(11)
     .font("Helvetica-Bold")
-    .text("Bill To:", 50, 135)
+    .text("BILL TO:", 50, 145)
     .font("Helvetica")
     .fontSize(10)
-    .text(name, 50, 155)
-    .text(address1, 50, 170)
+    .text(name, 50, 165)
+    .text(address1, 50, 180)
   
-  if (address2) doc.text(address2, 50, 185)
+  if (address2) doc.text(address2, 50, 195)
   
-  doc.text(`${city}, ${postal}`, 50, address2 ? 200 : 185)
-  doc.text(country, 50, address2 ? 215 : 200)
+  doc.text(`${city}, ${postal}`, 50, address2 ? 210 : 195)
+  doc.text(country, 50, address2 ? 225 : 210)
 
   // Order Details
   doc
     .font("Helvetica-Bold")
-    .text("Payment Method:", 300, 135)
+    .text("PAYMENT INFO:", 350, 145)
     .font("Helvetica")
-    .text(order.payment_collections?.[0]?.payments?.[0]?.provider_id ? order.payment_collections[0].payments[0].provider_id.replace("_", " ").toUpperCase() : "Online Payment", 300, 155)
-    .font("Helvetica-Bold")
-    .text("Email:", 300, 180)
-    .font("Helvetica")
-    .text(order.email, 300, 195)
+    .text(`Method: ${order.payment_collections?.[0]?.payments?.[0]?.provider_id ? order.payment_collections[0].payments[0].provider_id.replace("_", " ").toUpperCase() : "Online Payment"}`, 350, 165)
+    .text(`Email: ${order.email}`, 350, 180)
+    .text(`Phone: ${order.shipping_address?.phone || "N/A"}`, 350, 195)
 }
 
-function generateTableRow(doc: PDFKit.PDFDocument, y: number, item: string, unitCost: string, quantity: string, lineTotal: string) {
+function generateTableRow(doc: PDFKit.PDFDocument, y: number, item: string, unitPrice: string, quantity: string, lineTotal: string, originalTotal?: string) {
   doc
     .fontSize(10)
-    .text(item, 50, y)
-    .text(unitCost, 280, y, { width: 90, align: "right" })
+    .fillColor("#000000")
+    .text(item, 50, y, { width: 220 })
+    .text(unitPrice, 280, y, { width: 90, align: "right" })
     .text(quantity, 370, y, { width: 90, align: "right" })
-    .text(lineTotal, 0, y, { align: "right" })
+
+  if (originalTotal && originalTotal !== lineTotal) {
+    const originalWidth = doc.widthOfString(originalTotal)
+    const totalX = 550 - originalWidth // Align right
+    
+    doc
+      .fillColor("#999999")
+      .text(originalTotal, 0, y, { align: "right" })
+    
+    // Draw strikeout line
+    doc
+      .moveTo(550 - originalWidth, y + 5)
+      .lineTo(550, y + 5)
+      .lineWidth(0.5)
+      .strokeColor("#999999")
+      .stroke()
+      
+    doc
+      .fillColor("#4F46E5")
+      .font("Helvetica-Bold")
+      .text(lineTotal, 0, y + 12, { align: "right" })
+      .font("Helvetica")
+      .fillColor("#000000")
+  } else {
+    doc.text(lineTotal, 0, y, { align: "right" })
+  }
 }
 
 function generateInvoiceTable(doc: PDFKit.PDFDocument, order: any) {
@@ -75,69 +105,103 @@ function generateInvoiceTable(doc: PDFKit.PDFDocument, order: any) {
   const invoiceTableTop = 270
 
   doc.font("Helvetica-Bold")
-  generateTableRow(doc, invoiceTableTop, "Item", "Unit Cost", "Quantity", "Total")
+    .fillColor("#333333")
+  generateTableRow(doc, invoiceTableTop, "Description", "Unit Price", "Qty", "Amount")
   doc.moveTo(50, invoiceTableTop + 15).lineTo(550, invoiceTableTop + 15).strokeColor("#AAAAAA").stroke()
-  doc.font("Helvetica")
+  doc.font("Helvetica").fillColor("#000000")
 
   const items = order.items || []
-  let position = 0
+  let currentY = invoiceTableTop + 30
 
   for (i = 0; i < items.length; i++) {
     const item = items[i]
-    position = invoiceTableTop + 30 + (i * 30)
     
+    const itemSubtotal = (item.unit_price || 0) * (item.quantity || 0)
+    const adjustmentTotal = (item.adjustments || []).reduce((sum: number, adj: any) => sum + (adj.amount ?? 0), 0)
+    const itemTotal = item.total ?? (itemSubtotal - adjustmentTotal)
+
     generateTableRow(
       doc,
-      position,
+      currentY,
       item.title,
       formatCurrency(item.unit_price, order.currency_code),
       item.quantity.toString(),
-      formatCurrency(item.subtotal ?? item.unit_price * item.quantity, order.currency_code)
+      formatCurrency(itemTotal, order.currency_code),
+      formatCurrency(itemSubtotal, order.currency_code)
     )
     
-    doc.moveTo(50, position + 20).lineTo(550, position + 20).lineWidth(0.5).strokeColor("#EEEEEE").stroke()
+    const adjustmentLabels = (item.adjustments || [])
+      .map((a: any) => a.description || a.code)
+      .filter(Boolean)
+
+    if (adjustmentLabels.length > 0) {
+      doc
+        .fontSize(8)
+        .fillColor("#4F46E5")
+        .text(`Applied: ${adjustmentLabels.join(", ")} (-${formatCurrency(adjustmentTotal, order.currency_code)})`, 50, currentY + 12)
+        .fillColor("#000000")
+        .fontSize(10)
+      
+      currentY += (itemSubtotal !== itemTotal ? 15 : 12)
+    }
+    
+    doc.moveTo(50, currentY + 18).lineTo(550, currentY + 18).lineWidth(0.5).strokeColor("#EEEEEE").stroke()
+    currentY += (itemSubtotal !== itemTotal ? 35 : 30)
   }
 
-  // Summary section — compute subtotal from items since order-level totals
-  // may not be populated by query.graph()
-  const computedSubtotal = items.reduce((sum: number, item: any) => {
-    return sum + (item.subtotal ?? item.unit_price * item.quantity)
+  // Summary section — compute robust totals
+  const rawItemSubtotal = items.reduce((sum: number, item: any) => {
+    return sum + ((item.unit_price || 0) * (item.quantity || 0))
   }, 0)
+
+  const shippingTotal = order.shipping_total ?? (order.shipping_methods || []).reduce(
+    (sum: number, sm: any) => sum + (sm.amount ?? 0),
+    0
+  )
+
+  const itemDiscounts = items.reduce((sum: number, item: any) => {
+    return sum + (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
+  }, 0)
+  
+  const shippingDiscounts = (order.shipping_methods || []).reduce((sum: number, sm: any) => {
+    return sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
+  }, 0)
+
+  const discountTotal = order.discount_total || (itemDiscounts + shippingDiscounts)
   const taxTotal = order.tax_total || 0
-  const shippingTotal = order.shipping_total || 0
-  const discountTotal = order.discount_total || 0
-  const subtotal = order.subtotal || computedSubtotal
-  const total = order.total || (subtotal + taxTotal + shippingTotal - discountTotal)
+  
+  const subtotal = order.subtotal || (rawItemSubtotal + shippingTotal)
+  const total = order.total || (subtotal - discountTotal + taxTotal)
 
   const shippingMethodName = order.shipping_methods?.[0]?.name || "Shipping"
 
-  const subtotalPosition = position + 40
+  const subtotalPosition = currentY + 10
   doc.font("Helvetica-Bold")
 
-  doc.text("Subtotal:", 370, subtotalPosition + 10, { width: 90, align: "right" })
+  doc.text("Gross Subtotal:", 370, subtotalPosition + 10, { width: 90, align: "right" })
   doc.text(formatCurrency(subtotal, order.currency_code), 0, subtotalPosition + 10, { align: "right" })
 
-  let currentY = subtotalPosition + 30
+  let currentSummaryY = subtotalPosition + 30
 
   if (discountTotal > 0) {
-    doc.text("Discount:", 370, currentY, { width: 90, align: "right" })
-    doc.text(`- ${formatCurrency(discountTotal, order.currency_code)}`, 0, currentY, { align: "right" })
-    currentY += 20
+    doc.text("Total Savings:", 370, currentSummaryY, { width: 90, align: "right" })
+    doc.text(`- ${formatCurrency(discountTotal, order.currency_code)}`, 0, currentSummaryY, { align: "right" })
+    currentSummaryY += 20
   }
 
-  doc.text("GST:", 370, currentY, { width: 90, align: "right" })
-  doc.text(formatCurrency(taxTotal, order.currency_code), 0, currentY, { align: "right" })
-  currentY += 20
+  doc.text("Tax/GST:", 370, currentSummaryY, { width: 90, align: "right" })
+  doc.text(formatCurrency(taxTotal, order.currency_code), 0, currentSummaryY, { align: "right" })
+  currentSummaryY += 20
 
-  doc.text(`${shippingMethodName}:`, 370, currentY, { width: 90, align: "right" })
-  doc.text(formatCurrency(shippingTotal, order.currency_code), 0, currentY, { align: "right" })
-  currentY += 20
+  doc.text(`${shippingMethodName}:`, 370, currentSummaryY, { width: 90, align: "right" })
+  doc.text(formatCurrency(shippingTotal, order.currency_code), 0, currentSummaryY, { align: "right" })
+  currentSummaryY += 20
 
-  doc.moveTo(370, currentY + 5).lineTo(550, currentY + 5).lineWidth(1).strokeColor("#000000").stroke()
+  doc.moveTo(370, currentSummaryY + 5).lineTo(550, currentSummaryY + 5).lineWidth(1).strokeColor("#000000").stroke()
 
   doc.fontSize(12)
-  doc.text("Total:", 370, currentY + 20, { width: 90, align: "right" })
-  doc.text(formatCurrency(total, order.currency_code), 0, currentY + 20, { align: "right" })
+  doc.text("Grand Total:", 370, currentSummaryY + 20, { width: 90, align: "right" })
+  doc.text(formatCurrency(total, order.currency_code), 0, currentSummaryY + 20, { align: "right" })
   doc.fontSize(10)
 }
 
@@ -150,6 +214,22 @@ function generateFooter(doc: PDFKit.PDFDocument) {
       50,
       700,
       { align: "center", width: 500 }
+    )
+    .fontSize(8)
+    .font("Helvetica")
+    .text(
+      "This is a computer-generated invoice and does not require a physical signature.",
+      50,
+      720,
+      { align: "center", width: 500 }
+    )
+    .fontSize(10)
+    .font("Helvetica-Bold")
+    .text(
+      "Authorized Signatory [The Blissful Soul]",
+      50,
+      740,
+      { align: "right", width: 500 }
     )
 }
 
