@@ -54,6 +54,8 @@ services:
       - STOREFRONT_MEDUSA_URL=http://backend:9000
       - STOREFRONT_STRAPI_URL=http://cms:1337
       - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
       - cms
