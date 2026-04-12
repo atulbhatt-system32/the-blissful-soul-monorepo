@@ -105,9 +105,6 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                   Apply
                 </SubmitButton>
               </div>
-              <p className="mt-2 text-[9px] text-purple-300/60">
-                Try: <span className="text-purple-200 uppercase">HEAL10</span>, <span className="text-purple-200 uppercase">CRYSTAL20</span>
-              </p>
 
               <ErrorMessage
                 error={errorMessage}
