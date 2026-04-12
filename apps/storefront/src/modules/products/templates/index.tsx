@@ -6,6 +6,7 @@ import ProductOnboardingCta from "@modules/products/components/product-onboardin
 import RelatedProducts from "@modules/products/components/related-products"
 import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
@@ -34,6 +35,30 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
   return (
     <>
+      <div className="content-container py-4">
+        <nav className="flex items-center gap-x-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059]">
+          <LocalizedClientLink href="/" className="hover:text-[#2C1E36] transition-colors">
+            Home
+          </LocalizedClientLink>
+          <span className="text-gray-300">/</span>
+          <LocalizedClientLink href="/store" className="hover:text-[#2C1E36] transition-colors">
+            Store
+          </LocalizedClientLink>
+          {product.collection && (
+            <>
+              <span className="text-gray-300">/</span>
+              <LocalizedClientLink
+                href={`/collections/${product.collection.handle}`}
+                className="hover:text-[#2C1E36] transition-colors"
+              >
+                {product.collection.title}
+              </LocalizedClientLink>
+            </>
+          )}
+          <span className="text-gray-300">/</span>
+          <span className="text-[#2C1E36]/60">{product.title}</span>
+        </nav>
+      </div>
       <div
         className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
         data-testid="product-container"
