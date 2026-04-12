@@ -27,7 +27,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         </Heading>
 
         <Text
-          className="text-medium text-ui-fg-subtle whitespace-pre-line"
+          className="text-medium text-ui-fg-subtle"
           data-testid="product-description"
         >
           {product.description}

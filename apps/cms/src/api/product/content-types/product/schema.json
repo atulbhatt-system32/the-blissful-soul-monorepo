@@ -28,6 +28,9 @@
         "description": {
             "type": "richtext"
         },
+        "rich_description": {
+            "type": "blocks"
+        },
         "content": {
             "type": "richtext"
         },

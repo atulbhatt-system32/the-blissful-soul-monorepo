@@ -91,3 +91,37 @@ Visit this URL while logged into Medusa Admin:
 
 > [!NOTE]
 > You must be logged in to the Medusa Admin in the same browser session for this link to work.
+
+---
+
+## Step 7: Razorpay Payment Gateway Setup
+
+To enable payments and ensure orders are automatically marked as "Paid" once the customer completes the transaction, follow these steps:
+
+### **1. Configure Credentials**
+Ensure these values are set in your `apps/backend/.env` file:
+*   `RAZORPAY_ID`: Your Razorpay Key ID
+*   `RAZORPAY_SECRET`: Your Razorpay Key Secret
+*   `RAZORPAY_WEBHOOK_SECRET`: A secure random string (e.g., `_n'&%5S?Qs;2URp`)
+
+### **2. Set Up Webhook in Razorpay Dashboard**
+1.  Log in to your [Razorpay Dashboard](https://dashboard.razorpay.com/).
+2.  Go to **Account & Settings > Webhooks**.
+3.  Click **Add New Webhook** and use the following details:
+
+| Field | Value |
+| :--- | :--- |
+| **Webhook URL** | `https://backend.theblissfulsoul.in/hooks/payment/razorpay` |
+| **Secret** | (Same as your `RAZORPAY_WEBHOOK_SECRET`) |
+| **Alert Email** | Your admin email (e.g., `theblissfulsoul27@gmail.com`) |
+
+### **3. Active Events**
+In the "Active Events" section, you **must** select the following to ensure Medusa processes orders correctly:
+*   `payment.authorized`
+*   `payment.captured`
+*   `payment.failed`
+*   `order.paid` (Optional)
+
+### **4. Local Testing (Ngrok)**
+If you are testing payments locally, use your ngrok URL:
+*   `https://[your-ngrok-id].ngrok-free.app/hooks/payment/razorpay`
