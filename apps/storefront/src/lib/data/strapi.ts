@@ -188,6 +188,7 @@ export async function getStorePageData() {
                 hero_image: true,
                 seo: true,
                 announcements: true,
+                product_offers: true,
             },
         })
 

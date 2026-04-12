@@ -21,7 +21,9 @@
         "hero_image": {
             "type": "media",
             "multiple": false,
-            "allowedTypes": ["images"]
+            "allowedTypes": [
+                "images"
+            ]
         },
         "seo": {
             "type": "component",
@@ -36,6 +38,11 @@
         "show_announcement": {
             "type": "boolean",
             "default": true
+        },
+        "product_offers": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.product-offer"
         }
     }
 }

@@ -17,6 +17,9 @@ import QuantitySelector from "../quantity-selector"
 import { useWishlist } from "@lib/context/wishlist-context"
 import { Heart, Check } from "@medusajs/icons"
 
+import ProductOffers from "../product-offers"
+
+
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
@@ -35,6 +38,7 @@ const optionsAsKeymap = (
 
 export default function ProductActions({
   product,
+  region,
   disabled,
   storeConfig,
 }: ProductActionsProps) {
@@ -290,6 +294,8 @@ export default function ProductActions({
               Buy it now
             </Button>
           )}
+
+          <ProductOffers storeConfig={storeConfig} />
         </div>
 
         <MobileActions

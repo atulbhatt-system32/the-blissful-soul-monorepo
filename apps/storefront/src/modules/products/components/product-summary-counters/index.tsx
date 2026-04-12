@@ -38,7 +38,7 @@ const ProductSummaryCounters = ({ productId, storeConfig }: ProductSummaryCounte
   const realWatching = 1
 
   return (
-    <div className="flex flex-col gap-y-3 py-6 border-y border-gray-100 my-2">
+    <div className="flex flex-col gap-y-3 py-6 border-y border-gray-100">
       <div className="flex items-center gap-x-3 group">
         <motion.div 
           animate={{ scale: [1, 1.1, 1] }}

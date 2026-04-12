@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_product_offers",
+  "info": {
+    "displayName": "Product Offer",
+    "description": "High-impact promotional offers with title, subtitle and icons",
+    "icon": "priceTag"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "gift",
+        "discount",
+        "shipping",
+        "tag"
+      ],
+      "default": "tag"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}
