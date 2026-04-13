@@ -16,9 +16,9 @@ import HealingCrystals from "@modules/home/components/healing-crystals"
 import StatsBar from "@modules/layout/components/stats-bar"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "The Blissful Soul",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "A sanctuary for crystals, healing, and spiritual guidance by Master Pragya Vijh.",
 }
 
 export default async function Home(props: {

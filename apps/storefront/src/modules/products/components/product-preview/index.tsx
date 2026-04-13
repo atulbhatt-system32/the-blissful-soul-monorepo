@@ -108,7 +108,7 @@ export default function ProductPreview({
 
   return (
     <div className="group relative bg-white rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_4px_25px_rgba(44,30,54,0.04)] hover:shadow-[0_20px_60px_rgba(44,30,54,0.12)] transition-all duration-700 border border-[#2C1E36]/[0.05] flex flex-col h-full hover:-translate-y-2">
-      <LocalizedClientLink href={`/products/${product.handle}`} className="flex-grow">
+      <LocalizedClientLink href={isSession ? `/book-now?service_id=${product.id}` : `/products/${product.handle}`} className="flex-grow">
         <div data-testid="product-wrapper" className="relative">
           {/* Discount Badge */}
           {Number(displayPrice?.percentage_diff) > 0 && (
@@ -127,7 +127,7 @@ export default function ProductPreview({
             </div>
           )}
           
-          <div className="p-2 md:p-3">
+          <div className="relative p-2 md:p-3">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
@@ -142,7 +142,7 @@ export default function ProductPreview({
                e.preventDefault()
                toggleWishlist(product.id)
             }}
-            className="absolute bottom-3 right-3 md:bottom-4 md:right-4 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-2xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
+            className="absolute bottom-2 right-2 md:bottom-4 md:right-4 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
           >
              <svg 
                xmlns="http://www.w3.org/2000/svg" 
@@ -168,7 +168,7 @@ export default function ProductPreview({
             
             <div className="flex flex-col items-center gap-y-1 md:gap-y-4 mb-2">
               {displayPrice && (
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-center justify-center w-full px-2">
                    <PreviewPrice price={displayPrice} />
                 </div>
               )}

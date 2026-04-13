@@ -15,7 +15,6 @@ import Items from "@modules/order/components/items"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
-import SessionBooking from "@modules/order/components/session-booking"
 
 const OrderLookupTemplate = ({ 
   customer,
@@ -52,47 +51,9 @@ const OrderLookupTemplate = ({
   if (state.success && state.order) {
     const order = state.order
     
-    // Check if order contains a session
-    const sessionItems = order.items?.filter((item: any) => {
-      const product = item.variant?.product
-      return (
-        product?.type?.value === "session" || 
-        product?.tags?.some((t: any) => t.value === "session") ||
-        product?.metadata?.is_service === true ||
-        product?.metadata?.is_service === "true"
-      )
-    })
-
-    const hasSession = sessionItems && sessionItems.length > 0
-    const firstSession = hasSession ? sessionItems[0] : null
-    const calLink = (firstSession?.variant?.metadata?.cal_link || firstSession?.variant?.product?.metadata?.cal_link) as string | undefined
-
     return (
       <div className="py-16 min-h-[calc(100vh-64px)] w-full flex justify-center px-8 bg-gray-50/30">
         <div className="content-container flex flex-col items-center gap-y-10 max-w-4xl h-full w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {hasSession && calLink && (
-            <div className="w-full bg-[#2C1E36] p-8 md:p-12 rounded-[3rem] shadow-2xl shadow-purple-900/20 mb-6 overflow-hidden relative group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-white/10 transition-colors duration-700" />
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-[#C5A059] flex items-center justify-center text-[#2C1E36] mb-6 shadow-lg">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <Heading level="h2" className="text-white font-serif text-3xl mb-4 text-center">
-                  Finalize Your Healing Journey
-                </Heading>
-                <p className="text-purple-100 text-center mb-10 max-w-md leading-relaxed">
-                  Your session is ready for scheduling. Please select your preferred time below to confirm your presence.
-                </p>
-                <div className="w-full bg-white/5 backdrop-blur-md rounded-[2rem] p-1 border border-white/10">
-                  <SessionBooking 
-                    calLink={calLink} 
-                    customerName={`${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`}
-                    customerEmail={order.email || ""}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
 
           <div
             className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-12 px-8 md:px-12 rounded-[3rem] border border-gray-100 shadow-xl shadow-purple-900/5"

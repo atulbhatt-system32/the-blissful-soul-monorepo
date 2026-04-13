@@ -26,31 +26,31 @@ export default function ProductPrice({
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-3">
-        <span
-          className={clx("text-2xl font-bold", {
-            "text-metal": isSale,
-            "text-foreground": !isSale,
-          })}
-          data-testid="product-price"
-          data-value={selectedPrice.calculated_price_number}
-        >
-          {!variant && "From "}
-          {selectedPrice.calculated_price}
-        </span>
-        {isSale && (
           <span
-            className="text-base text-muted line-through"
-            data-testid="original-product-price"
-            data-value={selectedPrice.original_price_number}
+            className={clx("text-3xl md:text-4xl font-serif", {
+              "text-[#C5A059]": isSale,
+              "text-[#2C1E36]": !isSale,
+            })}
+            data-testid="product-price"
+            data-value={selectedPrice.calculated_price_number}
           >
-            {selectedPrice.original_price}
+            {!variant && "From "}
+            {selectedPrice.calculated_price}
           </span>
-        )}
-        {isSale && (
-          <span className="text-xs font-semibold bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-            {selectedPrice.percentage_diff}% OFF
-          </span>
-        )}
+          {isSale && (
+            <span
+              className="text-lg text-gray-400 line-through font-sans"
+              data-testid="original-product-price"
+              data-value={selectedPrice.original_price_number}
+            >
+              {selectedPrice.original_price}
+            </span>
+          )}
+          {isSale && (
+            <span className="text-xs font-bold bg-[#2C1E36] text-[#C5A059] px-3 py-1 rounded-full border border-[#C5A059]/20 shadow-sm uppercase tracking-wider">
+              {selectedPrice.percentage_diff}% OFF
+            </span>
+          )}
       </div>
     </div>
   )
