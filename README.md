@@ -55,27 +55,43 @@ the-blissful-soul-monorepo/
 *   **Node.js 20+**
 *   **PNPM**
 
+### Full Setup Guide
+
+For a complete, step-by-step walkthrough — including environment variables, admin account creation, store configuration (currencies, regions, shipping), API key setup, payment gateway (Razorpay), and more — refer to the **[Setup Guide](./setup_guide.md)**.
+
 ### Quick Start
 1.  **Clone the repository**.
-2.  **Initialize Environment**: Ensure `.env` files are present in `root`, `apps/backend/`, and `apps/storefront/`.
+2.  **Initialize Environment**: Copy the example env files:
+    ```bash
+    cp env.example .env
+    cp apps/backend/.env.example apps/backend/.env
+    cp apps/storefront/.env.example apps/storefront/.env
+    cp apps/cms/.env.example apps/cms/.env
+    ```
 3.  **Start Services**:
     ```bash
-    docker-compose up --build
+    docker-compose up -d --build
     ```
-4.  **Backend Console**: Access the Medusa admin at `http://localhost:9000/admin`.
-5.  **Storefront**: Access the development site at `http://localhost:8000`.
+4.  **Backend Console**: Access the Medusa admin at `http://localhost:9000/app`.
+5.  **Storefront**: Access the development site at `http://localhost:8001`.
 
----
-
-## 🔧 Post-Setup Configuration
-
-### Google SMTP & Invoicing
-1.  Go to `apps/backend/.env`.
-2.  Set `GOOGLE_SMTP_USER` to your Gmail address.
-3.  Set `GOOGLE_SMTP_PASS` to your **16-character Google App Password**.
-4.  Restart the backend to enable automated PDF invoice emailing.
+> For post-startup configuration (store currencies, regions, API keys, Razorpay webhooks, etc.), follow the [Setup Guide](./setup_guide.md) from Step 2 onwards.
 
 ---
 
 ## 📦 Deployment
 The project is optimized for containerized deployments. Refer to `DOCKER.md` for specific deployment instructions and production configuration.
+
+---
+
+## 📚 Additional Guides
+
+| Guide | Description |
+| :--- | :--- |
+| [Setup Guide](./setup_guide.md) | End-to-end setup: environment, services, store config, payments |
+| [Currency Setup](./docs/currency_setup_guide.md) | Adding and managing store currencies |
+| [Region Setup](./docs/region_setup_guide.md) | Creating regions and assigning currencies |
+| [Locations & Shipping](./docs/locations_shipping_guide.md) | Stock locations, sales channels, fulfillment |
+| [Publishable API Keys](./docs/publishable_keys_guide.md) | Generating and wiring up Medusa API keys |
+| [Strapi API Token](./docs/strapi_api_token_guide.md) | Creating and using Strapi API tokens |
+| [Product Creation](./docs/product_creation_guide.md) | Adding products and configuring visibility rules |

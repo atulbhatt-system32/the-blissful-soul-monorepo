@@ -1,6 +1,26 @@
 # 💎 Blissful Soul - Ultimate Setup Guide
 
-Follow this definitive 2-step process to get your Medusa v2 project live and fully connected.
+Follow this definitive process to get your Medusa v2 project live and fully connected.
+
+---
+
+## Step 0: Setup Environment Variables
+
+Before starting the services, you need to set up your `.env` files across the project by copying the provided example files:
+
+```bash
+# Project root
+cp env.example .env
+
+# Backend
+cp apps/backend/.env.example apps/backend/.env
+
+# Storefront
+cp apps/storefront/.env.example apps/storefront/.env
+
+# CMS
+cp apps/cms/.env.example apps/cms/.env
+```
 
 ---
 
@@ -33,16 +53,17 @@ docker-compose exec cms npx strapi admin:create-user --email admin@theblisfulsou
 1.  **Login to Medusa**: Go to [http://localhost:9000/app](http://localhost:9000/app) ⚙️
 2.  **Login to Strapi**: Go to [http://localhost:1337/admin](http://localhost:1337/admin) 🚀
 3.  **Credentials**: `admin@theblisfulsoul.in` / `BlissfulSoul@123` (Same for both).
-4.  **Add Store Currencies**: Go to **Settings > Store**. By default, it might be in Euros (EUR/USD). Edit the store settings to add your desired currency (e.g., `INR` - Indian Rupee) to the list of available currencies and save.
-5.  **Configure Regions**: Go to **Settings > Regions**, create your default region (e.g., "India") and assign the newly added currency (e.g., `INR`) to it.
-6.  **Set Default Store Configuration**: Go back to **Settings > Store**, ensure your store uses the newly created Region and `INR` Currency as the default.
-7.  **Create Key**: Go to **Settings > Publishable API Keys**, create "Main Storefront", and copy the token.
-8.  **Assign to publishable key**: Open the "Main Storefront" publishable key you just created. Under the **Sales Channels** or **Regions/Currencies** section (depending on your Medusa version), attach the "Default Sales Channel" so the storefront can access products and regions.
-9.  **Update .env**: Paste that token into `apps/storefront/.env` (for `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`).
-10. **Apply Changes**: Since Next.js requires a build to inject environment variables, rebuild the storefront:
+4.  **Add Store Currencies**: Go to **Settings > Store**. By default, it might be in Euros (EUR/USD). Edit the store settings to add your desired currency (e.g., `INR` - Indian Rupee) to the list of available currencies and save. *(See detailed guide: [Currency Setup Guide](./docs/currency_setup_guide.md))*
+5.  **Configure Regions**: Go to **Settings > Regions**, create your default region (e.g., "India") and assign the newly added currency (e.g., `INR`) to it. *(See detailed guide: [Region Setup Guide](./docs/region_setup_guide.md))*
+6.  **Configure Locations & Shipping**: Go to **Settings > Locations & Shipping**, create your stock location (e.g., "The Blissful Soul Warehouse"), assign your sales channel, and add your fulfillment provider (e.g., "Manual"). *(See detailed guide: [Locations & Shipping Guide](./docs/locations_shipping_guide.md))*
+7.  **Set Default Store Configuration**: Go back to **Settings > Store**, ensure your store uses the newly created Region and `INR` Currency as the default.
+8.  **Configure API Keys**: In the Medusa Admin, go to **Settings > Publishable API Keys**. Find or create your storefront key, copy the token, and ensure the "Default Sales Channel" is attached.
+9.  **Update .env (Medusa)**: Paste that token into `apps/storefront/.env` (for `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`). *(See detailed visual guide: [Publishable Keys Setup Guide](./docs/publishable_keys_guide.md))*
+10. **Get Strapi API Token**: In Strapi Admin, go to **Settings > API Tokens**. Click **Create new API Token**. Name it (e.g., "Storefront"), select `Unlimited` duration and `Full Access` type. Save, copy the token, and paste it into both `apps/storefront/.env` and `apps/backend/.env` (for `CMS_API_TOKEN`). *(See detailed guide: [Strapi API Token Guide](./docs/strapi_api_token_guide.md))*
+11. **Apply Changes**: Since Next.js and Medusa require a build/restart to inject environment variables, rebuild both services:
 
 ```bash
-docker-compose up -d --build storefront
+docker-compose up -d --build storefront backend
 ```
 
 🎉 **Everything is now connected! Your storefront at [localhost:8001](http://localhost:8001) will finally be error-free.** 🏎️💨🏆
