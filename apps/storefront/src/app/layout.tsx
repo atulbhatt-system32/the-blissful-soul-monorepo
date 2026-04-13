@@ -13,6 +13,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  title: {
+    template: "%s | The Blissful Soul",
+    default: "The Blissful Soul",
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

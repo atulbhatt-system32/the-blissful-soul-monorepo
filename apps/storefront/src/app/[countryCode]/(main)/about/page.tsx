@@ -4,7 +4,7 @@ import { getAboutPageData } from "@lib/data/strapi"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export const metadata: Metadata = {
-  title: "About Master Pragya | The Blissful Soul",
+  title: "About Us",
   description: "Learn more about Master Pragya Vijh, the founder of The Blissful Soul, a leading expert in astrology and psychology.",
 }
 

@@ -11,7 +11,7 @@ import { retrieveCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
   title: "Profile",
-  description: "View and edit your Medusa Store profile.",
+  description: "View and edit your The Blissful Soul profile.",
 }
 
 export default async function Profile() {
@@ -24,19 +24,18 @@ export default async function Profile() {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 small:px-8" data-testid="profile-page-wrapper">
-      <div className="mb-12 flex flex-col gap-y-2">
+      <div className="mb-6 flex flex-col gap-y-1">
         <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Sanctum Identity</span>
-        <h1 className="text-4xl font-serif text-[#2C1E36] font-bold">Your Profile</h1>
-        <p className="text-sm text-gray-500 italic max-w-lg leading-relaxed mt-2">
-          Refine your essence. Manage your personal identification and secure delivery preferences within your digital sanctuary.
+        <h1 className="text-3xl font-serif text-[#2C1E36] font-bold">Your Profile</h1>
+        <p className="text-xs text-gray-500 italic max-w-lg leading-relaxed mt-1">
+          Refine your essence. Manage your identification and security within your digital sanctuary.
         </p>
       </div>
-      <div className="flex flex-col gap-y-8 w-full">
+      <div className="flex flex-col w-full">
         <ProfileName customer={customer} />
-        <Divider />
         <ProfileEmail customer={customer} />
-        <Divider />
         <ProfilePhone customer={customer} />
+        <ProfilePassword customer={customer} />
       </div>
     </div>
   )

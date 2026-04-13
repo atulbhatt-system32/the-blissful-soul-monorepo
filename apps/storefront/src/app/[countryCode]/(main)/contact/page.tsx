@@ -3,7 +3,7 @@ import { getContactPageData } from "@lib/data/strapi"
 import ContactForm from "@modules/contact/components/contact-form"
 
 export const metadata: Metadata = {
-  title: "Contact Us | The Blissful Soul",
+  title: "Contact",
   description: "Get in touch with us for any questions about our crystals, tarot readings, or healing sessions.",
 }
 

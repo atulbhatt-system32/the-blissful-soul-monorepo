@@ -6,7 +6,7 @@ import { listProducts } from "@lib/data/products"
 import { listCategories } from "@lib/data/categories"
 
 export const metadata: Metadata = {
-  title: "Book Your Session | The Blissful Soul",
+  title: "Book Session",
   description: "Book your astrology, tarot reading, or healing session with Master Pragya Vijh.",
 }
 
