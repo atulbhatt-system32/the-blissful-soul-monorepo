@@ -8,26 +8,17 @@ const Hero = () => {
         <span>
           <Heading
             level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+            className="text-4xl md:text-6xl text-[#2C1E36] font-serif mb-4"
           >
-            Ecommerce Starter Template
+            The Blissful Soul
           </Heading>
           <Heading
             level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
+            className="text-lg md:text-xl text-[#C5A059] font-sans uppercase tracking-[0.3em] font-bold"
           >
-            Powered by Medusa and Next.js
+            Healing, Crystals & Spiritual Guidance
           </Heading>
         </span>
-        <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
-        >
-          <Button variant="secondary">
-            View on GitHub
-            <Github />
-          </Button>
-        </a>
       </div>
     </div>
   )

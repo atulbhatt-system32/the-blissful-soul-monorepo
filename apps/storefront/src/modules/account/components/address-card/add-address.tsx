@@ -60,15 +60,15 @@ const AddAddress = ({
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title>
-          <Heading className="mb-2">Add New address</Heading>
+          <Heading className="font-serif text-[#2C1E36] text-xl font-bold">Add New Address</Heading>
         </Modal.Title>
         <form action={formAction}>
           <Modal.Body>
-            <div className="flex flex-col gap-y-2">
-              <div className="flex flex-col gap-y-3 mb-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+            <div className="flex flex-col gap-y-3">
+              <div className="flex flex-col gap-y-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
                 <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">Set as Primary Address For</span>
-                <div className="flex gap-x-8">
-                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  <label className="flex items-center gap-x-2 cursor-pointer group">
                     <input 
                       type="radio" 
                       name="address_type" 
@@ -76,30 +76,30 @@ const AddAddress = ({
                       defaultChecked={true}
                       className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
                     />
-                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Shipping</span>
+                    <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">Shipping</span>
                   </label>
-                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                  <label className="flex items-center gap-x-2 cursor-pointer group">
                     <input 
                       type="radio" 
                       name="address_type" 
                       value="billing" 
                       className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
                     />
-                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">Billing</span>
+                    <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">Billing</span>
                   </label>
-                  <label className="flex items-center gap-x-2.5 cursor-pointer group">
+                  <label className="flex items-center gap-x-2 cursor-pointer group">
                     <input 
                       type="radio" 
                       name="address_type" 
                       value="other" 
                       className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
                     />
-                    <span className="text-sm font-serif text-[#2C1E36] font-bold group-hover:text-[#C5A059] transition-colors">None</span>
+                    <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">None</span>
                   </label>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-x-2">
+              <div className="grid grid-cols-2 gap-3">
                 <Input
                   label="First name"
                   name="first_name"
@@ -134,7 +134,7 @@ const AddAddress = ({
                 autoComplete="address-line2"
                 data-testid="address-2-input"
               />
-              <div className="grid grid-cols-[144px_1fr] gap-x-2">
+              <div className="grid grid-cols-2 gap-3">
                 <Input
                   label="Postal code"
                   name="postal_code"
@@ -167,13 +167,14 @@ const AddAddress = ({
                 label="Phone"
                 name="phone"
                 type="phone"
+                required
                 autoComplete="phone"
                 data-testid="phone-input"
               />
             </div>
             {formState.error && (
               <div
-                className="text-rose-500 text-small-regular py-2"
+                className="text-rose-500 text-xs font-medium py-2 mt-2"
                 data-testid="address-error"
               >
                 {formState.error}
@@ -181,17 +182,22 @@ const AddAddress = ({
             )}
           </Modal.Body>
           <Modal.Footer>
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 w-full">
               <Button
                 type="reset"
                 variant="secondary"
                 onClick={close}
-                className="h-10 px-8 rounded-xl text-[11px] uppercase tracking-widest font-black"
+                className="flex-1 h-11 rounded-xl text-[11px] uppercase tracking-widest font-black"
                 data-testid="cancel-button"
               >
                 Cancel
               </Button>
-              <SubmitButton data-testid="save-button" className="px-8 rounded-xl h-10 text-[11px] uppercase tracking-widest font-black">Save</SubmitButton>
+              <SubmitButton 
+                data-testid="save-button" 
+                className="flex-1 h-11 rounded-xl text-[11px] uppercase tracking-widest font-black bg-[#2C1E36] text-white hover:bg-[#3D2B4A] transition-all"
+              >
+                Save Address
+              </SubmitButton>
             </div>
           </Modal.Footer>
         </form>

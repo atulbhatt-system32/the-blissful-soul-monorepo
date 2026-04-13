@@ -41,8 +41,12 @@ export default async function OrderCompletedTemplate({
   const calLink = (firstSession?.variant?.metadata?.cal_link || firstSession?.variant?.product?.metadata?.cal_link) as string | undefined
 
   return (
-    <div className="py-12 min-h-screen bg-[#fdfcfb]">
-      <div className="content-container flex flex-col justify-center items-center gap-y-12 max-w-4xl h-full w-full">
+    <div className="py-24 min-h-screen bg-[#FBFAF8] relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#C5A059]/5 rounded-full blur-3xl -ml-64 -mt-64"></div>
+      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-[#2C1E36]/5 rounded-full blur-3xl -mr-64 -translate-y-1/2"></div>
+
+      <div className="content-container flex flex-col justify-center items-center gap-y-16 max-w-4xl h-full w-full relative z-10">
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         
         {!customer && (
@@ -53,16 +57,24 @@ export default async function OrderCompletedTemplate({
           />
         )}
 
-        <div className="flex flex-col items-center text-center gap-y-4 animate-in fade-in slide-in-from-top-6 duration-1000">
-           <div className="bg-[#C5A059]/10 p-4 rounded-full mb-2">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div className="flex flex-col items-center text-center gap-y-8 animate-in fade-in slide-in-from-top-12 duration-1000">
+           <div className="relative">
+              <div className="absolute inset-0 bg-[#C5A059]/30 rounded-full blur-xl animate-pulse"></div>
+              <div className="relative bg-[#2C1E36] w-24 h-24 rounded-full flex items-center justify-center shadow-2xl shadow-purple-900/40 border-2 border-[#C5A059]/20">
+                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
            </div>
-           <span className="text-[10px] uppercase tracking-[0.4em] font-black text-[#C5A059]">Order Sanctified</span>
-           <Heading level="h1" className="text-5xl font-serif text-[#2C1E36] font-bold leading-tight">
-             Thank you for your trust.
-           </Heading>
-           <p className="text-gray-500 italic text-lg max-w-lg">
-             Your treasures have been secured. A confirmation of this divine exchange has been sent to your digital portal.
+           
+           <div className="space-y-4">
+              <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C5A059] block animate-in fade-in duration-1000 delay-300">Order Sanctified</span>
+              <Heading level="h1" className="text-5xl md:text-7xl font-serif text-[#2C1E36] font-bold leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 italic">
+                Thank you for your trust.
+              </Heading>
+              <div className="h-0.5 w-24 bg-[#C5A059] mx-auto opacity-30 mt-6 rounded-full"></div>
+           </div>
+
+           <p className="text-[#685D6B] italic text-xl md:text-2xl max-w-2xl leading-relaxed font-serif animate-in fade-in duration-1000 delay-700">
+              Your treasures have been secured. A confirmation of this <span className="text-[#C5A059] font-normal">divine exchange</span> has been sent to your digital portal.
            </p>
         </div>
         

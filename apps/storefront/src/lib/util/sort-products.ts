@@ -38,11 +38,17 @@ export function sortProducts(
     })
   }
 
-  if (["created_at", "latest", "default", "popularity", "rating"].includes(sortBy)) {
+  if (["created_at", "latest", "popularity", "rating"].includes(sortBy)) {
     sortedProducts.sort((a, b) => {
       return (
         new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime()
       )
+    })
+  }
+
+  if (sortBy === "default") {
+    sortedProducts.sort((a, b) => {
+      return (a.title || "").localeCompare(b.title || "")
     })
   }
 

@@ -1,24 +1,52 @@
 "use client"
 
 import React, { useState } from "react"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
 
 const ContactForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    regarding: "Healing Session",
+    message: ""
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    
     setIsSubmitting(true)
+    setError(null)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSuccess(true)
-    
-    // Reset success after 5 seconds
-    setTimeout(() => setIsSuccess(false), 5000)
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok && (data as any).success) {
+        setIsSuccess(true)
+        setFormData({ name: "", email: "", phone: "", regarding: "Healing Session", message: "" })
+      } else {
+        setError((data as any).message || "Failed to send message. Please try again later.")
+      }
+    } catch (err: any) {
+      setError("A network error occurred. Please check your connection.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSuccess) {
@@ -35,6 +63,7 @@ const ContactForm = () => {
         </p>
         <button 
           onClick={() => setIsSuccess(false)}
+          type="button"
           className="mt-8 text-[10px] uppercase tracking-[0.2em] font-bold text-[#C5A059] hover:text-[#2C1E36] transition-colors"
         >
           Send another message
@@ -52,6 +81,9 @@ const ContactForm = () => {
           </label>
           <input 
             type="text" 
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             required
             className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] placeholder:text-gray-200" 
             placeholder="Apurv..." 
@@ -65,6 +97,9 @@ const ContactForm = () => {
           </label>
           <input 
             type="email" 
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             required
             className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] placeholder:text-gray-200" 
             placeholder="your@email.com" 
@@ -78,6 +113,9 @@ const ContactForm = () => {
           </label>
           <input 
             type="tel" 
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
             className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] placeholder:text-gray-200" 
             placeholder="+91..." 
           />
@@ -88,11 +126,16 @@ const ContactForm = () => {
           <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C5A059] ml-1 transition-colors group-focus-within:text-[#2C1E36]">
             Regarding
           </label>
-          <select className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] appearance-none cursor-pointer">
-             <option>Healing Session</option>
-             <option>Crystal Inquiry</option>
-             <option>Tarot Reading</option>
-             <option>Other</option>
+          <select 
+            name="regarding"
+            value={formData.regarding}
+            onChange={handleChange}
+            className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] appearance-none cursor-pointer"
+          >
+             <option value="Healing Session">Healing Session</option>
+             <option value="Crystal Inquiry">Crystal Inquiry</option>
+             <option value="Tarot Reading">Tarot Reading</option>
+             <option value="Other">Other</option>
           </select>
           <div className="absolute bottom-0 left-0 h-0.5 bg-[#C5A059] w-0 group-focus-within:w-full transition-all duration-500"></div>
         </div>
@@ -103,6 +146,9 @@ const ContactForm = () => {
           Your Journey Message
         </label>
         <textarea 
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
           rows={4} 
           required
           className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] placeholder:text-gray-200 resize-none" 
@@ -111,6 +157,10 @@ const ContactForm = () => {
         <div className="absolute bottom-0 left-0 h-0.5 bg-[#C5A059] w-0 group-focus-within:w-full transition-all duration-500"></div>
       </div>
       
+      {error && (
+        <p className="text-red-500 text-xs font-medium pl-1">{error}</p>
+      )}
+
       <div className="pt-6">
         <button 
           disabled={isSubmitting}

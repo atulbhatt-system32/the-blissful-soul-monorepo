@@ -26,17 +26,19 @@ export default function CheckoutLayout({
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/"
-            className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+            className="font-serif text-[#2C1E36] text-xl hover:text-[#C5A059] uppercase tracking-widest font-bold"
             data-testid="store-link"
           >
-            Medusa Store
+            The Blissful Soul
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>
       </div>
       <div className="relative" data-testid="checkout-container">{children}</div>
       <div className="py-4 w-full flex items-center justify-center">
-        <MedusaCTA />
+        <Text className="flex gap-x-2 txt-compact-small-plus items-center text-[#2C1E36]/30 uppercase tracking-[0.2em] font-bold text-[10px]">
+          © {new Date().getFullYear()} The Blissful Soul
+        </Text>
       </div>
     </div>
   )

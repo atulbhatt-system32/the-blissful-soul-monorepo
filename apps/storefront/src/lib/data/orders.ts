@@ -158,6 +158,24 @@ export const lookupOrder = async (
       headers,
     })
     .then(({ order }) => {
+      const allSessions = order.items?.every((item: any) => {
+        const product = item.variant?.product
+        return (
+          product?.type?.value === "session" || 
+          product?.tags?.some((t: any) => t.value === "session") ||
+          product?.metadata?.is_service === true ||
+          product?.metadata?.is_service === "true"
+        )
+      })
+
+      if (allSessions && order.items?.length > 0) {
+        return { 
+          success: false, 
+          error: "Tracking is only available for physical products. For sessions, please check your account.", 
+          order: null 
+        }
+      }
+
       return { success: true, error: null, order }
     })
     .catch((err) => {

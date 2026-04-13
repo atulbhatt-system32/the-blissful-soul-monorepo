@@ -24,7 +24,7 @@ const Modal = ({
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-[75]" onClose={close}>
+      <Dialog as="div" className="relative z-[200]" onClose={close}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -34,13 +34,13 @@ const Modal = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-opacity-75 backdrop-blur-md  h-screen" />
+          <div className="fixed inset-0 bg-black/50" />
         </Transition.Child>
 
-        <div className="fixed inset-0 overflow-y-hidden">
+        <div className="fixed inset-0 overflow-y-auto">
           <div
             className={clx(
-              "flex min-h-full h-full justify-center p-4 text-center",
+              "flex min-h-full justify-center p-4 text-center",
               {
                 "items-center": !search,
                 "items-start": search,
@@ -59,13 +59,13 @@ const Modal = ({
               <Dialog.Panel
                 data-testid={dataTestId}
                 className={clx(
-                  "flex flex-col justify-start w-full transform p-5 text-left align-middle transition-all max-h-[75vh] h-fit",
+                  "flex flex-col justify-start w-full transform p-5 sm:p-6 text-left align-middle transition-all my-4",
                   {
                     "max-w-md": size === "small",
-                    "max-w-xl": size === "medium",
+                    "max-w-lg": size === "medium",
                     "max-w-3xl": size === "large",
                     "bg-transparent shadow-none": search,
-                    "bg-white shadow-xl border rounded-rounded": !search,
+                    "bg-white shadow-2xl border border-gray-100 rounded-2xl": !search,
                   }
                 )}
               >
@@ -83,11 +83,15 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { close } = useModal()
 
   return (
-    <Dialog.Title className="flex items-center justify-between">
-      <div className="text-large-semi">{children}</div>
-      <div>
-        <button onClick={close} data-testid="close-modal-button">
-          <X size={20} />
+    <Dialog.Title className="flex items-start justify-between w-full mb-4">
+      <div className="flex-1">{children}</div>
+      <div className="ml-3 flex-shrink-0">
+        <button 
+          onClick={close} 
+          data-testid="close-modal-button"
+          className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-all"
+        >
+          <X size={16} />
         </button>
       </div>
     </Dialog.Title>
@@ -103,11 +107,11 @@ const Description: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 }
 
 const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className="flex justify-center">{children}</div>
+  return <div className="flex-1 overflow-y-auto">{children}</div>
 }
 
 const Footer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className="flex items-center justify-end gap-x-4">{children}</div>
+  return <div className="flex items-center justify-end gap-x-4 pt-4 flex-shrink-0">{children}</div>
 }
 
 Modal.Title = Title

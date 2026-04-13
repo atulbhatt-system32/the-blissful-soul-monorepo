@@ -8,15 +8,15 @@ export default function PreviewPrice({ price }: { price: VariantPrice }) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-1.5 md:gap-x-2">
         {price.price_type === "sale" && (
-          <span className="line-through text-gray-400 text-xs text-[10px] md:text-sm">
+          <span className="line-through text-gray-400 text-[9px] md:text-sm whitespace-nowrap">
             {price.original_price}
           </span>
         )}
-        <span className={clx("text-sm md:text-base font-bold", {
-          "text-pink-500": price.price_type === "sale",
-          "text-pink-950": price.price_type !== "sale",
+        <span className={clx("text-sm md:text-base font-bold whitespace-nowrap", {
+          "text-[#C5A059]": price.price_type === "sale",
+          "text-[#2C1E36]": price.price_type !== "sale",
         })}>
           {price.calculated_price}
         </span>
