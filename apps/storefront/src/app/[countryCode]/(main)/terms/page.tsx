@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms of Service | The Blissful Soul",
+  title: "Terms of Use",
   description: "The terms and conditions for using our website and services.",
 }
 

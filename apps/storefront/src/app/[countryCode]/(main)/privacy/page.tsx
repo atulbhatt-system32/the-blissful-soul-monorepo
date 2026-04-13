@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | The Blissful Soul",
+  title: "Privacy Policy",
   description: "How we protect and manage your personal data.",
 }
 

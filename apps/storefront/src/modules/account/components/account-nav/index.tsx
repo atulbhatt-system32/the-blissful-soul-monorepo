@@ -30,7 +30,7 @@ const AccountNav = ({
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
             href="/account"
-            className="flex items-center gap-x-2 text-[11px] uppercase tracking-widest font-bold text-[#2C1E36]/60 py-4"
+            className="flex items-center gap-x-2 text-[11px] uppercase tracking-widest font-bold text-[#2C1E36]/60 py-2"
             data-testid="account-main-link"
           >
             <>

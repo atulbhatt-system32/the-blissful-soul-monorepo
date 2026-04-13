@@ -41,15 +41,15 @@ const AccountInfo = ({
   }, [isSuccess, close])
 
   return (
-    <div className="text-small-regular border-b border-gray-100 py-8 last:border-none animate-in fade-in slide-in-from-bottom-2 duration-500" data-testid={dataTestid}>
+    <div className="text-small-regular border-b border-gray-100 py-5 last:border-none animate-in fade-in slide-in-from-bottom-2 duration-500" data-testid={dataTestid}>
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-y-1">
           <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#C5A059]">{label}</span>
           <div className="flex items-center gap-x-4">
             {typeof currentInfo === "string" ? (
-              <span className="text-base font-serif text-[#2C1E36] font-bold" data-testid="current-info">{currentInfo}</span>
+              <span className="text-sm font-serif text-[#2C1E36] font-bold" data-testid="current-info">{currentInfo}</span>
             ) : (
-              <div className="text-base font-serif text-[#2C1E36] font-bold">{currentInfo}</div>
+              <div className="text-sm font-serif text-[#2C1E36] font-bold">{currentInfo}</div>
             )}
           </div>
         </div>
@@ -57,7 +57,7 @@ const AccountInfo = ({
           <Button
             variant="secondary"
             className={clx(
-              "rounded-xl px-6 py-2 h-auto text-[10px] uppercase tracking-widest font-black transition-all",
+              "rounded-xl px-4 py-1.5 h-auto text-[10px] uppercase tracking-widest font-black transition-all",
               state ? "bg-gray-100 text-gray-500 hover:bg-gray-200" : "bg-[#2C1E36]/5 text-[#2C1E36] hover:bg-[#2C1E36] hover:text-white"
             )}
             onClick={handleToggle}

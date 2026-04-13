@@ -6,7 +6,7 @@ import BookNowClient from "@modules/booking/components/book-now-wizard"
 import { retrieveCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
-  title: "Book Now | The Blissful Soul",
+  title: "Book Now",
   description: "Book your astrology, tarot reading, or healing session with our masters.",
 }
 

@@ -4,7 +4,7 @@ import { getRegion } from "@lib/data/regions"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "My Wishlist | The Blissful Soul",
+  title: "Wishlist",
   description: "A sanctuary for your most-loved crystals and healing sessions.",
 }
 
