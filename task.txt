@@ -65,3 +65,7 @@ https://klickvert.com/admin/sync-strapi to sync all the products in browsers
 
 
 and fix the footer as well in in mobile screen jion use buttion will come bwlew and one more thing fix ui cards for mobile screen 
+
+
+
+and can using script in medusa and products cann add all the prodcuts qyt 10k and make sure only prodcuts not sessions 
