@@ -2,11 +2,9 @@ import { type SubscriberConfig, type SubscriberArgs } from "@medusajs/medusa"
 import { addToCartWorkflow, deleteLineItemsWorkflow } from "@medusajs/medusa/core-flows"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
-// Handle of the product that should be auto-gifted
-const GIFT_PRODUCT_HANDLE = "money-potli-free-gift"
-
-// Fallback threshold in paise (₹1499). Client can override via the gift
-// product's metadata: key = gift_threshold, value = e.g. 1499
+// Fallback threshold in rupees (₹1499).
+// Any product with "gift_threshold" in its metadata is treated as the gift product.
+// Set the product's metadata key "gift_threshold" to override this value (e.g. 2999).
 const GIFT_THRESHOLD = 1499
 
 // Metadata key used to mark auto-added gift line items
@@ -42,23 +40,26 @@ export default async function autoAddGift({
             (i: any) => !i.metadata?.[GIFT_METADATA_KEY]
         )
 
-        // Resolve the gift product and its client-configurable threshold
-        const { data: giftProducts } = await query.graph({
+        // Resolve the gift product: must have the "free-gift" tag AND
+        // "gift_threshold" set in its metadata.
+        const { data: taggedProducts } = await query.graph({
             entity: "product",
             fields: ["id", "variants.id", "metadata"],
-            filters: { handle: GIFT_PRODUCT_HANDLE },
+            filters: { status: "published", tags: { value: "free-gift" } },
         })
 
-        if (!giftProducts || giftProducts.length === 0) {
-            logger.warn(`[auto-gift] Product "${GIFT_PRODUCT_HANDLE}" not found — skipping`)
+        const giftProduct = (taggedProducts ?? []).find(
+            (p: any) => p.metadata?.gift_threshold != null
+        )
+
+        if (!giftProduct) {
+            logger.warn(`[auto-gift] No published product with tag "free-gift" and "gift_threshold" metadata found — skipping`)
             return
         }
-
-        const giftProduct = giftProducts[0]
         const giftVariantId = giftProduct.variants?.[0]?.id
         if (!giftVariantId) return
 
-        // Guard against bad metadata values (e.g. non-numeric strings)
+        // gift_threshold metadata is in rupees; unit_price is also in rupees in this setup
         const rawThreshold = Number((giftProduct as any).metadata?.gift_threshold ?? GIFT_THRESHOLD)
         const threshold = isNaN(rawThreshold) ? GIFT_THRESHOLD : rawThreshold
 
@@ -75,6 +76,11 @@ export default async function autoAddGift({
         }, 0)
 
         logger.info(`[auto-gift] cart ${cart.id} — total: ${cartTotal}, threshold: ${threshold}`)
+
+        // If non-gift items exist but their total is 0, the cart is in a transitional
+        // state (e.g. emitted mid-way through addToCartWorkflow before prices are hydrated).
+        // Skip to avoid incorrectly removing the gift.
+        if (nonGiftItems.length > 0 && cartTotal === 0) return
 
         // Collect ALL auto-gift line items to handle any duplicates from race conditions
         const giftItems = (cart.items ?? []).filter(

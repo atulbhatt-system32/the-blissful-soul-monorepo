@@ -14,8 +14,9 @@ export default async function orderInvoiceHandler({
       entity: "order",
       fields: [
         "*", 
-        "items.*", 
+        "items.*",
         "items.adjustments.*",
+        "items.tax_lines.*",
         "shipping_address.*", 
         "billing_address.*", 
         "payment_collections.payments.*",
@@ -65,9 +66,9 @@ export default async function orderInvoiceHandler({
 
     // Build item rows HTML
     const itemRowsHtml = items.map((item: any) => {
-      const isSession = item.title?.toLowerCase().includes('session') || item.title?.toLowerCase().includes('appointment') || item.title?.toLowerCase().includes('tarot') || item.title?.toLowerCase().includes('reading')
       const isFree = (item.unit_price || 0) === 0
-      const taxLabel = isSession ? '18% Service Tax Included' : '3% GST Included'
+      const taxRate = (item.tax_lines || []).reduce((sum: number, t: any) => sum + (t.rate ?? 0), 0)
+      const taxLabel = taxRate > 0 ? `${taxRate}% GST Included` : 'GST Included'
       const lineTotal = (item.unit_price || 0) * (item.quantity || 1)
 
       return `

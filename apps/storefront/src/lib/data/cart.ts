@@ -151,6 +151,10 @@ export async function addToCart({
       headers
     )
     .then(async () => {
+      // Wait for async subscribers (e.g. auto-gift) to complete before
+      // invalidating the cache, so the first re-render already includes the gift
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
@@ -158,6 +162,13 @@ export async function addToCart({
       revalidateTag(fulfillmentCacheTag)
     })
     .catch(medusaError)
+}
+
+// Used by the client to re-invalidate the cart cache after a delay so that
+// async subscriber changes (e.g. auto-gifting) are picked up without a hard reload
+export async function revalidateCartCache() {
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
 }
 
 export async function updateLineItem({
