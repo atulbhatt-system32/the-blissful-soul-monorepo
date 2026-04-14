@@ -9,6 +9,7 @@ WORKDIR /app
 
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
+COPY patches ./patches
 
 # Copy ONLY cms package.json to avoid busting cache on code changes
 COPY apps/cms/package.json ./apps/cms/
