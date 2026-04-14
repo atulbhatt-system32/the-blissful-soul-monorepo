@@ -12,7 +12,7 @@ type ItemProps = {
   currencyCode: string
 }
 
-  const Item = ({ item, currencyCode }: ItemProps) => {
+const Item = ({ item, currencyCode }: ItemProps) => {
   return (
     <Table.Row className="w-full align-top" data-testid="product-row">
       <Table.Cell className="!pl-0 p-2 md:p-4 w-16 md:w-24">
