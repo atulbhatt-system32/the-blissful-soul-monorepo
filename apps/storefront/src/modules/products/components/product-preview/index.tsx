@@ -63,23 +63,27 @@ export default function ProductPreview({
 
   const displayPrice = preferredVariantId && variantPrice ? variantPrice : cheapestPrice
   
-  let fallbackLabel: string | undefined = undefined
-  let fallbackDuration: string | undefined = undefined
+  const tag = product.tags?.find((t) => t.value.toLowerCase().includes("audio")) ? "audio" : 
+              product.tags?.find((t) => t.value.toLowerCase().includes("video")) ? "video" : 
+              undefined
 
-  if (product.variants && (!product.metadata?.label || !product.metadata?.duration)) {
-    const variantWithLabel = product.variants.find(v => v.metadata?.label)
-    const variantWithDuration = product.variants.find(v => v.metadata?.duration)
-    
-    if (variantWithLabel) {
-      fallbackLabel = variantWithLabel.metadata?.label as string
+  const tagLabel = tag === "audio" ? "AUDIO SESSION" : tag === "video" ? "VIDEO SESSION" : "SESSION"
+
+  const displayLabel = tagLabel
+
+  const formatDuration = (mins: number) => {
+    const h = Math.floor(mins / 60)
+    const m = mins % 60
+    if (h > 0) {
+      return `${h} ${h > 1 ? "HOURS" : "HOUR"}${m > 0 ? ` ${m} MINS` : ""}`
     }
-    if (variantWithDuration) {
-      fallbackDuration = variantWithDuration.metadata?.duration as string
-    }
+    return `${m} MINS`
   }
 
-  const displayLabel = matchingVariant?.metadata?.label || product.metadata?.label || fallbackLabel
-  const displayDuration = matchingVariant?.metadata?.duration || product.metadata?.duration || fallbackDuration
+  const lengthValue = matchingVariant?.length || product.length || product.variants?.[0]?.length
+  const displayDurationLength = lengthValue ? formatDuration(lengthValue) : undefined
+
+  const displayDuration = displayDurationLength
 
   const isSession = product.type?.value === "session" || product.tags?.some((t) => t.value === "session") || product.metadata?.is_service === true || product.metadata?.is_service === "true"
 

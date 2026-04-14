@@ -36,9 +36,21 @@ export default async function OrderCompletedTemplate({
     )
   })
 
-  const hasSession = sessionItems && sessionItems.length > 0
-  const firstSession = hasSession ? sessionItems[0] : null
-  const calLink = (firstSession?.variant?.metadata?.cal_link || firstSession?.variant?.product?.metadata?.cal_link) as string | undefined
+  const getCalLink = () => {
+    const variant = firstSession?.variant as any
+    const product = variant?.product as any
+    const lengthValue = variant?.length || product?.length
+    const tag = product?.tags?.find((t: any) => t.value.toLowerCase().includes("audio")) ? "audio" : 
+                product?.tags?.find((t: any) => t.value.toLowerCase().includes("video")) ? "video" : 
+                "session"
+
+    if (lengthValue) {
+      return `${lengthValue}-min-${tag}-session`
+    }
+    return undefined
+  }
+
+  const calLink = getCalLink()
 
   return (
     <div className="py-24 min-h-screen bg-[#FBFAF8] relative overflow-hidden">

@@ -91,16 +91,16 @@ export default function BookNowClient({
       setSelectedSlotIso("")
       
       try {
-        // Look for cal_link on the selected variant, otherwise fallback
+        // Generate slug from pattern: {length}-min-{tag}-session
         const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-        let calLink = variantObj?.metadata?.cal_link || serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
-        let slug: string | undefined = undefined
+        const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
+        const tag = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio")) ? "audio" : 
+                    serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video")) ? "video" : 
+                    "session"
         
-        if (typeof calLink === "string") {
-          // calLink might be full URL: https://cal.com/username/video-session
-          // or just: username/video-session
-          const parts = calLink.split('/')
-          slug = parts[parts.length - 1] // Get the last part (the slug)
+        let slug: string | undefined = undefined
+        if (lengthValue) {
+          slug = `${lengthValue}-min-${tag}-session`
         }
 
         const slots = await fetchAvailableSlots(selectedDate, "Asia/Kolkata", slug)
@@ -150,7 +150,11 @@ export default function BookNowClient({
   }
   const handlePrev = () => setCurrentStep((p) => Math.max(p - 1, 1))
 
-  const isStep1Valid = selectedService && selectedCategory && selectedDate && selectedEmployee
+  const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+  const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
+  const isConfigValid = !!lengthValue
+
+  const isStep1Valid = selectedService && selectedCategory && selectedDate && selectedEmployee && isConfigValid
   const isStep2Valid = selectedTime !== ""
   const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && details.phone.trim() !== ""
 
@@ -286,6 +290,21 @@ export default function BookNowClient({
             </div>
 
           </div>
+          
+          {selectedService && !isConfigValid && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3 animate-in fade-in duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div>
+                <p className="text-red-800 font-bold text-sm">Session Configuration Missing</p>
+                <p className="text-red-700 text-xs mt-1">
+                  The <strong>Length</strong> field is missing in Medusa Admin for this session. 
+                  Please update the product attributes to enable booking.
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-start">
             <button 
@@ -465,10 +484,13 @@ export default function BookNowClient({
             countryCode={countryCode}
             eventSlug={(() => {
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-              const calLink = variantObj?.metadata?.cal_link || serviceObj?.metadata?.cal_link || serviceObj?.variants?.[0]?.metadata?.cal_link
-              if (typeof calLink === "string") {
-                const parts = calLink.split('/')
-                return parts[parts.length - 1]
+              const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
+              const tag = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio")) ? "audio" : 
+                          serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video")) ? "video" : 
+                          "session"
+              
+              if (lengthValue) {
+                return `${lengthValue}-min-${tag}-session`
               }
               return undefined
             })()}

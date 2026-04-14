@@ -13,11 +13,11 @@ export async function GET(req: NextRequest) {
   }
 
   const username = process.env.NEXT_PUBLIC_CAL_USERNAME
-  const targetSlug = eventSlug || process.env.NEXT_PUBLIC_CAL_EVENT_SLUG
+  const targetSlug = eventSlug
 
   if (!username || !targetSlug) {
     return NextResponse.json(
-      { message: "Cal.com username or event slug not configured." },
+      { message: "Cal.com username or event slug not configured. Please ensure the product has a 'Length' field set." },
       { status: 500 }
     )
   }
