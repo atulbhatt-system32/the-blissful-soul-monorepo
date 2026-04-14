@@ -29,6 +29,7 @@ export default async function autoAddGift({
                 "items.unit_price",
                 "items.quantity",
                 "items.metadata",
+                "items.adjustments.amount",
             ],
             filters: { id: data.id },
         })
@@ -40,10 +41,6 @@ export default async function autoAddGift({
         const nonGiftItems = (cart.items ?? []).filter(
             (i: any) => !i.metadata?.[GIFT_METADATA_KEY]
         )
-
-        // Skip if every item in the cart is already a gift — avoids reacting
-        // to our own addToCartWorkflow triggering another cart.updated event
-        if (nonGiftItems.length === 0 && (cart.items ?? []).length > 0) return
 
         // Resolve the gift product and its client-configurable threshold
         const { data: giftProducts } = await query.graph({
@@ -61,20 +58,29 @@ export default async function autoAddGift({
         const giftVariantId = giftProduct.variants?.[0]?.id
         if (!giftVariantId) return
 
-        const threshold = Number((giftProduct as any).metadata?.gift_threshold ?? GIFT_THRESHOLD)
+        // Guard against bad metadata values (e.g. non-numeric strings)
+        const rawThreshold = Number((giftProduct as any).metadata?.gift_threshold ?? GIFT_THRESHOLD)
+        const threshold = isNaN(rawThreshold) ? GIFT_THRESHOLD : rawThreshold
 
-        // Calculate subtotal from non-gift items only (unit_price is in paise)
-        const cartTotal = nonGiftItems.reduce(
-            (sum: number, item: any) => sum + (item.unit_price ?? 0) * (item.quantity ?? 1),
-            0
-        )
+        // Calculate effective total from non-gift items only.
+        // Subtract line-level adjustment amounts (discounts/promotions) so the
+        // threshold check reflects what the customer actually pays.
+        const cartTotal = nonGiftItems.reduce((sum: number, item: any) => {
+            const lineTotal = (item.unit_price ?? 0) * (item.quantity ?? 1)
+            const adjustments = (item.adjustments ?? []).reduce(
+                (adj: number, a: any) => adj + (a.amount ?? 0),
+                0
+            )
+            return sum + lineTotal - adjustments
+        }, 0)
 
         logger.info(`[auto-gift] cart ${cart.id} — total: ${cartTotal}, threshold: ${threshold}`)
 
-        const giftItem = (cart.items ?? []).find(
+        // Collect ALL auto-gift line items to handle any duplicates from race conditions
+        const giftItems = (cart.items ?? []).filter(
             (i: any) => i.product_id === giftProduct.id && i.metadata?.[GIFT_METADATA_KEY]
         )
-        const hasGift = Boolean(giftItem)
+        const hasGift = giftItems.length > 0
 
         if (cartTotal >= threshold) {
             if (!hasGift) {
@@ -89,14 +95,23 @@ export default async function autoAddGift({
                         }],
                     },
                 })
-            }
-        } else {
-            if (hasGift && giftItem) {
-                logger.info(`[auto-gift] Removing free gift from cart ${cart.id} (total dropped to ${cartTotal})`)
+            } else if (giftItems.length > 1) {
+                // Remove duplicate gifts that may have been added by concurrent events
+                logger.info(`[auto-gift] Removing ${giftItems.length - 1} duplicate gift(s) from cart ${cart.id}`)
                 await deleteLineItemsWorkflow(container).run({
                     input: {
                         cart_id: cart.id,
-                        ids: [(giftItem as any).id],
+                        ids: giftItems.slice(1).map((i: any) => i.id),
+                    },
+                })
+            }
+        } else {
+            if (hasGift) {
+                logger.info(`[auto-gift] Removing free gift(s) from cart ${cart.id} (total dropped to ${cartTotal})`)
+                await deleteLineItemsWorkflow(container).run({
+                    input: {
+                        cart_id: cart.id,
+                        ids: giftItems.map((i: any) => i.id),
                     },
                 })
             }

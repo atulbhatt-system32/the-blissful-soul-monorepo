@@ -6,6 +6,7 @@ import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
+import StateSelect from "../state-select"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const ShippingAddress = ({
@@ -209,13 +210,12 @@ const ShippingAddress = ({
               required
               data-testid="shipping-country-select"
             />
-            <Input
-              label="State / Province"
+            <StateSelect
               name="shipping_address.province"
               autoComplete="address-level1"
               value={formData["shipping_address.province"]}
               onChange={handleChange}
-              data-testid="shipping-province-input"
+              data-testid="shipping-province-select"
             />
           </>
         )}
