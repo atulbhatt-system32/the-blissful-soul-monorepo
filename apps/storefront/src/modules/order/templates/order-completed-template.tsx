@@ -29,12 +29,15 @@ export default async function OrderCompletedTemplate({
   const sessionItems = order.items?.filter((item: any) => {
     const product = item.variant?.product
     return (
-      product?.type?.value === "session" || 
+      product?.type?.value === "session" ||
       product?.tags?.some((t: any) => t.value === "session") ||
       product?.metadata?.is_service === true ||
       product?.metadata?.is_service === "true"
     )
   })
+
+  const firstSession = sessionItems?.[0]
+  const hasSession = !!firstSession
 
   const getCalLink = () => {
     const variant = firstSession?.variant as any
