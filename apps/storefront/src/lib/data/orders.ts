@@ -153,25 +153,30 @@ export const lookupOrder = async (
       },
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
+          "+metadata,*payment_collections.payments,*items,*items.thumbnail,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.thumbnail,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
       },
       headers,
     })
     .then(({ order }) => {
-      const allSessions = order.items?.every((item: any) => {
+      // Check if this is a session booking instead of a product order
+      const isSessionOrder = order.metadata?.is_session === true || 
+        order.items?.some((item: any) => {
         const product = item.variant?.product
         return (
+          item.metadata?.booking_date || 
+          item.title?.toLowerCase().includes("session booking") ||
           product?.type?.value === "session" || 
           product?.tags?.some((t: any) => t.value === "session") ||
           product?.metadata?.is_service === true ||
-          product?.metadata?.is_service === "true"
+          product?.metadata?.is_service === "true" ||
+          product?.categories?.some((c: any) => c.handle?.includes("session"))
         )
-      })
+      }) || order.metadata?.type === "session" || order.metadata?.booking_id
 
-      if (allSessions && order.items?.length > 0) {
+      if (isSessionOrder && order.items?.length > 0) {
         return { 
           success: false, 
-          error: "Tracking is only available for physical products. For sessions, please check your account.", 
+          error: "This is a Session ID, not a physical Order ID. Tracking is only available for product shipments. Please check 'My Sessions' in your account to manage your bookings.", 
           order: null 
         }
       }

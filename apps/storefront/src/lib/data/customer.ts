@@ -346,3 +346,55 @@ export async function resetPassword(email: string, token: string, newPassword: s
     return { success: false, error: error.message || "Failed to reset password. Please try again." }
   }
 }
+
+/**
+ * Update a logged-in customer's password.
+ * Uses a custom backend endpoint that verifies the old password first.
+ */
+export async function updateCustomerPassword(
+  currentState: Record<string, unknown>,
+  formData: FormData
+): Promise<any> {
+  const oldPassword = formData.get("old_password") as string
+  const newPassword = formData.get("new_password") as string
+  const confirmPassword = formData.get("confirm_password") as string
+
+  if (newPassword !== confirmPassword) {
+    return { success: false, error: "Passwords do not match." }
+  }
+
+  if (newPassword.length < 6) {
+    return { success: false, error: "New password must be at least 6 characters." }
+  }
+
+  try {
+    // Get current customer to retrieve their email
+    const customer = await retrieveCustomer()
+    if (!customer?.email) {
+      return { success: false, error: "Unable to verify your identity. Please log in again." }
+    }
+
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
+
+    const res = await fetch(`${backendUrl}/custom/password-update`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: customer.email,
+        old_password: oldPassword,
+        new_password: newPassword,
+      }),
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      return { success: false, error: data.message || "Failed to update password." }
+    }
+
+    return { success: true, error: null }
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to update password. Please try again." }
+  }
+}
+

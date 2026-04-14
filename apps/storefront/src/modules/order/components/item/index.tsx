@@ -14,20 +14,20 @@ type ItemProps = {
 
 const Item = ({ item, currencyCode }: ItemProps) => {
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
-        <div className="flex w-16">
+    <Table.Row className="w-full align-top" data-testid="product-row">
+      <Table.Cell className="!pl-0 p-2 md:p-4 w-16 md:w-24">
+        <div className="flex w-12 md:w-16">
           <Thumbnail
-            thumbnail={item.thumbnail}
+            thumbnail={item.thumbnail ?? item.variant?.product?.thumbnail}
             images={item.variant?.product?.images}
             size="square"
           />
         </div>
       </Table.Cell>
 
-      <Table.Cell className="text-left">
+      <Table.Cell className="text-left py-2 md:py-4">
         <Text
-          className="txt-medium-plus text-ui-fg-base"
+          className="text-sm md:text-base font-semibold text-ui-fg-base"
           data-testid="product-name"
         >
           {item.product_title}
@@ -51,10 +51,10 @@ const Item = ({ item, currencyCode }: ItemProps) => {
         )}
       </Table.Cell>
 
-      <Table.Cell className="!pr-0">
-        <span className="!pr-0 flex flex-col items-end h-full justify-center">
-          <span className="flex gap-x-1 ">
-            <Text className="text-ui-fg-muted">
+      <Table.Cell className="!pr-0 py-2 md:py-4">
+        <span className="!pr-0 flex flex-col items-end h-full justify-start text-xs md:text-sm">
+          <span className="flex gap-x-1 whitespace-nowrap">
+            <Text className="text-ui-fg-muted text-xs md:text-sm">
               <span data-testid="product-quantity">{item.quantity}</span>x{" "}
             </Text>
             <LineItemUnitPrice

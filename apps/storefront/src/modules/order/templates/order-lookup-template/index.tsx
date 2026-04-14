@@ -52,11 +52,11 @@ const OrderLookupTemplate = ({
     const order = state.order
     
     return (
-      <div className="py-16 min-h-[calc(100vh-64px)] w-full flex justify-center px-8 bg-gray-50/30">
-        <div className="content-container flex flex-col items-center gap-y-10 max-w-4xl h-full w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="py-8 md:py-16 min-h-[calc(100vh-64px)] w-full flex justify-center px-4 md:px-8 bg-gray-50/30">
+        <div className="content-container flex flex-col items-center gap-y-6 md:gap-y-10 max-w-4xl h-full w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
 
           <div
-            className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-12 px-8 md:px-12 rounded-[3rem] border border-gray-100 shadow-xl shadow-purple-900/5"
+            className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-8 md:py-12 px-4 md:px-12 rounded-3xl md:rounded-[3rem] border border-gray-100 shadow-xl shadow-purple-900/5"
             data-testid="order-complete-container"
           >
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-8 mb-8">
@@ -158,7 +158,7 @@ const OrderLookupTemplate = ({
                 type="email"
                 required
                 autoComplete="email"
-                defaultValue={initialEmail}
+                defaultValue={initialEmail || customer?.email || ""}
                 data-testid="email-input"
               />
             </div>

@@ -20,28 +20,28 @@ const OrderDetails = ({ order, showStatus, showTrackLink }: OrderDetailsProps) =
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
       <div className="flex flex-col gap-y-10">
-        <div className="flex flex-col md:flex-row items-center gap-6 p-8 bg-[#2C1E36] rounded-[2.5rem] border border-white/5 shadow-2xl shadow-purple-900/20 text-center md:text-left">
-          <div className="w-16 h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center text-[#C5A059] shrink-0 border border-[#C5A059]/20 shadow-inner">
+        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 p-6 md:p-8 bg-[#2C1E36] rounded-3xl md:rounded-[2.5rem] border border-white/5 shadow-2xl shadow-purple-900/20 text-center md:text-left">
+          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center text-[#C5A059] shrink-0 border border-[#C5A059]/20 shadow-inner">
              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
-          <p className="text-base text-purple-100/80 leading-relaxed font-serif italic">
+          <p className="text-sm md:text-base text-purple-100/80 leading-relaxed font-serif italic">
             A confirmation of this spiritual transaction has been dispatched to{" "}
-            <span className="text-white font-black not-italic block md:inline text-lg mt-1 md:mt-0" data-testid="order-email">
+            <span className="text-white font-black not-italic block md:inline text-base md:text-lg mt-1 md:mt-0 break-all" data-testid="order-email">
                 {order.email}
             </span>
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 px-2 md:px-4">
           <div className="flex flex-col gap-y-2 group">
              <span className="text-[10px] uppercase tracking-[0.4em] text-[#C5A059] font-black group-hover:translate-x-1 transition-transform inline-block">Date Recorded</span>
-             <span className="text-lg font-serif italic text-[#2C1E36]" data-testid="order-date">
+             <span className="text-base md:text-lg font-serif italic text-[#2C1E36]" data-testid="order-date">
                 {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
              </span>
           </div>
           <div className="flex flex-col gap-y-2 group">
              <span className="text-[10px] uppercase tracking-[0.4em] text-[#C5A059] font-black group-hover:translate-x-1 transition-transform inline-block">Reference ID</span>
-             <span className="text-2xl font-serif font-black text-[#2C1E36] tracking-tighter" data-testid="order-id">
+             <span className="text-xl md:text-2xl font-serif font-black text-[#2C1E36] tracking-tighter break-words max-w-full" data-testid="order-id">
                 #{order.display_id}
              </span>
           </div>

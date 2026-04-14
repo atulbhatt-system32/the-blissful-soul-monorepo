@@ -49,14 +49,14 @@ const AddAddress = ({
 
   return (
     <>
-      <Button
-        className="bg-[#2C1E36] text-white rounded-xl px-4 sm:px-6 py-2.5 h-auto text-[11px] uppercase tracking-widest font-black transition-all hover:opacity-90 shadow-lg shadow-purple-900/10 active:scale-95 flex items-center gap-x-2"
-        onClick={open}
-        data-testid="add-address-button"
-      >
-        <Plus size={16} />
-        <span className="hidden sm:inline">Add Address</span>
-      </Button>
+        <Button
+          className="bg-[#2C1E36] text-white rounded-xl px-4 sm:px-6 py-2.5 h-auto text-[10px] uppercase tracking-widest font-black transition-all hover:opacity-90 shadow-lg shadow-purple-900/10 active:scale-95 flex items-center gap-x-2"
+          onClick={open}
+          data-testid="add-address-button"
+        >
+          <Plus size={16} />
+          <span>Add Address</span>
+        </Button>
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title>

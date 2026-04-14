@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import BookingSlotPicker from "@modules/booking/components/slot-picker"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import InvoiceButton from "@modules/order/components/invoice-button"
 
 type SessionBooking = {
   id: string
@@ -382,6 +383,18 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
                   </span>
                 )}
                 
+                <div className="mt-2 w-full flex flex-col sm:flex-row sm:justify-start">
+                  <InvoiceButton
+                    orderId={session.id}
+                    displayId={session.display_id.toString()}
+                    variant="secondary"
+                    className="rounded-xl px-6 py-3 w-full sm:w-auto justify-center text-[10px] uppercase tracking-widest font-bold bg-[#C5A059]/10 text-[#C5A059] border border-[#C5A059]/20 hover:bg-[#C5A059] hover:text-white transition-all flex items-center gap-x-2 shadow-sm"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
+                    Download Invoice
+                  </InvoiceButton>
+                </div>
+                
                 {/* Footer Payment Info */}
                 <div className="text-[10px] font-bold text-gray-400 flex items-center gap-2 mt-2">
                   <span className="uppercase tracking-widest">ID: {session.razorpay_id}</span>
@@ -398,42 +411,42 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
 
       {/* Rescheduling Modal */}
       {reschedulingSession && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/40 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-300 relative">
-            <div className="p-8 md:p-10 flex items-start justify-between relative z-10">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/30 animate-in fade-in duration-300">
+          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 relative">
+            <div className="p-6 md:p-8 flex items-start justify-between relative z-10 border-b border-gray-50">
               <div>
-                <h3 className="text-3xl font-serif text-[#2C1E36] mb-2">Reschedule Session</h3>
-                <p className="text-gray-500 max-w-sm">
+                <h3 className="text-2xl font-serif text-[#2C1E36] mb-1">Reschedule Session</h3>
+                <p className="text-gray-400 text-xs font-medium">
                   Choose a new available time slot for your healing session.
                 </p>
               </div>
               <button 
                 onClick={() => { setReschedulingSession(null); setNewSlot(null); }}
-                className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:text-[#2C1E36] hover:bg-gray-100 transition-all shadow-sm"
+                className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:text-[#2C1E36] hover:bg-gray-100 transition-all"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
             
-            <div className="px-8 pb-8 md:px-10 md:pb-10 h-[60vh] md:h-auto overflow-y-auto relative z-10">
+            <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto relative z-10">
               <BookingSlotPicker 
                 eventSlug={reschedulingSession.event_slug}
                 onSelect={(date, time, isoStart) => setNewSlot({ date, time, isoStart })}
               />
               
-              <div className="mt-10 flex flex-col md:flex-row gap-4">
+              <div className="mt-8 flex flex-col md:flex-row gap-3">
                 <button
                   disabled={!newSlot || isRescheduling}
                   onClick={handleReschedule}
-                  className="flex-1 py-5 bg-[#2C1E36] text-white rounded-[1.5rem] font-bold hover:opacity-95 transition-all disabled:bg-gray-100 disabled:text-gray-400 shadow-xl shadow-[#2C1E36]/10 uppercase tracking-widest text-sm"
+                  className="flex-1 py-4 bg-[#2C1E36] text-white rounded-2xl font-bold hover:opacity-95 transition-all disabled:bg-gray-100 disabled:text-gray-400 shadow-xl shadow-[#2C1E36]/10 uppercase tracking-widest text-[11px]"
                 >
                   {isRescheduling ? "Rescheduling..." : "Confirm New Slot"}
                 </button>
                 <button
                   onClick={() => { setReschedulingSession(null); setNewSlot(null); }}
-                  className="px-10 py-5 bg-gray-50 text-gray-600 rounded-[1.5rem] font-bold hover:bg-gray-100 transition-all uppercase tracking-widest text-sm"
+                  className="px-8 py-4 bg-gray-50 text-gray-500 rounded-2xl font-bold hover:bg-gray-100 transition-all uppercase tracking-widest text-[11px]"
                 >
                   Go Back
                 </button>

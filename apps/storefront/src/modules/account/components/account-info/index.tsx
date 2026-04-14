@@ -14,6 +14,7 @@ type AccountInfoProps = {
   clearState: () => void
   children?: React.ReactNode
   'data-testid'?: string
+  isReadOnly?: boolean
 }
 
 const AccountInfo = ({
@@ -24,7 +25,8 @@ const AccountInfo = ({
   clearState,
   errorMessage = "An error occurred, please try again",
   children,
-  'data-testid': dataTestid
+  'data-testid': dataTestid,
+  isReadOnly = false
 }: AccountInfoProps) => {
   const { state, close, toggle } = useToggleState()
   const { pending } = useFormStatus()
@@ -47,27 +49,29 @@ const AccountInfo = ({
           <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#C5A059]">{label}</span>
           <div className="flex items-center gap-x-4">
             {typeof currentInfo === "string" ? (
-              <span className="text-sm font-serif text-[#2C1E36] font-bold" data-testid="current-info">{currentInfo}</span>
+              <span className="text-xs font-serif text-[#2C1E36] font-bold" data-testid="current-info">{currentInfo}</span>
             ) : (
-              <div className="text-sm font-serif text-[#2C1E36] font-bold">{currentInfo}</div>
+              <div className="text-xs font-serif text-[#2C1E36] font-bold">{currentInfo}</div>
             )}
           </div>
         </div>
-        <div>
-          <Button
-            variant="secondary"
-            className={clx(
-              "rounded-xl px-4 py-1.5 h-auto text-[10px] uppercase tracking-widest font-black transition-all",
-              state ? "bg-gray-100 text-gray-500 hover:bg-gray-200" : "bg-[#2C1E36]/5 text-[#2C1E36] hover:bg-[#2C1E36] hover:text-white"
-            )}
-            onClick={handleToggle}
-            type={state ? "reset" : "button"}
-            data-testid="edit-button"
-            data-active={state}
-          >
-            {state ? "Dismiss" : "Change"}
-          </Button>
-        </div>
+        {!isReadOnly && (
+          <div>
+            <Button
+              variant="secondary"
+              className={clx(
+                "rounded-xl px-4 py-1.5 h-auto text-[10px] uppercase tracking-widest font-black transition-all",
+                state ? "bg-gray-100 text-gray-500 hover:bg-gray-200" : "bg-[#2C1E36]/5 text-[#2C1E36] hover:bg-[#2C1E36] hover:text-white"
+              )}
+              onClick={handleToggle}
+              type={state ? "reset" : "button"}
+              data-testid="edit-button"
+              data-active={state}
+            >
+              {state ? "Dismiss" : "Change"}
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Success state */}

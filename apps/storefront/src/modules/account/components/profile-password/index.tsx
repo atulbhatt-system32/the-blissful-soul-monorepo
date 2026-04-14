@@ -5,6 +5,7 @@ import Input from "@modules/common/components/input"
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
+import { updateCustomerPassword } from "@lib/data/customer"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
@@ -13,10 +14,19 @@ type MyInformationProps = {
 const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
-  // TODO: Add support for password updates
-  const updatePassword = async () => {
-    toast.info("Password update is not implemented")
-  }
+  const [state, formAction] = useActionState(updateCustomerPassword, {
+    success: false,
+    error: null,
+  })
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success("Password updated successfully")
+      setSuccessState(true)
+    } else if (state.error) {
+      toast.error(state.error)
+    }
+  }, [state])
 
   const clearState = () => {
     setSuccessState(false)
@@ -24,7 +34,7 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form
-      action={updatePassword}
+      action={formAction}
       onReset={() => clearState()}
       className="w-full"
     >
