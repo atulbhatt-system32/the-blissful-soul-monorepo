@@ -8,6 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { useRouter, useParams } from "next/navigation"
+import { ArrowRightMini } from "@medusajs/icons"
 
 import CartTotals from "@modules/common/components/cart-totals"
 import Help from "@modules/order/components/help"
@@ -18,14 +19,16 @@ import PaymentDetails from "@modules/order/components/payment-details"
 
 const OrderLookupTemplate = ({ 
   customer,
+  recentOrders = [],
   initialDisplayId,
   initialEmail,
 }: { 
   customer: HttpTypes.StoreCustomer | null
+  recentOrders?: HttpTypes.StoreOrder[]
   initialDisplayId?: string
   initialEmail?: string
 }) => {
-  const [state, formAction] = useActionState(lookupOrder, {
+  const [state, formAction, isPending] = useActionState(lookupOrder, {
     success: false,
     error: null,
     order: null,
@@ -128,6 +131,15 @@ const OrderLookupTemplate = ({
     )
   }
 
+  if (isPending) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center px-8 py-32 min-h-[60vh] bg-white animate-in fade-in duration-300">
+        <div className="animate-spin h-12 w-12 border-[3px] border-[#2C1E36]/20 border-t-[#2C1E36] rounded-full mb-6" />
+        <Text className="text-sm text-gray-500 font-serif italic">Retrieving your order details…</Text>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full flex justify-center px-8 py-24 min-h-[60vh] bg-white animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="max-w-md w-full flex flex-col items-center">
@@ -137,50 +149,107 @@ const OrderLookupTemplate = ({
         <Heading level="h1" className="text-4xl font-serif text-[#2C1E36] mb-4 text-center">
           Track Your Treasure
         </Heading>
-        <Text className="text-center text-sm text-gray-500 mb-10 max-w-[320px] leading-relaxed italic">
-          Enter your order details below to reveal the status of your Blissful Soul collection.
-        </Text>
-        
-        <div className="w-full bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-purple-900/5 transition-all">
-          <form className="w-full flex flex-col gap-y-6" action={formAction}>
-            <div className="flex flex-col w-full gap-y-4">
-              <Input
-                label="Order Reference Number"
-                name="display_id"
-                type="text"
-                required
-                defaultValue={initialDisplayId}
-                data-testid="order-id-input"
-              />
-              <Input
-                label="Email Address"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                defaultValue={initialEmail || customer?.email || ""}
-                data-testid="email-input"
-              />
-            </div>
-            <ErrorMessage error={state.error} data-testid="lookup-error-message" />
-            <SubmitButton data-testid="lookup-button" className="w-full bg-[#2C1E36] text-white rounded-2xl py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all mt-2">
-              Locate Order
-            </SubmitButton>
-          </form>
-        </div>
 
-        <div className="mt-12 flex flex-col items-center gap-y-4">
-          <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-300">
-            Preferred Experience
-          </span>
-          <Button 
-            variant="secondary" 
-            className="rounded-xl px-10 py-4 h-auto text-[10px] uppercase tracking-widest font-black bg-[#C5A059]/5 text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all border-none"
-            onClick={() => router.push(`/${countryCode}/account${customer ? "/orders" : ""}`)}
-          >
-            {customer ? "View My Orders" : "Sign In for Full History"}
-          </Button>
-        </div>
+        {state.error && (
+          <div className="w-full mb-6 animate-in fade-in slide-in-from-top-2 duration-500">
+            <ErrorMessage error={state.error} data-testid="lookup-error-message" />
+          </div>
+        )}
+
+        {!customer && (
+          <Text className="text-center text-sm text-gray-500 mb-10 max-w-[320px] leading-relaxed italic">
+            Enter your order details below to reveal the status of your Blissful Soul collection.
+          </Text>
+        )}
+
+        {customer && recentOrders.length > 0 && (
+          <Text className="text-center text-sm text-gray-500 mb-10 max-w-[320px] leading-relaxed italic">
+            Select an order below to view its tracking details.
+          </Text>
+        )}
+
+        {customer && recentOrders.length === 0 && (
+          <Text className="text-center text-sm text-gray-500 mb-10 max-w-[320px] leading-relaxed italic">
+            You don&apos;t have any recent orders to track at the moment.
+          </Text>
+        )}
+
+        {recentOrders.length > 0 && (
+          <div className="w-full mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
+            <div className="flex items-center gap-x-3 mb-6">
+              <div className="h-px flex-1 bg-gray-100" />
+              <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Your Recent Orders</span>
+              <div className="h-px flex-1 bg-gray-100" />
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              {recentOrders.map((order) => (
+                <button
+                  key={order.id}
+                  onClick={() => {
+                    window.location.href = `/${countryCode}/order/lookup?display_id=${order.display_id}&email=${encodeURIComponent(order.email || "")}`
+                  }}
+                  className="flex items-center justify-between p-4 bg-[#2C1E36]/5 hover:bg-[#2C1E36] hover:text-white rounded-2xl border border-[#2C1E36]/10 transition-all text-left group"
+                >
+                  <div className="flex flex-col">
+                    <span className="text-xs font-black uppercase tracking-widest">Order #{order.display_id}</span>
+                    <span className="text-[10px] opacity-60 font-serif italic italic text-current">
+                       {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest hidden sm:inline">Track</span>
+                    <ArrowRightMini className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {!customer && (
+          <div className="w-full bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-purple-900/5 transition-all">
+            <form className="w-full flex flex-col gap-y-6" action={formAction}>
+              <div className="flex flex-col w-full gap-y-4">
+                <Input
+                  label="Order Reference Number"
+                  name="display_id"
+                  type="text"
+                  required
+                  defaultValue={initialDisplayId}
+                  data-testid="order-id-input"
+                />
+                <Input
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  defaultValue={initialEmail || ""}
+                  data-testid="email-input"
+                />
+              </div>
+              <ErrorMessage error={state.error} data-testid="lookup-error-message" />
+              <SubmitButton data-testid="lookup-button" className="w-full bg-[#2C1E36] text-white rounded-2xl py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all mt-2">
+                Locate Order
+              </SubmitButton>
+            </form>
+          </div>
+        )}
+
+        {!customer && (
+          <div className="mt-12 flex flex-col items-center gap-y-4">
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-300">
+              Preferred Experience
+            </span>
+            <Button 
+              variant="secondary" 
+              className="rounded-xl px-10 py-4 h-auto text-[10px] uppercase tracking-widest font-black bg-[#C5A059]/5 text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all border-none"
+              onClick={() => router.push(`/${countryCode}/account`)}
+            >
+              Sign In for Full History
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

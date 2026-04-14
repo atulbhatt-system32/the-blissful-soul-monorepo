@@ -58,7 +58,7 @@ export default async function ContactPage() {
               <div className="mb-16">
                 <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.5em] mb-6 block">Sanctum Connection</span>
                 <h2 className="text-4xl md:text-6xl font-serif text-[#2C1E36] uppercase tracking-tight leading-[1.1]">
-                   {formTitle.split(' ').map((word, i) => (
+                   {formTitle.split(' ').map((word: string, i: number) => (
                      <span key={i} className={i % 2 === 1 ? 'italic font-normal text-[#C5A059] ml-2' : ''}>{word} </span>
                    ))}
                 </h2>

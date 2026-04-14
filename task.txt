@@ -69,3 +69,9 @@ and fix the footer as well in in mobile screen jion use buttion will come bwlew 
 
 
 and can using script in medusa and products cann add all the prodcuts qyt 10k and make sure only prodcuts not sessions 
+
+
+
+http://localhost:8001/in/account/sessions
+
+https://theblissfulsoul.in/in/order/order_01KP5H4D0NJ9Z0RXYMHBGD18VF/confirmed

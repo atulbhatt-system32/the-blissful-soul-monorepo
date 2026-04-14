@@ -49,14 +49,32 @@ export const listOrders = async (
         limit,
         offset,
         order: "-created_at",
-        fields: "*items,*items.adjustments,+items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
+        fields: "+email,*items,*items.adjustments,+items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
         ...filters,
       },
       headers,
       next,
       cache: "force-cache",
     })
-    .then(({ orders }) => orders)
+    .then(({ orders }) => {
+      return orders.filter((order: any) => {
+        const isSessionOrder = order.metadata?.is_session === true || 
+          order.items?.some((item: any) => {
+          const product = item.variant?.product
+          return (
+            item.metadata?.booking_date || 
+            item.title?.toLowerCase().includes("session booking") ||
+            product?.type?.value === "session" || 
+            product?.tags?.some((t: any) => t.value === "session") ||
+            product?.metadata?.is_service === true ||
+            product?.metadata?.is_service === "true" ||
+            product?.categories?.some((c: any) => c.handle?.includes("session"))
+          )
+        }) || order.metadata?.type === "session" || order.metadata?.booking_id;
+
+        return !isSessionOrder;
+      });
+    })
     .catch((err) => medusaError(err))
 }
 
@@ -153,7 +171,7 @@ export const lookupOrder = async (
       },
       query: {
         fields:
-          "+metadata,*payment_collections.payments,*items,*items.thumbnail,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.thumbnail,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
+          "+metadata,*payment_collections.payments,*items,+items.thumbnail,+items.product_title,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,+items.variant.product.thumbnail,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
       },
       headers,
     })

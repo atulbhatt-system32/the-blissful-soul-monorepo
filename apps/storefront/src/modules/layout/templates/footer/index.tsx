@@ -49,6 +49,7 @@ export default async function Footer() {
                   <li><LocalizedClientLink href="/about" className="hover:text-[#C5A059] transition-colors">About Master</LocalizedClientLink></li>
                   <li><LocalizedClientLink href="/book-session" className="hover:text-[#C5A059] transition-colors">Book a session</LocalizedClientLink></li>
                   <li><LocalizedClientLink href="/store" className="hover:text-[#C5A059] transition-colors">Shop crystals</LocalizedClientLink></li>
+                  <li><LocalizedClientLink href="/order/lookup" className="hover:text-[#C5A059] transition-colors">Track Order</LocalizedClientLink></li>
                   <li><LocalizedClientLink href="/contact" className="hover:text-[#C5A059] transition-colors">Contact</LocalizedClientLink></li>
               </ul>
             </div>
