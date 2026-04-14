@@ -26,8 +26,8 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const item_tax_total = (totals as any).item_tax_total ?? 0
 
   // For tax-inclusive pricing, item_subtotal is the pre-tax base.
-  // Compute the inclusive item value as total - shipping.
-  const item_inclusive = (total ?? 0) - (shipping_subtotal ?? 0) + (discount_subtotal ?? 0)
+  // Compute the inclusive item value as the sum of line item totals.
+  const item_inclusive = (totals as any).items?.reduce((acc: number, item: any) => acc + (item.total ?? 0), 0) ?? ((total ?? 0) - (shipping_subtotal ?? 0) + (discount_subtotal ?? 0))
 
   return (
     <div className="flex flex-col gap-y-3">
