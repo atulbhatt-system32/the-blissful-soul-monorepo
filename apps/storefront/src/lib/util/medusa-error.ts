@@ -9,7 +9,8 @@ export default function medusaError(error: any): never {
     console.error("Headers:", error.response.headers)
 
     // Extracting the error message from the response data
-    const message = error.response.data.message || error.response.data
+    const rawMessage = error.response.data.message || error.response.data
+    const message = typeof rawMessage === "string" ? rawMessage : JSON.stringify(rawMessage)
 
     throw new Error(message.charAt(0).toUpperCase() + message.slice(1) + (message.endsWith(".") ? "" : "."))
   } else if (error.request) {
