@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11':
-    hash: 68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf
-    path: patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
-
 importers:
 
   .:
@@ -48,7 +43,7 @@ importers:
         version: 4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@tsc_tech/medusa-plugin-razorpay-payment':
         specifier: ^0.0.11
-        version: 0.0.11(patch_hash=68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
+        version: 0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
       axios:
         specifier: ^1.13.6
         version: 1.14.0
@@ -21176,7 +21171,7 @@ snapshots:
       '@strapi/design-system': 2.2.0(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.1)(@codemirror/language@6.12.3)(@codemirror/lint@6.9.5)(@codemirror/search@6.6.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.40.0)(@strapi/icons@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(codemirror@5.65.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/permissions': 5.38.0
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/utils': 5.38.0
       '@testing-library/dom': 10.4.1
@@ -21379,7 +21374,7 @@ snapshots:
       '@strapi/database': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)
       '@strapi/design-system': 2.2.0(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.1)(@codemirror/language@6.12.3)(@codemirror/lint@6.9.5)(@codemirror/search@6.6.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.40.0)(@strapi/icons@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(codemirror@5.65.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
       '@strapi/utils': 5.38.0
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
@@ -21480,7 +21475,7 @@ snapshots:
       '@strapi/generators': 5.38.0(@types/node@20.19.37)
       '@strapi/logger': 5.38.0
       '@strapi/permissions': 5.38.0
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/utils': 5.38.0
       '@vercel/stega': 0.1.2
@@ -21915,7 +21910,7 @@ snapshots:
       '@strapi/openapi': 5.38.0
       '@strapi/permissions': 5.38.0
       '@strapi/review-workflows': 5.38.0(1b7cd976f0bafb1f1416a1176f3318f9)
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/upload': 5.38.0(728b88c0427d10186dd015795aca24c5)
       '@strapi/utils': 5.38.0
@@ -22018,6 +22013,36 @@ snapshots:
       - webpack-cli
       - webpack-dev-server
       - webpack-plugin-serve
+
+  '@strapi/types@5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)':
+    dependencies:
+      '@casl/ability': 6.7.5
+      '@koa/cors': 5.0.0
+      '@koa/router': 12.0.2
+      '@strapi/database': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)
+      '@strapi/logger': 5.38.0
+      '@strapi/permissions': 5.38.0
+      '@strapi/utils': 5.38.0
+      commander: 8.3.0
+      json-logic-js: 2.0.5
+      koa: 2.16.3
+      koa-body: 6.0.1
+      node-schedule: 2.1.1
+      typedoc: 0.25.10(typescript@5.4.4)
+      typedoc-github-wiki-theme: 1.1.0(typedoc-plugin-markdown@3.17.1(typedoc@0.25.10(typescript@5.9.3)))(typedoc@0.25.10(typescript@5.9.3))
+      typedoc-plugin-markdown: 3.17.1(typedoc@0.25.10(typescript@5.9.3))
+      zod: 3.25.67
+    transitivePeerDependencies:
+      - '@types/node'
+      - better-sqlite3
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+      - typescript
 
   '@strapi/types@5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)':
     dependencies:
@@ -22327,8 +22352,8 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  ? '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(patch_hash=68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)'
-  : dependencies:
+  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)':
+    dependencies:
       '@medusajs/admin-sdk': 2.13.1
       '@medusajs/cli': 2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1)
       '@medusajs/framework': 2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76)
@@ -30141,6 +30166,14 @@ snapshots:
     dependencies:
       handlebars: 4.7.9
       typedoc: 0.25.10(typescript@5.9.3)
+
+  typedoc@0.25.10(typescript@5.4.4):
+    dependencies:
+      lunr: 2.3.9
+      marked: 4.3.0
+      minimatch: 9.0.9
+      shiki: 0.14.7
+      typescript: 5.4.4
 
   typedoc@0.25.10(typescript@5.9.3):
     dependencies:

@@ -10,10 +10,5 @@
   "devDependencies": {
     "turbo": "latest"
   },
-  "packageManager": "pnpm@10.5.2",
-  "pnpm": {
-    "patchedDependencies": {
-      "@tsc_tech/medusa-plugin-razorpay-payment@0.0.11": "patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch"
-    }
-  }
+  "packageManager": "pnpm@10.5.2"
 }

@@ -15,7 +15,7 @@ const COMPANY = {
   signatory: "PRAGYA VUH",
 }
 
-const GST_RATE = 3 // Default GST % for crystals / healing items
+const GST_RATE_FALLBACK = 3 // Fallback GST % if no tax lines present on item
 const MARGIN = 40
 const PAGE_WIDTH = 595.28     // A4
 const INNER_LEFT = MARGIN + 5
@@ -297,11 +297,17 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         const grossAmount = rate * qty
         const adjustmentTotal = (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
         const discount = adjustmentTotal
-        const taxable = grossAmount - discount
-        const gstPct = GST_RATE
-        const cgst = taxable * (gstPct / 200) // half of GST
-        const sgst = taxable * (gstPct / 200)
-        const total = taxable + cgst + sgst
+        const grossAfterDiscount = grossAmount - discount
+
+        // Read GST rate from Medusa tax lines; fall back to default if not present
+        const taxLines = item.tax_lines || []
+        const gstPct = taxLines.reduce((sum: number, t: any) => sum + (t.rate ?? 0), 0) || GST_RATE_FALLBACK
+
+        // Prices are tax-inclusive — back-calculate the pre-tax (taxable) amount
+        const taxable = grossAfterDiscount / (1 + gstPct / 100)
+        const cgst = (grossAfterDiscount - taxable) / 2
+        const sgst = (grossAfterDiscount - taxable) / 2
+        const total = grossAfterDiscount // total is the tax-inclusive price
 
         totalQty += qty
         grandItemTotal += total
