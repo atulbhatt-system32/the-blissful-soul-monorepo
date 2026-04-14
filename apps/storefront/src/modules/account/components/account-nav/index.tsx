@@ -26,21 +26,22 @@ const AccountNav = ({
 
   return (
     <div className="animate-in fade-in slide-in-from-left-4 duration-700">
-      <div className="small:hidden px-4" data-testid="mobile-account-nav">
+      <div className="small:hidden" data-testid="mobile-account-nav">
         {route !== `/${countryCode}/account` ? (
-          <LocalizedClientLink
-            href="/account"
-            className="flex items-center gap-x-2 text-[11px] uppercase tracking-widest font-bold text-[#2C1E36]/60 py-2"
-            data-testid="account-main-link"
-          >
-            <>
-              <ChevronDown className="transform rotate-90" width={12} height={12} />
-              <span>Back to Account</span>
-            </>
-          </LocalizedClientLink>
+          <div className="flex items-center px-4 py-4 bg-gray-50/50 border-b border-gray-100 mb-6 -mt-6 -mx-4">
+            <LocalizedClientLink
+              href="/account"
+              className="flex items-center gap-x-1.5 text-[10px] uppercase tracking-[0.2em] font-black text-[#2C1E36]/40 hover:text-[#2C1E36] transition-colors"
+              data-testid="account-main-link"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <ChevronDown className="transform rotate-90" width={14} height={14} />
+              <span>Account Overview</span>
+            </LocalizedClientLink>
+          </div>
         ) : (
           <div className="py-8">
-            <div className="text-3xl font-serif text-[#2C1E36] mb-6 px-4">
+            <div className="text-2xl font-serif text-[#2C1E36] mb-6 px-4">
               Hello, {customer?.first_name}
             </div>
             <div className="text-base-regular">
@@ -192,7 +193,7 @@ const AccountNavLink = ({
     <LocalizedClientLink
       href={href}
       className={clx(
-        "py-3 px-4 rounded-xl text-sm font-bold transition-all flex items-center justify-between group",
+        "py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-between group",
         {
           "bg-[#2C1E36] text-white shadow-lg shadow-[#2C1E36]/20": active,
           "text-gray-400 hover:text-[#2C1E36] hover:bg-gray-50": !active,

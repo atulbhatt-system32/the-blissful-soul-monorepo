@@ -55,6 +55,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         errorMessage={state.error}
         clearState={clearState}
         data-testid="account-email-editor"
+        isReadOnly={true}
       >
         <div className="grid grid-cols-1 gap-y-2">
           <Input

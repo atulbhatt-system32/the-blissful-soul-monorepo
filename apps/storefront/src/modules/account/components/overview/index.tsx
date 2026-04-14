@@ -15,7 +15,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
       <div className="hidden small:block">
         <div className="flex justify-between items-end mb-10 pb-6 border-b border-gray-100">
           <div>
-            <h1 className="text-4xl font-serif text-[#2C1E36] mb-2" data-testid="welcome-message">
+            <h1 className="text-3xl font-serif text-[#2C1E36] mb-2" data-testid="welcome-message">
               Hello, {customer?.first_name}
             </h1>
             <p className="text-gray-500 text-sm">Welcome back to your personal healing space.</p>
