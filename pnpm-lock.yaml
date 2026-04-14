@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11':
+    hash: 68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf
+    path: patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
+
 importers:
 
   .:
@@ -43,7 +48,7 @@ importers:
         version: 4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@tsc_tech/medusa-plugin-razorpay-payment':
         specifier: ^0.0.11
-        version: 0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
+        version: 0.0.11(patch_hash=68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
       axios:
         specifier: ^1.13.6
         version: 1.14.0
@@ -13300,7 +13305,7 @@ snapshots:
       '@babel/types': 7.29.0
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -13602,7 +13607,7 @@ snapshots:
       '@babel/parser': 7.25.6
       '@babel/template': 7.28.6
       '@babel/types': 7.25.6
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -13615,7 +13620,7 @@ snapshots:
       '@babel/parser': 7.29.2
       '@babel/template': 7.28.6
       '@babel/types': 7.29.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -14030,7 +14035,7 @@ snapshots:
   '@eslint/eslintrc@1.4.1':
     dependencies:
       ajv: 6.14.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.2
@@ -14282,7 +14287,7 @@ snapshots:
   '@humanwhocodes/config-array@0.9.5':
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       minimatch: 3.1.5
     transitivePeerDependencies:
       - supports-color
@@ -15889,9 +15894,9 @@ snapshots:
     dependencies:
       '@oclif/config': 1.18.17
       '@oclif/errors': 1.3.6
-      '@oclif/help': 1.0.15
+      '@oclif/help': 1.0.15(supports-color@8.1.1)
       '@oclif/parser': 3.8.17
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
@@ -15911,21 +15916,10 @@ snapshots:
     dependencies:
       '@oclif/config': 1.18.2
       '@oclif/errors': 1.3.6
-      '@oclif/help': 1.0.15
+      '@oclif/help': 1.0.15(supports-color@8.1.1)
       '@oclif/parser': 3.8.17
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       semver: 7.7.4
-    transitivePeerDependencies:
-      - supports-color
-
-  '@oclif/config@1.18.16':
-    dependencies:
-      '@oclif/errors': 1.3.6
-      '@oclif/parser': 3.8.17
-      debug: 4.4.3(supports-color@5.5.0)
-      globby: 11.1.0
-      is-wsl: 2.2.0
-      tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
@@ -15944,7 +15938,7 @@ snapshots:
     dependencies:
       '@oclif/errors': 1.3.6
       '@oclif/parser': 3.8.17
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       globby: 11.1.0
       is-wsl: 2.2.0
       tslib: 2.8.1
@@ -15955,7 +15949,7 @@ snapshots:
     dependencies:
       '@oclif/errors': 1.3.5
       '@oclif/parser': 3.8.17
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       globby: 11.1.0
       is-wsl: 2.2.0
       tslib: 2.8.1
@@ -15977,20 +15971,6 @@ snapshots:
       indent-string: 4.0.0
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-
-  '@oclif/help@1.0.15':
-    dependencies:
-      '@oclif/config': 1.18.16
-      '@oclif/errors': 1.3.6
-      chalk: 4.1.2
-      indent-string: 4.0.0
-      lodash: 4.17.23
-      string-width: 4.2.3
-      strip-ansi: 6.0.1
-      widest-line: 3.1.0
-      wrap-ansi: 6.2.0
-    transitivePeerDependencies:
-      - supports-color
 
   '@oclif/help@1.0.15(supports-color@8.1.1)':
     dependencies:
@@ -16020,7 +16000,7 @@ snapshots:
       '@oclif/command': 1.8.36(@oclif/config@1.18.2)
       '@oclif/config': 1.18.2
       '@oclif/errors': 1.3.5
-      '@oclif/help': 1.0.15
+      '@oclif/help': 1.0.15(supports-color@8.1.1)
       chalk: 4.1.2
       indent-string: 4.0.0
       lodash: 4.17.23
@@ -21196,7 +21176,7 @@ snapshots:
       '@strapi/design-system': 2.2.0(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.1)(@codemirror/language@6.12.3)(@codemirror/lint@6.9.5)(@codemirror/search@6.6.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.40.0)(@strapi/icons@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(codemirror@5.65.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/permissions': 5.38.0
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/utils': 5.38.0
       '@testing-library/dom': 10.4.1
@@ -21399,7 +21379,7 @@ snapshots:
       '@strapi/database': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)
       '@strapi/design-system': 2.2.0(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.1)(@codemirror/language@6.12.3)(@codemirror/lint@6.9.5)(@codemirror/search@6.6.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.40.0)(@strapi/icons@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(codemirror@5.65.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
       '@strapi/utils': 5.38.0
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
@@ -21500,7 +21480,7 @@ snapshots:
       '@strapi/generators': 5.38.0(@types/node@20.19.37)
       '@strapi/logger': 5.38.0
       '@strapi/permissions': 5.38.0
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/utils': 5.38.0
       '@vercel/stega': 0.1.2
@@ -21935,7 +21915,7 @@ snapshots:
       '@strapi/openapi': 5.38.0
       '@strapi/permissions': 5.38.0
       '@strapi/review-workflows': 5.38.0(1b7cd976f0bafb1f1416a1176f3318f9)
-      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)
+      '@strapi/types': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)
       '@strapi/typescript-utils': 5.38.0
       '@strapi/upload': 5.38.0(728b88c0427d10186dd015795aca24c5)
       '@strapi/utils': 5.38.0
@@ -22038,36 +22018,6 @@ snapshots:
       - webpack-cli
       - webpack-dev-server
       - webpack-plugin-serve
-
-  '@strapi/types@5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.4.4)':
-    dependencies:
-      '@casl/ability': 6.7.5
-      '@koa/cors': 5.0.0
-      '@koa/router': 12.0.2
-      '@strapi/database': 5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)
-      '@strapi/logger': 5.38.0
-      '@strapi/permissions': 5.38.0
-      '@strapi/utils': 5.38.0
-      commander: 8.3.0
-      json-logic-js: 2.0.5
-      koa: 2.16.3
-      koa-body: 6.0.1
-      node-schedule: 2.1.1
-      typedoc: 0.25.10(typescript@5.4.4)
-      typedoc-github-wiki-theme: 1.1.0(typedoc-plugin-markdown@3.17.1(typedoc@0.25.10(typescript@5.9.3)))(typedoc@0.25.10(typescript@5.9.3))
-      typedoc-plugin-markdown: 3.17.1(typedoc@0.25.10(typescript@5.9.3))
-      zod: 3.25.67
-    transitivePeerDependencies:
-      - '@types/node'
-      - better-sqlite3
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
-      - typescript
 
   '@strapi/types@5.38.0(@types/node@20.19.37)(better-sqlite3@12.4.1)(typescript@5.9.3)':
     dependencies:
@@ -22369,7 +22319,7 @@ snapshots:
 
   '@tokenizer/inflate@0.2.7':
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       fflate: 0.8.2
       token-types: 6.1.2
     transitivePeerDependencies:
@@ -22377,8 +22327,8 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)':
-    dependencies:
+  ? '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(patch_hash=68cc9754dc03fd6288a1cac6420051443e91844169cf9a3f1752b6b8cfc1e2bf)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)'
+  : dependencies:
       '@medusajs/admin-sdk': 2.13.1
       '@medusajs/cli': 2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1)
       '@medusajs/framework': 2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76)
@@ -22772,7 +22722,7 @@ snapshots:
       '@typescript-eslint/types': 8.58.0
       '@typescript-eslint/typescript-estree': 8.58.0(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.58.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       eslint: 8.10.0
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -22782,7 +22732,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.58.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.58.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -22801,7 +22751,7 @@ snapshots:
       '@typescript-eslint/types': 8.58.0
       '@typescript-eslint/typescript-estree': 8.58.0(typescript@5.9.3)
       '@typescript-eslint/utils': 8.58.0(eslint@8.10.0)(typescript@5.9.3)
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       eslint: 8.10.0
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
@@ -22816,7 +22766,7 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.58.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.58.0
       '@typescript-eslint/visitor-keys': 8.58.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       minimatch: 10.2.5
       semver: 7.7.4
       tinyglobby: 0.2.15
@@ -24590,7 +24540,7 @@ snapshots:
 
   esbuild-register@3.5.0(esbuild@0.25.12):
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       esbuild: 0.25.12
     transitivePeerDependencies:
       - supports-color
@@ -24691,7 +24641,7 @@ snapshots:
   eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.10.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       eslint: 8.10.0
       get-tsconfig: 4.13.7
       is-bun-module: 2.0.0
@@ -24816,7 +24766,7 @@ snapshots:
       ajv: 6.14.0
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -25877,7 +25827,7 @@ snapshots:
     dependencies:
       '@ioredis/commands': 1.5.1
       cluster-key-slot: 1.1.2
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       denque: 2.1.0
       lodash.defaults: 4.2.0
       lodash.isarguments: 3.1.0
@@ -26153,7 +26103,7 @@ snapshots:
 
   istanbul-lib-source-maps@4.0.1:
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       istanbul-lib-coverage: 3.2.2
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -26648,7 +26598,7 @@ snapshots:
     dependencies:
       '@types/express': 4.17.25
       '@types/jsonwebtoken': 9.0.10
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       jose: 4.15.9
       limiter: 1.1.5
       lru-memoizer: 2.3.0
@@ -26775,7 +26725,7 @@ snapshots:
 
   koa-ip@2.1.4:
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       lodash.isplainobject: 4.0.6
       request-ip: 3.3.0
     transitivePeerDependencies:
@@ -26793,7 +26743,7 @@ snapshots:
 
   koa-send@5.0.1:
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       http-errors: 1.8.1
       resolve-path: 1.4.0
     transitivePeerDependencies:
@@ -26824,7 +26774,7 @@ snapshots:
       content-disposition: 0.5.4
       content-type: 1.0.5
       cookies: 0.9.1
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       delegates: 1.0.0
       depd: 2.0.0
       destroy: 1.2.0
@@ -27334,7 +27284,7 @@ snapshots:
   micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.13
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       decode-named-character-reference: 1.3.0
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3
@@ -29109,7 +29059,7 @@ snapshots:
 
   require-in-the-middle@7.5.2:
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       module-details-from-path: 1.0.4
       resolve: 1.22.11
     transitivePeerDependencies:
@@ -30191,14 +30141,6 @@ snapshots:
     dependencies:
       handlebars: 4.7.9
       typedoc: 0.25.10(typescript@5.9.3)
-
-  typedoc@0.25.10(typescript@5.4.4):
-    dependencies:
-      lunr: 2.3.9
-      marked: 4.3.0
-      minimatch: 9.0.9
-      shiki: 0.14.7
-      typescript: 5.4.4
 
   typedoc@0.25.10(typescript@5.9.3):
     dependencies:

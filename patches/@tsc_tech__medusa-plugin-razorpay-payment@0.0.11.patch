@@ -1,0 +1,76 @@
+diff --git a/.medusa/server/src/providers/razorpay/core/razorpay-base.js b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
+index 940ffa46976af76d45579a7860222f6352ab6728..21d3c0efe1bdd4caf09469274f055bf42f99ff2c 100644
+--- a/.medusa/server/src/providers/razorpay/core/razorpay-base.js
++++ b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
+@@ -75,17 +75,23 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
+                 count,
+                 skip,
+             }))?.items;
+-            razorpayCustomer =
+-                customerList?.find((c) => c.contact == customer?.phone || c.email == customer.email) ?? customerList?.[0];
++            // Only match by email or phone — never fall back to an arbitrary customer
++            razorpayCustomer = customerList?.find(
++                (c) => (customer.email && c.email === customer.email) ||
++                       (customer?.phone && c.contact === customer.phone)
++            );
+             if (razorpayCustomer) {
+                 await this.updateRazorpayMetadataInCustomer(customer, "rp_customer_id", razorpayCustomer.id);
+                 break;
+             }
+-            if (!customerList || !razorpayCustomer) {
+-                throw new Error("no customers and cant create customers in razorpay");
++            if (!customerList || customerList.length === 0) {
++                throw new Error("no customers found in razorpay matching email or phone");
+             }
+             skip += count;
+-        } while (customerList?.length == 0);
++        } while (customerList?.length === count);
++        if (!razorpayCustomer) {
++            throw new Error("no razorpay customer found matching email or phone");
++        }
+         return razorpayCustomer;
+     }
+     async fetchOrPollForCustomer(customer) {
+@@ -129,24 +135,22 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
+     async createRazorpayCustomer(customer, intentRequest, extra) {
+         let razorpayCustomer;
+         const phone = customer.phone ??
+-            extra.billing_address?.phone ??
+-            customer?.addresses.find((v) => v.phone != undefined)?.phone;
++            extra?.billing_address?.phone ??
++            customer?.addresses?.find((v) => v.phone != undefined)?.phone;
+         const gstin = customer?.metadata?.gstin ?? undefined;
+-        if (!phone) {
+-            throw new Error("phone number to create razorpay customer");
+-        }
++        // email is required; phone is optional — Razorpay accepts customers without contact
+         if (!customer.email) {
+-            throw new Error("email to create razorpay customer");
++            throw new Error("email required to create razorpay customer");
+         }
+         const firstName = customer.first_name ?? "";
+         const lastName = customer.last_name ?? "";
+         try {
+             const customerParams = {
+                 email: customer.email,
+-                contact: phone,
+-                gstin: gstin,
++                ...(phone ? { contact: phone } : {}),
++                ...(gstin ? { gstin } : {}),
+                 fail_existing: 0,
+-                name: `${firstName} ${lastName} `,
++                name: `${firstName} ${lastName}`.trim() || customer.email,
+                 notes: {
+                     updated_at: new Date().toISOString(),
+                 },
+@@ -229,6 +233,10 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
+                 try {
+                     this.logger.info("relinking  customer  in razorpay by polling");
+                     razorpayCustomer = await this.fetchOrPollForCustomer(customer);
++                    // Ensure the order intent carries the relinked customer ID
++                    if (razorpayCustomer?.id) {
++                        intentRequest.notes.razorpay_id = razorpayCustomer.id;
++                    }
+                 }
+                 catch (e) {
+                     this.logger.error("unable to poll customer customer in the razorpay payment processor");

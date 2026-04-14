@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
+COPY patches ./patches
 
 # Copy backend app files
 COPY apps/backend ./apps/backend
