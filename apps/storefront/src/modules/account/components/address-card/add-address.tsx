@@ -55,7 +55,7 @@ const AddAddress = ({
           onClick={open}
           data-testid="add-address-button"
         >
-          <Plus size={16} />
+          <Plus style={{ width: 16, height: 16 }} />
           <span>Add Address</span>
         </Button>
 

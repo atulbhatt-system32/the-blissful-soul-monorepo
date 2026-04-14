@@ -34,11 +34,11 @@ const BookSessionClient = ({
     video: videoProducts,
   }
 
-  const currentItems = (productMap[activeTab] || []).flatMap(product => {
+  const currentItems: { product: HttpTypes.StoreProduct; variantId: string | undefined }[] = (productMap[activeTab] || []).flatMap((product: HttpTypes.StoreProduct) => {
     // If it's a session and has multiple variants, treat each variant as a card
     if (product.variants && product.variants.length > 1) {
       return product.variants
-        .filter(v => {
+        .filter((v: any) => {
           // 1. Respect absolute hidden flag (hides everywhere)
           if (v.metadata?.hidden === "true" || v.metadata?.hidden === true) return false
           
@@ -53,13 +53,13 @@ const BookSessionClient = ({
           
           return true 
         })
-        .map(v => ({
+        .map((v: any) => ({
           product,
-          variantId: v.id
+          variantId: v.id as string | undefined
         }))
     }
     // Otherwise just show the product card as usual
-    return [{ product, variantId: undefined }]
+    return [{ product, variantId: undefined as string | undefined }]
   })
 
   return (

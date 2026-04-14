@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useRouter, useParams } from "next/navigation"
 
 type GuestAutoRegisterProps = {
   email: string
@@ -17,6 +16,7 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { countryCode } = useParams() as { countryCode: string }
 
   useEffect(() => {
     const checkAccount = async () => {
@@ -51,14 +51,15 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
 
       if (response.ok) {
         setSuccess(true)
+        // Redirect to login page after 2s so user can log in with new credentials
         setTimeout(() => {
-          router.refresh()
+          router.push(`/${countryCode}/account`)
         }, 2000)
       } else {
         setError(data.message || "Failed to create account. Please try again.")
       }
     } catch (err) {
-      setError("An unexpected error occurred.")
+      setError("An unexpected error occurred. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -87,18 +88,11 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
           <p className="text-gray-500 mb-6">You already have an account with us. Log in to view all your session details in one place.</p>
           
           <button 
-            onClick={() => router.push("/account")}
+            onClick={() => router.push(`/${countryCode}/account`)}
             className="w-full max-w-sm bg-[#2C1E36] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#2C1E36]/10 uppercase tracking-widest text-sm"
           >
             Login to View Sessions
           </button>
-          
-          <LocalizedClientLink 
-            href="/account/sessions"
-            className="mt-6 text-sm font-semibold text-[#2C1E36]/70 hover:text-[#2C1E36] hover:underline transition-colors"
-          >
-            Or lookup this session as guest
-          </LocalizedClientLink>
         </div>
       </div>
     )
@@ -113,7 +107,7 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
           </svg>
           <h3 className="font-bold text-lg">Account Secured!</h3>
         </div>
-        <p className="text-green-600">Your account is ready. You can now manage and reschedule your sessions anytime.</p>
+        <p className="text-green-600">Your account is ready. Redirecting you to your sessions...</p>
       </div>
     )
   }
@@ -160,17 +154,10 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
         <p className="mt-3 text-sm text-red-500 font-medium text-center">{error}</p>
       )}
 
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <p className="text-[11px] text-gray-400 leading-relaxed italic text-center max-w-sm">
-          *By setting a password, you enable easy cancellations and date changes for all your "The Blissful Soul" sessions.
+      <div className="mt-6">
+        <p className="text-[11px] text-gray-400 leading-relaxed italic text-center max-w-sm mx-auto">
+          *By setting a password, you enable easy cancellations and date changes for all your &quot;The Blissful Soul&quot; sessions.
         </p>
-        
-        <LocalizedClientLink 
-          href="/account/sessions"
-          className="text-sm font-semibold text-[#2C1E36]/70 hover:text-[#2C1E36] hover:underline transition-colors"
-        >
-          Or lookup this session as guest
-        </LocalizedClientLink>
       </div>
     </div>
   )

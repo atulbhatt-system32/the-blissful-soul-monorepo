@@ -9,11 +9,15 @@ export async function POST(request: NextRequest) {
     }
 
     const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""
 
-    // Forward to backend custom registration
+    // Forward to backend custom registration with publishable key
     const response = await fetch(`${backendUrl}/custom/guest-register`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...(publishableKey ? { "x-publishable-api-key": publishableKey } : {})
+      },
       body: JSON.stringify({ email, password, firstName, lastName }),
     })
 

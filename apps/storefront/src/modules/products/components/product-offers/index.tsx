@@ -12,10 +12,10 @@ const ProductOffers = ({ storeConfig }: { storeConfig?: any }) => {
 
   const getOfferMeta = (type: string, index: number) => {
     const metas: Record<string, { color: string, icon: any }> = {
-      gift: { color: "border-orange-500", icon: <Gift size={18} className="text-[#2C1E36]" /> },
-      discount: { color: "border-emerald-500", icon: <ShoppingCart size={18} className="text-[#2C1E36]" /> },
-      shipping: { color: "border-blue-500", icon: <ShoppingCart size={18} className="text-[#2C1E36]" /> },
-      tag: { color: "border-[#C5A059]", icon: <Tag size={18} className="text-[#2C1E36]" /> }
+      gift: { color: "border-orange-500", icon: <Gift style={{ width: 18, height: 18 }} className="text-[#2C1E36]" /> },
+      discount: { color: "border-emerald-500", icon: <ShoppingCart style={{ width: 18, height: 18 }} className="text-[#2C1E36]" /> },
+      shipping: { color: "border-blue-500", icon: <ShoppingCart style={{ width: 18, height: 18 }} className="text-[#2C1E36]" /> },
+      tag: { color: "border-[#C5A059]", icon: <Tag style={{ width: 18, height: 18 }} className="text-[#2C1E36]" /> }
     }
     
     // Fallback to rotating colors if type is unknown
@@ -32,7 +32,7 @@ const ProductOffers = ({ storeConfig }: { storeConfig?: any }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-2.5">
           <div className="bg-[#C5A059]/10 p-1.5 rounded-lg">
-            <Tag className="text-[#C5A059]" size={14} />
+            <Tag className="text-[#C5A059]" style={{ width: 14, height: 14 }} />
           </div>
           <span className="text-[11px] uppercase tracking-[0.25em] font-black text-[#C5A059]">
             Exclusive Offers

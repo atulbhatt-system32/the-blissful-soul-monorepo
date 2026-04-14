@@ -26,17 +26,50 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Cal.com API key or Username not configured." }, { status: 500 })
     }
 
+    // First, resolve eventTypeId from slug
+    let eventTypeId: number | undefined
+    try {
+      const eventTypesRes = await fetch(`${CAL_API_BASE}/event-types`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "cal-api-version": "2024-09-04",
+          "Content-Type": "application/json",
+        }
+      })
+      if (eventTypesRes.ok) {
+        const json = await eventTypesRes.json()
+        const eventTypes = json.data || json || []
+        const matched = Array.isArray(eventTypes) 
+          ? eventTypes.find((et: any) => et.slug === eventSlug)
+          : null
+        if (matched) {
+          eventTypeId = matched.id
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch event types:", err)
+    }
+
+    if (!eventTypeId) {
+      console.warn("Could not resolve eventTypeId for slug:", eventSlug)
+    }
+
     // Cal.com v2 Booking Payload
-    // By providing eventTypeSlug + username, we don't need the numeric ID.
     const bookingPayload: any = {
       start: startTime,
-      eventTypeSlug: eventSlug,
-      username: username,
       attendee: {
         name: attendeeName,
         email: attendeeEmail,
         timeZone: attendeeTimeZone || "Asia/Kolkata",
       }
+    }
+
+    if (eventTypeId) {
+      bookingPayload.eventTypeId = eventTypeId
+    } else {
+      bookingPayload.eventTypeSlug = eventSlug
+      bookingPayload.username = username
     }
 
     console.log("Sending booking to Cal.com v2:", JSON.stringify(bookingPayload, null, 2))

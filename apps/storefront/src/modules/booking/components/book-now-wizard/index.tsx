@@ -43,9 +43,7 @@ export default function BookNowClient({
   customer
 }: BookNowProps) {
   const router = useRouter()
-//... // skipping all the logic, wait, I MUST provide the replacement exactly on the lines targeted or it will delete the middle part!!
 
-// Let me use a smaller targeted replacement. I'll split it into two replacement calls.
   const [currentStep, setCurrentStep] = useState(1)
 
   // Form State
@@ -449,7 +447,9 @@ export default function BookNowClient({
               <span>
                 {(() => {
                   const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-                  return variantObj?.calculated_price || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
+                  const price = variantObj?.calculated_price
+                  const priceStr = typeof price === 'string' ? price : (price as any)?.calculated_amount != null ? String((price as any).calculated_amount) : null
+                  return priceStr || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
                 })()}
               </span>
             </div>
@@ -474,7 +474,7 @@ export default function BookNowClient({
             })()}
             price={(() => {
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-              return variantObj?.calculated_price_number || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0
+              return (variantObj?.calculated_price as any)?.calculated_amount || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0
             })()}
             onSuccess={() => setCurrentStep(5)}
             onBack={handlePrev}

@@ -116,7 +116,7 @@ export async function createCalBooking(params: {
 // Cache mapping eventSlug -> eventId
 const cachedEventTypeIds: Record<string, number> = {}
 
-async function resolveEventTypeId(eventSlug?: string): Promise<number | null> {
+export async function resolveEventTypeId(eventSlug?: string): Promise<number | null> {
   const targetSlug = eventSlug || process.env.NEXT_PUBLIC_CAL_EVENT_SLUG
   if (!targetSlug) return null
     

@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { email, password, firstName, lastName } = req.body as any
@@ -11,74 +10,87 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   console.log(`[Guest Register] Processing registration for: ${email}`)
 
   try {
-    const authModuleService = req.scope.resolve(Modules.AUTH) as any
-    const customerModuleService = req.scope.resolve(Modules.CUSTOMER) as any
-    const remoteLink = req.scope.resolve("remoteLink") as any
+    // Step 1: Use Medusa's built-in auth registration endpoint
+    // This correctly hashes the password and creates auth identity
+    const registerRes = await fetch(`http://localhost:9000/auth/customer/emailpass/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    })
 
-    // 1. Create or Get Customer
-    let [customers] = await customerModuleService.listAndCountCustomers({ email })
-    let customer
+    const registerData = await registerRes.json()
+    console.log(`[Guest Register] Auth register response:`, registerData)
+
+    if (!registerRes.ok) {
+      // If account already exists
+      if (registerRes.status === 400 || registerData.message?.toLowerCase().includes("exists")) {
+        return res.status(400).json({ 
+          message: "An account with this email already exists. Please log in instead." 
+        })
+      }
+      return res.status(registerRes.status).json({ 
+        message: registerData.message || "Failed to create account." 
+      })
+    }
+
+    const token = registerData.token
+    if (!token) {
+      throw new Error("No token returned from auth registration")
+    }
+
+    // Step 2: Create customer profile linked to the new auth identity
+    // Get publishable key: try request header, env var, or fetch from API key module
+    let publishableKey = (req.headers["x-publishable-api-key"] as string) || process.env.MEDUSA_PUBLISHABLE_KEY || ""
     
-    if (customers.length > 0) {
-      customer = customers[0]
-      console.log(`[Guest Register] Found existing customer record for ${email}`)
-    } else {
-      customer = await customerModuleService.createCustomers({
+    if (!publishableKey) {
+      // Fallback: fetch from API key module
+      try {
+        const apiKeyModule = req.scope.resolve("api_key") as any
+        const [keys] = await apiKeyModule.listApiKeys({ type: "publishable" })
+        if (keys && keys.length > 0) {
+          publishableKey = keys[0].token
+          console.log(`[Guest Register] Retrieved publishable key from database`)
+        }
+      } catch (e) {
+        console.warn("[Guest Register] Could not fetch publishable key from database")
+      }
+    }
+    
+    if (!publishableKey) {
+      console.error("[Guest Register] No publishable key available — customer profile will fail")
+    }
+    
+    const customerRes = await fetch(`http://localhost:9000/store/customers`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": publishableKey,
+      },
+      body: JSON.stringify({
         email,
         first_name: firstName || "",
         last_name: lastName || "",
-      })
-      console.log(`[Guest Register] Created new customer record for ${email}`)
+      }),
+    })
+
+    if (customerRes.ok) {
+      console.log(`[Guest Register] Customer profile created for ${email}`)
+    } else {
+      const customerData = await customerRes.json()
+      console.warn(`[Guest Register] Customer creation warning for ${email}:`, customerData.message)
+      // Not fatal - auth is set up, user can still log in
     }
 
-    // 2. Create Auth Identity with password
-    // In Medusa v2 emailpass, entity_id is the email
-    let authIdentity
-    try {
-      authIdentity = await authModuleService.createAuthIdentities({
-        provider_id: "emailpass",
-        entity_id: email,
-        scope: "customer",
-        provider_metadata: {
-          password: password
-        }
-      })
-      console.log(`[Guest Register] Created auth identity for ${email}`)
-    } catch (authError: any) {
-      console.error("[Guest Register] Auth identity creation error:", authError.message)
-      if (authError.message.includes("already exists")) {
-        return res.status(400).json({ message: "An account with this email already exists. Please log in." })
-      }
-      throw authError
-    }
-
-    // 3. Link Auth Identity to Customer
-    // This uses the Link Module system
-    try {
-      await remoteLink.create({
-        [Modules.AUTH]: {
-          auth_identity_id: authIdentity.id,
-        },
-        [Modules.CUSTOMER]: {
-          customer_id: customer.id,
-        },
-      })
-      console.log(`[Guest Register] Successfully linked auth and customer for ${email}`)
-    } catch (linkError: any) {
-      console.error("[Guest Register] Linking error:", linkError.message)
-      // If link exists, we ignore. Otherwise, this is a critical failure.
-      if (!linkError.message.includes("already exists")) {
-        throw linkError
-      }
-    }
-
+    console.log(`[Guest Register] Successfully registered ${email}`)
     return res.status(200).json({ 
       success: true, 
-      message: "Account created successfully! You can now log in."
+      message: "Account created successfully! You can now log in.",
+      token,
     })
 
   } catch (error: any) {
-    console.error(`[Guest Register] Final Catch Error for ${email}:`, error.message)
+    console.error(`[Guest Register] Error for ${email}:`, error.message)
     return res.status(500).json({ 
       message: "Failed to register. Please try again.", 
       error: error.message 

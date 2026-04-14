@@ -338,13 +338,14 @@ export async function submitPromotionForm(
 
 // TODO: Pass a POJO instead of a form entity here
 export async function setAddresses(currentState: unknown, formData: FormData) {
+  const cartId = await getCartId()
+  if (!cartId) {
+    return "No existing cart found"
+  }
+
   try {
     if (!formData) {
       throw new Error("No form data found when setting addresses")
-    }
-    const cartId = getCartId()
-    if (!cartId) {
-      throw new Error("No existing cart found when setting addresses")
     }
 
     const data = {
