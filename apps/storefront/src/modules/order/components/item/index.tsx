@@ -17,8 +17,21 @@ const Item = ({ item, currencyCode }: ItemProps) => {
     <Table.Row className="w-full align-top" data-testid="product-row">
       <Table.Cell className="!pl-0 p-2 md:p-4 w-16 md:w-24">
         <div className="flex w-12 md:w-16">
+          {(() => {
+            if (typeof window !== 'undefined') {
+              console.log("[Item Debug] Rendering item:", {
+                id: item.id,
+                thumbnail: item.thumbnail,
+                variant: !!item.variant,
+                product: !!item.variant?.product,
+                product_thumbnail: item.variant?.product?.thumbnail,
+                metadata: item.metadata
+              })
+            }
+            return null
+          })()}
           <Thumbnail
-            thumbnail={item.thumbnail ?? item.variant?.product?.thumbnail}
+            thumbnail={item.thumbnail ?? item.variant?.product?.thumbnail ?? (item.metadata?.strapi_thumbnail as string)}
             images={item.variant?.product?.images}
             size="square"
           />
