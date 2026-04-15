@@ -88,15 +88,6 @@ const AddAddress = ({
                     />
                     <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">Billing</span>
                   </label>
-                  <label className="flex items-center gap-x-2 cursor-pointer group">
-                    <input 
-                      type="radio" 
-                      name="address_type" 
-                      value="other" 
-                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
-                    />
-                    <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">None</span>
-                  </label>
                 </div>
               </div>
 

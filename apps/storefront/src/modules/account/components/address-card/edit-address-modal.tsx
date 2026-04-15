@@ -6,6 +6,7 @@ import { Button, Heading, Text, clx } from "@medusajs/ui"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
 import CountrySelect from "@modules/checkout/components/country-select"
+import StateSelect from "@modules/checkout/components/state-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import Spinner from "@modules/common/icons/spinner"
@@ -172,16 +173,6 @@ const EditAddress: React.FC<EditAddressProps> = ({
                     />
                     <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">Billing</span>
                   </label>
-                  <label className="flex items-center gap-x-2 cursor-pointer group">
-                    <input 
-                      type="radio" 
-                      name="address_type" 
-                      value="other" 
-                      defaultChecked={!address.is_default_shipping && !address.is_default_billing}
-                      className="w-4 h-4 accent-[#2C1E36] cursor-pointer"
-                    />
-                    <span className="text-sm text-[#2C1E36] font-semibold group-hover:text-[#C5A059] transition-colors">None</span>
-                  </label>
                 </div>
               </div>
 
@@ -243,12 +234,12 @@ const EditAddress: React.FC<EditAddressProps> = ({
                   data-testid="city-input"
                 />
               </div>
-              <Input
+              <StateSelect
                 label="Province / State"
                 name="province"
                 autoComplete="address-level1"
                 defaultValue={address.province || undefined}
-                data-testid="state-input"
+                data-testid="state-select"
               />
               <CountrySelect
                 name="country_code"

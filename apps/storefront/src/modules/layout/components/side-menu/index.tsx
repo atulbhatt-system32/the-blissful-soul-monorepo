@@ -10,6 +10,7 @@ import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
+import { useWishlist } from "@lib/context/wishlist-context"
 
 const SideMenuItems = {
   Home: "/",
@@ -33,6 +34,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
+  const { wishlist } = useWishlist()
 
   const openPopup = () => setIsOpen(true)
   const closePopup = () => setIsOpen(false)
@@ -114,6 +116,11 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                                 data-testid={`${name.toLowerCase()}-link`}
                               >
                                 {name}
+                                {name === "Wishlist" && wishlist.length > 0 && (
+                                  <span className="ml-2 bg-[#C5A059] text-[#1a0f21] text-[10px] font-bold rounded-full h-4 w-4 inline-flex items-center justify-center">
+                                    {wishlist.length}
+                                  </span>
+                                )}
                               </LocalizedClientLink>
                             ))}
                           </nav>

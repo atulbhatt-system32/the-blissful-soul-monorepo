@@ -52,10 +52,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     // 3. Reschedule on Cal.com if ID exists
     const calBookingId = order.metadata?.cal_booking_id
+    let calMeetUrl = order.metadata?.cal_meet_url
+
     if (calBookingId) {
       try {
         const calApiKey = process.env.CAL_API_KEY
-        await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/reschedule`, {
+        const rescheduleRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/reschedule`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${calApiKey}`,
@@ -67,7 +69,25 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             reason: "Rescheduled by customer via dashboard" 
           })
         })
-        console.log(`[Booking Reschedule] Cal.com event ${calBookingId} rescheduled to ${slotIsoStart}.`)
+        
+        const rescheduleData = await rescheduleRes.json()
+        
+        // Fetch the updated booking to get the meet url if it's not in the reschedule response
+        // Usually, the meet link remains the same for the booking ID, but it's safer to check
+        if (rescheduleData?.data?.meetingUrl) {
+          calMeetUrl = rescheduleData.data.meetingUrl
+        } else {
+          const bookingRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}`, {
+            headers: {
+              "Authorization": `Bearer ${calApiKey}`,
+              "cal-api-version": "2024-08-13",
+            }
+          })
+          const bookingData = await bookingRes.json()
+          calMeetUrl = bookingData?.data?.meetingUrl || bookingData?.data?.location
+        }
+
+        console.log(`[Booking Reschedule] Cal.com event ${calBookingId} rescheduled. Meet URL: ${calMeetUrl}`)
       } catch (calErr: any) {
         console.error(`[Booking Reschedule] Failed to reschedule Cal.com event:`, calErr.message)
       }
@@ -80,6 +100,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         ...order.metadata,
         booking_date: newDate,
         booking_time: newTime,
+        cal_meet_url: calMeetUrl, // Store the (possibly updated) URL
         rescheduled_at: new Date().toISOString(),
         original_date: oldDate,
         original_time: oldTime
@@ -97,6 +118,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         oldTime,
         newDate,
         newTime,
+        calMeetUrl,
         orderId: order.display_id,
         html_body: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 8px;">
@@ -107,6 +129,14 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               <p style="margin: 5px 0; color: #718096; font-size: 13px;">Original Time: ${oldDate} at ${oldTime}</p>
             </div>
             
+            ${calMeetUrl ? `
+            <div style="margin: 25px 0; text-align: center;">
+              <p style="margin-bottom: 15px; color: #4a5568;">You can join the session using the button below at the scheduled time:</p>
+              <a href="${calMeetUrl}" style="background-color: #3182ce; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Join Meeting</a>
+              <p style="margin-top: 10px; font-size: 11px; color: #a0aec0;">Link: ${calMeetUrl}</p>
+            </div>
+            ` : ""}
+
             <p>See you then!</p>
             <p>The Blissful Soul</p>
           </div>

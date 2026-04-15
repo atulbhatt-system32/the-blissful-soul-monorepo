@@ -149,11 +149,11 @@ const OrderLookupTemplate = ({
           Track Your Treasure
         </Heading>
 
-        {state.error && (
+        {/* {state.error && (
           <div className="w-full mb-6 animate-in fade-in slide-in-from-top-2 duration-500">
             <ErrorMessage error={state.error} data-testid="lookup-error-message" />
           </div>
-        )}
+        )} */}
 
         {!customer && (
           <Text className="text-center text-sm text-gray-500 mb-10 max-w-[320px] leading-relaxed italic">
