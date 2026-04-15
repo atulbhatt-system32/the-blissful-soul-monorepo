@@ -1,1 +1,0 @@
-{"status":"error","timestamp":"2026-04-14T08:54:10.032Z","path":"/v2/event-types","error":{"code":"NotFoundException","message":"Cannot GET /v2/event-types","details":{"message":"Cannot GET /v2/event-types","error":"Not Found","statusCode":404}}}

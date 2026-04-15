@@ -11,7 +11,6 @@ import { useRouter, useParams } from "next/navigation"
 import { ArrowRightMini } from "@medusajs/icons"
 
 import CartTotals from "@modules/common/components/cart-totals"
-import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
@@ -116,7 +115,7 @@ const OrderLookupTemplate = ({
             </div>
 
             <div className="mt-16 pt-10 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8">
-              <Help />
+              <div className="flex-1" />
               <Button 
                 variant="secondary" 
                 className="rounded-xl px-8 py-4 h-auto text-[10px] uppercase tracking-widest font-black bg-[#2C1E36]/5 text-[#2C1E36] hover:bg-[#2C1E36] hover:text-white transition-all border-none"

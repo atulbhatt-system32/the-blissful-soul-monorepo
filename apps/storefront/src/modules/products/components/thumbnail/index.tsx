@@ -46,13 +46,25 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   )
 }
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+
 const ImageOrPlaceholder = ({
   image,
   size,
 }: Pick<ThumbnailProps, "size"> & { image?: string }) => {
-  return image ? (
+  if (!image) {
+    return (
+      <div className="w-full h-full absolute inset-0 flex items-center justify-center">
+        <PlaceholderImage size={size === "small" ? 16 : 24} />
+      </div>
+    )
+  }
+
+  const imageUrl = image.startsWith("http") ? image : `${STRAPI_URL}${image}`
+
+  return (
     <Image
-      src={image}
+      src={imageUrl}
       alt="Thumbnail"
       className="absolute inset-0 object-cover object-center"
       draggable={false}
@@ -60,10 +72,6 @@ const ImageOrPlaceholder = ({
       sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
       fill
     />
-  ) : (
-    <div className="w-full h-full absolute inset-0 flex items-center justify-center">
-      <PlaceholderImage size={size === "small" ? 16 : 24} />
-    </div>
   )
 }
 

@@ -19,7 +19,7 @@ export const retrieveOrder = async (id: string) => {
       method: "GET",
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
+          "*payment_collections.payments,*items,+items.thumbnail,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,+items.variant.product.thumbnail,*items.variant.product.images",
       },
       headers,
       next,
@@ -49,7 +49,7 @@ export const listOrders = async (
         limit,
         offset,
         order: "-created_at",
-        fields: "+email,*items,*items.adjustments,+items.metadata,*items.variant,*items.variant.product,*items.variant.product.images",
+        fields: "+email,*items,+items.thumbnail,*items.adjustments,+items.metadata,*items.variant,*items.variant.product,+items.variant.product.thumbnail,*items.variant.product.images",
         ...filters,
       },
       headers,
@@ -171,35 +171,50 @@ export const lookupOrder = async (
       },
       query: {
         fields:
-          "+metadata,*payment_collections.payments,*items,+items.thumbnail,+items.product_title,*items.adjustments,*items.metadata,*items.variant,*items.variant.product,+items.variant.product.thumbnail,*items.variant.product.images,*shipping_methods,*shipping_address,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
+          "*,*items,*items.variant,*items.variant.product,*items.variant.product.thumbnail,*items.variant.product.images,*payment_collections.payments,*shipping_methods,*shipping_address,+metadata,+subtotal,+total,+shipping_total,+tax_total,+discount_total,+item_subtotal,+shipping_subtotal,+items.total,+items.original_total,+items.subtotal,+items.unit_price",
       },
       headers,
     })
-    .then(({ order }) => {
-      // Check if this is a session booking instead of a product order
-      const isSessionOrder = order.metadata?.is_session === true || 
-        order.items?.some((item: any) => {
-        const product = item.variant?.product
-        return (
-          item.metadata?.booking_date || 
-          item.title?.toLowerCase().includes("session booking") ||
-          product?.type?.value === "session" || 
-          product?.tags?.some((t: any) => t.value === "session") ||
-          product?.metadata?.is_service === true ||
-          product?.metadata?.is_service === "true" ||
-          product?.categories?.some((c: any) => c.handle?.includes("session"))
-        )
-      }) || order.metadata?.type === "session" || order.metadata?.booking_id
+    .then(async ({ order }) => {
+      // Step 2: Since the /lookup endpoint might have limited expansion capabilities,
+      // we use the retrieved ID to fetch the full order details using the standard 
+      // retrieve endpoint which we know supports full field expansion (thumbnails, etc.)
+      let finalOrder = order
+      try {
+        const fullOrder = await retrieveOrder(order.id)
+        if (fullOrder) {
+          finalOrder = fullOrder
+        }
+      } catch (e) {
+        console.error("[lookupOrder] Fallback retrieval failed:", e)
+      }
 
-      if (isSessionOrder && order.items?.length > 0) {
-        return { 
-          success: false, 
-          error: "This is a Session ID, not a physical Order ID. Tracking is only available for product shipments. Please check 'My Sessions' in your account to manage your bookings.", 
-          order: null 
+      // Check if this is a session booking instead of a product order
+      const isSessionOrder = finalOrder.metadata?.is_session === true || 
+        finalOrder.items?.some((item: any) => {
+          const product = item.variant?.product
+          return (
+            item.metadata?.booking_id || 
+            item.title?.toLowerCase().includes("session") ||
+            product?.type?.value === "session" || 
+            product?.metadata?.is_service === true ||
+            product?.metadata?.is_service === "true"
+          )
+        })
+
+      if (isSessionOrder) {
+        return {
+          success: false,
+          error: "This is a Session ID, not a physical Order ID. Tracking is only available for product shipments. Please check 'My Sessions' in your account to manage your bookings.",
+          order: null,
         }
       }
 
-      return { success: true, error: null, order }
+      return {
+        success: true,
+        order: finalOrder,
+        error: null,
+      }
     })
     .catch((err) => {
       console.error("Order lookup error:", err)
