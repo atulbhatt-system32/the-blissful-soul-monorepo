@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { Table, Text } from "@medusajs/ui"
-import { convertToLocale, allocateProportionally } from "@lib/util/money"
+import { convertToLocale } from "@lib/util/money"
 
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
@@ -51,19 +51,15 @@ const Item = ({ item, currencyCode }: ItemProps) => {
           <div className="flex flex-wrap gap-1 mt-1">
             {(() => {
               const adjustments = (item as any).adjustments as any[]
+              const totalExclusiveDiscount = adjustments.reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
               // original_total and total are tax-inclusive; use their difference for customer-facing discount
               const totalInclusiveDiscount = (item.original_total ?? 0) - (item.total ?? 0)
-              const allocatedAmounts = allocateProportionally(
-                adjustments.map((a: any) => a.amount ?? 0),
-                Math.round(totalInclusiveDiscount)
-              )
 
-              return adjustments.map((adjustment: any, idx: number) => {
-                const inclusiveAmount = allocatedAmounts[idx]
-
-                // Clean description: remove any existing price strings like " (-₹300.00)" to avoid duplication
-                const cleanDescription = (adjustment.description || adjustment.code || "")
-                  .replace(/\s?\(-?₹?[\d,.]+\)$/, "")
+              return adjustments.map((adjustment: any) => {
+                // Scale each adjustment proportionally to get its tax-inclusive value
+                const inclusiveAmount = totalExclusiveDiscount > 0
+                  ? Math.round((adjustment.amount / totalExclusiveDiscount) * totalInclusiveDiscount)
+                  : 0
 
                 return (
                   <div
@@ -71,7 +67,7 @@ const Item = ({ item, currencyCode }: ItemProps) => {
                     className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
                   >
                     <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
-                      Applied: {cleanDescription}
+                      Applied: {adjustment.description || adjustment.code}
                       {inclusiveAmount > 0 && ` (-${convertToLocale({ amount: inclusiveAmount, currency_code: currencyCode })})`}
                     </span>
                   </div>

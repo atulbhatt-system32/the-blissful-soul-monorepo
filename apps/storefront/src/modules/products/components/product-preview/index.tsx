@@ -29,6 +29,7 @@ export default function ProductPreview({
   const params = useParams()
   const countryCode = params.countryCode as string
   const [isAdding, setIsAdding] = useState(false)
+  const [itemAdded, setItemAdded] = useState(false)
   const { toggleWishlist, isWishlisted } = useWishlist()
 
   let preferredVariantId: string | undefined = forceVariantId
@@ -101,7 +102,9 @@ export default function ProductPreview({
           quantity: 1,
           countryCode,
         })
-        // Removed redirect to checkout for regular products
+        window.dispatchEvent(new CustomEvent("cart:item-added"))
+        setItemAdded(true)
+        setTimeout(() => setItemAdded(false), 2000)
       }
     } catch (err) {
       console.error("Error added to cart:", err)
@@ -132,6 +135,14 @@ export default function ProductPreview({
           )}
           
           <div className="relative p-2 md:p-3">
+          {/* Item added confirmation overlay */}
+          {itemAdded && (
+            <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+              <div className="bg-[#1a1a1a]/90 text-white text-[11px] md:text-[12px] font-bold tracking-widest uppercase px-5 py-2.5 rounded-full shadow-xl animate-in fade-in zoom-in-95 duration-200">
+                Item added
+              </div>
+            </div>
+          )}
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
@@ -201,7 +212,7 @@ export default function ProductPreview({
             </>
           ) : (
             <>
-               <span className="font-sans">{isSession ? <span className="hidden sm:inline">SELECT </span> : <span className="hidden sm:inline">ADD TO </span>}{isSession ? "SESSION" : "BASKET"}</span>
+               <span className="font-sans">{isSession ? <span className="hidden sm:inline">SELECT </span> : <span className="hidden sm:inline">ADD TO </span>}{isSession ? "SESSION" : "Add to Cart"}</span>
                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#C5A059]"><path d="m9 18 6-6-6-6"/></svg>
             </>
           )}

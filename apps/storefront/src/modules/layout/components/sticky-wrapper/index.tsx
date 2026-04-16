@@ -13,7 +13,8 @@ export default function StickyWrapper({ children }: StickyWrapperProps) {
   const [prevScroll, setPrevScroll] = useState(0)
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > prevScroll && latest > 150) {
+    const isMobile = window.innerWidth < 768
+    if (!isMobile && latest > prevScroll && latest > 150) {
       setHidden(true)
     } else {
       setHidden(false)

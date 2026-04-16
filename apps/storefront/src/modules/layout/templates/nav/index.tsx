@@ -41,10 +41,20 @@ export default async function Nav() {
               className="flex flex-col items-start"
               data-testid="nav-store-link"
             >
-              <span className="font-serif text-xl md:text-2xl text-primary leading-tight font-medium">
+              {/* Mobile: logo image */}
+              <Image
+                src="/logo.png"
+                alt="The Blissful Soul"
+                width={52}
+                height={52}
+                className="block md:hidden object-contain"
+                priority
+              />
+              {/* Desktop: text */}
+              <span className="hidden md:block font-serif text-xl md:text-2xl text-primary leading-tight font-medium">
                 The Blissful Soul
               </span>
-              <span className="text-[9px] md:text-[10px] text-primary/80 uppercase tracking-[0.3em] font-sans font-bold -mt-1">
+              <span className="hidden md:block text-[9px] md:text-[10px] text-primary/80 uppercase tracking-[0.3em] font-sans font-bold -mt-1">
                 HEALING & CRYSTALS
               </span>
             </LocalizedClientLink>
