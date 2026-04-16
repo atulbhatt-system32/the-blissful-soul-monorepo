@@ -12,6 +12,7 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
+import { convertToLocale, allocateProportionally } from "@lib/util/money"
 import { useState } from "react"
 
 type ItemProps = {
@@ -75,16 +76,33 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
             
             {(item as any).adjustments && (item as any).adjustments.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-1">
-                {(item as any).adjustments.map((adjustment: any) => (
-                  <div 
-                    key={adjustment.id}
-                    className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
-                  >
-                     <span className="text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
-                       Applied: {adjustment.description || adjustment.code}
-                     </span>
-                  </div>
-                ))}
+                {(() => {
+                  const adjustments = (item as any).adjustments as any[]
+                  const totalInclusiveDiscount = (item.original_total ?? 0) - (item.total ?? 0)
+                  const allocatedAmounts = allocateProportionally(
+                    adjustments.map((a: any) => a.amount ?? 0),
+                    Math.round(totalInclusiveDiscount)
+                  )
+
+                  return adjustments.map((adjustment: any, idx: number) => {
+                    const inclusiveAmount = allocatedAmounts[idx]
+
+                    const cleanDescription = (adjustment.description || adjustment.code || "")
+                      .replace(/\s?\(-?₹?[\d,.]+\)$/, "")
+
+                    return (
+                      <div
+                        key={adjustment.id}
+                        className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
+                      >
+                        <span className="text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                          Applied: {cleanDescription}
+                          {inclusiveAmount > 0 && ` (-${convertToLocale({ amount: inclusiveAmount, currency_code: currencyCode })})`}
+                        </span>
+                      </div>
+                    )
+                  })
+                })()}
               </div>
             )}
             <div className="font-black text-xs text-[#2C1E36] mt-1">
@@ -173,16 +191,35 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
 
           {(item as any).adjustments && (item as any).adjustments.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1.5">
-              {(item as any).adjustments.map((adjustment: any) => (
-                <div 
-                  key={adjustment.id}
-                  className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive"
-                >
-                   <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
-                     Applied: {adjustment.description || adjustment.code}
-                   </span>
-                </div>
-              ))}
+              {(() => {
+                const adjustments = (item as any).adjustments as any[]
+                // original_total and total are tax-inclusive; use their difference for customer-facing discount
+                const totalInclusiveDiscount = (item.original_total ?? 0) - (item.total ?? 0)
+                const allocatedAmounts = allocateProportionally(
+                  adjustments.map((a: any) => a.amount ?? 0),
+                  Math.round(totalInclusiveDiscount)
+                )
+
+                return adjustments.map((adjustment: any, idx: number) => {
+                  const inclusiveAmount = allocatedAmounts[idx]
+
+                  // Clean description: remove any existing price strings like " (-₹300.00)" to avoid duplication
+                  const cleanDescription = (adjustment.description || adjustment.code || "")
+                    .replace(/\s?\(-?₹?[\d,.]+\)$/, "")
+
+                  return (
+                    <div
+                      key={adjustment.id}
+                      className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
+                    >
+                      <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                        Applied: {cleanDescription}
+                        {inclusiveAmount > 0 && ` (-${convertToLocale({ amount: inclusiveAmount, currency_code: currencyCode })})`}
+                      </span>
+                    </div>
+                  )
+                })
+              })()}
             </div>
           )}
         </div>

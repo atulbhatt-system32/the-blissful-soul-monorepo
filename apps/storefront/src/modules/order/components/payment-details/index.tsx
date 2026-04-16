@@ -38,7 +38,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                     {isStripeLike(payment.provider_id) && payment.data?.card_last4
                       ? `•••• •••• •••• ${payment.data.card_last4}`
                       : `${convertToLocale({
-                          amount: Number(payment.amount),
+                          amount: Math.round(Number(payment.amount)),
                           currency_code: order.currency_code,
                         })}`}
                   </Text>

@@ -15,8 +15,8 @@ const LineItemUnitPrice = ({
 
   // Always show original unit price; LineItemPrice handles the discounted total
   const displayPrice = hasReducedPrice
-    ? (original_total ?? 0) / item.quantity
-    : (total ?? 0) / item.quantity
+    ? Math.round((original_total ?? 0) / item.quantity)
+    : Math.round((total ?? 0) / item.quantity)
 
   return (
     <div className="flex flex-col text-ui-fg-muted justify-center h-full">

@@ -70,7 +70,13 @@ const INNER_WIDTH = INNER_RIGHT - INNER_LEFT
 // Helpers
 // ──────────────────────────────────────────────
 function fmt(n: number): string {
-  return n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  // For consistency with the storefront, we hide decimals if the number is a whole integer.
+  // This ensures that "1499.00" becomes "1499", while "300.20" remains "300.20".
+  const isWhole = Number.isInteger(n)
+  return n.toLocaleString("en-IN", {
+    minimumFractionDigits: isWhole ? 0 : 2,
+    maximumFractionDigits: isWhole ? 0 : 2,
+  })
 }
 
 function numberToWords(num: number): string {
@@ -316,16 +322,34 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       const cols = [18, 88, 24, 52, 52, 55, 24, 24, 52, 52, 65]
       const colHeaders = ["#", "ITEM - SKU", "QTY", "RATE PER\nITEM(₹)", "DISCOUNT\nITEM(₹)", "TAXABLE\nITEM(₹)", "HSN", "GST\n(%)", "CGST\n(₹)", "SGST\n(₹)", "TOTAL\n(₹)"]
 
-      // Table Header
-      let colX = INNER_LEFT
-      for (let i = 0; i < cols.length; i++) {
-        cell(doc, colX, tableY, cols[i], tH + 6, colHeaders[i], {
-          bold: true, fontSize: 5.8, align: "center", bg: "#F5F5F5"
-        })
-        colX += cols[i]
+      // Safe bottom boundary within the outer border; leaves room before the page edge
+      const PAGE_BOTTOM = MARGIN + 755
+      // Minimum vertical space needed to draw the full summary + footer
+      const SUMMARY_MIN_HEIGHT = 175
+
+      const drawTableHeader = (startY: number) => {
+        let cx = INNER_LEFT
+        for (let i = 0; i < cols.length; i++) {
+          cell(doc, cx, startY, cols[i], tH + 6, colHeaders[i], {
+            bold: true, fontSize: 5.8, align: "center", bg: "#F5F5F5"
+          })
+          cx += cols[i]
+        }
       }
 
+      const addContinuationPage = (): number => {
+        doc.addPage()
+        doc.rect(MARGIN, MARGIN, PAGE_WIDTH - MARGIN * 2, 770).lineWidth(1).strokeColor("#000000").stroke()
+        const headerY = MARGIN + 10
+        drawTableHeader(headerY)
+        return headerY + tH + 6
+      }
+
+      // Table Header
+      drawTableHeader(tableY)
+
       // Table rows
+      let colX = INNER_LEFT
       let rowY = tableY + tH + 6
       let totalQty = 0
       let grandItemTotal = 0
@@ -339,10 +363,13 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         const item = items[i]
         const qty = item.quantity || 1
         const rate = item.unit_price || 0
-        const grossAmount = rate * qty
-        const adjustmentTotal = (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
-        const discount = adjustmentTotal
-        const grossAfterDiscount = grossAmount - discount
+        const grossAmount = rate * qty  // tax-inclusive gross before discounts
+
+        // Use Medusa's already-computed tax-inclusive total as the authoritative value.
+        // adjustment.amount is tax-exclusive, so subtracting it from an inclusive rate
+        // produces a unit mismatch (e.g. a free gift shows phantom tax). item.total is always correct.
+        const grossAfterDiscount = item.total ?? grossAmount
+        const discount = grossAmount - grossAfterDiscount  // inclusive discount for display
 
         // Read GST rate from Medusa tax lines; fall back to default if not present
         const taxLines = item.tax_lines || []
@@ -352,7 +379,7 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         const taxable = grossAfterDiscount / (1 + gstPct / 100)
         const cgst = (grossAfterDiscount - taxable) / 2
         const sgst = (grossAfterDiscount - taxable) / 2
-        const total = grossAfterDiscount // total is the tax-inclusive price
+        const total = grossAfterDiscount
 
         totalQty += qty
         grandItemTotal += total
@@ -362,6 +389,11 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         // Determine row height based on title length
         const titleLines = Math.ceil((item.title || "Item").length / 14)
         const rH = Math.max(tH, titleLines * 8 + 6)
+
+        // Page break: if this row won't fit, continue on a new page with a fresh table header
+        if (rowY + rH > PAGE_BOTTOM) {
+          rowY = addContinuationPage()
+        }
 
         colX = INNER_LEFT
         cell(doc, colX, rowY, cols[0], rH, `${i + 1}`, { fontSize: 6.5, align: "center" }); colX += cols[0]
@@ -379,7 +411,10 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         rowY += rH
       }
 
-      // TOTAL row
+      // TOTAL row — if it won't fit, push to a new page
+      if (rowY + tH > PAGE_BOTTOM) {
+        rowY = addContinuationPage()
+      }
       colX = INNER_LEFT
       cell(doc, colX, rowY, cols[0] + cols[1], tH, "TOTAL", { bold: true, fontSize: 7, align: "center", bg: "#F5F5F5" }); colX = INNER_LEFT + cols[0] + cols[1]
       cell(doc, colX, rowY, cols[2], tH, `${totalQty}`, { bold: true, fontSize: 7, align: "center", bg: "#F5F5F5" }); colX += cols[2]
@@ -390,6 +425,13 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       cell(doc, colX, rowY, cols[cols.length - 1], tH, fmt(grandItemTotal), { bold: true, fontSize: 7, align: "right", bg: "#F5F5F5" })
 
       rowY += tH
+
+      // Page break: if the summary + footer won't fit below the table, start a fresh page
+      if (rowY + 5 + SUMMARY_MIN_HEIGHT > PAGE_BOTTOM) {
+        doc.addPage()
+        doc.rect(MARGIN, MARGIN, PAGE_WIDTH - MARGIN * 2, 770).lineWidth(1).strokeColor("#000000").stroke()
+        rowY = MARGIN + 5
+      }
 
       // ══════════════════════════════════════════
       // SUMMARY SECTION (bottom half)
@@ -407,8 +449,8 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       const shippingTotal = order.shipping_total ?? (order.shipping_methods || []).reduce(
         (sum: number, sm: any) => sum + (sm.amount ?? 0), 0
       )
-      const itemDiscounts = items.reduce((sum: number, item: any) =>
-        sum + (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
+      // Use the inclusive discount already computed per row — consistent with the line item DISCOUNT column
+      const itemDiscounts = itemRows.reduce((s, r) => s + r.discount, 0)
       const shippingDiscounts = (order.shipping_methods || []).reduce((sum: number, sm: any) =>
         sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
       const discountTotal = itemDiscounts + shippingDiscounts
@@ -446,7 +488,7 @@ export async function generateInvoice(order: any): Promise<Buffer> {
 
       // Discount %
       cell(doc, rX, rY, labelW * 0.5, sumH, "Discount %", { fontSize: 6 })
-      cell(doc, rX + labelW * 0.5, rY, labelW * 0.5, sumH, discountTotal > 0 ? fmt(discountTotal) : "-", { fontSize: 6, align: "center" })
+      cell(doc, rX + labelW * 0.5, rY, labelW * 0.5, sumH, "-", { fontSize: 6, align: "center" })
       cell(doc, rX + labelW, rY, valW * 0.5, sumH, "Discount(₹)", { fontSize: 6 })
       cell(doc, rX + labelW + valW * 0.5, rY, valW * 0.5, sumH, discountTotal > 0 ? fmt(discountTotal) : "-", { fontSize: 6, align: "right" })
       rY += sumH
