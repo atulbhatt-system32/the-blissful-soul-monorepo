@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
-import { addToCart } from "@lib/data/cart"
-import { useRouter } from "next/navigation"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
 import { fetchAvailableSlots } from "@lib/data/calcom"
 import GuestAutoRegister from "@modules/order/components/guest-auto-register"
@@ -36,21 +34,18 @@ type SlotInfo = {
 export default function BookNowClient({
   categories,
   products,
-  region,
   initialServiceId,
   initialVariantId,
   countryCode,
   customer
 }: BookNowProps) {
-  const router = useRouter()
-
   const [currentStep, setCurrentStep] = useState(1)
 
   // Form State
   const [selectedCategory, setSelectedCategory] = useState<string>("")
   const [selectedService, setSelectedService] = useState<string>(initialServiceId || "")
   const [selectedVariant, setSelectedVariant] = useState<string>(initialVariantId || "")
-  const [selectedEmployee, setSelectedEmployee] = useState<string>(EMPLOYEES[0].id)
+  const selectedEmployee = EMPLOYEES[0].id
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0])
   const [selectedTime, setSelectedTime] = useState<string>("")
   const [selectedSlotIso, setSelectedSlotIso] = useState<string>("")
@@ -245,38 +240,6 @@ export default function BookNowClient({
               </select>
             </div>
 
-            {/* Variant / Duration Selection (If multiple) */}
-            {serviceObj && serviceObj.variants && serviceObj.variants.length > 0 && (
-              <div>
-                <label className="block text-[#2C1E36] text-sm font-bold mb-2">Options</label>
-                <select 
-                  value={selectedVariant}
-                  onChange={(e) => setSelectedVariant(e.target.value)}
-                  className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
-                >
-                  {serviceObj.variants.map((v) => {
-                    return (
-                      <option key={v.id} value={v.id}>{v.title}</option>
-                    )
-                  })}
-                </select>
-              </div>
-            )}
-
-            {/* Employee */}
-            <div>
-              <label className="block text-[#2C1E36] text-sm font-bold mb-2">Employee</label>
-              <select 
-                value={selectedEmployee}
-                onChange={(e) => setSelectedEmployee(e.target.value)}
-                className="w-full border-b-2 border-gray-200 py-2 focus:outline-none focus:border-[#2C1E36]/30 bg-transparent text-gray-800"
-              >
-                {EMPLOYEES.map((e) => (
-                  <option key={e.id} value={e.id}>{e.name}</option>
-                ))}
-              </select>
-            </div>
-
             {/* Date */}
             <div>
               <label className="block text-[#2C1E36] text-sm font-bold mb-2">I'm available on or after</label>
@@ -306,8 +269,12 @@ export default function BookNowClient({
             </div>
           )}
 
+          <p className="text-xs text-gray-400 mb-6">
+            This is a non-cancellable and non-refundable session.
+          </p>
+
           <div className="flex justify-start">
-            <button 
+            <button
               disabled={!isStep1Valid}
               onClick={handleNext}
               className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
@@ -474,7 +441,7 @@ export default function BookNowClient({
             </div>
           </div>
 
-          <MedusaCheckoutPayment 
+          <MedusaCheckoutPayment
             serviceId={selectedService}
             variantId={selectedVariant || serviceObj?.variants?.[0]?.id || ""}
             details={details}
@@ -485,14 +452,24 @@ export default function BookNowClient({
             eventSlug={(() => {
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
               const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
-              const tag = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio")) ? "audio" : 
-                          serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video")) ? "video" : 
+              const tag = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio")) ? "audio" :
+                          serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video")) ? "video" :
                           "session"
-              
+
               if (lengthValue) {
                 return `${lengthValue}-min-${tag}-session`
               }
               return undefined
+            })()}
+            meetingAbout={(() => {
+              const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+              const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
+              const hasAudio = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio"))
+              const hasVideo = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video"))
+              const sessionType = hasAudio ? "Audio" : hasVideo ? "Video" : "Online"
+              const title = serviceObj?.title || "Session"
+              const duration = lengthValue ? ` (${lengthValue} mins)` : ""
+              return `${title} — ${sessionType} Session${duration}`
             })()}
             price={(() => {
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)

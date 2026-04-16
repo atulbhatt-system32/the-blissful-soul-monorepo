@@ -92,7 +92,7 @@ const OrderLookupTemplate = ({
                 <section>
                    <div className="flex items-center gap-x-3 mb-6">
                       <div className="w-1 h-6 bg-[#C5A059] rounded-full" />
-                      <Heading level="h2" className="text-xl font-serif text-[#2C1E36]">Logistics</Heading>
+                      <Heading level="h2" className="text-xl font-serif text-[#2C1E36]">Shipping</Heading>
                    </div>
                    <ShippingDetails order={order} />
                 </section>

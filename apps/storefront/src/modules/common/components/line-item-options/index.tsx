@@ -16,15 +16,6 @@ const LineItemOptions = ({
 }: LineItemOptionsProps) => {
   return (
     <div className="flex flex-col gap-y-1">
-      {variant?.title && (
-        <Text
-          data-testid={dataTestid}
-          data-value={dataValue}
-          className="inline-block txt-medium text-inherit w-full overflow-hidden text-ellipsis"
-        >
-          Variant: {variant.title}
-        </Text>
-      )}
       {metadata && Object.entries(metadata).map(([key, value]) => {
         if (typeof value === "string") {
           return (

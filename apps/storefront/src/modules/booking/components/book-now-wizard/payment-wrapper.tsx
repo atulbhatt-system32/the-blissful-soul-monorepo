@@ -14,6 +14,7 @@ export default function MedusaCheckoutPayment({
   slotIsoStart,
   countryCode,
   eventSlug,
+  meetingAbout,
   price,
   onSuccess,
   onBack
@@ -26,6 +27,7 @@ export default function MedusaCheckoutPayment({
   slotIsoStart: string
   countryCode: string
   eventSlug?: string
+  meetingAbout?: string
   price: number
   onSuccess: () => void
   onBack: () => void
@@ -85,6 +87,7 @@ export default function MedusaCheckoutPayment({
               attendeeEmail: details.email,
               attendeeTimeZone: "Asia/Kolkata",
               eventSlug: eventSlug,
+              meetingAbout,
               notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
             })
             const calBookingId = calResult?.uid

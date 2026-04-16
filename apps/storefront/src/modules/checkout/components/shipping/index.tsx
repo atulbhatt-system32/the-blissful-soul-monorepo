@@ -182,7 +182,7 @@ const Shipping: React.FC<ShippingProps> = ({
                }
              )}
            >
-             Logistics
+             Shipping
              {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && (
                <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -362,7 +362,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 </div>
               </div>
             ) : (
-               <span className="text-sm text-gray-400 italic">Logistics pending...</span>
+               <span className="text-sm text-gray-400 italic">Shipping pending...</span>
             )}
           </div>
         </div>

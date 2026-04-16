@@ -86,6 +86,7 @@ export async function createCalBooking(params: {
   attendeeTimeZone?: string
   eventTypeId?: number
   eventSlug?: string
+  meetingAbout?: string
   notes?: string
 }): Promise<{ uid: string; status: string; meetingUrl?: string; location?: string } | null> {
   const response = await fetch(`/api/calcom-book`, {

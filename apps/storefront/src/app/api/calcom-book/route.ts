@@ -5,14 +5,15 @@ const CAL_API_BASE = "https://api.cal.com/v2"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { 
-      startTime, 
-      attendeeName, 
-      attendeeEmail, 
-      attendeeTimeZone, 
-      eventSlug, 
+    const {
+      startTime,
+      attendeeName,
+      attendeeEmail,
+      attendeeTimeZone,
+      eventSlug,
+      meetingAbout,
       notes,
-      phone 
+      phone
     } = body
 
     if (!startTime || !attendeeName || !attendeeEmail || !eventSlug) {
@@ -70,6 +71,12 @@ export async function POST(req: NextRequest) {
     } else {
       bookingPayload.eventTypeSlug = eventSlug
       bookingPayload.username = username
+    }
+
+    if (meetingAbout) {
+      bookingPayload.bookingFieldsResponses = {
+        title: meetingAbout,
+      }
     }
 
     console.log("Sending booking to Cal.com v2:", JSON.stringify(bookingPayload, null, 2))

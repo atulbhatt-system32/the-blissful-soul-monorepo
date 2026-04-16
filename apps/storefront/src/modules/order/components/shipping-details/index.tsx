@@ -66,7 +66,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
                 </span>
               </>
             ) : (
-              <span>Standard Logistics</span>
+              <span>Standard Shipping</span>
             )}
           </div>
         </div>

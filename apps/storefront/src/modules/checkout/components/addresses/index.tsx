@@ -99,7 +99,7 @@ const Addresses = ({
             )}
             <div className="mt-10">
                <SubmitButton fullWidth data-testid="submit-address-button">
-                {isDigitalOnly ? "Proceed to Offerings" : "Navigate to Logistics"}
+                {isDigitalOnly ? "Proceed to Offerings" : "Place Order"}
                </SubmitButton>
             </div>
             <ErrorMessage error={message} data-testid="address-error-message" />

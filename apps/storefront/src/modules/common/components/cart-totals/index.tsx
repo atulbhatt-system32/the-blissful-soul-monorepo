@@ -36,8 +36,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     : (totals.item_subtotal ?? item_total)
 
   const discount_subtotal = item_subtotal - item_total
-  const item_tax_total = (totals as any).item_tax_total ?? 0
-  
   const item_inclusive = item_subtotal
 
   return (
@@ -49,12 +47,14 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             {convertToLocale({ amount: item_inclusive, currency_code })}
           </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span>Logistics</span>
-          <span data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
-            {convertToLocale({ amount: shipping_subtotal ?? 0, currency_code })}
-          </span>
-        </div>
+        {!!shipping_subtotal && (
+          <div className="flex items-center justify-between">
+            <span>Shipping</span>
+            <span data-testid="cart-shipping" data-value={shipping_subtotal}>
+              {convertToLocale({ amount: shipping_subtotal, currency_code })}
+            </span>
+          </div>
+        )}
         {!!discount_subtotal && (
           <div className="flex items-center justify-between text-[#C5A059]">
             <span>Divine Discount</span>
@@ -70,14 +70,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             </span>
           </div>
         )}
-        <div className="flex items-center justify-between">
-          <span>Taxes</span>
-          <span data-testid="cart-taxes">
-            {item_tax_total
-              ? `GST Included (${convertToLocale({ amount: item_tax_total, currency_code })})`
-              : "GST Included"}
-          </span>
-        </div>
       </div>
       <div className="h-px w-full border-b border-current opacity-10 my-1" />
       <div className="flex items-center justify-between">
