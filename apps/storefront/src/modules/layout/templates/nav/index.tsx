@@ -14,13 +14,16 @@ import SearchToggle from "@modules/layout/components/search-toggle"
 import NavLinks from "@modules/layout/components/nav-links"
 import StickyWrapper from "@modules/layout/components/sticky-wrapper"
 import WishlistButton from "@modules/layout/components/wishlist-button"
+import MobileCartButton from "../../components/mobile-cart-button"
+import { retrieveCart } from "@lib/data/cart"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale, storeConfig] = await Promise.all([
+  const [regions, locales, currentLocale, storeConfig, cart] = await Promise.all([
     listRegions().then((regions: HttpTypes.StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
     getStorePageData(),
+    retrieveCart().catch(() => null),
   ])
 
   return (
@@ -71,25 +74,18 @@ export default async function Nav() {
               </div>
 
               {/* Mobile Actions (Wishlist & Cart) */}
-              <div className="sm:hidden flex items-center gap-x-1">
+              <div className="sm:hidden flex items-center gap-x-0.5">
                 <WishlistButton />
-                <LocalizedClientLink 
-                  href="/cart" 
-                  className="p-2 text-foreground hover:text-primary transition-colors flex items-center justify-center relative z-20"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-                  </svg>
-                </LocalizedClientLink>
+                <MobileCartButton cart={cart} />
               </div>
 
               {/* Account Icon - Desktop Only */}
               <LocalizedClientLink
-                className="text-foreground hover:text-primary transition-colors hidden sm:block p-2"
+                className="text-foreground hover:text-primary transition-colors hidden sm:flex items-center justify-center p-2"
                 href="/account"
                 data-testid="nav-account-link"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                 </svg>
               </LocalizedClientLink>
@@ -100,8 +96,8 @@ export default async function Nav() {
               </div>
 
               {/* Menu trigger on extreme right */}
-              <div className="ml-0.5">
-                <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+              <div className="flex items-center">
+                <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} cart={cart} />
               </div>
             </div>
           </div>

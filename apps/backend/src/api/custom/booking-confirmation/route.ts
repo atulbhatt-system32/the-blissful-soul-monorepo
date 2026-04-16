@@ -13,6 +13,7 @@ type BookingOrderPayload = {
   bookingTime: string
   price: number
   calBookingId: string
+  calMeetUrl?: string
   eventSlug: string
 }
 
@@ -29,6 +30,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     bookingTime,
     price,
     calBookingId,
+    calMeetUrl,
     eventSlug,
   } = req.body as BookingOrderPayload
 
@@ -92,6 +94,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         booking_date: bookingDate,
         booking_time: bookingTime,
         cal_booking_id: calBookingId,
+        cal_meet_url: calMeetUrl,
         cal_event_slug: eventSlug,
       },
     })
@@ -153,8 +156,19 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
                   </tr>
                 </table>
               </div>
+
+              ${calMeetUrl ? `
+              <div style="margin: 30px 0; text-align: center; background: #2C1E36; padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
+                <p style="margin-top: 0; color: #C5A059; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Private Meeting Link</p>
+                <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; margin: 10px 0;">Join Live Session</a>
+                <p style="margin-bottom: 0; color: rgba(197, 160, 89, 0.6); font-size: 11px;">Direct Link: ${calMeetUrl}</p>
+              </div>
+              ` : `
+              <p style="color: #333; background: #fff9eb; padding: 15px; border-radius: 8px; border: 1px solid #ffe6a8; font-size: 14px;">
+                <strong>Note:</strong> Your unique meeting link will be sent to you via email shortly before the session starts.
+              </p>
+              `}
               
-              <p style="color: #333;">One of our masters will reach out to you soon to share session details and any preparation tips.</p>
               <p style="color: #333;">Thank you for trusting <strong>The Blissful Soul</strong> on your journey. 🙏</p>
               
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;" />

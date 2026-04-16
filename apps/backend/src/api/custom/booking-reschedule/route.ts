@@ -57,6 +57,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     if (calBookingId) {
       try {
         const calApiKey = process.env.CAL_API_KEY
+        if (!calApiKey) {
+          console.error("[Booking Reschedule] CAL_API_KEY is missing from env!")
+        }
         const rescheduleRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/reschedule`, {
           method: "POST",
           headers: {
@@ -71,9 +74,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         })
         
         const rescheduleData = await rescheduleRes.json()
+        console.log(`[Booking Reschedule] Cal.com reschedule response:`, JSON.stringify(rescheduleData).substring(0, 500))
         
         // Fetch the updated booking to get the meet url if it's not in the reschedule response
-        // Usually, the meet link remains the same for the booking ID, but it's safer to check
         if (rescheduleData?.data?.meetingUrl) {
           calMeetUrl = rescheduleData.data.meetingUrl
         } else {
@@ -84,12 +87,23 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             }
           })
           const bookingData = await bookingRes.json()
+          console.log(`[Booking Reschedule] Cal.com booking data:`, JSON.stringify(bookingData).substring(0, 500))
           calMeetUrl = bookingData?.data?.meetingUrl || bookingData?.data?.location
         }
 
         console.log(`[Booking Reschedule] Cal.com event ${calBookingId} rescheduled. Meet URL: ${calMeetUrl}`)
       } catch (calErr: any) {
         console.error(`[Booking Reschedule] Failed to reschedule Cal.com event:`, calErr.message)
+      }
+    }
+
+    // Fallback: if no meeting URL was found, construct one from the Cal.com event slug
+    if (!calMeetUrl) {
+      const calEventSlug = order.metadata?.cal_event_slug
+      const calUsername = "kunal-risaanva-m3jown"
+      if (calEventSlug) {
+        calMeetUrl = `https://cal.com/${calUsername}/${calEventSlug}`
+        console.log(`[Booking Reschedule] Using fallback Cal.com URL: ${calMeetUrl}`)
       }
     }
 
@@ -138,15 +152,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               </div>
               
               ${calMeetUrl ? `
-              <div style="margin: 35px 0; text-align: center; border-top: 1px solid #EEE; pt-30px;">
-                <p style="margin-bottom: 20px; color: #4A4A4A; font-size: 15px;">You can join your session directly using the link below:</p>
-                <a href="${calMeetUrl}" style="background-color: #C5A059; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; box-shadow: 0 4px 12px rgba(197, 160, 89, 0.2);">Join Live Session</a>
-                <p style="margin-top: 15px; font-size: 12px; color: #999;">Meeting ID/Link: ${calMeetUrl}</p>
+              <div style="margin: 30px 0; text-align: center; background: #2C1E36; padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
+                <p style="margin-top: 0; color: #C5A059; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Private Meeting Link</p>
+                <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; margin: 10px 0;">Join Live Session</a>
+                <p style="margin-bottom: 0; color: rgba(197, 160, 89, 0.6); font-size: 11px;">Direct Link: ${calMeetUrl}</p>
               </div>
               ` : `
-              <div style="margin: 25px 0; padding: 15px; background: #FFF9EB; border: 1px solid #FFE6A8; border-radius: 8px; color: #856404; font-size: 14px;">
-                <strong>Note:</strong> Your meeting link will be sent in a separate email shortly before the session starts.
-              </div>
+              <p style="color: #333; background: #fff9eb; padding: 15px; border-radius: 8px; border: 1px solid #ffe6a8; font-size: 14px;">
+                <strong>Note:</strong> Your unique meeting link will be sent to you via email shortly before the session starts.
+              </p>
               `}
 
               <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #EEE; font-size: 14px; text-align: center;">

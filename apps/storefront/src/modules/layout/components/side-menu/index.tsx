@@ -28,9 +28,10 @@ type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
+  cart: HttpTypes.StoreCart | null
 }
 
-const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
@@ -39,18 +40,20 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
   const openPopup = () => setIsOpen(true)
   const closePopup = () => setIsOpen(false)
 
+  const cartItemsCount = cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+
   return (
     <div className="h-full">
       <div className="flex items-center h-full">
         <button
           data-testid="nav-menu-button"
           onClick={openPopup}
-          className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group"
+          className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group p-2"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
+            width="22" 
+            height="22" 
             viewBox="0 0 24 24" 
             fill="none" 
             stroke="currentColor" 
@@ -115,12 +118,19 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                                 onClick={closePopup}
                                 data-testid={`${name.toLowerCase()}-link`}
                               >
-                                {name}
-                                {name === "Wishlist" && wishlist.length > 0 && (
-                                  <span className="ml-2 bg-[#C5A059] text-[#1a0f21] text-[10px] font-bold rounded-full h-4 w-4 inline-flex items-center justify-center">
-                                    {wishlist.length}
-                                  </span>
-                                )}
+                                <span className="flex items-center gap-x-2">
+                                  {name}
+                                  {name === "Wishlist" && wishlist.length > 0 && (
+                                    <span className="bg-[#2C1E36] text-white text-[10px] font-black rounded-full h-4 w-4 inline-flex items-center justify-center border border-white/10 shadow-sm">
+                                      {wishlist.length}
+                                    </span>
+                                  )}
+                                  {name === "Cart" && cartItemsCount > 0 && (
+                                    <span className="bg-[#2C1E36] text-white text-[10px] font-black rounded-full h-4 w-4 inline-flex items-center justify-center border border-white/10 shadow-sm">
+                                      {cartItemsCount}
+                                    </span>
+                                  )}
+                                </span>
                               </LocalizedClientLink>
                             ))}
                           </nav>

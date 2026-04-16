@@ -87,7 +87,7 @@ export async function createCalBooking(params: {
   eventTypeId?: number
   eventSlug?: string
   notes?: string
-}): Promise<{ uid: string; status: string } | null> {
+}): Promise<{ uid: string; status: string; meetingUrl?: string; location?: string } | null> {
   const response = await fetch(`/api/calcom-book`, {
     method: "POST",
     headers: {
@@ -106,6 +106,8 @@ export async function createCalBooking(params: {
   return {
     uid: json.data?.uid || json.data?.id || "",
     status: json.status || "unknown",
+    meetingUrl: json.data?.meetingUrl,
+    location: json.data?.location,
   }
 }
 
