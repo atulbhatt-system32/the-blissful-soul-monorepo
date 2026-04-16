@@ -234,7 +234,6 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
           <div className="text-[11px] font-bold text-gray-500 italic">
             <LineItemUnitPrice
               item={item}
-              style="tight"
               currencyCode={currencyCode}
             />
           </div>
@@ -252,9 +251,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
               <LineItemUnitPrice
                 item={item}
-                style="tight"
                 currencyCode={currencyCode}
-                showOriginal={false}
               />
             </span>
           )}

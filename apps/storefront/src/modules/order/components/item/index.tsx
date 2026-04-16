@@ -49,17 +49,31 @@ const Item = ({ item, currencyCode }: ItemProps) => {
         
         {(item as any).adjustments && (item as any).adjustments.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-1">
-            {(item as any).adjustments.map((adjustment: any) => (
-              <div 
-                key={adjustment.id}
-                className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
-              >
-                 <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
-                   Applied: {adjustment.description || adjustment.code} 
-                   {adjustment.amount > 0 && ` (-${convertToLocale({ amount: adjustment.amount, currency_code: currencyCode })})`}
-                 </span>
-              </div>
-            ))}
+            {(() => {
+              const adjustments = (item as any).adjustments as any[]
+              const totalExclusiveDiscount = adjustments.reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
+              // original_total and total are tax-inclusive; use their difference for customer-facing discount
+              const totalInclusiveDiscount = (item.original_total ?? 0) - (item.total ?? 0)
+
+              return adjustments.map((adjustment: any) => {
+                // Scale each adjustment proportionally to get its tax-inclusive value
+                const inclusiveAmount = totalExclusiveDiscount > 0
+                  ? Math.round((adjustment.amount / totalExclusiveDiscount) * totalInclusiveDiscount)
+                  : 0
+
+                return (
+                  <div
+                    key={adjustment.id}
+                    className="flex items-center gap-x-1 px-1.5 py-0.5 bg-ui-bg-interactive-flat rounded-md border border-ui-border-interactive w-fit"
+                  >
+                    <span className="text-[7px] small:text-[8px] font-black text-ui-fg-interactive uppercase tracking-widest">
+                      Applied: {adjustment.description || adjustment.code}
+                      {inclusiveAmount > 0 && ` (-${convertToLocale({ amount: inclusiveAmount, currency_code: currencyCode })})`}
+                    </span>
+                  </div>
+                )
+              })
+            })()}
           </div>
         )}
       </Table.Cell>
@@ -72,7 +86,6 @@ const Item = ({ item, currencyCode }: ItemProps) => {
             </Text>
             <LineItemUnitPrice
               item={item}
-              style="tight"
               currencyCode={currencyCode}
             />
           </span>

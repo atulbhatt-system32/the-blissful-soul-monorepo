@@ -21,7 +21,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     total,
   } = totals
 
-  const shipping_subtotal = totals.shipping_subtotal ?? (totals as any).shipping_total
+  const shipping_subtotal = (totals as any).shipping_total ?? totals.shipping_subtotal
   const discount_subtotal = totals.discount_subtotal ?? (totals as any).discount_total
   const item_tax_total = (totals as any).item_tax_total ?? 0
 

@@ -20,7 +20,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   (
     {
       placeholder = "Select...",
-      defaultValue = "",
+      defaultValue,
       className,
       children,
       label,
@@ -60,7 +60,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
         >
           <select
             ref={innerRef}
-            defaultValue={defaultValue}
+            defaultValue={props.value === undefined ? (defaultValue ?? "") : undefined}
             {...props}
             onChange={(e) => {
               if (props.onChange) props.onChange(e)
