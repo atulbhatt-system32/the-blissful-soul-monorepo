@@ -14,6 +14,7 @@ import {
   removeAuthToken,
   removeCartId,
   setAuthToken,
+  setCartId,
 } from "./cookies"
 
 export const retrieveCustomer =
@@ -124,7 +125,34 @@ export async function login(_currentState: unknown, formData: FormData) {
   try {
     await transferCart()
   } catch (error: any) {
-    return error.toString()
+    // Ignore transfer errors (e.g., if cart belongs to another user)
+  }
+
+  // Always attempt to restore the customer's most recent active cart from the backend,
+  try {
+    const authHeaders = await getAuthHeaders()
+    const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+    
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""
+    const headerPayload = { ...authHeaders } as any
+    if (publishableKey) headerPayload["x-publishable-api-key"] = publishableKey
+
+    // Call our new custom proxy endpoint that checks the DB directly
+    const syncRes = await fetch(`${backendUrl}/custom/sync-cart`, {
+      method: "GET",
+      headers: headerPayload,
+    }).catch(() => null)
+    
+    if (syncRes && syncRes.ok) {
+      const syncData = await syncRes.json()
+      if (syncData?.cart_id) {
+        await setCartId(syncData.cart_id)
+        const cartCacheTag = await getCacheTag("carts")
+        revalidateTag(cartCacheTag)
+      }
+    }
+  } catch (restoreError) {
+    console.error("Failed to restore cart from backend:", restoreError)
   }
 
   // Extract countryCode from the current request path (e.g. /in/account → "in")
@@ -144,6 +172,7 @@ export async function signout(countryCode: string) {
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
 
+  // Remove cart ID to ensure the cart is securely cleared on logout for guest users.
   await removeCartId()
 
   const cartCacheTag = await getCacheTag("carts")

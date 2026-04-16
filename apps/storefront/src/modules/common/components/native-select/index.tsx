@@ -82,9 +82,10 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           {label && (
             <label
               className={clx(
-                "flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0 text-ui-fg-subtle text-small-regular peer-focus:-translate-y-2 peer-focus:text-xsmall-regular",
+                "flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 -z-1 origin-0 text-ui-fg-subtle text-small-regular peer-focus:-translate-y-2 peer-focus:text-xsmall-regular",
                 {
-                  "-translate-y-2 text-xsmall-regular": !isPlaceholder,
+                  "top-3.5": isPlaceholder,
+                  "top-3 -translate-y-2 text-xsmall-regular": !isPlaceholder,
                 }
               )}
             >

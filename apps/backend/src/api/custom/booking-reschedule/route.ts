@@ -30,8 +30,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     }
 
     // 2. Check policy (24 hours notice for rescheduling)
-    const oldDate = order.metadata?.booking_date
-    const oldTime = order.metadata?.booking_time
+    const oldDate = order.metadata?.booking_date as string | undefined
+    const oldTime = order.metadata?.booking_time as string | undefined
     
     if (oldDate && oldTime) {
       const [time, modifier] = oldTime.split(' ');
@@ -51,12 +51,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     }
 
     // 3. Cancel old Cal.com booking and create a NEW one (mirrors booking confirmation flow)
-    const calBookingId = order.metadata?.cal_booking_id
-    const calEventSlug = order.metadata?.cal_event_slug || "video-session"
+    const calBookingId = order.metadata?.cal_booking_id as string | undefined
+    const calEventSlug = (order.metadata?.cal_event_slug as string) || "video-session"
     const calApiKey = process.env.CAL_API_KEY
     const calUsername = "kunal-risaanva-m3jown"
     let newCalBookingId = calBookingId
-    let calMeetUrl = order.metadata?.cal_meet_url
+    let calMeetUrl = order.metadata?.cal_meet_url as string | undefined
 
     if (!calApiKey) {
       console.error("[Booking Reschedule] CAL_API_KEY is missing from env!")

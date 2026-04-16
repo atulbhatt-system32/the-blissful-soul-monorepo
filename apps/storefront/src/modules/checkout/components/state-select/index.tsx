@@ -5,7 +5,6 @@ import NativeSelect, {
 } from "@modules/common/components/native-select"
 
 const INDIA_STATES = [
-  "Andaman and Nicobar Islands",
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
