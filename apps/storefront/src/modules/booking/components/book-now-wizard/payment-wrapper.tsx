@@ -88,7 +88,8 @@ export default function MedusaCheckoutPayment({
               notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
             })
             const calBookingId = calResult?.uid
-            console.log("Cal.com booking created successfully:", calBookingId)
+            const calMeetUrl = calResult?.meetingUrl || calResult?.location
+            console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
 
             // 2. Send confirmation email via Next.js API proxy (avoids CORS)
             try {
@@ -107,6 +108,7 @@ export default function MedusaCheckoutPayment({
                   bookingTime: time,
                   price: price,
                   calBookingId,
+                  calMeetUrl, // Added meeting URL
                   eventSlug, // Pass the event slug for rescheduling
                 }),
               })
