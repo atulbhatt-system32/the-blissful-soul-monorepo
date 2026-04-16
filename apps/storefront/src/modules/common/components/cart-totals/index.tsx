@@ -22,12 +22,23 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   } = totals
 
   const shipping_subtotal = (totals as any).shipping_total ?? totals.shipping_subtotal
-  const discount_subtotal = totals.discount_subtotal ?? (totals as any).discount_total
-  const item_tax_total = (totals as any).item_tax_total ?? 0
+  // For tax-inclusive pricing, ensure we use the inclusive values from items
+  const items = (totals as any).items || []
+  
+  // item_total is the net inclusive total (after discounts)
+  const item_total = items.length > 0 
+    ? items.reduce((acc: number, item: any) => acc + (item.total ?? 0), 0)
+    : ((total ?? 0) - (shipping_subtotal ?? 0))
 
-  // For tax-inclusive pricing, item_subtotal is the pre-tax base.
-  // Compute the inclusive item value as the sum of line item totals.
-  const item_inclusive = (totals as any).items?.reduce((acc: number, item: any) => acc + (item.total ?? 0), 0) ?? ((total ?? 0) - (shipping_subtotal ?? 0) + (discount_subtotal ?? 0))
+  // item_subtotal is the gross inclusive total (before discounts)
+  const item_subtotal = items.length > 0
+    ? items.reduce((acc: number, item: any) => acc + (item.original_total ?? 0), 0)
+    : (totals.item_subtotal ?? item_total)
+
+  const discount_subtotal = item_subtotal - item_total
+  const item_tax_total = (totals as any).item_tax_total ?? 0
+  
+  const item_inclusive = item_subtotal
 
   return (
     <div className="flex flex-col gap-y-3">
