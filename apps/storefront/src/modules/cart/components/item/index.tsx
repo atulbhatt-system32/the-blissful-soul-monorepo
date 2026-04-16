@@ -25,7 +25,14 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const isAutoGift = item.metadata?.is_auto_gift === true
+
   const changeQuantity = async (quantity: number) => {
+    if (isAutoGift) {
+      setError("Free gift quantity cannot be changed")
+      return
+    }
+
     setError(null)
     setUpdating(true)
 
@@ -97,18 +104,26 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 value={item.quantity}
                 onChange={(value) => changeQuantity(parseInt(value.target.value))}
                 className="w-12 h-8 text-xs font-bold border-none bg-transparent focus:ring-0"
+                disabled={isAutoGift}
               >
                 {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
                   <option value={i + 1} key={i}>{i + 1}</option>
                 ))}
               </CartItemSelect>
             </div>
-            <button 
-              onClick={() => changeQuantity(0)}
-              className="text-[9px] uppercase tracking-widest text-gray-400 font-bold hover:text-red-500 transition-colors"
-            >
-              Remove
-            </button>
+            {!isAutoGift && (
+              <button 
+                onClick={() => changeQuantity(0)}
+                className="text-[9px] uppercase tracking-widest text-gray-400 font-bold hover:text-red-500 transition-colors"
+              >
+                Remove
+              </button>
+            )}
+            {isAutoGift && (
+              <span className="text-[9px] uppercase tracking-widest text-[#C5A059] font-black">
+                Free Gift
+              </span>
+            )}
           </div>
           <ErrorMessage error={error} />
         </div>
@@ -182,6 +197,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 onChange={(value) => changeQuantity(parseInt(value.target.value))}
                 className="w-10 small:w-12 h-6 small:h-7 text-[10px] small:text-xs font-bold border-none bg-transparent focus:ring-0"
                 data-testid="product-select-button"
+                disabled={isAutoGift}
               >
                 {Array.from(
                   {
@@ -195,12 +211,19 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 )}
               </CartItemSelect>
             </div>
-            <button 
-              onClick={() => changeQuantity(0)}
-              className="text-[7px] small:text-[8px] uppercase tracking-widest text-gray-400 font-black hover:text-red-500 transition-colors flex items-center gap-x-1"
-            >
-              Remove
-            </button>
+            {!isAutoGift && (
+              <button 
+                onClick={() => changeQuantity(0)}
+                className="text-[7px] small:text-[8px] uppercase tracking-widest text-gray-400 font-black hover:text-red-500 transition-colors flex items-center gap-x-1"
+              >
+                Remove
+              </button>
+            )}
+            {isAutoGift && (
+              <span className="text-[7px] small:text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
+                Free Gift
+              </span>
+            )}
             <ErrorMessage error={error} data-testid="product-error-message" />
           </div>
         </Table.Cell>
