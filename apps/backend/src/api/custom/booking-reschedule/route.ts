@@ -50,61 +50,115 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       }
     }
 
-    // 3. Reschedule on Cal.com if ID exists
+    // 3. Cancel old Cal.com booking and create a NEW one (mirrors booking confirmation flow)
     const calBookingId = order.metadata?.cal_booking_id
+    const calEventSlug = order.metadata?.cal_event_slug || "video-session"
+    const calApiKey = process.env.CAL_API_KEY
+    const calUsername = "kunal-risaanva-m3jown"
+    let newCalBookingId = calBookingId
     let calMeetUrl = order.metadata?.cal_meet_url
 
-    if (calBookingId) {
-      try {
-        const calApiKey = process.env.CAL_API_KEY
-        if (!calApiKey) {
-          console.error("[Booking Reschedule] CAL_API_KEY is missing from env!")
+    if (!calApiKey) {
+      console.error("[Booking Reschedule] CAL_API_KEY is missing from env!")
+    }
+
+    if (calApiKey) {
+      // Step A: Cancel the old booking (non-blocking)
+      if (calBookingId) {
+        try {
+          const cancelRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/cancel`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${calApiKey}`,
+              "cal-api-version": "2024-08-13",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ reason: "Rescheduled by customer via dashboard" })
+          })
+          const cancelData = await cancelRes.json()
+          console.log(`[Booking Reschedule] Old Cal.com booking ${calBookingId} cancelled:`, cancelRes.status)
+        } catch (cancelErr: any) {
+          console.error(`[Booking Reschedule] Failed to cancel old Cal.com booking:`, cancelErr.message)
         }
-        const rescheduleRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}/reschedule`, {
+      }
+
+      // Step B: Resolve the event type ID from slug (same as booking confirmation)
+      let eventTypeId: number | undefined
+      try {
+        const eventTypesRes = await fetch(`https://api.cal.com/v2/event-types`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${calApiKey}`,
+            "cal-api-version": "2024-09-04",
+            "Content-Type": "application/json",
+          }
+        })
+        if (eventTypesRes.ok) {
+          const json = await eventTypesRes.json()
+          const eventTypes = json.data || json || []
+          const matched = Array.isArray(eventTypes)
+            ? eventTypes.find((et: any) => et.slug === calEventSlug)
+            : null
+          if (matched) {
+            eventTypeId = matched.id
+          }
+        }
+      } catch (err: any) {
+        console.error("[Booking Reschedule] Failed to fetch event types:", err.message)
+      }
+
+      // Step C: Create a brand new Cal.com booking for the new time slot
+      try {
+        const bookingPayload: any = {
+          start: slotIsoStart,
+          attendee: {
+            name: order.shipping_address?.first_name 
+              ? `${order.shipping_address.first_name} ${order.shipping_address.last_name || ""}`.trim()
+              : "Customer",
+            email: order.email,
+            timeZone: "Asia/Kolkata",
+          }
+        }
+
+        if (eventTypeId) {
+          bookingPayload.eventTypeId = eventTypeId
+        } else {
+          bookingPayload.eventTypeSlug = calEventSlug
+          bookingPayload.username = calUsername
+        }
+
+        console.log(`[Booking Reschedule] Creating new Cal.com booking:`, JSON.stringify(bookingPayload))
+
+        const createRes = await fetch(`https://api.cal.com/v2/bookings`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${calApiKey}`,
             "cal-api-version": "2024-08-13",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ 
-            start: slotIsoStart,
-            reason: "Rescheduled by customer via dashboard" 
-          })
+          body: JSON.stringify(bookingPayload),
         })
-        
-        const rescheduleData = await rescheduleRes.json()
-        console.log(`[Booking Reschedule] Cal.com reschedule response:`, JSON.stringify(rescheduleData).substring(0, 500))
-        
-        // Fetch the updated booking to get the meet url if it's not in the reschedule response
-        if (rescheduleData?.data?.meetingUrl) {
-          calMeetUrl = rescheduleData.data.meetingUrl
-        } else {
-          const bookingRes = await fetch(`https://api.cal.com/v2/bookings/${calBookingId}`, {
-            headers: {
-              "Authorization": `Bearer ${calApiKey}`,
-              "cal-api-version": "2024-08-13",
-            }
-          })
-          const bookingData = await bookingRes.json()
-          console.log(`[Booking Reschedule] Cal.com booking data:`, JSON.stringify(bookingData).substring(0, 500))
-          calMeetUrl = bookingData?.data?.meetingUrl || bookingData?.data?.location
-        }
 
-        console.log(`[Booking Reschedule] Cal.com event ${calBookingId} rescheduled. Meet URL: ${calMeetUrl}`)
-      } catch (calErr: any) {
-        console.error(`[Booking Reschedule] Failed to reschedule Cal.com event:`, calErr.message)
+        const createData = await createRes.json()
+        console.log(`[Booking Reschedule] New Cal.com booking response:`, JSON.stringify(createData).substring(0, 500))
+
+        if (createRes.ok && createData?.data) {
+          newCalBookingId = createData.data.uid || createData.data.id || calBookingId
+          calMeetUrl = createData.data.meetingUrl || createData.data.location || calMeetUrl
+          console.log(`[Booking Reschedule] New booking created! ID: ${newCalBookingId}, Meet URL: ${calMeetUrl}`)
+        } else {
+          console.error(`[Booking Reschedule] Failed to create new Cal.com booking:`, createData)
+        }
+      } catch (createErr: any) {
+        console.error(`[Booking Reschedule] Error creating new Cal.com booking:`, createErr.message)
       }
     }
 
-    // Fallback: if no meeting URL was found, construct one from the Cal.com event slug
+    // Final fallback: use the storefront sessions dashboard (always valid, never 404s)
     if (!calMeetUrl) {
-      const calEventSlug = order.metadata?.cal_event_slug
-      const calUsername = "kunal-risaanva-m3jown"
-      if (calEventSlug) {
-        calMeetUrl = `https://cal.com/${calUsername}/${calEventSlug}`
-        console.log(`[Booking Reschedule] Using fallback Cal.com URL: ${calMeetUrl}`)
-      }
+      const storefrontUrl = process.env.STOREFRONT_URL || "https://theblissfulsoul.in"
+      calMeetUrl = `${storefrontUrl}/account/sessions`
+      console.log(`[Booking Reschedule] Using storefront sessions page as fallback: ${calMeetUrl}`)
     }
 
     // 4. Update Medusa Order Metadata
@@ -114,7 +168,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         ...order.metadata,
         booking_date: newDate,
         booking_time: newTime,
-        cal_meet_url: calMeetUrl, // Store the (possibly updated) URL
+        cal_booking_id: newCalBookingId, // Store the NEW Cal.com booking ID
+        cal_meet_url: calMeetUrl, // Store the NEW meeting URL
         rescheduled_at: new Date().toISOString(),
         original_date: oldDate,
         original_time: oldTime
