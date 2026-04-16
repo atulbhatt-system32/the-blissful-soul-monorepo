@@ -30,7 +30,7 @@ export default function CollectionTemplate({
           </LocalizedClientLink>
           <span className="text-gray-300">/</span>
           <LocalizedClientLink href="/store" className="hover:text-[#2C1E36] transition-colors">
-            Store
+            Shop Crystals
           </LocalizedClientLink>
           <span className="text-gray-300">/</span>
           <span className="text-[#2C1E36]/60">{collection.title}</span>

@@ -2,6 +2,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
 import { Text } from "@medusajs/ui"
+import Image from "next/image"
 
 export default function CheckoutLayout({
   children,
@@ -14,24 +15,27 @@ export default function CheckoutLayout({
         <nav className="flex h-full items-center content-container justify-between">
           <LocalizedClientLink
             href="/cart"
-            className="text-small-semi text-ui-fg-base flex items-center gap-x-2 uppercase flex-1 basis-0"
+            className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059] flex items-center gap-x-2 group hover:text-[#2C1E36] transition-all"
             data-testid="back-to-cart-link"
           >
-            <ChevronDown className="rotate-90" size={16} />
-            <span className="mt-px hidden small:block txt-compact-plus text-ui-fg-subtle hover:text-ui-fg-base ">
-              Back to shopping cart
-            </span>
-            <span className="mt-px block small:hidden txt-compact-plus text-ui-fg-subtle hover:text-ui-fg-base">
-              Back
-            </span>
+            <ChevronDown className="rotate-90 group-hover:-translate-x-1 transition-transform" size={14} />
+            <span>Back</span>
           </LocalizedClientLink>
+
           <LocalizedClientLink
             href="/"
-            className="font-serif text-[#2C1E36] text-xl hover:text-[#C5A059] uppercase tracking-widest font-bold"
+            className="flex flex-col items-center"
             data-testid="store-link"
           >
-            The Blissful Soul
+            <Image 
+              src="/logo.png" 
+              alt="The Blissful Soul" 
+              width={180} 
+              height={60} 
+              className="h-10 w-auto md:h-12"
+            />
           </LocalizedClientLink>
+          
           <div className="flex-1 basis-0" />
         </nav>
       </div>
