@@ -116,9 +116,6 @@ export default async function Home(props: {
       {/* Book Your Session Section */}
       <BookSession 
         title={homepageData?.book_session_title}
-        tarotServices={homepageData?.tarot_services}
-        audioSessions={homepageData?.audio_sessions}
-        videoSessions={homepageData?.video_sessions}
         region={region}
       />
 

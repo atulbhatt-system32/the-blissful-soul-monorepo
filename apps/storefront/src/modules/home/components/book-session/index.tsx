@@ -5,9 +5,6 @@ import BookSessionClient from "@modules/home/components/book-session/client"
 
 type BookSessionProps = {
   title?: string | null
-  tarotServices?: any[] | null
-  audioSessions?: any[] | null
-  videoSessions?: any[] | null
   region: HttpTypes.StoreRegion
 }
 

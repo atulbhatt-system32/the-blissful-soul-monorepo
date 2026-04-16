@@ -75,3 +75,7 @@ and can using script in medusa and products cann add all the prodcuts qyt 10k an
 http://localhost:8001/in/account/sessions
 
 https://theblissfulsoul.in/in/order/order_01KP5H4D0NJ9Z0RXYMHBGD18VF/confirmed
+
+
+
+wishlist count 
