@@ -80,14 +80,14 @@ export default async function PaginatedProducts({
   const totalPages = Math.ceil(count / currentLimit)
 
   // Configure grid layout based on view property
-  let gridClasses = "grid w-full gap-x-3 md:gap-x-6 gap-y-10"
+  let gridClasses = "grid w-full gap-x-3 md:gap-x-8 gap-y-12 md:gap-y-16"
   if (view === "2") {
-    gridClasses += " grid-cols-2"
+    gridClasses += " grid-cols-1 small:grid-cols-2"
   } else if (view === "4") {
-    gridClasses += " grid-cols-2 small:grid-cols-4"
+    gridClasses += " grid-cols-1 small:grid-cols-4"
   } else {
     // Default is 3 
-    gridClasses += " grid-cols-2 small:grid-cols-3"
+    gridClasses += " grid-cols-1 small:grid-cols-3"
   }
 
   return (
