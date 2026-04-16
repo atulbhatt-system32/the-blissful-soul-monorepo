@@ -75,27 +75,7 @@ export default function GuestAutoRegister({ email, firstName, lastName }: GuestA
   }
 
   if (hasAccount) {
-    return (
-      <div className="bg-[#2C1E36]/5 border border-[#2C1E36]/10 rounded-2xl p-6 md:p-8 mt-4 shadow-sm animate-in fade-in duration-500">
-        <div className="flex flex-col items-center text-center">
-          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md mb-4 border border-[#2C1E36]/5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#2C1E36]">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </div>
-          <h3 className="font-serif text-2xl text-[#2C1E36] mb-1">Welcome back, {firstName}!</h3>
-          <p className="text-gray-500 mb-6">You already have an account with us. Log in to view all your session details in one place.</p>
-          
-          <button 
-            onClick={() => router.push(`/${countryCode}/account`)}
-            className="w-full max-w-sm bg-[#2C1E36] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#2C1E36]/10 uppercase tracking-widest text-sm"
-          >
-            Login to View Sessions
-          </button>
-        </div>
-      </div>
-    )
+    return null
   }
 
   if (success) {

@@ -145,7 +145,7 @@ const ShippingAddress = ({
         </>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 small:grid-cols-2 gap-4">
         <Input
           label="First name"
           name="shipping_address.first_name"
@@ -233,7 +233,7 @@ const ShippingAddress = ({
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 small:grid-cols-2 gap-4 mb-4">
         <Input
           label="Email"
           name="email"
