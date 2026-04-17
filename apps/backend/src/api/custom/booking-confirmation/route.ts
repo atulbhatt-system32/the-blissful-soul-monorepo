@@ -1,5 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
+import { generateInvoice } from "../../../lib/invoice"
 
 type BookingOrderPayload = {
   variantId: string
@@ -118,7 +119,41 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     console.log(`[Booking Order] Added line item to order ${order.id}`)
 
-    // 6. Send a confirmation email via notification service
+    // 6. Generate PDF invoice
+    const invoiceOrder = {
+      created_at: order.created_at || new Date().toISOString(),
+      display_id: order.display_id || order.id,
+      shipping_address: {
+        first_name: firstName,
+        last_name: lastName || "Customer",
+        address_1: "Digital Delivery",
+        address_2: "",
+        city: "Online",
+        postal_code: "000000",
+        phone: phone || "",
+        province: null,
+        country_code: countryCode || "in",
+      },
+      items: [
+        {
+          title: `Session Booking - ${bookingDate} ${bookingTime}`,
+          quantity: 1,
+          unit_price: price || 0,
+          adjustments: [],
+          tax_lines: [],
+        },
+      ],
+      shipping_total: 0,
+      shipping_methods: [],
+      payment_collections: [
+        { payments: [{ provider_id: "razorpay" }] },
+      ],
+    }
+
+    const pdfBuffer = await generateInvoice(invoiceOrder)
+    const pdfBase64 = pdfBuffer.toString("base64")
+
+    // 7. Send a confirmation email via notification service
     const notificationService = req.scope.resolve("notification") as any
     await notificationService.createNotifications([
       {
@@ -176,6 +211,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             </div>
           `,
         },
+        attachments: [
+          {
+            content: pdfBase64,
+            encoding: "base64",
+            filename: `invoice_${order.display_id || order.id}.pdf`,
+            type: "application/pdf",
+            disposition: "attachment",
+          },
+        ],
       },
       {
         to: process.env.ADMIN_NOTIFICATION_EMAIL!,
