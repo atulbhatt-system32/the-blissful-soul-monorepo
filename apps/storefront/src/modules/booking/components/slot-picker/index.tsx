@@ -15,7 +15,7 @@ type BookingSlotPickerProps = {
 
 export default function BookingSlotPicker({ eventSlug, onSelect }: BookingSlotPickerProps) {
   // Use a fallback slug if none provided (e.g., for old bookings without stored slug)
-  const effectiveSlug = eventSlug || "video-session"
+  const effectiveSlug = eventSlug
   
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0] // Start with tomorrow

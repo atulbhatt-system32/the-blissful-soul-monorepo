@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   if (!username || !targetSlug) {
     return NextResponse.json(
-      { message: "Cal.com username or event slug not configured. Please ensure the product has a 'Length' field set." },
+      { message: "Cal.com username or event slug not configured. Please ensure the product has a valid handle." },
       { status: 500 }
     )
   }
