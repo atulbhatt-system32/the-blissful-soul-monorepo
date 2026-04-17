@@ -80,7 +80,7 @@ export default async function OrderCompletedTemplate({
            </div>
            
            <div className="space-y-4">
-              <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C5A059] block animate-in fade-in duration-1000 delay-300">Order Sanctified</span>
+              <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C5A059] block animate-in fade-in duration-1000 delay-300">Order Confirmed</span>
               <Heading level="h1" className="text-5xl md:text-7xl font-serif text-[#2C1E36] font-bold leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 italic">
                 Thank you for your trust.
               </Heading>

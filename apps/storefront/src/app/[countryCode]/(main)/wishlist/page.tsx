@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Wishlist",
-  description: "A sanctuary for your most-loved crystals and healing sessions.",
+  description: "Save and manage your favorite crystals and healing sessions.",
 }
 
 export default async function WishlistPage({ 

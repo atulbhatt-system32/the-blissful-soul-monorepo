@@ -55,7 +55,7 @@ const Addresses = ({
              level="h2"
              className="flex flex-row text-3xl font-serif text-[#2C1E36] font-bold gap-x-2 items-center"
            >
-             {isDigitalOnly ? "Identity" : "Destination"}
+             {isDigitalOnly ? "Your Details" : "Shipping Address"}
              {!isOpen && cart?.shipping_address?.address_1 && cart?.email && (
                <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -91,7 +91,7 @@ const Addresses = ({
                   level="h2"
                   className="text-xl font-serif text-[#2C1E36] font-bold pb-6"
                 >
-                  Billing Sanctuary
+                  Billing Address
                 </Heading>
 
                 <BillingAddress cart={cart} />
@@ -99,7 +99,7 @@ const Addresses = ({
             )}
             <div className="mt-10">
                <SubmitButton fullWidth data-testid="submit-address-button">
-                {isDigitalOnly ? "Proceed to Offerings" : "Place Order"}
+                {isDigitalOnly ? "Continue" : "Continue"}
                </SubmitButton>
             </div>
             <ErrorMessage error={message} data-testid="address-error-message" />
@@ -115,7 +115,7 @@ const Addresses = ({
                     data-testid="shipping-address-summary"
                   >
                     <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
-                      {isDigitalOnly ? "The Seeker" : "The Vessel's Path"}
+                      {isDigitalOnly ? "Your Details" : "Shipping Address"}
                     </span>
                     <div className="flex flex-col text-[#2C1E36] font-medium leading-relaxed">
                       <span className="font-bold">
@@ -158,11 +158,11 @@ const Addresses = ({
                       data-testid="billing-address-summary"
                     >
                       <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
-                        Billing Sanctuary
+                        Billing Address
                       </span>
                       <div className="flex flex-col text-[#2C1E36] font-medium leading-relaxed">
                         {sameAsBilling ? (
-                          <span className="italic opacity-60 text-xs">Mirror of Delivery</span>
+                          <span className="italic opacity-60 text-xs">Same as shipping</span>
                         ) : (
                           <>
                             <span className="font-bold">

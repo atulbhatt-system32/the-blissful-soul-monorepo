@@ -37,7 +37,7 @@ export default function RefundPolicyPage() {
               </div>
               <div className="p-6 bg-gray-50/50 rounded-2xl border-l-2 border-[#2C1E36]">
                 <p className="font-bold text-[#2C1E36] mb-2 uppercase text-[11px] tracking-widest">Services (Sessions):</p>
-                <p className="text-sm">Refunds for services are only available if the appointment is cancelled at least 24 hours in advance. Once a session has been conducted, no refunds will be issued as the divine energy and time have already been shared.</p>
+                <p className="text-sm">Refunds for services are only available if the appointment is cancelled at least 24 hours in advance. Once a session has been conducted, no refunds will be issued.</p>
               </div>
             </div>
           </section>

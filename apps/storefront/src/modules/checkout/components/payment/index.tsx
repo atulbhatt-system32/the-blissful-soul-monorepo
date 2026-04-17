@@ -162,7 +162,7 @@ const Payment = ({
                }
              )}
            >
-             Exchange
+             Payment
              {paymentDone && (
                <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -177,7 +177,7 @@ const Payment = ({
           <div className="mb-8 p-8 bg-[#2C1E36]/5 rounded-[2.5rem] border border-[#2C1E36]/10 flex flex-col gap-y-4">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
-                 Energy Exchange Total
+                 Order Total
               </span>
               <span className="text-3xl font-serif font-black text-[#2C1E36]">
                 {total}
@@ -200,13 +200,13 @@ const Payment = ({
             isLoading={isLoading}
             data-testid="submit-payment-button"
           >
-            Finalize Sacred Order
+            Place Order
           </Button>
           
           <div className="mt-6 flex items-center justify-center gap-x-4 opacity-40">
              <span className="text-[8px] uppercase tracking-[0.3em] font-bold">Encrypted Connection</span>
              <div className="h-px w-8 bg-black/20" />
-             <span className="text-[8px] uppercase tracking-[0.3em] font-bold">Trusted Exchange</span>
+             <span className="text-[8px] uppercase tracking-[0.3em] font-bold">Secure Payment</span>
           </div>
         </div>
       )}

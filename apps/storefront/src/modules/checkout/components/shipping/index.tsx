@@ -208,10 +208,10 @@ const Shipping: React.FC<ShippingProps> = ({
           <div className="grid">
             <div className="flex flex-col gap-y-1 mb-8">
               <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
-                Method of Arrival
+                Shipping Method
               </span>
               <p className="text-sm text-gray-500 italic">
-                Choose the path your sacred items will take to reach you.
+                Choose how you'd like your order delivered.
               </p>
             </div>
             
@@ -297,7 +297,7 @@ const Shipping: React.FC<ShippingProps> = ({
                               {option.name}
                             </span>
                             <span className="text-[10px] text-gray-500 uppercase tracking-tighter">
-                               Standard Passage
+                               Standard Delivery
                             </span>
                           </div>
                         </div>
@@ -339,7 +339,7 @@ const Shipping: React.FC<ShippingProps> = ({
               disabled={!shippingMethodId}
               data-testid="submit-delivery-option-button"
             >
-              Secure Choice & Continue
+              Continue to Payment
             </Button>
           </div>
         </div>
@@ -349,7 +349,7 @@ const Shipping: React.FC<ShippingProps> = ({
             {cart && (cart.shipping_methods?.length ?? 0) > 0 ? (
               <div className="flex flex-col gap-y-2">
                 <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
-                   Selected Path
+                   Selected Method
                 </span>
                 <div className="flex items-center justify-between text-[#2C1E36] font-bold">
                   <span>{cart.shipping_methods!.at(-1)!.name}</span>

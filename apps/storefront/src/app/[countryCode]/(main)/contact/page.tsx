@@ -56,7 +56,7 @@ export default async function ContactPage() {
             {/* Form Column */}
             <div className="w-full lg:w-3/5 animate-in fade-in slide-in-from-bottom-8 duration-1000">
               <div className="mb-16">
-                <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.5em] mb-6 block">Sanctum Connection</span>
+                <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.5em] mb-6 block">Get in Touch</span>
                 <h2 className="text-4xl md:text-6xl font-serif text-[#2C1E36] uppercase tracking-tight leading-[1.1]">
                    {formTitle.split(' ').map((word: string, i: number) => (
                      <span key={i} className={i % 2 === 1 ? 'italic font-normal text-[#C5A059] ml-2' : ''}>{word} </span>
@@ -73,7 +73,7 @@ export default async function ContactPage() {
                 <div className="space-y-12 w-full">
                   <div className="text-[#2C1E36] space-y-12 font-sans">
                      <div className="space-y-4 group">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C5A059] group-hover:translate-x-1 transition-transform block">Temple Location</span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C5A059] group-hover:translate-x-1 transition-transform block">Location</span>
                         <p className="text-2xl font-serif text-[#2C1E36] leading-relaxed italic opacity-80 whitespace-pre-line group-hover:opacity-100 transition-opacity">
                            {contactData?.address || "Shakti Nagar,\nDelhi 110007"}
                         </p>
@@ -81,14 +81,14 @@ export default async function ContactPage() {
                      
                      <div className="flex flex-col gap-10 pt-12 border-t border-[#2C1E36]/5">
                         <div className="space-y-3 group">
-                           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C5A059] group-hover:translate-x-1 transition-transform block">Divine Signal</span>
+                           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C5A059] group-hover:translate-x-1 transition-transform block">Contact</span>
                            <p className="text-xl font-serif italic text-[#2C1E36]">{contactData?.phone || "+91 98116 11341"}</p>
                            <p className="text-sm font-sans opacity-60 hover:opacity-100 transition-opacity cursor-pointer">{email}</p>
                         </div>
 
                         <div className="space-y-6 pt-12 border-t border-[#2C1E36]/5">
                           <h3 className="text-4xl font-serif text-[#2C1E36] leading-tight active-state">
-                             Join Our <br/> <span className="text-[#C5A059] italic font-normal">Divine Spirit</span>
+                             Follow Us <br/> <span className="text-[#C5A059] italic font-normal">On Social</span>
                           </h3>
                           
                           <div className="flex flex-wrap gap-5 mt-8">

@@ -100,7 +100,7 @@ const LoginTemplate = () => {
                    disabled={loading}
                    className="bg-[#2C1E36] text-white px-10 h-14 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 active:scale-95 w-full disabled:bg-gray-200 disabled:shadow-none flex items-center justify-center mt-2"
                  >
-                   {loading ? "Aligning..." : "Send Reset Link"}
+                   {loading ? "Sending..." : "Send Reset Link"}
                  </button>
                </form>
                <button 

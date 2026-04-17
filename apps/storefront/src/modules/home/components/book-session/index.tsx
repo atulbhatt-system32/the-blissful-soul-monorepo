@@ -42,7 +42,7 @@ export default async function BookSession({
         <div className="content-container text-center">
            <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] mb-4 block underline underline-offset-8 decoration-white/10">SESSIONS</span>
            <div className="max-w-3xl mx-auto py-16 px-8 border border-dashed border-white/10 rounded-[40px] bg-white/5 backdrop-blur-sm">
-              <p className="text-white/40 font-serif italic text-xl">Divine services and readings are currently being aligned. Our booking portal will awaken soon.</p>
+              <p className="text-white/40 font-serif italic text-xl">Sessions are coming soon. Check back shortly to book your session.</p>
            </div>
         </div>
       </section>

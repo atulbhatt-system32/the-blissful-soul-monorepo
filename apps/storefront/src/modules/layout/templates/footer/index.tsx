@@ -18,7 +18,7 @@ export default async function Footer() {
                   </span>
               </LocalizedClientLink>
               <p className="text-white/50 text-[13px] leading-[1.7] max-w-[280px] font-sans">
-                Healing crystals, sessions, and guidance — curated with care in Delhi and online.
+                Healing crystals, sessions, and guidance — available in Delhi and online.
               </p>
             </div>
 

@@ -14,7 +14,7 @@ const EmptyCartMessage = () => {
         level="h1"
         className="text-5xl font-serif text-[#2C1E36] font-bold mb-4"
       >
-        Your Vessel is Empty
+        Your Cart is Empty
       </Heading>
       <div className="w-16 h-1 bg-[#C5A059]/20 mb-6 rounded-full" />
       <Text className="text-base text-gray-400 italic mb-12 max-w-[320px] leading-relaxed">

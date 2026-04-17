@@ -16,7 +16,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
       <div className="pb-4 flex items-center justify-between border-b border-gray-100 mb-4 sm:mb-0">
         <Heading className="text-xl font-serif text-[#2C1E36] font-bold">Cart Items</Heading>
         <span className="text-[9px] uppercase tracking-widest text-gray-400 font-black">
-          {items?.length ?? 0} {items?.length === 1 ? 'Treasure' : 'Treasures'}
+          {items?.length ?? 0} {items?.length === 1 ? 'Item' : 'Items'}
         </span>
       </div>
 

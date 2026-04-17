@@ -25,7 +25,7 @@ export default async function Profile() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 small:px-8" data-testid="profile-page-wrapper">
       <div className="mb-6 flex flex-col gap-y-1">
-        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Sanctum Identity</span>
+        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">My Account</span>
         <h1 className="text-3xl font-serif text-[#2C1E36] font-bold">Your Profile</h1>
         <p className="text-xs text-gray-500 italic max-w-lg leading-relaxed mt-1">
           Manage your personal details and account security.

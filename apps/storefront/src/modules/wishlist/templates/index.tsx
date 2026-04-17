@@ -48,7 +48,7 @@ const WishlistTemplate = ({
     <div className="py-24 md:py-32 bg-[#FBFAF8] min-h-screen">
       <div className="content-container">
         <div className="mb-16 text-center animate-in fade-in slide-in-from-top-4 duration-1000">
-          <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.4em] mb-4 block">Personal Sanctuary</span>
+          <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-[0.4em] mb-4 block">Saved Items</span>
           <h1 className="text-4xl md:text-6xl font-serif text-[#2C1E36] uppercase tracking-tight leading-tight">
             My <span className="italic font-normal">Wishlist</span>
           </h1>

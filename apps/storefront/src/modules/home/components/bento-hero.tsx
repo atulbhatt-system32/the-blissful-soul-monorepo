@@ -79,7 +79,7 @@ const BentoHero = ({ data }: { data?: any }) => {
                <LocalizedClientLink href={data?.treasures_link || "/store"} className="flex flex-col items-center gap-y-2 z-10 transition-transform group-hover:scale-105 duration-500">
                   <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C5A059]">{data?.treasures_label || "TREASURES"}</span>
                   <span className="font-serif text-2xl text-[#2C1E36] font-medium">
-                     {data?.treasures_title || "Sacred Collection"}
+                     {data?.treasures_title || "Our Collection"}
                   </span>
                </LocalizedClientLink>
                <div className="absolute inset-0 bg-gradient-to-tr from-[#C5A059]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

@@ -54,8 +54,8 @@ export default async function HotSellers({
   if (pricedProducts.length === 0) {
      return (
       <div className="text-center py-20 bg-gray-50/50 rounded-[40px] border border-dashed border-gray-200">
-        <p className="text-[#2C1E36]/40 font-serif italic text-lg">Your chosen favourites are currently being curated.</p>
-        <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">Check back soon for divine selections</p>
+        <p className="text-[#2C1E36]/40 font-serif italic text-lg">Best sellers coming soon.</p>
+        <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">Check back soon for new picks</p>
       </div>
     )
   }
