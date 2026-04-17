@@ -40,7 +40,7 @@ export default class SmtpNotificationService extends AbstractNotificationProvide
         to,
         subject: (data as any)?.subject || "Order Update - The Blissful Soul",
         html: (data as any)?.html_body || "<b>Your order has been updated.</b>",
-        attachments: (attachments as any) || []
+        attachments: (data as any)?.pdf_attachments || []
       }
       
       console.log("[SMTP Provider] Mail options:", JSON.stringify(mailOptions, null, 2))

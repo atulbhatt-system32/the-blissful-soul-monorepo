@@ -210,16 +210,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               <p style="color: #999; font-size: 12px;">If you have any questions, please contact us at support@theblissfulsoul.com</p>
             </div>
           `,
+          pdf_attachments: [
+            {
+              content: pdfBase64,
+              encoding: "base64",
+              filename: `invoice_${order.display_id || order.id}.pdf`,
+              contentType: "application/pdf",
+            },
+          ],
         },
-        attachments: [
-          {
-            content: pdfBase64,
-            encoding: "base64",
-            filename: `invoice_${order.display_id || order.id}.pdf`,
-            type: "application/pdf",
-            disposition: "attachment",
-          },
-        ],
       },
       {
         to: process.env.ADMIN_NOTIFICATION_EMAIL!,

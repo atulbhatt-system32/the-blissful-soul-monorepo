@@ -203,16 +203,15 @@ export default async function orderInvoiceHandler({
 
       </div>
             `,
+            pdf_attachments: [
+              {
+                content: pdfBase64,
+                encoding: "base64",
+                filename: `invoice_${order.display_id}.pdf`,
+                contentType: "application/pdf",
+              },
+            ],
           },
-          attachments: [
-            {
-              content: pdfBase64, 
-              encoding: "base64",
-              filename: `invoice_${order.display_id}.pdf`,
-              type: "application/pdf",
-              disposition: "attachment"
-            }
-          ]
         }
       ]);
       console.log(`[Order Processing] Local PDF Invoice generated and email queued for Order #${order.display_id}`);
