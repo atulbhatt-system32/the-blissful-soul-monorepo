@@ -341,12 +341,14 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         const rate = item.unit_price || 0
         const grossAmount = rate * qty
         const adjustmentTotal = (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
-        const discount = adjustmentTotal
-        const grossAfterDiscount = grossAmount - discount
 
         // Read GST rate from Medusa tax lines; fall back to default if not present
         const taxLines = item.tax_lines || []
         const gstPct = taxLines.reduce((sum: number, t: any) => sum + (t.rate ?? 0), 0) || GST_RATE_FALLBACK
+
+        // Scale pre-tax adjustment to tax-inclusive so discount matches the price customer sees
+        const discount = Math.min(grossAmount, adjustmentTotal * (1 + gstPct / 100))
+        const grossAfterDiscount = grossAmount - discount
 
         // Prices are tax-inclusive — back-calculate the pre-tax (taxable) amount
         const taxable = grossAfterDiscount / (1 + gstPct / 100)
@@ -404,13 +406,12 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       const totalCGST = itemRows.reduce((s, r) => s + r.cgst, 0)
       const totalSGST = itemRows.reduce((s, r) => s + r.sgst, 0)
       const totalTax = totalCGST + totalSGST
-      const shippingTotal = order.shipping_total ?? (order.shipping_methods || []).reduce(
-        (sum: number, sm: any) => sum + (sm.amount ?? 0), 0
-      )
-      const itemDiscounts = items.reduce((sum: number, item: any) =>
-        sum + (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
-      const shippingDiscounts = (order.shipping_methods || []).reduce((sum: number, sm: any) =>
-        sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
+      // Use Medusa's own computed shipping_total (net after all promos — already 0 for free shipping)
+      const shippingTotal = order.shipping_total ?? 0
+      // Use tax-inclusive discount from itemRows (already scaled above)
+      const itemDiscounts = itemRows.reduce((s, r) => s + r.discount, 0)
+      const shippingGross = (order.shipping_methods || []).reduce((sum: number, sm: any) => sum + (sm.amount ?? 0), 0)
+      const shippingDiscounts = Math.max(0, shippingGross - shippingTotal)
       const discountTotal = itemDiscounts + shippingDiscounts
 
       const totalAfterTax = totalTaxableAmount + totalTax + shippingTotal
@@ -444,11 +445,11 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       cell(doc, rX + labelW, rY, valW, sumH, fmt(totalTax), { fontSize: 6, align: "right" })
       rY += sumH
 
-      // Discount %
-      cell(doc, rX, rY, labelW * 0.5, sumH, "Discount %", { fontSize: 6 })
-      cell(doc, rX + labelW * 0.5, rY, labelW * 0.5, sumH, discountTotal > 0 ? fmt(discountTotal) : "-", { fontSize: 6, align: "center" })
-      cell(doc, rX + labelW, rY, valW * 0.5, sumH, "Discount(₹)", { fontSize: 6 })
-      cell(doc, rX + labelW + valW * 0.5, rY, valW * 0.5, sumH, discountTotal > 0 ? fmt(discountTotal) : "-", { fontSize: 6, align: "right" })
+      // Promotion Discount
+      const promoCodes = (order.promotions || []).map((p: any) => p.code).filter(Boolean).join(", ")
+      const promoLabel = promoCodes ? `Promo Discount (${promoCodes})(₹)` : "Promotion Discount(₹)"
+      cell(doc, rX, rY, labelW, sumH, promoLabel, { fontSize: 6 })
+      cell(doc, rX + labelW, rY, valW, sumH, discountTotal > 0 ? `- ${fmt(discountTotal)}` : "-", { fontSize: 6, align: "right" })
       rY += sumH
 
       // Total Invoice Amount in Words (left)

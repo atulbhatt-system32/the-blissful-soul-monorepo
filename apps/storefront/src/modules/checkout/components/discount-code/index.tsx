@@ -1,9 +1,9 @@
 "use client"
 
-import { Badge, Heading, Input, Label, Text } from "@medusajs/ui"
+import { Input } from "@medusajs/ui"
 import React from "react"
 
-import { applyPromotions } from "@lib/data/cart"
+import { applyPromotions, deleteLineItem } from "@lib/data/cart"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import Trash from "@modules/common/icons/trash"
@@ -44,14 +44,26 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       .map((p) => p.code!)
     codes.push(code.toString())
 
+    // Remove any auto-gift items whose product is unpublished or missing — these
+    // cause Medusa to reject cart updates with a 400 variant-not-found error.
+    const staleGiftItems = (cart.items ?? []).filter(
+      (item) =>
+        item.metadata?.is_auto_gift &&
+        (item as any).variant?.product?.status !== "published"
+    )
+    for (const item of staleGiftItems) {
+      await deleteLineItem(item.id)
+    }
+
     try {
       await applyPromotions(codes)
     } catch (e: any) {
-      let msg = e.message || "An error occurred while applying the code."
-      if (msg.toLowerCase().includes("invalid")) {
-        msg = "This promotion code is not valid. Please check and try again."
+      const msg = (e.message || "").toLowerCase()
+      if (msg.includes("invalid") || msg.includes("promotion") || msg.includes("promo") || msg.includes("code")) {
+        setErrorMessage("This promotion code is not valid. Please check and try again.")
+      } else {
+        setErrorMessage("Unable to apply code. Please try again.")
       }
-      setErrorMessage(msg)
     }
 
     if (input) {
