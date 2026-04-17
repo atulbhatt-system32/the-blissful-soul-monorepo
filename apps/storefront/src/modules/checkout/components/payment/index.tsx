@@ -156,25 +156,27 @@ const Payment = ({
 
   return (
     <div className="bg-transparent" ref={containerRef}>
-      <div className="flex flex-row items-center justify-between mb-8">
-        <div className="flex flex-col gap-y-1">
-           <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Step III</span>
-           <Heading
-             level="h2"
-             className={clx(
-               "flex flex-row text-3xl font-serif text-[#2C1E36] font-bold gap-x-2 items-center",
-               {
-                 "opacity-50": !isOpen,
-               }
-             )}
-           >
-             Payment
+      <div className="flex flex-row items-start justify-between mb-10 gap-x-4">
+        <div className="flex flex-col gap-y-2 flex-1">
+           <span className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C5A059]">Step III</span>
+           <div className="flex flex-row gap-x-3 items-center">
+             <Heading
+               level="h2"
+               className={clx(
+                 "text-3xl font-serif text-[#2C1E36] font-bold leading-[1.2]",
+                 {
+                   "opacity-50": !isOpen,
+                 }
+               )}
+             >
+               Payment
+             </Heading>
              {paymentDone && (
-               <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
+               <div className="bg-[#C5A059]/10 p-1.5 rounded-full flex-none">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                </div>
              )}
-           </Heading>
+           </div>
         </div>
       </div>
 

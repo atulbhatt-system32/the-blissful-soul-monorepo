@@ -48,25 +48,27 @@ const Addresses = ({
 
   return (
     <div className="bg-transparent">
-      <div className="flex flex-row items-center justify-between mb-8">
-        <div className="flex flex-col gap-y-1">
-           <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Step I</span>
-           <Heading
-             level="h2"
-             className="flex flex-row text-3xl font-serif text-[#2C1E36] font-bold gap-x-2 items-center"
-           >
-             {isDigitalOnly ? "Your Details" : "Shipping Address"}
+      <div className="flex flex-row items-start justify-between mb-10 gap-x-4">
+        <div className="flex flex-col gap-y-2">
+           <span className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C5A059]">Step I</span>
+           <div className="flex flex-row gap-x-3 items-center">
+             <Heading
+               level="h2"
+               className="text-3xl font-serif text-[#2C1E36] font-bold leading-[1.2]"
+             >
+               {isDigitalOnly ? "Your Details" : "Shipping Address"}
+             </Heading>
              {!isOpen && cart?.shipping_address?.address_1 && cart?.email && (
-               <div className="bg-[#C5A059]/10 p-1.5 rounded-full">
+               <div className="bg-[#C5A059]/10 p-1.5 rounded-full flex-none">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                </div>
              )}
-           </Heading>
+           </div>
         </div>
         {!isOpen && cart?.shipping_address && (
           <button
             onClick={handleEdit}
-            className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] border-b-2 border-[#C5A059]/30 hover:border-[#C5A059] transition-all pb-0.5"
+            className="text-[10px] items-center uppercase tracking-widest font-black text-[#C5A059] border-b-2 border-[#C5A059]/30 hover:border-[#C5A059] transition-all pb-1 min-w-fit mt-5"
             data-testid="edit-address-button"
           >
             Refine

@@ -12,31 +12,34 @@ export default function CheckoutLayout({
   return (
     <div className="w-full bg-white relative small:min-h-screen">
       <div className="h-16 bg-white border-b ">
-        <nav className="flex h-full items-center content-container justify-between">
-          <LocalizedClientLink
-            href="/cart"
-            className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059] flex items-center gap-x-2 group hover:text-[#2C1E36] transition-all"
-            data-testid="back-to-cart-link"
-          >
-            <ChevronDown className="rotate-90 group-hover:-translate-x-1 transition-transform" size={14} />
-            <span>Back</span>
-          </LocalizedClientLink>
+        <nav className="flex h-full items-center content-container">
+          <div className="flex-1 basis-0 flex items-center">
+            <LocalizedClientLink
+              href="/cart"
+              className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059] flex items-center gap-x-2 group hover:text-[#2C1E36] transition-all"
+              data-testid="back-to-cart-link"
+            >
+              <ChevronDown className="rotate-90 group-hover:-translate-x-1 transition-transform" size={14} />
+              <span>Back</span>
+            </LocalizedClientLink>
+          </div>
 
-          <LocalizedClientLink
-            href="/"
-            className="flex flex-col items-center"
-            data-testid="store-link"
-          >
-            <Image 
-              src="/logo.png" 
-              alt="The Blissful Soul" 
-              width={180} 
-              height={60} 
-              className="h-10 w-auto md:h-12"
-            />
-          </LocalizedClientLink>
+          <div className="flex-none flex items-center justify-center">
+            <LocalizedClientLink
+              href="/"
+              data-testid="store-link"
+            >
+              <Image 
+                src="/logo.png" 
+                alt="The Blissful Soul" 
+                width={180} 
+                height={60} 
+                className="h-10 w-auto md:h-12"
+              />
+            </LocalizedClientLink>
+          </div>
           
-          <div className="flex-1 basis-0" />
+          <div className="flex-1 basis-0 flex justify-end" />
         </nav>
       </div>
       <div className="relative" data-testid="checkout-container">{children}</div>
