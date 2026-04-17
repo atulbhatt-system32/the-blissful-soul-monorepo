@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
             </div>
           </section>
 
-          <section className="px-8 md:px-12">
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
             <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
               <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">02.</span>
               Return Process
@@ -55,7 +55,7 @@ export default function RefundPolicyPage() {
             </p>
           </section>
 
-          <section className="px-8 md:px-12">
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
             <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
               <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">03.</span>
               Timelines
@@ -65,7 +65,7 @@ export default function RefundPolicyPage() {
             </p>
           </section>
 
-          <section className="px-8 md:px-12">
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
             <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
               <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">04.</span>
               Shipping Costs

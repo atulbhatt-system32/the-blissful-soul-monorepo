@@ -32,7 +32,7 @@ export default function TermsPage() {
             </p>
           </section>
 
-          <section className="px-8 md:px-12">
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
             <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
               <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">02.</span>
               Online Store Terms
@@ -42,20 +42,22 @@ export default function TermsPage() {
             </p>
           </section>
 
-          <section className="bg-[#2C1E36] p-8 md:p-12 rounded-[2.5rem] text-white shadow-2xl shadow-purple-900/20">
-            <h2 className="text-2xl font-bold text-[#C5A059] mb-6 font-serif italic flex items-center gap-3">
-              <span className="text-white/60 not-italic text-sm font-sans tracking-widest">03.</span>
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
+            <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
+              <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">03.</span>
               Spiritual Services Disclaimer
             </h2>
-            <p className="text-white/90 leading-relaxed font-serif italic text-lg">
-              "Our spiritual services, including tarot readings, astrology, and healing sessions, are for guidance purposes only."
-            </p>
-            <p className="mt-4 text-white/70 text-sm">
-              They should not substitute for professional medical, legal, or financial advice. The Blissful Soul is not responsible for any actions taken by the client based on information received during a session.
-            </p>
+            <div className="space-y-4">
+              <p className="text-[#2C1E36]/90 leading-relaxed font-serif italic text-lg border-l-2 border-[#C5A059] pl-6 py-1">
+                "Our spiritual services, including tarot readings, astrology, and healing sessions, are for guidance purposes only."
+              </p>
+              <p className="text-[#665D6B] text-sm leading-relaxed">
+                They should not substitute for professional medical, legal, or financial advice. The Blissful Soul is not responsible for any actions taken by the client based on information received during a session.
+              </p>
+            </div>
           </section>
 
-          <section className="px-8 md:px-12">
+          <section className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-900/5 border border-purple-50/50">
             <h2 className="text-2xl font-bold text-[#2C1E36] mb-6 font-serif italic flex items-center gap-3">
               <span className="text-[#C5A059] not-italic text-sm font-sans tracking-widest">04.</span>
               Modifications to prices

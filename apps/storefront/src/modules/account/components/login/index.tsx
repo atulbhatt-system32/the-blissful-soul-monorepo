@@ -54,6 +54,23 @@ const Login = ({ setCurrentView }: Props) => {
           </div>
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
+        <span className="text-center text-gray-400 text-[11px] mt-8 leading-relaxed block">
+          By signing in, you agree to The Blissful Soul&apos;s{" "}
+          <LocalizedClientLink
+            href="/privacy"
+            className="text-[#2C1E36] font-bold underline underline-offset-4"
+          >
+            Privacy Policy
+          </LocalizedClientLink>{" "}
+          and{" "}
+          <LocalizedClientLink
+            href="/terms"
+            className="text-[#2C1E36] font-bold underline underline-offset-4"
+          >
+            Terms of Use
+          </LocalizedClientLink>
+          .
+        </span>
         <SubmitButton data-testid="sign-in-button" className="w-full mt-10 bg-[#2C1E36] text-white rounded-2xl h-14 text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all">
           Authorize Session
         </SubmitButton>

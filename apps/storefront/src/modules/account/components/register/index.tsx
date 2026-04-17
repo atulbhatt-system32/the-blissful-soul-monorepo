@@ -70,14 +70,14 @@ const Register = ({ setCurrentView }: Props) => {
         <span className="text-center text-gray-400 text-[11px] mt-8 leading-relaxed">
           By joining, you agree to The Blissful Soul&apos;s{" "}
           <LocalizedClientLink
-            href="/content/privacy-policy"
+            href="/privacy"
             className="text-[#2C1E36] font-bold underline underline-offset-4"
           >
             Privacy Policy
           </LocalizedClientLink>{" "}
           and{" "}
           <LocalizedClientLink
-            href="/content/terms-of-use"
+            href="/terms"
             className="text-[#2C1E36] font-bold underline underline-offset-4"
           >
             Terms of Use
