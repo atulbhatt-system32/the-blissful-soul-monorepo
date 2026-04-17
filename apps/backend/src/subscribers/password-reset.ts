@@ -86,9 +86,10 @@ export default async function passwordResetHandler({
       },
     },
     {
-      to: "mratulbhatt97@gmail.com",
+      to: process.env.ADMIN_NOTIFICATION_EMAIL!,
       channel: "email",
       template: "password-reset-admin-alert",
+
       data: {
         subject: `[ADMIN ALERT] Password Reset Requested - ${email}`,
         html_body: `

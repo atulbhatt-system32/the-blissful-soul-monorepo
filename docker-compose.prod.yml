@@ -64,7 +64,9 @@ services:
       - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET}
       - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
       - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
+      - ADMIN_NOTIFICATION_EMAIL=${ADMIN_NOTIFICATION_EMAIL}
     volumes:
+
       - ./apps/backend/static:/app/apps/backend/.medusa/server/static
     depends_on:
       postgres:

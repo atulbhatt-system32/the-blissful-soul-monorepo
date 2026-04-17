@@ -104,8 +104,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       { ...notificationData, to: order.email },
       { 
         ...notificationData, 
-        to: "mratulbhatt97@gmail.com",
+        to: process.env.ADMIN_NOTIFICATION_EMAIL!,
         data: {
+
           ...notificationData.data,
           subject: `[ADMIN ALERT] Session Cancelled by Customer - #${order.display_id}`,
           html_body: `

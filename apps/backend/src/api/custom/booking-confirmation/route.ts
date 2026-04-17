@@ -178,8 +178,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         },
       },
       {
-        to: "mratulbhatt97@gmail.com",
+        to: process.env.ADMIN_NOTIFICATION_EMAIL!,
         channel: "email",
+
         template: "booking-admin-notification",
         data: {
           subject: `NEW BOOKING: ${firstName} for ${bookingDate} at ${bookingTime}`,
