@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation"
 import ProductSummaryCounters from "../product-summary-counters"
 import QuantitySelector from "../quantity-selector"
 import { useWishlist } from "@lib/context/wishlist-context"
+import { useNotification } from "@lib/context/notification-context"
 import { Heart, Check } from "@medusajs/icons"
 
 import ProductOffers from "../product-offers"
@@ -50,6 +51,7 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const { toggleWishlist, isWishlisted } = useWishlist()
+  const { showNotification } = useNotification()
   const countryCode = useParams().countryCode as string
 
   const selectedVariant = useMemo(() => {
@@ -157,6 +159,8 @@ export default function ProductActions({
           quantity: quantity,
           countryCode,
         })
+        showNotification(`${product.title} added to cart`)
+        window.dispatchEvent(new Event("cart:item-added"))
       }
     } catch (err) {
       console.error("Error adding to cart:", err)
@@ -186,7 +190,7 @@ export default function ProductActions({
 
   return (
     <>
-      <div className="flex flex-col gap-y-2" ref={actionsRef}>
+<div className="flex flex-col gap-y-2" ref={actionsRef}>
         <div>
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
