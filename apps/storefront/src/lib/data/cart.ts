@@ -397,21 +397,29 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
   }
 
   const isDigitalOnly = formData.get("is_digital_only") === "true"
-  
-  if (isDigitalOnly) {
-    try {
-      const { shipping_options } = await listCartOptions()
-      if (shipping_options?.length) {
+  let nextStep: string = "delivery"
+
+  try {
+    const { shipping_options } = await listCartOptions()
+    const validShippingOptions = shipping_options?.filter(
+      (sm: any) => sm.service_zone?.fulfillment_set?.type !== "pickup"
+    )
+
+    if (isDigitalOnly) {
+      if (validShippingOptions?.length) {
         // Prefer free shipping for digital items, otherwise take the first one
-        const option = shipping_options.find(o => o.amount === 0 || o.price_type === "calculated") || shipping_options[0]
+        const option = validShippingOptions.find(o => o.amount === 0 || o.price_type === "calculated") || validShippingOptions[0]
         await setShippingMethod({ cartId, shippingMethodId: option.id })
       }
-    } catch (err: any) {
-      console.error("[setAddresses] Failed to auto-select shipping for digital cart:", err.message)
+      nextStep = "payment"
+    } else if (validShippingOptions?.length === 1) {
+      await setShippingMethod({ cartId, shippingMethodId: validShippingOptions[0].id })
+      nextStep = "payment"
     }
+  } catch (err: any) {
+    console.error("[setAddresses] Failed to process shipping options:", err.message)
+    if (isDigitalOnly) nextStep = "payment"
   }
-
-  const nextStep = isDigitalOnly ? "payment" : "delivery"
 
   redirect(
     `/${formData.get("shipping_address.country_code")}/checkout?step=${nextStep}`
@@ -498,7 +506,10 @@ export async function listCartOptions() {
   return await sdk.client.fetch<{
     shipping_options: HttpTypes.StoreCartShippingOption[]
   }>("/store/shipping-options", {
-    query: { cart_id: cartId },
+    query: { 
+      cart_id: cartId,
+      fields: "*service_zone,*service_zone.fulfillment_set"
+    },
     next,
     headers,
     cache: "force-cache",

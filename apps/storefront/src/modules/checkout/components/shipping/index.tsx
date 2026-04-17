@@ -110,21 +110,22 @@ const Shipping: React.FC<ShippingProps> = ({
     }
   }, [availableShippingMethods])
 
-  // Auto-select the only shipping option when delivery step opens
-  // Only if no method is already attached to the cart
-  const [autoSelectDone, setAutoSelectDone] = useState(false)
+  // Auto-select and auto-submit the only shipping option when delivery step opens
   useEffect(() => {
     if (
       isOpen && 
-      !shippingMethodId && 
-      !autoSelectDone &&
-      !cart.shipping_methods?.length &&
-      _shippingMethods?.length === 1
+      !isLoading &&
+      _shippingMethods?.length === 1 &&
+      !error
     ) {
-      setAutoSelectDone(true)
-      handleSetShippingMethod(_shippingMethods[0].id, "shipping")
+      const method = _shippingMethods[0]
+      if (shippingMethodId === method.id) {
+        handleSubmit()
+      } else if (!shippingMethodId) {
+        handleSetShippingMethod(method.id, "shipping")
+      }
     }
-  }, [isOpen])
+  }, [isOpen, _shippingMethods, shippingMethodId, isLoading, error])
 
   const handleEdit = () => {
     router.push(pathname + "?step=delivery", { scroll: false })

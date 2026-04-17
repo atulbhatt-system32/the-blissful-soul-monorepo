@@ -7,7 +7,7 @@ import { CheckCircleSolid } from "@medusajs/icons"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, useRef } from "react"
 
 const Payment = ({
   cart,
@@ -21,6 +21,7 @@ const Payment = ({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [paymentDone, setPaymentDone] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -146,10 +147,15 @@ const Payment = ({
 
   useEffect(() => {
     setError(null)
+    if (isOpen && containerRef.current) {
+      setTimeout(() => {
+        containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 100)
+    }
   }, [isOpen])
 
   return (
-    <div className="bg-transparent">
+    <div className="bg-transparent" ref={containerRef}>
       <div className="flex flex-row items-center justify-between mb-8">
         <div className="flex flex-col gap-y-1">
            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Step III</span>
