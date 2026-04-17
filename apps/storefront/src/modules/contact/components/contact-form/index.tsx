@@ -59,7 +59,7 @@ const ContactForm = () => {
         </div>
         <h3 className="text-2xl font-serif text-[#2C1E36] mb-3">Message Received</h3>
         <p className="text-[#665D6B] max-w-xs leading-relaxed">
-          Your spiritual inquiry has been sent. We will align with you shortly.
+          Your message has been sent. We'll get back to you shortly.
         </p>
         <button 
           onClick={() => setIsSuccess(false)}
@@ -143,7 +143,7 @@ const ContactForm = () => {
       
       <div className="space-y-3 group relative">
         <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C5A059] ml-1 transition-colors group-focus-within:text-[#2C1E36]">
-          Your Journey Message
+          Your Message
         </label>
         <textarea 
           name="message"
@@ -152,7 +152,7 @@ const ContactForm = () => {
           rows={4} 
           required
           className="w-full bg-transparent border-b border-[#2C1E36]/10 px-1 py-3 focus:border-[#C5A059] outline-none transition-all font-sans text-[#2C1E36] placeholder:text-gray-200 resize-none" 
-          placeholder="How can we help your journey?"
+          placeholder="How can we help you?"
         ></textarea>
         <div className="absolute bottom-0 left-0 h-0.5 bg-[#C5A059] w-0 group-focus-within:w-full transition-all duration-500"></div>
       </div>

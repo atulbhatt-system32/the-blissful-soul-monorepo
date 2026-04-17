@@ -22,7 +22,7 @@ const Login = ({ setCurrentView }: Props) => {
         Welcome Back
       </h1>
       <p className="text-center text-sm text-gray-500 mb-8 max-w-[280px]">
-        Sign in to your account to continue your personal healing journey.
+        Sign in to your account to continue shopping.
       </p>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">

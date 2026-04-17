@@ -45,7 +45,7 @@ export default async function AboutPage() {
               About the <span className="italic font-normal text-[#C5A059]">Master</span>
             </h1>
             <p className="text-white/40 text-base md:text-lg max-w-xl mx-auto leading-relaxed font-sans font-medium">
-              A synthesis of psychological depth, cosmic wisdom, and holistic healing — guided by Master Pragya Vijh.
+              Blending psychology, astrology, and holistic healing — guided by Master Pragya Vijh.
             </p>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default async function AboutPage() {
                   </div>
                 )) : (
                   <div className="py-10 px-8 border border-dashed border-[#2C1E36]/10 rounded-3xl text-center">
-                    <p className="text-[#665D6B]/50 font-serif italic text-lg">The story of Master Pragya is being transcribed with divine care. Check back soon for her journey.</p>
+                    <p className="text-[#665D6B]/50 font-serif italic text-lg">Master Pragya&apos;s biography is coming soon. Check back shortly.</p>
                   </div>
                 )}
               </div>

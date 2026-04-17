@@ -217,7 +217,7 @@ const CartDropdown = ({
                   </div>
                   <div className="flex flex-col gap-y-1">
                     <h3 className="text-base font-serif text-[#2C1E36] font-bold">Your Vessel is Empty</h3>
-                    <p className="text-[10px] text-gray-400 italic">Let your journey begin.</p>
+                    <p className="text-[10px] text-gray-400 italic">Add items to get started.</p>
                   </div>
                   <LocalizedClientLink href="/store">
                     <Button 

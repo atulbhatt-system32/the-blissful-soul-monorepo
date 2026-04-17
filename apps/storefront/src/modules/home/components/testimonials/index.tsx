@@ -70,7 +70,7 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
             </h2>
           </div>
           <div className="max-w-2xl mx-auto py-16 bg-white/50 border border-dashed border-[#2C1E36]/10 rounded-[40px]">
-             <p className="text-[#2C1E36]/40 font-serif italic text-lg">Your journeys are the heart of this sanctuary. Stories from seekers will appear here soon.</p>
+             <p className="text-[#2C1E36]/40 font-serif italic text-lg">Customer reviews will appear here soon.</p>
           </div>
         </div>
       </section>

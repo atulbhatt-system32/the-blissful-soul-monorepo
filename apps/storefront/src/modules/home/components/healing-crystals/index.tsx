@@ -54,7 +54,7 @@ export default async function HealingCrystals({
   if (pricedProducts.length === 0) {
      return (
       <div className="text-center py-20 bg-gray-50/50 rounded-[40px] border border-dashed border-gray-200">
-        <p className="text-[#2C1E36]/40 font-serif italic text-lg">Our physical treasures are currently being sanctified.</p>
+        <p className="text-[#2C1E36]/40 font-serif italic text-lg">Products are being added soon.</p>
         <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">New arrivals coming soon to the shop</p>
       </div>
     )

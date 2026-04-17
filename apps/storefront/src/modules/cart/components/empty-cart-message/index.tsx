@@ -18,11 +18,11 @@ const EmptyCartMessage = () => {
       </Heading>
       <div className="w-16 h-1 bg-[#C5A059]/20 mb-6 rounded-full" />
       <Text className="text-base text-gray-400 italic mb-12 max-w-[320px] leading-relaxed">
-        It appears you haven&apos;t gathered any treasures yet. Every profound journey begins with a single, intentional selection.
+        Your cart is empty. Browse our collection to find something you love.
       </Text>
       <div>
         <LocalizedClientLink href="/store" className="bg-[#2C1E36] text-white px-12 py-5 rounded-2xl text-[12px] uppercase tracking-[0.25em] font-black hover:bg-[#C5A059] hover:text-[#2C1E36] transition-all shadow-2xl shadow-purple-900/20 active:scale-95 inline-block">
-           Commence Exploration
+           Browse the Shop
         </LocalizedClientLink>
       </div>
     </div>

@@ -53,7 +53,7 @@ const WishlistTemplate = ({
             My <span className="italic font-normal">Wishlist</span>
           </h1>
           <p className="mt-6 text-[#665D6B] max-w-lg mx-auto font-sans text-sm md:text-base opacity-80">
-            A curated collection of your most-loved crystals and healing sessions. Pieces that resonate with your spirit.
+            Items you've saved from our crystals and healing sessions collection.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ const WishlistTemplate = ({
                </svg>
             </div>
             <p className="text-2xl font-serif text-[#2C1E36] italic opacity-50 mb-10 max-w-sm">
-              Your sanctuary is currently empty. Seek what calls to your soul.
+              Your wishlist is empty.
             </p>
             <LocalizedClientLink 
               href="/store"

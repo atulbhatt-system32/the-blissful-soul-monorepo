@@ -80,7 +80,7 @@ const LoginTemplate = () => {
            ) : (
              <>
                <p className="text-center text-[#665D6B] text-base mb-10 max-w-[280px]">
-                 Enter your email and we'll send a key to unlock your journey.
+                 Enter your email and we'll send you a sign-in link.
                </p>
                <form className="w-full flex flex-col gap-y-6" onSubmit={handleResetRequest}>
                  <div className="flex flex-col w-full gap-y-2">

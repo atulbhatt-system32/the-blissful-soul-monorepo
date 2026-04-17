@@ -88,7 +88,7 @@ export default async function OrderCompletedTemplate({
            </div>
 
            <p className="text-[#685D6B] italic text-xl md:text-2xl max-w-2xl leading-relaxed font-serif animate-in fade-in duration-1000 delay-700">
-              Your treasures have been secured. A confirmation of this <span className="text-[#C5A059] font-normal">divine exchange</span> has been sent to your digital portal.
+              Your order is confirmed. A confirmation email has been sent to you.
            </p>
         </div>
         
@@ -100,7 +100,7 @@ export default async function OrderCompletedTemplate({
                 Schedule Your Session
               </Heading>
               <p className="text-purple-200/70 italic text-sm mt-2">
-                Your journey begins with a conversation. Please choose a moment for our energies to meet.
+                Please book a time for your session below.
               </p>
             </div>
             <div className="bg-white rounded-[2rem] p-4 text-black">

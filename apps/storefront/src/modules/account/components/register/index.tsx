@@ -24,7 +24,7 @@ const Register = ({ setCurrentView }: Props) => {
         Create Your Account
       </h1>
       <p className="text-center text-sm text-gray-500 mb-8 max-w-[280px]">
-        Join The Blissful Soul community for a curated healing experience.
+        Create an account to shop, save wishlists, and track your orders.
       </p>
       <form className="w-full flex flex-col" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">

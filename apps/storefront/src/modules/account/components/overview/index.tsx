@@ -18,7 +18,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
             <h1 className="text-3xl font-serif text-[#2C1E36] mb-2" data-testid="welcome-message">
               Hello, {customer?.first_name}
             </h1>
-            <p className="text-gray-500 text-sm">Welcome back to your personal healing space.</p>
+            <p className="text-gray-500 text-sm">Welcome back to your account.</p>
           </div>
           <div className="text-right">
             <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-bold block mb-1">
@@ -139,7 +139,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
               })
             ) : (
               <div className="py-20 text-center bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200">
-                <p className="text-gray-400 text-sm disabled italic" data-testid="no-orders-message">Your healing history is currently empty.</p>
+                <p className="text-gray-400 text-sm disabled italic" data-testid="no-orders-message">You haven't placed any orders yet.</p>
                 <LocalizedClientLink href="/store" className="inline-block mt-4 text-xs font-bold text-[#2C1E36] underline underline-offset-4">Start your collection →</LocalizedClientLink>
               </div>
             )}

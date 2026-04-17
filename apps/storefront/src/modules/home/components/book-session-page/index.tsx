@@ -102,7 +102,7 @@ export default function BookSessionClient({
               <div className="flex flex-col items-center justify-center text-center py-24 bg-white/50 backdrop-blur-sm rounded-[40px] border border-dashed border-[#2C1E36]/10">
                 <span className="text-[#C5A059] text-3xl mb-4 font-serif">✨</span>
                 <p className="text-[#2C1E36]/40 font-serif italic text-lg">{`No ${activeTab !== 'all' ? activeTab : ''} sessions are currently available.`}</p>
-                <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">New slots and services are being channeled</p>
+                <p className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] mt-2">New sessions are being added soon</p>
               </div>
             )}
           </div>

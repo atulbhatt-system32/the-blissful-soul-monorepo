@@ -121,7 +121,7 @@ const ShippingAddress = ({
           <div className="flex flex-col gap-y-1">
             <span className="text-[10px] uppercase tracking-[0.2em] font-black text-[#C5A059]">Already A Seeker?</span>
             <p className="text-white text-sm font-medium">
-              Sign in for a faster, divine checkout experience.
+              Sign in for a faster checkout.
             </p>
           </div>
           <LocalizedClientLink 

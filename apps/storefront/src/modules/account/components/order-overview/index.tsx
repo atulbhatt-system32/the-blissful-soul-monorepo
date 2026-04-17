@@ -12,7 +12,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       <div className="flex flex-col gap-y-10 w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex flex-col gap-y-2 mb-4">
            <h1 className="text-3xl font-serif text-[#2C1E36] font-bold">Past Purchases</h1>
-           <p className="text-gray-400 text-sm">A complete record of your healing journey and physical treasures.</p>
+           <p className="text-gray-400 text-sm">A complete record of your orders and sessions.</p>
         </div>
         <div className="flex flex-col gap-y-8">
           {orders.map((o) => (
@@ -38,7 +38,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       </div>
       <h2 className="text-2xl font-serif text-[#2C1E36] font-bold mb-2">Your history is empty</h2>
       <p className="text-gray-400 text-sm max-w-[280px] text-center leading-relaxed mb-10">
-        You haven&apos;t embarked on any experiences or collected any items yet.
+        You haven&apos;t placed any orders yet.
       </p>
       <LocalizedClientLink href="/store">
         <Button data-testid="continue-shopping-button" className="bg-[#2C1E36] text-white rounded-2xl px-10 py-5 h-auto text-[11px] uppercase tracking-[0.2em] font-black hover:opacity-90 shadow-xl shadow-purple-900/10 active:scale-95 transition-all">
