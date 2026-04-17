@@ -2,13 +2,19 @@ import { HttpTypes } from "@medusajs/types"
 import { Heading } from "@medusajs/ui"
 import ProductDescription from "@modules/products/components/product-description"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Accordion from "@modules/products/components/product-tabs/accordion"
 
 type ProductInfoProps = {
   product: HttpTypes.StoreProduct
   strapiContent?: any
 }
 
+const hasBlocks = (val: any) => Array.isArray(val) && val.length > 0
+
 const ProductInfo = ({ product, strapiContent }: ProductInfoProps) => {
+  const hasDetail = hasBlocks(strapiContent?.rich_detail)
+  const hasIngredients = hasBlocks(strapiContent?.rich_ingredients)
+
   return (
     <div id="product-info">
       <div className="flex flex-col gap-y-4 lg:max-w-[500px] mx-auto">
@@ -28,10 +34,25 @@ const ProductInfo = ({ product, strapiContent }: ProductInfoProps) => {
           {product.title}
         </Heading>
 
-        {strapiContent?.rich_description && Array.isArray(strapiContent.rich_description) && strapiContent.rich_description.length > 0 && (
+        {hasBlocks(strapiContent?.rich_description) && (
           <div className="text-medium text-ui-fg-subtle" data-testid="product-description">
             <ProductDescription content={strapiContent.rich_description} />
           </div>
+        )}
+
+        {(hasDetail || hasIngredients) && (
+          <Accordion type="multiple">
+            {hasDetail && (
+              <Accordion.Item value="detail" title="Product Details">
+                <ProductDescription content={strapiContent.rich_detail} />
+              </Accordion.Item>
+            )}
+            {hasIngredients && (
+              <Accordion.Item value="ingredients" title="Ingredients">
+                <ProductDescription content={strapiContent.rich_ingredients} />
+              </Accordion.Item>
+            )}
+          </Accordion>
         )}
       </div>
     </div>

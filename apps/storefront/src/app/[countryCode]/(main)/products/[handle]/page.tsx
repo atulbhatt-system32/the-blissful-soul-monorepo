@@ -123,7 +123,7 @@ export default async function ProductPage(props: Props) {
   }
 
   const [strapiProduct, storeConfig] = await Promise.all([
-    getStrapiProduct(pricedProduct.id),
+    getStrapiProduct(pricedProduct.id, pricedProduct.handle ?? undefined),
     getStorePageData(),
   ])
   const images = getImagesForVariant(pricedProduct, selectedVariantId) || []

@@ -21,15 +21,21 @@
       "type": "string",
       "required": true
     },
-    "rich_description": {
-      "type": "blocks"
-    },
     "handle": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "content": {
+    "rich_description": {
+      "type": "blocks"
+    },
+    "rich_detail": {
+      "type": "blocks"
+    },
+    "rich_ingredients": {
+      "type": "blocks"
+    },
+    "description": {
       "type": "richtext"
     },
     "seo": {
@@ -63,9 +69,6 @@
     "review_count": {
       "type": "integer",
       "default": 0
-    },
-    "description": {
-      "type": "richtext"
     }
   }
 }

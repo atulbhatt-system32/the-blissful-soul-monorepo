@@ -28,12 +28,13 @@ export interface HomepageData {
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
 const STRAPI_TOKEN = process.env.CMS_API_TOKEN
 
-export async function getStrapiProduct(medusaId: string) {
+export async function getStrapiProduct(medusaId: string, handle?: string) {
     try {
+        const filter = handle
+            ? { handle: { $eq: handle } }
+            : { medusa_id: { $eq: medusaId } }
         const query = qs.stringify({
-            filters: {
-                medusa_id: { $eq: medusaId },
-            },
+            filters: filter,
             populate: "*",
         })
 
