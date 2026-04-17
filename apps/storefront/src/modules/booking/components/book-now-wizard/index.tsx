@@ -427,16 +427,7 @@ export default function BookNowClient({
             slotIsoStart={selectedSlotIso}
             countryCode={countryCode}
             eventSlug={serviceObj?.handle}
-            meetingAbout={(() => {
-              const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-              const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
-              const hasAudio = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("audio"))
-              const hasVideo = serviceObj?.tags?.find(t => t.value.toLowerCase().includes("video"))
-              const sessionType = hasAudio ? "Audio" : hasVideo ? "Video" : "Online"
-              const title = serviceObj?.title || "Session"
-              const duration = lengthValue ? ` (${lengthValue} mins)` : ""
-              return `${title} — ${sessionType} Session${duration}`
-            })()}
+            meetingAbout={`${details.firstName} ${details.lastName} | ${details.phone}`}
             price={(() => {
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
               return (variantObj?.calculated_price as any)?.calculated_amount || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0

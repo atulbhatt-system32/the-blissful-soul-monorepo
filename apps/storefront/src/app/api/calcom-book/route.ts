@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
       eventSlug,
       meetingAbout,
       notes,
-      phone
     } = body
 
     if (!startTime || !attendeeName || !attendeeEmail || !eventSlug) {
