@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getBookSessionPageData } from "@lib/data/strapi"
+import { getBookSessionPageData, getStrapiProductsByHandles } from "@lib/data/strapi"
 import BookSessionClient from "@modules/home/components/book-session-page"
 import { getRegion } from "@lib/data/regions"
 import { listProducts } from "@lib/data/products"
@@ -49,6 +49,10 @@ export default async function ServicesPage(props: {
   const videoProducts = videoResult.response?.products || []
   const topProducts = tarotResult.response?.products || []
 
+  const allProducts = [...topProducts, ...audioProducts, ...videoProducts]
+  const uniqueHandles = Array.from(new Set(allProducts.map((p) => p.handle).filter(Boolean))) as string[]
+  const strapiMap = await getStrapiProductsByHandles(uniqueHandles)
+
   return (
     <BookSessionClient
       heroTitle={heroTitle}
@@ -57,6 +61,7 @@ export default async function ServicesPage(props: {
       audioProducts={audioProducts}
       videoProducts={videoProducts}
       region={region}
+      strapiMap={strapiMap}
     />
   )
 }

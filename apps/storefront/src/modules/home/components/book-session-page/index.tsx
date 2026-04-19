@@ -11,6 +11,7 @@ type BookSessionClientProps = {
   audioProducts: HttpTypes.StoreProduct[]
   videoProducts: HttpTypes.StoreProduct[]
   region: HttpTypes.StoreRegion
+  strapiMap?: Record<string, any>
 }
 
 const tabs = [
@@ -25,7 +26,8 @@ export default function BookSessionClient({
   topProducts,
   audioProducts,
   videoProducts,
-  region
+  region,
+  strapiMap = {},
 }: BookSessionClientProps) {
   const [activeTab, setActiveTab] = useState("all")
 
@@ -73,14 +75,14 @@ export default function BookSessionClient({
         <div className="content-container">
           <div className="text-center mb-12">
             {/* Tabs Filter UI */}
-            <div className="inline-flex items-center p-1.5 bg-[#F5F4F0] rounded-[32px] mb-16 shadow-inner">
+            <div className="flex flex-wrap items-center justify-center p-1.5 bg-[#F5F4F0] rounded-[32px] mb-16 shadow-inner max-w-full mx-auto">
                {displayTabs.map((tab) => (
                  <button 
                    key={tab.key}
                    onClick={() => setActiveTab(tab.key)}
-                   className={`px-10 py-3 rounded-[24px] text-[14px] font-bold transition-all duration-300 ${
+                   className={`px-6 md:px-10 py-3 rounded-[24px] text-[13px] md:text-[14px] font-bold transition-all duration-300 ${
                      activeTab === tab.key 
-                       ? 'bg-[#2C1E36] text-white border-[1.5px] border-[#C5A059] shadow-lg scale-105' 
+                       ? 'bg-[#2C1E36] text-white border-[1.5px] border-[#C5A059] shadow-lg scale-[1.02] md:scale-105' 
                        : 'text-[#6B6670] hover:text-[#2C1E36]'
                    }`}
                  >
@@ -95,7 +97,7 @@ export default function BookSessionClient({
             {currentProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {currentProducts.map((product) => (
-                  <ProductPreview key={product.id} product={product} region={region} isFeatured categoryHint={activeTab} />
+                  <ProductPreview key={product.id} product={product} region={region} isFeatured categoryHint={activeTab} strapiContent={strapiMap[product.handle ?? ""]} />
                 ))}
               </div>
             ) : (

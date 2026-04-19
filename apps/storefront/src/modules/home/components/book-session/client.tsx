@@ -11,6 +11,7 @@ type BookSessionClientProps = {
   audioProducts: HttpTypes.StoreProduct[]
   videoProducts: HttpTypes.StoreProduct[]
   region: HttpTypes.StoreRegion
+  strapiMap?: Record<string, any>
 }
 
 const tabs = [
@@ -25,6 +26,7 @@ const BookSessionClient = ({
   audioProducts,
   videoProducts,
   region,
+  strapiMap = {},
 }: BookSessionClientProps) => {
   const [activeTab, setActiveTab] = useState("top")
 
@@ -97,12 +99,13 @@ const BookSessionClient = ({
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               {currentItems.map((item, idx) => (
                 <li key={`${item.product.id}-${item.variantId || idx}`}>
-                  <ProductPreview 
-                    product={item.product} 
+                  <ProductPreview
+                    product={item.product}
                     forceVariantId={item.variantId}
-                    region={region} 
-                    isFeatured 
-                    categoryHint={activeTab} 
+                    region={region}
+                    isFeatured
+                    categoryHint={activeTab}
+                    strapiContent={strapiMap[item.product.handle ?? ""]}
                   />
                 </li>
               ))}

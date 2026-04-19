@@ -28,6 +28,35 @@ export interface HomepageData {
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
 const STRAPI_TOKEN = process.env.CMS_API_TOKEN
 
+// Returns a map keyed by product handle (stable across environments)
+export async function getStrapiProductsByHandles(handles: string[]): Promise<Record<string, any>> {
+    const nonEmpty = handles.filter(Boolean)
+    if (!nonEmpty.length) return {}
+    try {
+        const query = qs.stringify({
+            filters: { handle: { $in: nonEmpty } },
+            populate: "*",
+            pagination: { limit: 100 },
+        })
+        const response = await fetch(`${STRAPI_URL}/api/products?${query}`, {
+            headers: { Authorization: `Bearer ${STRAPI_TOKEN}` },
+            cache: "no-store",
+        })
+        const data = await response.json()
+        const items: any[] = data.data || []
+        const result: Record<string, any> = {}
+        for (const item of items) {
+            const handle = item.handle ?? item.attributes?.handle
+            if (handle) result[handle] = item
+        }
+        return result
+    } catch (error: any) {
+        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error
+        console.error("Error fetching Strapi products by handle:", error)
+        return {}
+    }
+}
+
 export async function getStrapiProduct(medusaId: string, handle?: string) {
     try {
         const filter = handle

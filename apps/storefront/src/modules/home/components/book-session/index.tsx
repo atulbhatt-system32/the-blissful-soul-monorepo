@@ -1,5 +1,6 @@
 import { listProducts } from "@lib/data/products"
 import { listCategories } from "@lib/data/categories"
+import { getStrapiProductsByHandles } from "@lib/data/strapi"
 import { HttpTypes } from "@medusajs/types"
 import BookSessionClient from "@modules/home/components/book-session/client"
 
@@ -36,6 +37,10 @@ export default async function BookSession({
   const videoProducts = videoResult.response?.products || []
   const topProducts = tarotResult.response?.products || []
 
+  const allProducts = [...topProducts, ...audioProducts, ...videoProducts]
+  const uniqueHandles = Array.from(new Set(allProducts.map((p) => p.handle).filter(Boolean))) as string[]
+  const strapiMap = await getStrapiProductsByHandles(uniqueHandles)
+
   if (audioProducts.length === 0 && videoProducts.length === 0 && topProducts.length === 0) {
     return (
       <section className="py-24 bg-[#1A0E22]">
@@ -56,6 +61,7 @@ export default async function BookSession({
       audioProducts={audioProducts}
       videoProducts={videoProducts}
       region={region}
+      strapiMap={strapiMap}
     />
   )
 }
