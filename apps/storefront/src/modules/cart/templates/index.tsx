@@ -23,13 +23,13 @@ const CartTemplate = ({
                  <p className="text-gray-400 text-xs italic">Review your gathered treasures before checkout.</p>
               </div>
 
-              {!customer && (
-                <SignInPrompt />
-              )}
-              
               <div className="bg-white rounded-3xl small:rounded-[2.5rem] border border-gray-100 p-4 small:p-8 shadow-xl shadow-purple-900/5 overflow-hidden">
                 <ItemsTemplate cart={cart} />
               </div>
+
+              {!customer && (
+                <SignInPrompt />
+              )}
             </div>
             
             <div className="relative">

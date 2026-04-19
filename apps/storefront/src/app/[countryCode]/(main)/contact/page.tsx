@@ -19,31 +19,6 @@ export default async function ContactPage() {
 
   return (
     <div className="bg-[#FBFAF8] min-h-screen">
-      {/* Map Section */}
-      <section className="w-full h-[550px] bg-[#2C1E36]/5 relative overflow-hidden">
-         <iframe 
-            src={mapEmbedUrl}
-            width="100%" 
-            height="100%" 
-            style={{ border: 0, filter: 'grayscale(1) contrast(1.1) brightness(0.9) invert(0.05)' }} 
-            allowFullScreen={false} 
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-            className="opacity-90 hover:opacity-100 transition-opacity duration-1000"
-         ></iframe>
-         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#FBFAF8] pointer-events-none h-32 bottom-0 top-auto"></div>
-         <div className="absolute top-8 left-8 z-10 animate-in fade-in slide-in-from-left-4 duration-700">
-            <a 
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("The Blissful Soul Shakti Nagar Delhi")}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="bg-[#2C1E36] text-white px-8 py-4 rounded-full shadow-2xl text-[10px] font-bold tracking-[0.2em] flex items-center gap-3 hover:bg-white hover:text-[#2C1E36] transition-all transform hover:-translate-y-1"
-            >
-               FIND US ON MAPS
-               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
-         </div>
-      </section>
 
       {/* Contact Content */}
       <section className="py-24 md:py-32 relative overflow-hidden bg-white">

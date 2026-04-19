@@ -120,25 +120,25 @@ export default function ProductPreview({
     <div className="group relative bg-white rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_4px_25px_rgba(44,30,54,0.04)] hover:shadow-[0_20px_60px_rgba(44,30,54,0.12)] transition-all duration-700 border border-[#2C1E36]/[0.05] flex flex-col h-full hover:-translate-y-2">
       <LocalizedClientLink href={isSession ? `/book-now?service_id=${product.id}` : `/products/${product.handle}`} className="flex-grow">
         <div data-testid="product-wrapper" className="relative">
+          <div className="relative p-2 md:p-3">
+          {/* Item added confirmation overlay */}
           {/* Discount Badge */}
           {Number(displayPrice?.percentage_diff) > 0 && (
-            <div className="absolute top-2 left-2 md:top-4 md:left-4 z-10 bg-[#2C1E36] text-[#C5A059] text-[9px] md:text-[10px] font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg border border-[#C5A059]/20">
+            <div className="absolute top-6 left-6 z-10 bg-emerald-500 text-white text-[10px] md:text-[12px] font-black px-2.5 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg">
               -{displayPrice?.percentage_diff}%
             </div>
           )}
 
-          {/* Session Type Badge (Metadata) */}
+          {/* Session Type Badge */}
           {!!displayLabel && (
-            <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
+            <div className="absolute top-6 right-6 z-10">
               <Badge className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider !rounded-full !bg-white/95 !text-[#2C1E36] border border-[#2C1E36]/10 shadow-sm backdrop-blur-sm px-2 md:px-4 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5">
                 <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-[#C5A059]"></span>
-                 {String(displayLabel)}
+                {String(displayLabel)}
               </Badge>
             </div>
           )}
-          
-          <div className="relative p-2 md:p-3">
-          {/* Item added confirmation overlay */}
+
           {itemAdded && (
             <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
               <div className="bg-[#1a1a1a]/90 text-white text-[11px] md:text-[12px] font-bold tracking-widest uppercase px-5 py-2.5 rounded-full shadow-xl animate-in fade-in zoom-in-95 duration-200">

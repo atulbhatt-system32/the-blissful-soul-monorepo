@@ -17,9 +17,7 @@ const SideMenuItems = {
   "About Master": "/about",
   "Book Your Session": "/book-session",
   "Shop Crystals": "/store",
-  "Track Order": "/order/lookup",
   Contact: "/contact",
-  Account: "/account",
   Wishlist: "/wishlist",
   Cart: "/cart",
 }

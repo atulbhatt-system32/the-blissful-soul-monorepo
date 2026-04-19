@@ -86,13 +86,6 @@ const Login = ({ setCurrentView }: Props) => {
         </button>
         .
       </span>
-      <span className="text-center text-ui-fg-base text-small-regular mt-2">
-        Ordered as a guest?{" "}
-        <LocalizedClientLink href="/order/lookup" className="underline">
-          Track your order
-        </LocalizedClientLink>
-        .
-      </span>
     </div>
   )
 }
