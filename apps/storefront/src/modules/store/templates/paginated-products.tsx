@@ -83,11 +83,11 @@ export default async function PaginatedProducts({
   let gridClasses = "grid w-full gap-x-3 md:gap-x-8 gap-y-12 md:gap-y-16"
   if (view === "2") {
     gridClasses += " grid-cols-1 small:grid-cols-2"
-  } else if (view === "4") {
-    gridClasses += " grid-cols-1 small:grid-cols-4"
-  } else {
-    // Default is 3 
+  } else if (view === "3") {
     gridClasses += " grid-cols-1 small:grid-cols-3"
+  } else {
+    // Default is 4
+    gridClasses += " grid-cols-1 small:grid-cols-4"
   }
 
   return (

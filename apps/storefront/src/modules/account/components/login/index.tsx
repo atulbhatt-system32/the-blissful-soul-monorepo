@@ -67,7 +67,7 @@ const Login = ({ setCurrentView }: Props) => {
             href="/terms"
             className="text-[#2C1E36] font-bold underline underline-offset-4"
           >
-            Terms of Use
+            Terms of Service
           </LocalizedClientLink>
           .
         </span>

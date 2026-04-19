@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms of Use",
+  title: "Terms of Service",
   description: "The terms and conditions for using our website and services.",
 }
 

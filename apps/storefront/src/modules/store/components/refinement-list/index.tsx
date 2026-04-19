@@ -45,7 +45,7 @@ const GridIcon4 = () => (
   </svg>
 )
 
-const RefinementList = ({ sortBy, limit = "12", view = "3", 'data-testid': dataTestId }: RefinementListProps) => {
+const RefinementList = ({ sortBy, limit = "12", view = "4", 'data-testid': dataTestId }: RefinementListProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
