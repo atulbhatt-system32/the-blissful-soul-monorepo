@@ -255,7 +255,7 @@ export default function ProductPreview({
                  e.preventDefault()
                  toggleWishlist(product.id)
               }}
-              className="absolute bottom-2 right-2 md:bottom-4 md:right-4 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
+              className="absolute bottom-3 right-3 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
             >
                <svg
                  xmlns="http://www.w3.org/2000/svg"

@@ -42,7 +42,7 @@ const IntentCollectionsClient = ({
           {/* Header inside Card */}
           <div className="flex items-center justify-between mb-10 pb-6 border-b border-[#FAF9F6]">
             <h3 className="text-xl md:text-2xl font-serif text-[#2C1E36]">
-              {section.title} <span className="text-[#C5A059]/40 font-sans text-xs md:text-sm ml-1 md:ml-2 font-light">Collection</span>
+              {section.title}
             </h3>
             <LocalizedClientLink 
               href="/store"
