@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_shared_ebook_sections",
+  "info": {
+    "displayName": "Ebook Section",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "badge_text": {
+      "type": "string",
+      "default": "Coming Soon"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "launch_text": {
+      "type": "string"
+    }
+  }
+}

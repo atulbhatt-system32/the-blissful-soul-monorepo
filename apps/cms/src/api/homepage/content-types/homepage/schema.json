@@ -90,6 +90,31 @@
             "type": "relation",
             "relation": "oneToMany",
             "target": "api::product.product"
+        },
+        "trust_cards": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.trust-card"
+        },
+        "faqs": {
+            "type": "component",
+            "repeatable": true,
+            "component": "shared.faq-item"
+        },
+        "ebook_section": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.ebook-section"
+        },
+        "instagram_handle": {
+            "type": "string"
+        },
+        "instagram_images": {
+            "type": "media",
+            "multiple": true,
+            "allowedTypes": [
+                "images"
+            ]
         }
     }
 }

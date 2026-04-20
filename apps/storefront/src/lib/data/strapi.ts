@@ -23,6 +23,11 @@ export interface HomepageData {
     video_sessions?: any[]
     testimonials_title?: string
     testimonials?: any[]
+    trust_cards?: any[]
+    faqs?: any[]
+    ebook_section?: any
+    instagram_handle?: string
+    instagram_images?: any[]
 }
 
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
@@ -113,7 +118,15 @@ export async function getHomepageData() {
                 intro_section: true,
                 featured_products: {
                     populate: "*"
-                }
+                },
+                trust_cards: {
+                    populate: "image"
+                },
+                faqs: true,
+                ebook_section: {
+                    populate: "image"
+                },
+                instagram_images: true
             },
         })
 

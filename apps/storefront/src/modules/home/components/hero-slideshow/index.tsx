@@ -115,7 +115,7 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     alt={slide.title || "Hero image"}
                     fill
                     priority={slideIndex === 0}
-                    className="object-cover"
+                    className="object-cover object-top"
                     sizes="100vw"
                   />
                   <div className="absolute inset-0 bg-black/30" />

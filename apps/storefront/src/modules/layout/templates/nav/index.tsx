@@ -31,32 +31,36 @@ export default async function Nav() {
       {storeConfig?.show_announcement !== false && (
         <PromotionBanner announcements={storeConfig?.announcements} />
       )}
-      <header className="w-full h-24 border-b border-metal/10 duration-200 !bg-white transition-all relative z-[101]">
+      <header className="w-full h-20 md:h-24 border-b border-metal/10 duration-200 !bg-white transition-all relative z-[101]">
         <nav className="content-container flex items-center justify-between w-full h-full">
           
           {/* Left Section: Logo */}
           <div className="flex items-center">
             <LocalizedClientLink
               href="/"
-              className="flex flex-col items-start"
+              className="flex items-center gap-x-3 md:gap-x-4 group"
               data-testid="nav-store-link"
             >
-              {/* Mobile: logo image */}
-              <Image
-                src="/logo.png"
-                alt="The Blissful Soul"
-                width={52}
-                height={52}
-                className="block md:hidden object-contain"
-                priority
-              />
-              {/* Desktop: text */}
-              <span className="hidden md:block font-serif text-xl md:text-2xl text-primary leading-tight font-medium">
-                The Blissful Soul
-              </span>
-              <span className="hidden md:block text-[9px] md:text-[10px] text-primary/80 uppercase tracking-[0.3em] font-sans font-bold -mt-1">
-                HEALING & CRYSTALS
-              </span>
+              {/* Logo image (visible on all screens now) */}
+              <div className="relative w-10 h-10 md:w-14 md:h-14 transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="/logo.png"
+                  alt="The Blissful Soul"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              {/* Text content */}
+              <div className="flex flex-col items-start min-w-0">
+                <span className="font-serif text-base md:text-xl text-primary leading-tight font-medium truncate">
+                  The Blissful Soul
+                </span>
+                <span className="text-[7px] md:text-[9px] text-primary/80 uppercase tracking-widest font-sans font-bold -mt-0.5 md:-mt-1 whitespace-nowrap">
+                  HEALING & CRYSTALS
+                </span>
+              </div>
             </LocalizedClientLink>
           </div>
 
@@ -83,9 +87,8 @@ export default async function Nav() {
                 <WishlistButton />
               </div>
 
-              {/* Mobile Actions (Wishlist & Cart) */}
+              {/* Mobile Actions (Cart Only - Wishlist is in Menu) */}
               <div className="sm:hidden flex items-center gap-x-0.5">
-                <WishlistButton />
                 <MobileCartButton cart={cart} />
               </div>
 
