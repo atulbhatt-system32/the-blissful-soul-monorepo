@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_trust_cards",
+  "info": {
+    "displayName": "Trust Card",
+    "icon": "hand-holding-heart"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
