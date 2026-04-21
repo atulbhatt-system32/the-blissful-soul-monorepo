@@ -115,6 +115,30 @@
             "allowedTypes": [
                 "images"
             ]
+        },
+        "show_hot_sellers": {
+            "type": "boolean",
+            "default": true
+        },
+        "show_services": {
+            "type": "boolean",
+            "default": true
+        },
+        "show_trust_carousel": {
+            "type": "boolean",
+            "default": true
+        },
+        "show_faq": {
+            "type": "boolean",
+            "default": true
+        },
+        "show_instagram": {
+            "type": "boolean",
+            "default": true
+        },
+        "show_ebook": {
+            "type": "boolean",
+            "default": true
         }
     }
 }

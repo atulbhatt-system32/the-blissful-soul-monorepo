@@ -96,7 +96,9 @@ export default async function HomeNew(props: {
       <ScrollingMarquee />
 
       {/* Trust Carousel (Intuitive, Clarify, etc.) */}
-      <TrustCarousel items={homepageData?.trust_cards} />
+      {homepageData?.show_trust_carousel !== false && (
+        <TrustCarousel items={homepageData?.trust_cards} />
+      )}
 
       {/* ④ SHOP BY PURPOSE - What are you looking for? (Love, Money, Health, Protection) */}
       <ShopByIntent region={region} />
@@ -118,12 +120,14 @@ export default async function HomeNew(props: {
       </section>
 
       {/* ③ BESTSELLER PRODUCTS - Horizontal Scrollable Cards */}
-      <BestsellerCarousel
-        title={homepageData?.hot_seller_title || "Bestsellers"}
-        label="FAVOURITES"
-        products={bestsellerProducts}
-        region={region}
-      />
+      {homepageData?.show_hot_sellers !== false && (
+        <BestsellerCarousel
+          title={homepageData?.hot_seller_title || "Bestsellers"}
+          label="FAVOURITES"
+          products={bestsellerProducts}
+          region={region}
+        />
+      )}
 
       {/* ⑤ BOOK SESSION - Spiritual Services */}
       <BookSession 
@@ -135,31 +139,33 @@ export default async function HomeNew(props: {
       <IntentCollections region={region} />
 
       {/* Services Section */}
-      <ServicesGrid />
+      {homepageData?.show_services !== false && <ServicesGrid />}
+
+      {/* Trust banner (Counter) + testimonials */}
+      <div className="bg-white">
+        <StatsBar stats={homepageData?.stats} />
+        <Testimonials 
+          title={homepageData?.testimonials_title} 
+          testimonials={homepageData?.testimonials} 
+        />
+      </div>
+
+      {/* Ebook Section */}
+      {homepageData?.show_ebook !== false && <EbookSection data={homepageData?.ebook_section} />}
+
+      {/* Instagram Banner */}
+      {homepageData?.show_instagram !== false && (
+        <InstagramBanner 
+          images={homepageData?.instagram_images} 
+          handle={homepageData?.instagram_handle} 
+        />
+      )}
+
+      {/* FAQ Section */}
+      {homepageData?.show_faq !== false && <FAQSection items={homepageData?.faqs} />}
 
       {/* Combos Section */}
       <CombosSection region={region} />
-
-      {/* Ebook Section */}
-      <EbookSection data={homepageData?.ebook_section} />
-
-      {/* Instagram Banner */}
-      <InstagramBanner 
-        images={homepageData?.instagram_images} 
-        handle={homepageData?.instagram_handle} 
-      />
-
-      {/* FAQ Section */}
-      <FAQSection items={homepageData?.faqs} />
-
-      {/* Stats Bar (Counter) - Home Page Only */}
-      <StatsBar stats={homepageData?.stats} />
-
-      {/* Testimonials */}
-      <Testimonials 
-        title={homepageData?.testimonials_title} 
-        testimonials={homepageData?.testimonials} 
-      />
     </div>
   )
 }

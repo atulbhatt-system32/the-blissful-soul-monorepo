@@ -28,6 +28,12 @@ export interface HomepageData {
     ebook_section?: any
     instagram_handle?: string
     instagram_images?: any[]
+    show_hot_sellers?: boolean
+    show_services?: boolean
+    show_trust_carousel?: boolean
+    show_faq?: boolean
+    show_instagram?: boolean
+    show_ebook?: boolean
 }
 
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
