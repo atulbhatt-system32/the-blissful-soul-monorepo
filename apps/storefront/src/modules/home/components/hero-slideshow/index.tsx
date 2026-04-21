@@ -118,7 +118,6 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     className="object-cover object-top"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-black/30" />
                 </div>
 
                 <div className="relative z-10 container mx-auto px-4 text-center">
