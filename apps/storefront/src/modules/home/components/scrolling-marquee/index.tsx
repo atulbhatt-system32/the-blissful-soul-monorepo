@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 const items = [
   "100% Authentic Crystals",
   "Spiritual Healing & Guidance",
-  "Worldwide Shipping",
+  "India’s 1st ENERGISED Crystal store",
   "Master Pragya Vijh Certified",
   "Handcrafted with Love",
   "Premium Energy Tools",
@@ -28,10 +28,10 @@ const ScrollingMarquee = () => {
       >
         {[...items, ...items, ...items, ...items].map((item, idx) => (
           <div key={idx} className="flex items-center px-12 md:px-20">
-             <span className="text-white text-xs md:text-sm font-sans tracking-[0.25em] md:tracking-[0.4em] font-bold uppercase">
+             <span className="text-white text-sm md:text-base font-sans tracking-[0.2em] md:tracking-[0.35em] font-bold uppercase">
                {item}
              </span>
-             <div className="ml-12 md:ml-20 w-1.5 h-1.5 rounded-full bg-white/80" />
+             <div className="ml-12 md:ml-20 w-2 h-2 rounded-full bg-white" />
           </div>
         ))}
       </motion.div>

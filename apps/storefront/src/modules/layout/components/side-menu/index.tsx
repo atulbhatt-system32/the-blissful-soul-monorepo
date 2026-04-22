@@ -17,9 +17,9 @@ const SideMenuItems = {
   "About Master": "/about",
   "Book Your Session": "/book-session",
   "Shop Crystals": "/store",
-  Contact: "/contact",
-  Wishlist: "/wishlist",
   Cart: "/cart",
+  Wishlist: "/wishlist",
+  Contact: "/contact",
 }
 
 type SideMenuProps = {
@@ -106,28 +106,32 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                         </div>
 
                         <div className="flex-1 overflow-y-auto no-scrollbar py-2">
-                          <nav className="flex flex-col gap-y-4">
-                            {Object.entries(SideMenuItems).map(([name, href]) => (
+                          <nav className="flex flex-col gap-y-1">
+                            {Object.entries(SideMenuItems).map(([name, href], index) => (
                               <LocalizedClientLink
                                 key={name}
                                 href={href}
-                                className="text-xl md:text-2xl font-serif text-white hover:text-[#C5A059] transition-all block py-2 border-b border-white/5 tracking-wide"
-                                activeClassName="!text-[#C5A059] font-bold"
+                                className="group relative text-lg md:text-xl font-serif text-white/70 hover:text-[#C5A059] transition-all duration-300 ease-out block py-3.5 px-4 rounded-lg tracking-[0.08em] hover:bg-white/[0.04] border-l-2 border-transparent hover:border-[#C5A059]"
+                                activeClassName="!text-[#C5A059] !border-[#C5A059] bg-white/[0.04] font-medium"
                                 onClick={closePopup}
                                 data-testid={`${name.toLowerCase()}-link`}
+                                style={{ animationDelay: `${index * 50}ms` }}
                               >
-                                <span className="flex items-center gap-x-2">
-                                  {name}
+                                <span className="flex items-center gap-x-3">
+                                  <span className="group-hover:translate-x-1 transition-transform duration-300 ease-out">{name}</span>
                                   {name === "Wishlist" && wishlist.length > 0 && (
-                                    <span className="bg-[#2C1E36] text-white text-[10px] font-black rounded-full h-4 w-4 inline-flex items-center justify-center border border-white/10 shadow-sm">
+                                    <span className="bg-[#C5A059]/20 text-[#C5A059] text-[10px] font-bold rounded-full h-5 w-5 inline-flex items-center justify-center border border-[#C5A059]/30 shadow-sm">
                                       {wishlist.length}
                                     </span>
                                   )}
                                   {name === "Cart" && cartItemsCount > 0 && (
-                                    <span className="bg-[#2C1E36] text-white text-[10px] font-black rounded-full h-4 w-4 inline-flex items-center justify-center border border-white/10 shadow-sm">
+                                    <span className="bg-[#C5A059]/20 text-[#C5A059] text-[10px] font-bold rounded-full h-5 w-5 inline-flex items-center justify-center border border-[#C5A059]/30 shadow-sm">
                                       {cartItemsCount}
                                     </span>
                                   )}
+                                  <span className="ml-auto opacity-0 group-hover:opacity-60 transition-opacity duration-300 text-[#C5A059]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                  </span>
                                 </span>
                               </LocalizedClientLink>
                             ))}
@@ -153,7 +157,7 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                           </div>
                           <div className="flex items-center justify-between">
                             <Text className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">
-                              © {new Date().getFullYear()} The Blissful Soul.
+                              © {new Date().getFullYear()} Pragya Vijh.
                             </Text>
                           </div>
                         </div>

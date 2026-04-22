@@ -22,7 +22,7 @@ const InstagramBanner = ({ images, handle }: { images?: any[], handle?: string }
   const instagramUrl = handle ? `https://www.instagram.com/${handle.replace('@', '')}/` : "https://www.instagram.com/pragya.vijh_astrotalks/"
 
   return (
-    <section className="py-20 bg-white overflow-hidden">
+    <section className="py-20 bg-[#FAF9F6] overflow-hidden">
       <div className="content-container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="w-full md:w-1/2 space-y-6">

@@ -40,7 +40,7 @@ const TrustCarousel = ({ items }: { items?: any[] }) => {
     image: item.image?.url ? (item.image.url.startsWith('http') ? item.image.url : `${STRAPI_URL}${item.image.url}`) : null
   })).filter(i => i.image) : defaultTrustItems
   return (
-    <section className="pt-12 md:pt-16 pb-0 bg-white overflow-hidden">
+    <section className="pt-12 md:pt-16 pb-8 md:pb-12 bg-white overflow-hidden">
       <div className="content-container">
         <Swiper
           modules={[Autoplay, Pagination]}
@@ -52,7 +52,7 @@ const TrustCarousel = ({ items }: { items?: any[] }) => {
             clickable: true,
             el: '.trust-pagination',
             renderBullet: (index, className) => {
-              return `<span class="${className} w-2 h-2 rounded-full border border-[#C5A059] bg-transparent inline-block mx-1 transition-all duration-300"></span>`;
+              return `<span class="${className} swiper-pagination-bullet inline-block transition-all duration-500 ease-in-out cursor-pointer"></span>`;
             }
           }}
           loop={true}
@@ -97,14 +97,23 @@ const TrustCarousel = ({ items }: { items?: any[] }) => {
         </Swiper>
         
         {/* Custom Pagination Container */}
-        <div className="trust-pagination flex justify-center items-center mt-4"></div>
+        <div className="trust-pagination flex justify-center items-center gap-2 mt-4 pb-4"></div>
       </div>
 
       <style jsx global>{`
+        .trust-pagination .swiper-pagination-bullet {
+          width: 8px;
+          height: 8px;
+          background: #2C1E36;
+          opacity: 0.15;
+          border-radius: 50%;
+          margin: 0 !important;
+        }
         .trust-pagination .swiper-pagination-bullet-active {
           background: #C5A059 !important;
-          width: 24px !important;
-          border-radius: 4px !important;
+          opacity: 1;
+          width: 28px !important;
+          border-radius: 12px !important;
         }
       `}</style>
     </section>

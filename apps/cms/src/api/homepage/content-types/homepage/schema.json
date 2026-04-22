@@ -1,144 +1,148 @@
 {
-    "kind": "singleType",
-    "collectionName": "homepages",
-    "info": {
-        "singularName": "homepage",
-        "pluralName": "homepages",
-        "displayName": "Homepage",
-        "description": "Manage the homepage layout and content"
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage",
+    "description": "Manage the homepage layout and content"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero_slideshow": {
+      "type": "component",
+      "component": "shared.hero",
+      "repeatable": true
     },
-    "options": {
-        "draftAndPublish": true
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     },
-    "attributes": {
-        "hero_slideshow": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.hero"
-        },
-        "seo": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.seo"
-        },
-        "featured_products_title": {
-            "type": "string",
-            "default": "New Arrivals"
-        },
-        "pop_up": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.pop-up"
-        },
-        "stats": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.stat-item"
-        },
-        "hot_seller_title": {
-            "type": "string",
-            "default": "Hot Seller"
-        },
-        "healing_crystals_title": {
-            "type": "string",
-            "default": "Shop Healing Crystals"
-        },
-        "book_session_title": {
-            "type": "string",
-            "default": "Book Your Session"
-        },
-        "tarot_services": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "audio_sessions": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "video_sessions": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "testimonials_title": {
-            "type": "string",
-            "default": "Client Testimonials"
-        },
-        "testimonials": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.testimonial"
-        },
-        "hot_sellers": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "healing_crystals": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "intro_section": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.intro-section"
-        },
-        "featured_products": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::product.product"
-        },
-        "trust_cards": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.trust-card"
-        },
-        "faqs": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.faq-item"
-        },
-        "ebook_section": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.ebook-section"
-        },
-        "instagram_handle": {
-            "type": "string"
-        },
-        "instagram_images": {
-            "type": "media",
-            "multiple": true,
-            "allowedTypes": [
-                "images"
-            ]
-        },
-        "show_hot_sellers": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_services": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_trust_carousel": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_faq": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_instagram": {
-            "type": "boolean",
-            "default": true
-        },
-        "show_ebook": {
-            "type": "boolean",
-            "default": true
-        }
+    "featured_products_title": {
+      "type": "string",
+      "default": "New Arrivals"
+    },
+    "pop_up": {
+      "type": "component",
+      "component": "shared.pop-up",
+      "repeatable": false
+    },
+    "stats": {
+      "type": "component",
+      "component": "shared.stat-item",
+      "repeatable": true
+    },
+    "hot_seller_title": {
+      "type": "string",
+      "default": "Hot Seller"
+    },
+    "healing_crystals_title": {
+      "type": "string",
+      "default": "Shop Healing Crystals"
+    },
+    "book_session_title": {
+      "type": "string",
+      "default": "Book Your Session"
+    },
+    "tarot_services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "audio_sessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "video_sessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "testimonials_title": {
+      "type": "string",
+      "default": "Client Testimonials"
+    },
+    "testimonials": {
+      "type": "component",
+      "component": "shared.testimonial",
+      "repeatable": true
+    },
+    "hot_sellers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "healing_crystals": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "intro_section": {
+      "type": "component",
+      "component": "shared.intro-section",
+      "repeatable": false
+    },
+    "featured_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "trust_cards": {
+      "type": "component",
+      "component": "shared.trust-card",
+      "repeatable": true
+    },
+    "faqs": {
+      "type": "component",
+      "component": "shared.faq-item",
+      "repeatable": true
+    },
+    "ebook_section": {
+      "type": "component",
+      "component": "shared.ebook-section",
+      "repeatable": false
+    },
+    "instagram_handle": {
+      "type": "string"
+    },
+    "instagram_images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "show_hot_sellers": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_services": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_trust_carousel": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_faq": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_instagram": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_ebook": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_featured_products": {
+      "type": "boolean"
     }
+  }
 }

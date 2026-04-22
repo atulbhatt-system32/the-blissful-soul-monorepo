@@ -5,24 +5,28 @@ import { motion, AnimatePresence } from "framer-motion"
 
 const defaultFaqs = [
   {
-    question: "What are healing crystals?",
-    answer: "Healing crystals are natural minerals that are believed to have unique vibrational frequencies. They have been used for centuries to help balance energy, promote emotional well-being, and support manifestation and spiritual growth."
+    question: "Can I talk to Pragya Vijh?",
+    answer: "Absolutely yes. Once you have booked an appointment with Master Pragya, you can speak to her directly during your session."
   },
   {
-    question: "How do I choose the right crystal for me?",
-    answer: "The best way is to trust your intuition. Often, the crystal you're most drawn to is the one you need most. You can also choose based on your specific intentions, such as love (Rose Quartz), protection (Black Tourmaline), or abundance (Citrine)."
+    question: "What services do you provide?",
+    answer: "We offer five types of services: Tarot Reading, Kundli Reading, Counseling, Healing, and combined Kundli & Tarot Sessions."
   },
   {
-    question: "How do I cleanse and charge my crystals?",
-    answer: "You can cleanse your crystals under moonlight, using sage or incense smoke, or placing them on a selenite charging plate. Charging them in sunlight or moonlight helps restore their natural energy levels."
+    question: "What is the duration of the sessions?",
+    answer: "The duration depends on the type of service you choose."
   },
   {
-    question: "Do you offer international shipping?",
-    answer: "Yes, we ship our spiritual tools and crystals worldwide. Shipping costs and delivery times vary by location and will be calculated at checkout."
+    question: "Can I meet you in person?",
+    answer: "Definitely, you can visit us at our office premises in Delhi."
   },
   {
-    question: "Can I book a personalized session with Master Pragya?",
-    answer: "Yes, we offer various one-on-one sessions including audio and video consultations. You can book these directly through the 'Sessions' page on our website."
+    question: "How do I book a session?",
+    answer: "You can go to the \"Sacred Services\" section, choose your preferred service and time slot, and proceed with the payment."
+  },
+  {
+    question: "Do you sell crystals?",
+    answer: "Yes, we offer properly energized crystals, available on our website under Blissful Soul Studio."
   }
 ]
 
@@ -31,7 +35,7 @@ const FAQSection = ({ items }: { items?: any[] }) => {
   const displayFaqs = items && items.length > 0 ? items : defaultFaqs
 
   return (
-    <section className="py-24 bg-[#FAF9F6]">
+    <section className="py-24 bg-white">
       <div className="content-container max-w-4xl">
         <div className="text-center mb-16">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
@@ -47,7 +51,7 @@ const FAQSection = ({ items }: { items?: any[] }) => {
           {displayFaqs.map((faq, index) => (
             <div 
               key={index} 
-              className="border border-[#2C1E36]/5 rounded-3xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="border border-[#2C1E36]/5 rounded-3xl bg-[#FAF9F6] overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <button
                 onClick={() => setActiveIndex(activeIndex === index ? null : index)}

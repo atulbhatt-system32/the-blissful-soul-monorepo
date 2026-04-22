@@ -26,8 +26,15 @@ const IntentCollectionsClient = ({
         <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-3 block">
            COLLECTION
         </span>
-        <h2 className="text-3xl md:text-5xl font-serif text-[#2C1E36] uppercase tracking-tight leading-tight">
-          {title}
+        <h2 className="text-4xl md:text-6xl font-serif text-[#2C1E36] tracking-tight leading-[1.1]">
+          {title?.toLowerCase().includes('by') ? (
+            <>
+              <span className="block mb-2">{title.split(/by/i)[0].trim()}</span>
+              <span className="block text-sm md:text-base font-sans text-[#C5A059] uppercase tracking-[0.5em] mt-6 font-bold">
+                by {title.split(/by/i)[1].trim()}
+              </span>
+            </>
+          ) : title}
         </h2>
         <div className="w-12 md:w-20 h-0.5 md:h-1 bg-[#C5A059]/20 mx-auto mt-4 md:mt-6 rounded-full"></div>
       </div>

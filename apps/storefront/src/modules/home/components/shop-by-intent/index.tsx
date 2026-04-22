@@ -6,8 +6,8 @@ import ShopByIntentClient from "./shop-by-intent-client"
 const intentsList = [
   { title: "Love", handle: "intent-love", fallbackCategory: "love" },
   { title: "Money", handle: "intent-money", fallbackCategory: "money" },
+  { title: "NAZAR", handle: "intent-protection", fallbackCategory: "protection" },
   { title: "Health", handle: "intent-health", fallbackCategory: "health" },
-  { title: "Protection", handle: "intent-protection", fallbackCategory: "protection" },
 ]
 
 export default async function ShopByIntent({ region }: { region: HttpTypes.StoreRegion }) {

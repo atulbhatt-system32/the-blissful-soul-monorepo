@@ -14,11 +14,15 @@ const NavLinks = () => {
   ]
 
   const isActive = (href: string) => {
-    if (href === "/" && pathname !== "/") {
-        // Handle localized home paths (e.g. /in, /us)
-        const parts = pathname.split("/").filter(Boolean)
-        if (parts.length > 0 && parts.length <= 1) return true
-        return false
+    if (href === "/") {
+      // Home is active when pathname is "/", a country code like "/in", or "/home-new"
+      if (pathname === "/") return true
+      const parts = pathname.split("/").filter(Boolean)
+      // Only country code segment means we're on the home page
+      if (parts.length === 1 && parts[0].length <= 3) return true
+      // Also active on /home-new route
+      if (pathname.endsWith("/home-new")) return true
+      return false
     }
     return pathname.includes(href)
   }
