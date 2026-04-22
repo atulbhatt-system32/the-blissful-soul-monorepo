@@ -26,7 +26,7 @@ const services: Service[] = [
     description: "Unlock the secrets of your destiny with a deep dive into your Vedic birth chart, revealing your true purpose and cosmic roadmap.",
     image: kundliImg,
     color: "bg-blue-100/80",
-    link: "/book-session",
+    link: "/services/kundli",
   },
   {
     key: "astrology",
@@ -34,7 +34,7 @@ const services: Service[] = [
     description: "Experience the combined power of birth chart wisdom and tarot intuition for a comprehensive understanding of your life's path.",
     image: astrologyImg,
     color: "bg-purple-100/80",
-    link: "/book-session",
+    link: "/services/astrology",
   },
   {
     key: "tarot",
@@ -42,7 +42,7 @@ const services: Service[] = [
     description: "Receive clear, intuitive answers to your most pressing questions through the mystical and divine guidance of the Tarot.",
     image: tarotImg,
     color: "bg-amber-100/80",
-    link: "/book-session",
+    link: "/services/tarot",
   },
   {
     key: "counseling",
@@ -50,7 +50,7 @@ const services: Service[] = [
     description: "Find emotional peace and spiritual clarity through heart-centered guidance tailored to your unique personal journey.",
     image: counselingImg,
     color: "bg-emerald-100/80",
-    link: "/book-session",
+    link: "/services/counseling",
   },
   {
     key: "healing",
@@ -58,7 +58,7 @@ const services: Service[] = [
     description: "Restore your inner balance and vitality through powerful energy work, reiki, and sacred crystal healing therapy.",
     image: healingImg,
     color: "bg-pink-100/80",
-    link: "/book-session",
+    link: "/services/healing",
   },
 ]
 
