@@ -33,6 +33,7 @@ export default async function CombosSection({ region }: CombosSectionProps) {
       label="CURATED BUNDLES"
       products={products}
       region={region}
+      bgColor="bg-white"
     />
   )
 }

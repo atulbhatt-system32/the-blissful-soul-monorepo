@@ -29,6 +29,8 @@ export interface HomepageData {
     instagram_handle?: string
     instagram_images?: any[]
     show_hot_sellers?: boolean
+    show_featured_products?: boolean
+    show_book_session?: boolean
     show_services?: boolean
     show_trust_carousel?: boolean
     show_faq?: boolean

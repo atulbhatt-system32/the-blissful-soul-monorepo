@@ -15,14 +15,15 @@ type BestsellerCarouselProps = {
   label?: string
   products: HttpTypes.StoreProduct[]
   region: HttpTypes.StoreRegion
+  bgColor?: string
 }
 
-const BestsellerCarousel = ({ title, label, products, region }: BestsellerCarouselProps) => {
+const BestsellerCarousel = ({ title, label, products, region, bgColor = "bg-[#FAF9F6]" }: BestsellerCarouselProps) => {
   const swiperRef = useRef<SwiperType | null>(null)
 
   if (products.length === 0) {
     return (
-      <section className="py-16 md:py-20 bg-white">
+      <section className={`py-16 md:py-20 ${bgColor}`}>
         <div className="content-container">
           <div className="text-center mb-10">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
@@ -41,7 +42,7 @@ const BestsellerCarousel = ({ title, label, products, region }: BestsellerCarous
   }
 
   return (
-    <section className="py-16 md:py-20 bg-white relative overflow-hidden">
+    <section className={`py-16 md:py-20 ${bgColor} relative overflow-hidden`}>
       <div className="content-container">
         {/* Centered Header */}
         <div className="flex flex-col items-center text-center mb-12 md:mb-16">

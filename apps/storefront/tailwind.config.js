@@ -88,7 +88,7 @@ module.exports = {
         "3xl": "2rem",
       },
       fontFamily: {
-        serif: ["var(--font-inter)", "Inter", "serif"],
+        serif: ["var(--font-playfair)", "serif"],
         sans: [
           "var(--font-inter)",
           "Inter",

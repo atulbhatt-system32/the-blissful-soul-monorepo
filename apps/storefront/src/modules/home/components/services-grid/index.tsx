@@ -9,18 +9,24 @@ type Service = {
   description: string
   icon: string
   color: string
-  bgGradient: string
   link: string
 }
 
 const services: Service[] = [
   {
-    key: "astro",
+    key: "kundli",
+    title: "Kundli",
+    description: "Personalised Vedic birth chart analysis and future predictions",
+    icon: "📜",
+    color: "bg-blue-100/80", // Richer Light Blue
+    link: "/book-session",
+  },
+  {
+    key: "astrology",
     title: "Astrology",
     description: "Vedic astrology readings to guide your life path, career, and relationships",
-    icon: "🔮",
-    color: "#8B5CF6",
-    bgGradient: "from-purple-500/10 to-indigo-500/10",
+    icon: "🪐",
+    color: "bg-purple-100/80", // Richer Light Purple
     link: "/book-session",
   },
   {
@@ -28,8 +34,7 @@ const services: Service[] = [
     title: "Tarot Reading",
     description: "Intuitive tarot card readings for clarity and divine guidance",
     icon: "🃏",
-    color: "#C5A059",
-    bgGradient: "from-amber-500/10 to-yellow-500/10",
+    color: "bg-amber-100/80", // Richer Light Amber
     link: "/book-session",
   },
   {
@@ -37,8 +42,7 @@ const services: Service[] = [
     title: "Counseling",
     description: "Holistic spiritual counseling for emotional well-being and personal growth",
     icon: "🧘",
-    color: "#10B981",
-    bgGradient: "from-emerald-500/10 to-teal-500/10",
+    color: "bg-emerald-100/80", // Richer Light Emerald
     link: "/book-session",
   },
   {
@@ -46,86 +50,83 @@ const services: Service[] = [
     title: "Healing",
     description: "Crystal healing, reiki, and energy work to restore balance and harmony",
     icon: "💎",
-    color: "#EC4899",
-    bgGradient: "from-pink-500/10 to-rose-500/10",
+    color: "bg-pink-100/80", // Richer Light Pink
     link: "/book-session",
   },
 ]
 
 const ServicesGrid = () => {
   return (
-    <section className="py-12 md:py-16 bg-[#FAF9F6] relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-purple-100/30 rounded-full blur-[120px] -z-0" />
-      <div className="absolute bottom-20 left-0 w-[350px] h-[350px] bg-amber-100/20 rounded-full blur-[100px] -z-0" />
-
+    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
         {/* Section heading */}
-        <div className="text-center mb-10 md:mb-12">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
-            What We Offer
+        <div className="text-center mb-16 md:mb-24">
+          <span className="text-[12px] md:text-sm uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
+            Still confused?
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif text-[#2C1E36] mb-4 uppercase tracking-tight leading-tight">
-            Our Services
+          <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-8 uppercase tracking-tighter leading-tight">
+            OUR SACRED SERVICES
           </h2>
-          <div className="h-0.5 w-24 bg-[#C5A059] mx-auto rounded-full" />
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-[1px] w-12 bg-[#C5A059]/30" />
+            <div className="w-2 h-2 rounded-full border border-[#C5A059]/40" />
+            <div className="h-[1px] w-12 bg-[#C5A059]/30" />
+          </div>
         </div>
 
-        {/* Services 2x2 Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+        {/* Services Flip Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <LocalizedClientLink
-              key={service.key}
-              href={service.link}
-              className={`group relative flex flex-col items-center text-center p-6 md:p-8 rounded-[32px] bg-gradient-to-br ${service.bgGradient} backdrop-blur-sm border border-black/5 hover:shadow-2xl hover:shadow-black/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer overflow-hidden`}
-            >
-              {/* Hover glow effect */}
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[32px]"
-                style={{
-                  background: `radial-gradient(circle at center, ${service.color}10 0%, transparent 70%)`
-                }}
-              />
+            <div key={service.key} className="group h-[320px] [perspective:1000px]">
+              <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                
+                {/* Front Side */}
+                <div className={`absolute inset-0 h-full w-full rounded-[32px] ${service.color} border border-black/5 shadow-sm [backface-visibility:hidden] flex flex-col items-center justify-center p-8 text-center`}>
+                  <div className="w-20 h-20 bg-white/60 backdrop-blur-md rounded-full flex items-center justify-center shadow-inner mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <span className="text-4xl">{service.icon}</span>
+                  </div>
+                  <h3 className="text-lg md:text-xl font-bold text-[#2C1E36] uppercase tracking-widest mb-4">
+                    {service.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-[#C5A059] opacity-80">
+                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
+                      Flip to explore
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 2v6h-6"></path>
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                      <path d="M3 3v5h5"></path>
+                    </svg>
+                  </div>
+                </div>
 
-              {/* Icon circle */}
-              <div 
-                className="relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500"
-                style={{
-                  background: `linear-gradient(135deg, ${service.color}15, ${service.color}05)`,
-                  border: `2px solid ${service.color}25`,
-                }}
-              >
-                <span className="text-2xl md:text-3xl">{service.icon}</span>
+                {/* Back Side */}
+                <div className={`absolute inset-0 h-full w-full rounded-[32px] ${service.color} border border-[#C5A059]/10 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center p-8 text-center`}>
+                  <h3 className="text-lg md:text-xl font-bold text-[#2C1E36] uppercase tracking-widest mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#665D6B] text-sm leading-relaxed mb-8">
+                    {service.description}
+                  </p>
+                  <LocalizedClientLink
+                    href={service.link}
+                    className="px-8 py-3 bg-[#C5A059] text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-md hover:shadow-lg hover:bg-[#B38E4A] transition-all active:scale-95"
+                  >
+                    Book Now
+                  </LocalizedClientLink>
+                </div>
               </div>
-
-              {/* Text */}
-              <h3 className="text-base md:text-lg font-serif font-bold text-[#2C1E36] mb-2 uppercase tracking-wide group-hover:text-[#C5A059] transition-colors duration-300">
-                {service.title}
-              </h3>
-              <p className="text-[#665D6B] text-xs leading-relaxed mb-4 max-w-[260px]">
-                {service.description}
-              </p>
-
-              {/* Arrow CTA */}
-              <div className="mt-auto flex items-center gap-2 text-[#C5A059] group-hover:gap-4 transition-all duration-300">
-                <span className="text-[10px] uppercase tracking-[0.3em] font-bold">
-                  Book Now
-                </span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform duration-300">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </div>
-            </LocalizedClientLink>
+            </div>
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-20">
           <LocalizedClientLink
             href="/book-session"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
           >
-            View All Services &rarr;
+            Explore All Offerings &rarr;
           </LocalizedClientLink>
         </div>
       </div>

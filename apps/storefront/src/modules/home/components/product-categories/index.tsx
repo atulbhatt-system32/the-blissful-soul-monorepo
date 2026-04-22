@@ -36,7 +36,7 @@ const categories: CategoryCard[] = [
   {
     key: "shop-by-purpose",
     title: "Shop By Purpose",
-    description: "Find the perfect crystal for love, protection, abundance, or healing",
+    description: "Find the perfect crystal for love, NAZAR, abundance, or healing",
     icon: "🎯",
     href: "/store",
     badge: "Popular",
