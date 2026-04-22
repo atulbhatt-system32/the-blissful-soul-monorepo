@@ -95,7 +95,7 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
               className="!pb-20"
             >
               {data.map((t, idx) => (
-                <SwiperSlide key={idx}>
+                <SwiperSlide key={idx} className="!h-auto">
                   <div className="flex flex-col items-center h-full bg-white p-10 md:p-12 rounded-[48px] border border-black/5 shadow-[0_10px_40px_-15px_rgba(44,30,54,0.08)] hover:shadow-[0_20px_60px_-15px_rgba(44,30,54,0.12)] transition-all duration-700 group">
                     <div className="relative w-24 h-24 mb-8">
                        <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

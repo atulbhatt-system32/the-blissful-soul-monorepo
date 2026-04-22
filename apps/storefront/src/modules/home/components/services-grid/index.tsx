@@ -25,7 +25,7 @@ const services: Service[] = [
     title: "Kundli",
     description: "Unlock the secrets of your destiny with a deep dive into your Vedic birth chart, revealing your true purpose and cosmic roadmap.",
     image: kundliImg,
-    color: "bg-blue-100/80",
+    color: "bg-blue-100",
     link: "/services/kundli",
   },
   {
@@ -33,7 +33,7 @@ const services: Service[] = [
     title: "Kundli & Tarot",
     description: "Experience the combined power of birth chart wisdom and tarot intuition for a comprehensive understanding of your life's path.",
     image: astrologyImg,
-    color: "bg-purple-100/80",
+    color: "bg-purple-100",
     link: "/services/astrology",
   },
   {
@@ -41,7 +41,7 @@ const services: Service[] = [
     title: "Tarot Reading",
     description: "Receive clear, intuitive answers to your most pressing questions through the mystical and divine guidance of the Tarot.",
     image: tarotImg,
-    color: "bg-amber-100/80",
+    color: "bg-amber-100",
     link: "/services/tarot",
   },
   {
@@ -49,7 +49,7 @@ const services: Service[] = [
     title: "Counseling",
     description: "Find emotional peace and spiritual clarity through heart-centered guidance tailored to your unique personal journey.",
     image: counselingImg,
-    color: "bg-emerald-100/80",
+    color: "bg-emerald-100",
     link: "/services/counseling",
   },
   {
@@ -57,7 +57,7 @@ const services: Service[] = [
     title: "Healing",
     description: "Restore your inner balance and vitality through powerful energy work, reiki, and sacred crystal healing therapy.",
     image: healingImg,
-    color: "bg-pink-100/80",
+    color: "bg-pink-100",
     link: "/services/healing",
   },
 ]
@@ -96,17 +96,6 @@ const ServicesGrid = () => {
                     className="object-cover"
                     placeholder="blur"
                   />
-                  {/* Subtle info indicator */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white bg-black/20 backdrop-blur-sm px-4 py-1.5 rounded-full">
-                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
-                      Explore
-                    </span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 2v6h-6"></path>
-                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                      <path d="M3 3v5h5"></path>
-                    </svg>
-                  </div>
                 </div>
 
                 {/* Back Side */}

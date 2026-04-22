@@ -274,27 +274,33 @@ export default function ProductPreview({
             </button>
             </div>
 
-            <div className="p-3 md:p-6 flex flex-col items-center text-center">
-              <Text className="font-serif text-[#2C1E36] text-[13px] md:text-[22px] mb-1 md:mb-4 group-hover:text-[#C5A059] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-medium" data-testid="product-title">
-                {product.title}
-              </Text>
+            <div className="p-3 md:p-6 flex flex-col items-center text-center w-full">
+              <div className="h-[32px] md:h-[54px] flex items-center justify-center mb-1 md:mb-4 w-full">
+                <Text className="font-serif text-[#2C1E36] text-[13px] md:text-[22px] group-hover:text-[#C5A059] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-medium" data-testid="product-title">
+                  {product.title}
+                </Text>
+              </div>
 
               {/* One-line description */}
-              {hasDescription && (
-                <div className="mb-2 md:mb-3 px-1 w-full text-left">
-                  <p className="text-[#665D6B] text-[10px] md:text-[12px] leading-snug line-clamp-1">
-                    {descriptionSnippet}
-                  </p>
-                  {hasRichContent && (
-                    <button
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowModal(true) }}
-                      className="text-[#C5A059] text-[9px] md:text-[11px] font-semibold hover:underline mt-0.5"
-                    >
-                      Read more →
-                    </button>
+              <div className="mb-2 md:mb-3 px-1 w-full text-center">
+                <div className="h-[14px] md:h-[18px] flex items-center justify-center">
+                  {hasDescription ? (
+                    <p className="text-[#665D6B] text-[10px] md:text-[12px] leading-snug line-clamp-1">
+                      {descriptionSnippet}
+                    </p>
+                  ) : (
+                    <div className="h-full" />
                   )}
                 </div>
-              )}
+                {hasRichContent && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowModal(true) }}
+                    className="text-[#C5A059] text-[9px] md:text-[11px] font-semibold hover:underline mt-0.5"
+                  >
+                    Read more →
+                  </button>
+                )}
+              </div>
 
               <div className="flex flex-col items-center gap-y-1 md:gap-y-4 mb-2">
                 {displayPrice && (

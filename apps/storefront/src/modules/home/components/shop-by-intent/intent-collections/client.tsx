@@ -74,16 +74,16 @@ const IntentCollectionsClient = ({
                 className="intent-swiper !pb-10"
               >
                 {section.products.slice(0, 3).map((product: any) => (
-                  <SwiperSlide key={product.id}>
+                  <SwiperSlide key={product.id} className="!h-auto">
                     <ProductPreview product={product} region={region} isFeatured />
                   </SwiperSlide>
                 ))}
                 
                 {/* 4th Card: Not Sure / CTA */}
-                <SwiperSlide>
+                <SwiperSlide className="!h-auto">
                   <LocalizedClientLink 
                     href="/book-session"
-                    className="flex flex-col items-center justify-center h-full min-h-[300px] md:min-h-[400px] p-6 rounded-[24px] md:rounded-[32px] bg-[#FAF9F6] border-2 border-dashed border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-white transition-all duration-500 group text-center"
+                    className="flex flex-col items-center justify-center h-full p-6 rounded-[24px] md:rounded-[32px] bg-[#FAF9F6] border-2 border-dashed border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-white transition-all duration-500 group text-center"
                   >
                     <div className="w-16 h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <span className="text-3xl">🔮</span>
