@@ -2,12 +2,19 @@
 
 import React from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
+
+import kundliImg from "../../../../images/service-kundli.png"
+import astrologyImg from "../../../../images/kundli-and-traot.png"
+import tarotImg from "../../../../images/service-tarot.png"
+import counselingImg from "../../../../images/service-counseling.png"
+import healingImg from "../../../../images/service-healing.png"
 
 type Service = {
   key: string
   title: string
   description: string
-  icon: string
+  image: any
   color: string
   link: string
 }
@@ -16,41 +23,41 @@ const services: Service[] = [
   {
     key: "kundli",
     title: "Kundli",
-    description: "Personalised Vedic birth chart analysis and future predictions",
-    icon: "📜",
-    color: "bg-blue-100/80", // Richer Light Blue
+    description: "Unlock the secrets of your destiny with a deep dive into your Vedic birth chart, revealing your true purpose and cosmic roadmap.",
+    image: kundliImg,
+    color: "bg-blue-100/80",
     link: "/book-session",
   },
   {
     key: "astrology",
-    title: "Astrology",
-    description: "Vedic astrology readings to guide your life path, career, and relationships",
-    icon: "🪐",
-    color: "bg-purple-100/80", // Richer Light Purple
+    title: "Kundli & Tarot",
+    description: "Experience the combined power of birth chart wisdom and tarot intuition for a comprehensive understanding of your life's path.",
+    image: astrologyImg,
+    color: "bg-purple-100/80",
     link: "/book-session",
   },
   {
     key: "tarot",
     title: "Tarot Reading",
-    description: "Intuitive tarot card readings for clarity and divine guidance",
-    icon: "🃏",
-    color: "bg-amber-100/80", // Richer Light Amber
+    description: "Receive clear, intuitive answers to your most pressing questions through the mystical and divine guidance of the Tarot.",
+    image: tarotImg,
+    color: "bg-amber-100/80",
     link: "/book-session",
   },
   {
     key: "counseling",
     title: "Counseling",
-    description: "Holistic spiritual counseling for emotional well-being and personal growth",
-    icon: "🧘",
-    color: "bg-emerald-100/80", // Richer Light Emerald
+    description: "Find emotional peace and spiritual clarity through heart-centered guidance tailored to your unique personal journey.",
+    image: counselingImg,
+    color: "bg-emerald-100/80",
     link: "/book-session",
   },
   {
     key: "healing",
     title: "Healing",
-    description: "Crystal healing, reiki, and energy work to restore balance and harmony",
-    icon: "💎",
-    color: "bg-pink-100/80", // Richer Light Pink
+    description: "Restore your inner balance and vitality through powerful energy work, reiki, and sacred crystal healing therapy.",
+    image: healingImg,
+    color: "bg-pink-100/80",
     link: "/book-session",
   },
 ]
@@ -77,20 +84,22 @@ const ServicesGrid = () => {
         {/* Services Flip Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <div key={service.key} className="group h-[320px] [perspective:1000px]">
+            <div key={service.key} className="group h-[320px] md:h-[400px] [perspective:1000px]">
               <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 
                 {/* Front Side */}
-                <div className={`absolute inset-0 h-full w-full rounded-[32px] ${service.color} border border-black/5 shadow-sm [backface-visibility:hidden] flex flex-col items-center justify-center p-8 text-center`}>
-                  <div className="w-20 h-20 bg-white/60 backdrop-blur-md rounded-full flex items-center justify-center shadow-inner mb-6 group-hover:scale-110 transition-transform duration-500">
-                    <span className="text-4xl">{service.icon}</span>
-                  </div>
-                  <h3 className="text-lg md:text-xl font-bold text-[#2C1E36] uppercase tracking-widest mb-4">
-                    {service.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-[#C5A059] opacity-80">
+                <div className="absolute inset-0 h-full w-full rounded-[32px] overflow-hidden border border-black/5 shadow-sm [backface-visibility:hidden]">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                    placeholder="blur"
+                  />
+                  {/* Subtle info indicator */}
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white bg-black/20 backdrop-blur-sm px-4 py-1.5 rounded-full">
                     <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
-                      Flip to explore
+                      Explore
                     </span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 2v6h-6"></path>
@@ -105,7 +114,8 @@ const ServicesGrid = () => {
                   <h3 className="text-lg md:text-xl font-bold text-[#2C1E36] uppercase tracking-widest mb-4">
                     {service.title}
                   </h3>
-                  <p className="text-[#665D6B] text-sm leading-relaxed mb-8">
+                  <div className="w-12 h-0.5 bg-[#C5A059]/30 mb-6" />
+                  <p className="text-[#665D6B] text-sm md:text-base leading-relaxed mb-8">
                     {service.description}
                   </p>
                   <LocalizedClientLink
