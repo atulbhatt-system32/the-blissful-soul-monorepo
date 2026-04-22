@@ -47,29 +47,6 @@ export default function BookSessionClient({
 
   return (
     <div className="bg-[#FAF9F6]">
-      {/* Hero Section */}
-      <section className="bg-[#1A0E22] py-12 md:py-16 flex flex-col items-center justify-center text-center">
-        <div className="content-container flex flex-col items-center gap-y-7">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
-             SESSIONS
-          </span>
-          <div className="flex flex-col gap-y-5 max-w-3xl">
-            <h1 className="font-serif text-3xl md:text-[42px] text-white leading-tight font-semibold">
-              Our services
-            </h1>
-            <p className="text-white/40 text-[14px] md:text-[16px] max-w-2xl mx-auto leading-relaxed font-sans font-medium">
-              Choose audio or video sessions — tarot, kundali, therapy, and full astrology readings.
-            </p>
-          </div>
-          <a 
-            href="/contact"
-            className="bg-[#C5A059] text-[#1A0E22] px-8 py-3 rounded-xl text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-2"
-          >
-            Questions? Contact us
-          </a>
-        </div>
-      </section>
-
       {/* Category Section */}
       <section className="py-20">
         <div className="content-container">
@@ -108,6 +85,29 @@ export default function BookSessionClient({
               </div>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Banner Section at the end */}
+      <section className="bg-[#1A0E22] py-12 md:py-16 flex flex-col items-center justify-center text-center">
+        <div className="content-container flex flex-col items-center gap-y-7">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans">
+             SESSIONS
+          </span>
+          <div className="flex flex-col gap-y-5 max-w-3xl">
+            <h1 className="font-serif text-3xl md:text-[42px] text-white leading-tight font-semibold">
+              Our services
+            </h1>
+            <p className="text-white/40 text-[14px] md:text-[16px] max-w-2xl mx-auto leading-relaxed font-sans font-medium">
+              Choose audio or video sessions — tarot, kundali, therapy, and full astrology readings.
+            </p>
+          </div>
+          <a
+            href="/contact"
+            className="bg-[#C5A059] text-[#1A0E22] px-8 py-3 rounded-xl text-[14px] font-bold font-sans hover:opacity-90 transition-all shadow-xl active:scale-95 mt-2"
+          >
+            Questions? Contact us
+          </a>
         </div>
       </section>
     </div>
