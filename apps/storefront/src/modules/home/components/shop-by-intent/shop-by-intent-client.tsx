@@ -11,37 +11,37 @@ import nazarImg from "../../../../images/nazar.png"
 import healthImg from "../../../../images/health.png"
 
 const intentConfig = [
-  { 
-    key: "love",       
-    label: "Love",       
-    id: "collection-love",       
+  {
+    key: "love",
+    label: "Love",
+    id: "collection-love",
     image: loveImg,
     color: "#E11D48",
     gradient: "from-rose-500/80 to-rose-600",
     textColor: "group-hover:text-white",
   },
-  { 
-    key: "money",      
-    label: "Money",      
-    id: "collection-money",      
+  {
+    key: "money",
+    label: "Money",
+    id: "collection-money",
     image: moneyImg,
     color: "#D97706",
     gradient: "from-amber-400/90 to-amber-500",
     textColor: "group-hover:text-[#2C1E36]",
   },
-  { 
-    key: "protection", 
-    label: "NAZAR", 
-    id: "collection-protection", 
+  {
+    key: "protection",
+    label: "NAZAR/EVIL EYE",
+    id: "collection-protection",
     image: nazarImg,
     color: "#000000",
     gradient: "from-neutral-800 to-black",
     textColor: "group-hover:text-white",
   },
-  { 
-    key: "health",     
-    label: "Health",     
-    id: "collection-health",     
+  {
+    key: "health",
+    label: "Health",
+    id: "collection-health",
     image: healthImg,
     color: "#059669",
     gradient: "from-emerald-500/80 to-emerald-600",
@@ -49,15 +49,15 @@ const intentConfig = [
   },
 ]
 
-const ShopByIntentClient = ({ 
-  intents, 
-  region 
-}: { 
-  intents: any[], 
-  region: HttpTypes.StoreRegion 
+const ShopByIntentClient = ({
+  intents,
+  region
+}: {
+  intents: any[],
+  region: HttpTypes.StoreRegion
 }) => {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null)
-  
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -129,14 +129,14 @@ const ShopByIntentClient = ({
                       />
                     </div>
                   </div>
-                  
+
                   <h3 className={clx(
                     "text-2xl md:text-3xl font-serif font-medium tracking-tight mb-3 transition-colors duration-500",
                     hoveredKey === cfg.key ? cfg.textColor : "text-[#2C1E36]"
                   )}>
                     {cfg.label}
                   </h3>
-                  
+
                   {/* Explore Text */}
                   <div className={clx(
                     "flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500 transform",
@@ -145,7 +145,7 @@ const ShopByIntentClient = ({
                   )}>
                     <span>Explore</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                 </div>
@@ -154,9 +154,9 @@ const ShopByIntentClient = ({
               {/* Reflection/Shadow under card */}
               <div className={clx(
                 "mt-4 h-1 w-1/2 rounded-full blur-md opacity-0 group-hover:opacity-30 transition-all duration-500",
-                cfg.key === "money" ? "bg-amber-400" : 
-                cfg.key === "love" ? "bg-rose-400" :
-                cfg.key === "health" ? "bg-emerald-400" : "bg-black"
+                cfg.key === "money" ? "bg-amber-400" :
+                  cfg.key === "love" ? "bg-rose-400" :
+                    cfg.key === "health" ? "bg-emerald-400" : "bg-black"
               )} />
             </button>
           ))}
