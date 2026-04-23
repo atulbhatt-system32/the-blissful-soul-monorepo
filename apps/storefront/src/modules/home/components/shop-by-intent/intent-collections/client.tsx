@@ -48,12 +48,12 @@ const IntentCollectionsClient = ({
         >
           {/* Header inside Card */}
           <div className="flex items-center justify-between mb-10 pb-6 border-b border-[#FAF9F6]">
-            <h3 className="text-xl md:text-2xl font-serif text-[#2C1E36]">
+            <h3 className="text-xl md:text-2xl font-serif font-bold text-[#2C1E36]">
               {section.title}
             </h3>
             <LocalizedClientLink 
               href="/store"
-              className="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] hover:opacity-70 transition-opacity"
+              className="text-[12px] uppercase tracking-widest font-bold text-[#2C1E36] hover:underline transition-all"
             >
               Explore All →
             </LocalizedClientLink>

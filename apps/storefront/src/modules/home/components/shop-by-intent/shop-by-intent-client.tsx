@@ -83,7 +83,7 @@ const ShopByIntentClient = ({
             Curated Intentions
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-[#2C1E36] mb-8 tracking-tight leading-tight">
-            What does your soul seek today?
+            What’s troubling you?
           </h2>
           <div className="flex items-center justify-center gap-3">
             <div className="h-[1px] w-10 bg-[#C5A059]/30" />
@@ -107,9 +107,10 @@ const ShopByIntentClient = ({
                 "relative w-full h-full p-6 md:p-8 rounded-[32px] bg-white border border-[#2C1E36]/5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all duration-500 ease-in-out group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.1)]",
                 "overflow-hidden"
               )}>
-                {/* Hover Gradient Layer */}
+                {/* Background Layer (Subtle color on mobile, full gradient on hover) */}
                 <div className={clx(
-                  "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out",
+                  "absolute inset-0 bg-gradient-to-br transition-opacity duration-500 ease-in-out",
+                  "opacity-30 md:opacity-0 group-hover:opacity-100",
                   cfg.gradient
                 )} />
 
@@ -153,7 +154,8 @@ const ShopByIntentClient = ({
 
               {/* Reflection/Shadow under card */}
               <div className={clx(
-                "mt-4 h-1 w-1/2 rounded-full blur-md opacity-0 group-hover:opacity-30 transition-all duration-500",
+                "mt-4 h-1 w-1/2 rounded-full blur-md transition-all duration-500",
+                "opacity-20 md:opacity-0 group-hover:opacity-30",
                 cfg.key === "money" ? "bg-amber-400" :
                   cfg.key === "love" ? "bg-rose-400" :
                     cfg.key === "health" ? "bg-emerald-400" : "bg-black"
