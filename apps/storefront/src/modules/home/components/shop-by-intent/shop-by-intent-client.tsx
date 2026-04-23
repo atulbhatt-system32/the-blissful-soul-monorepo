@@ -83,7 +83,8 @@ const ShopByIntentClient = ({
             Curated Intentions
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-[#2C1E36] mb-8 tracking-tight leading-tight">
-            What’s troubling you?
+              What’s troubling you ??
+
           </h2>
           <div className="flex items-center justify-center gap-3">
             <div className="h-[1px] w-10 bg-[#C5A059]/30" />
