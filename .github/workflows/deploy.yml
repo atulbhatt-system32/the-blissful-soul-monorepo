@@ -294,7 +294,7 @@ jobs:
             done
 
             echo "Recreating nginx to re-render template with current DOMAIN..."
-            docker compose -f docker-compose.prod.yml up -d --force-recreate nginx
+            docker compose -f docker-compose.prod.yml up -d --force-recreate --no-deps nginx
 
             echo "Deployment successful."
             docker logout ghcr.io

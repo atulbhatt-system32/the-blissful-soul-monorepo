@@ -64,31 +64,31 @@ const services: Service[] = [
 
 const ServicesGrid = () => {
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
         {/* Section heading */}
-        <div className="text-center mb-16 md:mb-24">
-          <span className="text-[12px] md:text-sm uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
+        <div className="text-center mb-10 md:mb-14">
+          <span className="text-[11px] uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-2 block">
             Still confused?
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-8 uppercase tracking-tighter leading-tight">
+          <h2 className="text-3xl md:text-4xl font-serif text-[#2C1E36] mb-5 uppercase tracking-tighter leading-tight">
             OUR SACRED SERVICES
           </h2>
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-[1px] w-12 bg-[#C5A059]/30" />
-            <div className="w-2 h-2 rounded-full border border-[#C5A059]/40" />
-            <div className="h-[1px] w-12 bg-[#C5A059]/30" />
+          <div className="flex items-center justify-center gap-2">
+            <div className="h-[1px] w-10 bg-[#C5A059]/30" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#C5A059]/50" />
+            <div className="h-[1px] w-10 bg-[#C5A059]/30" />
           </div>
         </div>
 
         {/* Services Flip Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <div key={service.key} className="group h-[320px] md:h-[400px] [perspective:1000px]">
+            <div key={service.key} className="group h-[220px] md:h-[260px] [perspective:1000px]">
               <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 
                 {/* Front Side */}
-                <div className="absolute inset-0 h-full w-full rounded-[32px] overflow-hidden border border-black/5 shadow-sm [backface-visibility:hidden]">
+                <div className="absolute inset-0 h-full w-full rounded-[28px] overflow-hidden border border-black/5 shadow-md [backface-visibility:hidden]">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -99,17 +99,23 @@ const ServicesGrid = () => {
                 </div>
 
                 {/* Back Side */}
-                <div className={`absolute inset-0 h-full w-full rounded-[32px] ${service.color} border border-[#C5A059]/10 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center p-8 text-center`}>
-                  <h3 className="text-lg md:text-xl font-bold text-[#2C1E36] uppercase tracking-widest mb-4">
+                <div className={`absolute inset-0 h-full w-full rounded-[28px] ${service.color} border border-[#C5A059]/20 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center gap-2 px-4 py-4 text-center`}>
+                  {/* Decorative top dots */}
+                  <div className="flex gap-1 mb-1">
+                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/30" />
+                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                  </div>
+                  <h3 className="text-sm md:text-base font-bold text-[#2C1E36] uppercase tracking-[0.18em] leading-tight">
                     {service.title}
                   </h3>
-                  <div className="w-12 h-0.5 bg-[#C5A059]/30 mb-6" />
-                  <p className="text-[#665D6B] text-sm md:text-base leading-relaxed mb-8">
+                  <div className="w-8 h-[1px] bg-[#C5A059]/50" />
+                  <p className="text-[#665D6B] text-[12px] md:text-[13px] leading-snug font-medium max-w-[90%]">
                     {service.description}
                   </p>
                   <LocalizedClientLink
                     href={service.link}
-                    className="px-8 py-3 bg-[#C5A059] text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-md hover:shadow-lg hover:bg-[#B38E4A] transition-all active:scale-95"
+                    className="mt-1 px-6 py-2 bg-[#C5A059] text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/25 hover:bg-[#B38E4A] hover:shadow-xl transition-all active:scale-95"
                   >
                     Book Now
                   </LocalizedClientLink>
@@ -120,7 +126,7 @@ const ServicesGrid = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-20">
+        <div className="text-center mt-12 md:mt-16">
           <LocalizedClientLink
             href="/book-session"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
