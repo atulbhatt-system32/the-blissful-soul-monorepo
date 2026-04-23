@@ -4,10 +4,9 @@ import React, { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
 const defaultStats = [
-  { label: "Happy Clients", value: "800+" },
-  { label: "Years Experience", value: "3+" },
-  { label: "Consultations", value: "4500+" },
-  { label: "Positive Feedback", value: "10%" }
+  { label: "Happy Clients", value: "50K+" },
+  { label: "Years Experience", value: "10+" },
+  { label: "Insta Followers", value: "80K+" },
 ]
 
 type StatItem = {
@@ -93,10 +92,10 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
       {/* Dark Stats Section */}
       <section className="bg-[#120B15] py-16 md:py-20 text-white text-center">
         <div className="content-container flex flex-col items-center">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-24 w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 md:gap-24 w-full">
             {data.map((stat, idx) => (
-              <motion.div 
-                key={idx} 
+              <motion.div
+                key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: idx * 0.1 }}

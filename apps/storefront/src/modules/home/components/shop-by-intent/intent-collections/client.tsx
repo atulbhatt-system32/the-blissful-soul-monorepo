@@ -115,7 +115,7 @@ const IntentCollectionsClient = ({
       <div className="mt-12 md:mt-16 text-center">
         <LocalizedClientLink 
           href="/store"
-          className="inline-flex items-center justify-center bg-white border border-[#2C1E36]/10 text-[#2C1E36] px-12 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-[12px] md:text-[14px] hover:bg-[#2C1E36] hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl active:scale-95 group min-w-[280px]"
+          className="inline-flex items-center justify-center bg-black border border-black text-white px-12 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-[12px] md:text-[14px] hover:bg-white hover:text-black transition-all duration-300 shadow-sm hover:shadow-xl active:scale-95 group min-w-[280px]"
         >
           Explore Collection <span className="ml-3 group-hover:translate-x-1 transition-transform">→</span>
         </LocalizedClientLink>

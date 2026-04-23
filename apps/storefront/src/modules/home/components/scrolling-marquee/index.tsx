@@ -4,13 +4,8 @@ import React from "react"
 import { motion } from "framer-motion"
 
 const items = [
-  "100% Authentic Crystals",
-  "Spiritual Healing & Guidance",
   "India’s 1st ENERGISED Crystal store",
-  "Master Pragya Vijh Certified",
-  "Handcrafted with Love",
-  "Premium Energy Tools",
-  "A Sanctuary for Your Soul",
+  "Proper unpackaging video required for any claims"
 ]
 
 const ScrollingMarquee = () => {
@@ -28,10 +23,10 @@ const ScrollingMarquee = () => {
       >
         {[...items, ...items, ...items, ...items].map((item, idx) => (
           <div key={idx} className="flex items-center px-12 md:px-20">
-             <span className="text-white text-sm md:text-base font-sans tracking-[0.2em] md:tracking-[0.35em] font-bold uppercase">
-               {item}
-             </span>
-             <div className="ml-12 md:ml-20 w-2 h-2 rounded-full bg-white" />
+            <span className="text-white text-sm md:text-base font-sans tracking-[0.2em] md:tracking-[0.35em] font-bold uppercase">
+              {item}
+            </span>
+            <div className="ml-12 md:ml-20 w-2 h-2 rounded-full bg-white" />
           </div>
         ))}
       </motion.div>
