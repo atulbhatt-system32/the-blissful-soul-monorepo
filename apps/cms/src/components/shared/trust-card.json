@@ -8,11 +8,11 @@
   "attributes": {
     "title": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "description": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "image": {
       "type": "media",
