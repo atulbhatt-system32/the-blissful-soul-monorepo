@@ -1,0 +1,9 @@
+#!/usr/bin/expect -f
+set timeout 600
+set password [lindex $argv 0]
+set src [lindex $argv 1]
+set dest [lindex $argv 2]
+spawn rsync -avz -e "ssh -o StrictHostKeyChecking=no" root@187.127.148.114:$src/ $dest/
+expect "password:"
+send "$password\r"
+expect eof

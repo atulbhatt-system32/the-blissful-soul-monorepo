@@ -1,68 +1,13 @@
-"use client"
-
 import React from "react"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getServiceCategories } from "@lib/data/categories"
 
-import kundliImg from "../../../../images/service-kundli.png"
-import astrologyImg from "../../../../images/kundli-and-traot.png"
-import tarotImg from "../../../../images/service-tarot.png"
-import counselingImg from "../../../../images/service-counseling.png"
-import healingImg from "../../../../images/service-healing.png"
+const ServicesGrid = async () => {
+  const categories = await getServiceCategories()
 
-type Service = {
-  key: string
-  title: string
-  description: string
-  image: any
-  color: string
-  link: string
-}
+  if (!categories.length) return null
 
-const services: Service[] = [
-  {
-    key: "kundli",
-    title: "Kundli Reading",
-    description: "Book your Kundli reading for a detailed analysis of your birth chart and life patterns.",
-    image: kundliImg,
-    color: "bg-blue-100",
-    link: "/services/kundli",
-  },
-  {
-    key: "astrology",
-    title: "Tarot + Kundli Session",
-    description: "Book your Tarot + Kundli session for a powerful blend of intuitive guidance and astrological analysis.",
-    image: astrologyImg,
-    color: "bg-purple-100",
-    link: "/services/astrology",
-  },
-  {
-    key: "tarot",
-    title: "Tarot Session",
-    description: "Book your Tarot session for deep insights and clear guidance on your life path.",
-    image: tarotImg,
-    color: "bg-amber-100",
-    link: "/services/tarot",
-  },
-  {
-    key: "counseling",
-    title: "Psychological Counseling",
-    description: "Book your counseling session for professional support, clarity, and emotional well-being.",
-    image: counselingImg,
-    color: "bg-emerald-100",
-    link: "/services/counseling",
-  },
-  {
-    key: "healing",
-    title: "Reiki Healing",
-    description: "Book your Reiki healing session to restore balance, release blockages, and rejuvenate your energy.",
-    image: healingImg,
-    color: "bg-pink-100",
-    link: "/services/healing",
-  },
-]
-
-const ServicesGrid = () => {
   return (
     <section className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
@@ -83,52 +28,63 @@ const ServicesGrid = () => {
 
         {/* Services Flip Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {services.map((service) => (
-            <div key={service.key} className="group h-[220px] md:h-[260px] [perspective:1000px]">
-              <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                
-                {/* Front Side */}
-                <div className="absolute inset-0 h-full w-full rounded-[28px] overflow-hidden border border-black/5 shadow-md [backface-visibility:hidden]">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                    placeholder="blur"
-                  />
-                </div>
+          {categories.map((category) => {
+            const images = (category as any).product_category_images as Array<{ url: string }> | undefined
+            const imageUrl = images?.[0]?.url
+            const color = (category.metadata?.color as string) || "bg-purple-100"
+            const oneLiner = (category.metadata?.["one-liner"] as string) || category.description
 
-                {/* Back Side */}
-                <div className={`absolute inset-0 h-full w-full rounded-[28px] ${service.color} border border-[#C5A059]/20 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center gap-2 px-4 py-4 text-center`}>
-                  {/* Decorative top dots */}
-                  <div className="flex gap-1 mb-1">
-                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
-                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/30" />
-                    <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+            return (
+              <div key={category.id} className="group h-[220px] md:h-[260px] [perspective:1000px]">
+                <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+
+                  {/* Front Side */}
+                  <div className="absolute inset-0 h-full w-full rounded-[28px] overflow-hidden border border-black/5 shadow-md [backface-visibility:hidden]">
+                    {imageUrl ? (
+                      <Image
+                        src={imageUrl}
+                        alt={category.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-purple-50 flex items-center justify-center">
+                        <span className="text-4xl text-purple-300">✦</span>
+                      </div>
+                    )}
                   </div>
-                  <h3 className="text-sm md:text-base font-bold text-[#2C1E36] uppercase tracking-[0.18em] leading-tight">
-                    {service.title}
-                  </h3>
-                  <div className="w-8 h-[1px] bg-[#C5A059]/50" />
-                  <p className="text-[#665D6B] text-[12px] md:text-[13px] leading-snug font-medium max-w-[90%]">
-                    {service.description}
-                  </p>
-                  <LocalizedClientLink
-                    href={service.link}
-                    className="mt-1 px-6 py-2 bg-[#C5A059] text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/25 hover:bg-[#B38E4A] hover:shadow-xl transition-all active:scale-95"
-                  >
-                    Book Now
-                  </LocalizedClientLink>
+
+                  {/* Back Side */}
+                  <div className={`absolute inset-0 h-full w-full rounded-[28px] ${color} border border-[#C5A059]/20 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center gap-2 px-4 py-4 text-center`}>
+                    <div className="flex gap-1 mb-1">
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/30" />
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                    </div>
+                    <h3 className="text-sm md:text-base font-bold text-[#2C1E36] uppercase tracking-[0.18em] leading-tight">
+                      {category.name}
+                    </h3>
+                    <div className="w-8 h-[1px] bg-[#C5A059]/50" />
+                    <p className="text-[#665D6B] text-[12px] md:text-[13px] leading-snug font-medium max-w-[90%]">
+                      {oneLiner}
+                    </p>
+                    <LocalizedClientLink
+                      href={`/categories/${category.handle}`}
+                      className="mt-1 px-6 py-2 bg-[#C5A059] text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/25 hover:bg-[#B38E4A] hover:shadow-xl transition-all active:scale-95"
+                    >
+                      Book Now
+                    </LocalizedClientLink>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Bottom CTA */}
         <div className="text-center mt-12 md:mt-16">
           <LocalizedClientLink
-            href="/book-session"
+            href="/categories/services"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
           >
             Explore All Offerings &rarr;

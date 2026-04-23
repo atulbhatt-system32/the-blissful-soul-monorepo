@@ -1,0 +1,8 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password [lindex $argv 0]
+set command [lindex $argv 1]
+spawn ssh -o StrictHostKeyChecking=no root@187.127.148.114 $command
+expect "password:"
+send "$password\r"
+interact

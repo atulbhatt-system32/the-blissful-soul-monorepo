@@ -6,6 +6,12 @@ module.exports = defineConfig({
   admin: {
     path: '/dashboard',
   },
+  plugins: [
+    {
+      resolve: "@alphabite/medusa-category-images",
+      options: {},
+    },
+  ],
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
