@@ -293,8 +293,8 @@ jobs:
               fi
             done
 
-            echo "Reloading nginx to pick up new container IPs..."
-            docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload
+            echo "Recreating nginx to re-render template with current DOMAIN..."
+            docker compose -f docker-compose.prod.yml up -d --force-recreate nginx
 
             echo "Deployment successful."
             docker logout ghcr.io
