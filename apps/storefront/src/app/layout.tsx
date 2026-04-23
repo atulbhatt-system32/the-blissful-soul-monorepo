@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     template: "%s | The Blissful Soul",
     default: "The Blissful Soul",
   },
+  icons: {
+    icon: "/pragya-vijh-logo.png",
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
