@@ -3,12 +3,17 @@
 import React from "react"
 import { motion } from "framer-motion"
 
-const items = [
-  "India’s 1st ENERGISED Crystal store",
-  "Proper unpackaging video required for any claims"
-]
+type MarqueeItem = { id: number; text: string }
 
-const ScrollingMarquee = () => {
+interface ScrollingMarqueeProps {
+  items?: MarqueeItem[]
+}
+
+const ScrollingMarquee = ({ items }: ScrollingMarqueeProps) => {
+  const texts = items?.length ? items.map((i) => i.text) : []
+
+  if (texts.length === 0) return null
+
   return (
     <div className="bg-[#C5A059] py-4 md:py-6 overflow-hidden whitespace-nowrap flex border-y border-white/10 relative">
       <div className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-transparent to-[#C5A059] z-10 pointer-events-none opacity-40" />
@@ -21,10 +26,10 @@ const ScrollingMarquee = () => {
           ease: "linear",
         }}
       >
-        {[...items, ...items, ...items, ...items].map((item, idx) => (
+        {[...texts, ...texts, ...texts, ...texts].map((text, idx) => (
           <div key={idx} className="flex items-center px-12 md:px-20">
             <span className="text-white text-sm md:text-base font-sans tracking-[0.2em] md:tracking-[0.35em] font-bold uppercase">
-              {item}
+              {text}
             </span>
             <div className="ml-12 md:ml-20 w-2 h-2 rounded-full bg-white" />
           </div>

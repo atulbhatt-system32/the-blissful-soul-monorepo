@@ -91,7 +91,7 @@ export default async function HomeNew(props: {
       <HeroSlideshow slides={heroSlides} />
 
       {/* Moving Banner (Text Strip) */}
-      <ScrollingMarquee />
+      <ScrollingMarquee items={homepageData?.marquee_items} />
 
       {/* Trust Carousel (Intuitive, Clarify, etc.) */}
       {homepageData?.show_trust_carousel !== false && (
@@ -146,7 +146,7 @@ export default async function HomeNew(props: {
       {/* Instagram Banner */}
       {homepageData?.show_instagram !== false && (
         <InstagramBanner 
-          images={homepageData?.instagram_images} 
+          banner={homepageData?.instagram_banner} 
           handle={homepageData?.instagram_handle} 
         />
       )}

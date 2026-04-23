@@ -8,25 +8,20 @@ import Image from "next/image"
 import "swiper/css"
 import "swiper/css/pagination"
 
-import soulstrategistImg from "../../../../images/soulstrategist.jpg"
-import intuitiveImg from "../../../../images/intutive.jpg"
-import clarifyImg from "../../../../images/clarify.jpg"
-import confidentialImg from "../../../../images/confidential.jpg"
-
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-
-const defaultTrustItems = [
-  { title: "Soulstrategist", image: soulstrategistImg },
-  { title: "Intuitive",      image: intuitiveImg },
-  { title: "Clarify",        image: clarifyImg },
-  { title: "Confidential",   image: confidentialImg },
-]
 
 const TrustCarousel = ({ items }: { items?: any[] }) => {
   const displayItems = items && items.length > 0 ? items.map(item => ({
     title: item.title,
-    image: item.image?.url ? (item.image.url.startsWith('http') ? item.image.url : `${STRAPI_URL}${item.image.url}`) : null
-  })).filter(i => i.image) : defaultTrustItems
+    image: (item.image?.url || item.image?.attributes?.url || item.image?.data?.attributes?.url) 
+      ? (() => {
+          const url = item.image?.url || item.image?.attributes?.url || item.image?.data?.attributes?.url;
+          return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+        })() 
+      : null
+  })).filter(i => i.image) : []
+
+  if (displayItems.length === 0) return null
   return (
     <section className="pt-10 md:pt-14 pb-6 md:pb-10 bg-white overflow-hidden">
       <div className="content-container">

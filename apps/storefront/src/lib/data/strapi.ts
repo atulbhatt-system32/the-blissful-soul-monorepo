@@ -25,9 +25,10 @@ export interface HomepageData {
     testimonials?: any[]
     trust_cards?: any[]
     faqs?: any[]
-    ebook_section?: any
     instagram_handle?: string
-    instagram_images?: any[]
+    instagram_banner?: any
+    stats?: any[]
+    shop_by_intent_title?: string
     show_hot_sellers?: boolean
     show_featured_products?: boolean
     show_book_session?: boolean
@@ -35,7 +36,7 @@ export interface HomepageData {
     show_trust_carousel?: boolean
     show_faq?: boolean
     show_instagram?: boolean
-    show_ebook?: boolean
+    marquee_items?: Array<{ id: number; text: string }>
 }
 
 const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
@@ -131,10 +132,8 @@ export async function getHomepageData() {
                     populate: "image"
                 },
                 faqs: true,
-                ebook_section: {
-                    populate: "image"
-                },
-                instagram_images: true
+                instagram_banner: true,
+                marquee_items: true
             },
         })
 
@@ -146,8 +145,8 @@ export async function getHomepageData() {
             cache: "no-store",
         })
 
-        const data = await response.json()
-        return (data.data as HomepageData) || null
+        const json = await response.json()
+        return (json.data?.attributes || json.data || null) as HomepageData
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching homepage data:", error)
@@ -172,8 +171,8 @@ export async function getAboutPageData() {
             cache: "no-store",
         })
 
-        const data = await response.json()
-        return (data.data as any) || null
+        const json = await response.json()
+        return (json.data?.attributes || json.data || null) as any
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching about page data:", error)
@@ -196,8 +195,8 @@ export async function getContactPageData() {
             cache: "no-store",
         })
 
-        const data = await response.json()
-        return (data.data as any) || null
+        const json = await response.json()
+        return (json.data?.attributes || json.data || null) as any
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching contact page data:", error)
@@ -223,8 +222,8 @@ export async function getBookSessionPageData() {
             cache: "no-store",
         })
 
-        const data = await response.json()
-        return (data.data as any) || null
+        const json = await response.json()
+        return (json.data?.attributes || json.data || null) as any
     } catch (error: any) {
         if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
         console.error("Error fetching book session page data:", error)
