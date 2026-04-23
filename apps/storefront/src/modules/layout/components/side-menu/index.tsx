@@ -6,6 +6,7 @@ import { Text, clx, useToggleState } from "@medusajs/ui"
 import React, { Fragment, useState } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
@@ -15,7 +16,7 @@ import { useWishlist } from "@lib/context/wishlist-context"
 const SideMenuItems = {
   Home: "/",
   "About Master": "/about",
-  "Book Your Session": "/book-session",
+  "Sacred Services": "/#sacred-services",
   "Shop Crystals": "/store",
   Cart: "/cart",
   Wishlist: "/wishlist",
@@ -94,7 +95,30 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                   >
                     <DialogPanel className="pointer-events-auto w-screen max-w-[400px]">
                       <div className="flex h-full flex-col bg-[#1a0f21] px-10 pt-16 pb-8 shadow-2xl">
-                        <div className="flex items-center justify-end mb-8 pr-2">
+                        <div className="flex items-center justify-between mb-8 pr-2">
+                          <LocalizedClientLink
+                            href="/"
+                            className="flex items-center gap-x-3 group"
+                            onClick={closePopup}
+                          >
+                            <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
+                              <Image
+                                src="/pragya-vijh-logo.png"
+                                alt="Pragya Vijh"
+                                fill
+                                className="object-contain"
+                              />
+                            </div>
+                            <div className="flex flex-col items-start min-w-0">
+                              <span className="font-serif text-lg text-white leading-tight font-semibold truncate">
+                                Pragya Vijh
+                              </span>
+                              <span className="text-[7px] text-[#C5A059] uppercase tracking-[0.25em] font-sans font-semibold mt-0 whitespace-nowrap">
+                                HEALING & CRYSTALS
+                              </span>
+                            </div>
+                          </LocalizedClientLink>
+
                           <button
                             type="button"
                             className="text-[#C5A059] hover:rotate-90 transition-transform duration-300 p-2.5 outline-none bg-white/5 rounded-full hover:bg-white/10"
@@ -113,7 +137,17 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                                 href={href}
                                 className="group relative text-lg md:text-xl font-serif text-white/70 hover:text-[#C5A059] transition-all duration-300 ease-out block py-3.5 px-4 rounded-lg tracking-[0.08em] hover:bg-white/[0.04] border-l-2 border-transparent hover:border-[#C5A059]"
                                 activeClassName="!text-[#C5A059] !border-[#C5A059] bg-white/[0.04] font-medium"
-                                onClick={closePopup}
+                                onClick={(e) => {
+                                  closePopup()
+                                  if (href.startsWith("/#")) {
+                                    const id = href.split("#")[1]
+                                    const element = document.getElementById(id)
+                                    if (element) {
+                                      e.preventDefault()
+                                      element.scrollIntoView({ behavior: "smooth" })
+                                    }
+                                  }
+                                }}
                                 data-testid={`${name.toLowerCase()}-link`}
                                 style={{ animationDelay: `${index * 50}ms` }}
                               >

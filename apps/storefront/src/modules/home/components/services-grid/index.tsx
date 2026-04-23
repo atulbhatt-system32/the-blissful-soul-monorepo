@@ -9,7 +9,7 @@ const ServicesGrid = async () => {
   if (!categories.length) return null
 
   return (
-    <section className="py-14 md:py-20 bg-white relative overflow-hidden">
+    <section id="sacred-services" className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
         {/* Section heading */}
         <div className="text-center mb-10 md:mb-14">
