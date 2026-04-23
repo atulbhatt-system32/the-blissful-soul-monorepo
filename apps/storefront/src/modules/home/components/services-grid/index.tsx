@@ -69,7 +69,7 @@ const ServicesGrid = async () => {
                       {oneLiner}
                     </p>
                     <LocalizedClientLink
-                      href={`/categories/${category.handle}`}
+                      href={`/services/${category.handle}`}
                       className="mt-1 px-6 py-2 bg-[#C5A059] text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/25 hover:bg-[#B38E4A] hover:shadow-xl transition-all active:scale-95"
                     >
                       Book Now
@@ -84,7 +84,7 @@ const ServicesGrid = async () => {
         {/* Bottom CTA */}
         <div className="text-center mt-12 md:mt-16">
           <LocalizedClientLink
-            href="/categories/services"
+            href="/store"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
           >
             Explore All Offerings &rarr;
