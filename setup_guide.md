@@ -50,7 +50,7 @@ docker-compose exec cms npx strapi admin:create-user --email admin@theblisfulsou
 ---
 
 ## Step 3: Get your Token & Configure the Store!
-1.  **Login to Medusa**: Go to [http://localhost:9000/app](http://localhost:9000/app) ⚙️
+1.  **Login to Medusa**: Go to [http://localhost:9000/dashboard](http://localhost:9000/dashboard) ⚙️
 2.  **Login to Strapi**: Go to [http://localhost:1337/admin](http://localhost:1337/admin) 🚀
 3.  **Credentials**: `admin@theblisfulsoul.in` / `BlissfulSoul@123` (Same for both).
 4.  **Add Store Currencies**: Go to **Settings > Store**. By default, it might be in Euros (EUR/USD). Edit the store settings to add your desired currency (e.g., `INR` - Indian Rupee) to the list of available currencies and save. *(See detailed guide: [Currency Setup Guide](./docs/currency_setup_guide.md))*

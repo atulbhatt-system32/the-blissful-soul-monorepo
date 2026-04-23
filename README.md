@@ -72,7 +72,7 @@ For a complete, step-by-step walkthrough — including environment variables, ad
     ```bash
     docker-compose up -d --build
     ```
-4.  **Backend Console**: Access the Medusa admin at `http://localhost:9000/app`.
+4.  **Backend Console**: Access the Medusa admin at `http://localhost:9000/dashboard`.
 5.  **Storefront**: Access the development site at `http://localhost:8001`.
 
 > For post-startup configuration (store currencies, regions, API keys, Razorpay webhooks, etc.), follow the [Setup Guide](./setup_guide.md) from Step 2 onwards.
