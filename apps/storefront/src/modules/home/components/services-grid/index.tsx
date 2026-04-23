@@ -26,7 +26,7 @@ const services: Service[] = [
     description: "Book your Kundli reading for a detailed analysis of your birth chart and life patterns.",
     image: kundliImg,
     color: "bg-blue-100",
-    link: "/book-session",
+    link: "/services/kundli",
   },
   {
     key: "astrology",
@@ -34,7 +34,7 @@ const services: Service[] = [
     description: "Book your Tarot + Kundli session for a powerful blend of intuitive guidance and astrological analysis.",
     image: astrologyImg,
     color: "bg-purple-100",
-    link: "/book-session",
+    link: "/services/astrology",
   },
   {
     key: "tarot",
@@ -42,7 +42,7 @@ const services: Service[] = [
     description: "Book your Tarot session for deep insights and clear guidance on your life path.",
     image: tarotImg,
     color: "bg-amber-100",
-    link: "/book-session",
+    link: "/services/tarot",
   },
   {
     key: "counseling",
@@ -50,7 +50,7 @@ const services: Service[] = [
     description: "Book your counseling session for professional support, clarity, and emotional well-being.",
     image: counselingImg,
     color: "bg-emerald-100",
-    link: "/book-session",
+    link: "/services/counseling",
   },
   {
     key: "healing",
@@ -58,7 +58,7 @@ const services: Service[] = [
     description: "Book your Reiki healing session to restore balance, release blockages, and rejuvenate your energy.",
     image: healingImg,
     color: "bg-pink-100",
-    link: "/book-session",
+    link: "/services/healing",
   },
 ]
 

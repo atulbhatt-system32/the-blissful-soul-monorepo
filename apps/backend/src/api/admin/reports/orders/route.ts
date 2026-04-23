@@ -1,5 +1,67 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
+// HSN/SAC Code Mapping (same as invoice.ts)
+const HSN_MAPPING: Record<string, string> = {
+  "kundli": "998611",
+  "astrology": "998611",
+  "tarot": "9983",
+  "counseling": "998631",
+  "healing": "998631",
+  "session": "998611",
+  "reading": "998611",
+  "consultation": "998631",
+  "crystal": "7103",
+  "gemstone": "7103",
+  "jewelry": "7103",
+  "book": "4901",
+  "incense": "3307",
+  "candle": "3406",
+  "yoga": "9506",
+  "meditation": "9506",
+}
+
+function getHSNCode(title: string, handle: string): string {
+  const searchTerms = [title.toLowerCase(), handle.toLowerCase()]
+  
+  for (const term of searchTerms) {
+    if (term.includes("kundli") || term.includes("astrology") || term.includes("birth chart")) {
+      return HSN_MAPPING["kundli"]
+    }
+    if (term.includes("tarot")) {
+      return HSN_MAPPING["tarot"]
+    }
+    if (term.includes("counseling") || term.includes("therapy") || term.includes("psychological")) {
+      return HSN_MAPPING["counseling"]
+    }
+    if (term.includes("healing") || term.includes("reiki") || term.includes("energy")) {
+      return HSN_MAPPING["healing"]
+    }
+    if (term.includes("session") || term.includes("reading") || term.includes("consultation")) {
+      return HSN_MAPPING["session"]
+    }
+    if (term.includes("crystal") || term.includes("stone")) {
+      return HSN_MAPPING["crystal"]
+    }
+    if (term.includes("gem")) {
+      return HSN_MAPPING["gemstone"]
+    }
+    if (term.includes("jewelry") || term.includes("pendant") || term.includes("ring")) {
+      return HSN_MAPPING["jewelry"]
+    }
+    if (term.includes("book")) {
+      return HSN_MAPPING["book"]
+    }
+    if (term.includes("incense") || term.includes("agarbatti")) {
+      return HSN_MAPPING["incense"]
+    }
+    if (term.includes("candle")) {
+      return HSN_MAPPING["candle"]
+    }
+  }
+  
+  return "998611"
+}
+
 function computeNetTotal(order: any): number {
   let item_subtotal = 0
   let item_discounts = 0
@@ -98,6 +160,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "Product(s)",
       "Items sold",
       "Coupon(s)",
+      "HSN Code",
       "Net Sales",
     ]
 
@@ -127,6 +190,12 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           .filter(Boolean)
           .join(", ")
 
+        // Get HSN codes for all items
+        const hsnCodes = (order.items || [])
+          .map((item: any) => getHSNCode(item.title || "", item.handle || ""))
+          .filter((code, index, arr) => arr.indexOf(code) === index) // unique codes
+          .join(", ")
+
         return [
           new Date(order.created_at).toISOString().replace("T", " ").substring(0, 19),
           String(order.display_id),
@@ -137,6 +206,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           products,
           String(itemCount),
           coupons,
+          hsnCodes,
           netInRupees.toFixed(2),
         ].map(escapeCSV)
       })

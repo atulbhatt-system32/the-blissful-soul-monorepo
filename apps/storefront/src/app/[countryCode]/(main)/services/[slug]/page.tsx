@@ -8,13 +8,13 @@ const serviceData: Record<string, {
   title: string
   description: string
   images: string[]
-  packages: {
+  packages: Array<{
     name: string
     features: string[]
     price: string
     duration: string
     isUrgent?: boolean
-  }[]
+  }>
 }> = {
   "kundli": {
     title: "Kundli Reading",
