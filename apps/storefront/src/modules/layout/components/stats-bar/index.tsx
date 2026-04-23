@@ -92,7 +92,7 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
       {/* Dark Stats Section */}
       <section className="bg-[#120B15] py-16 md:py-20 text-white text-center">
         <div className="content-container flex flex-col items-center">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 md:gap-24 w-full">
+          <div className="grid grid-cols-3 gap-x-4 md:gap-24 w-full">
             {data.map((stat, idx) => (
               <motion.div
                 key={idx}
@@ -101,10 +101,10 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
                 transition={{ duration: 0.8, delay: idx * 0.1 }}
                 className="flex flex-col items-center gap-y-3"
               >
-                <span className="text-[32px] md:text-[48px] font-serif font-semibold text-[#C5A059] tracking-tight leading-none">
+                <span className="text-[22px] md:text-[48px] font-serif font-semibold text-[#C5A059] tracking-tight leading-none">
                   <AnimatedNumber value={stat.value} inView={isVisible} />
                 </span>
-                <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] font-medium text-white/40 px-2 font-sans text-center">
+                <span className="text-[7px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.5em] font-medium text-white/40 px-1 font-sans text-center">
                   {stat.label}
                 </span>
               </motion.div>
