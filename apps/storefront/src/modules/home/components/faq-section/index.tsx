@@ -3,36 +3,11 @@
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const defaultFaqs = [
-  {
-    question: "Can I talk to Pragya Vijh?",
-    answer: "Absolutely yes. Once you have booked an appointment with Master Pragya, you can speak to her directly during your session."
-  },
-  {
-    question: "What services do you provide?",
-    answer: "We offer five types of services: Tarot Reading, Kundli Reading, Counseling, Healing, and combined Kundli & Tarot Sessions."
-  },
-  {
-    question: "What is the duration of the sessions?",
-    answer: "The duration depends on the type of service you choose."
-  },
-  {
-    question: "Can I meet you in person?",
-    answer: "Definitely, you can visit us at our office premises in Delhi."
-  },
-  {
-    question: "How do I book a session?",
-    answer: "You can go to the \"Sacred Services\" section, choose your preferred service and time slot, and proceed with the payment."
-  },
-  {
-    question: "Do you sell crystals?",
-    answer: "Yes, we offer properly energized crystals, available on our website under Blissful Soul Studio."
-  }
-]
-
 const FAQSection = ({ items }: { items?: any[] }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const displayFaqs = items && items.length > 0 ? items : defaultFaqs
+  const displayFaqs = items && items.length > 0 ? items : []
+
+  if (displayFaqs.length === 0) return null
 
   return (
     <section className="py-24 bg-white">

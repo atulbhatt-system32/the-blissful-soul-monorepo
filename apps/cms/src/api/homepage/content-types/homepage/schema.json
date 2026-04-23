@@ -102,17 +102,13 @@
       "component": "shared.faq-item",
       "repeatable": true
     },
-    "ebook_section": {
-      "type": "component",
-      "component": "shared.ebook-section",
-      "repeatable": false
-    },
+
     "instagram_handle": {
       "type": "string"
     },
-    "instagram_images": {
+    "instagram_banner": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "allowedTypes": [
         "images"
       ]
@@ -137,12 +133,14 @@
       "type": "boolean",
       "default": true
     },
-    "show_ebook": {
-      "type": "boolean",
-      "default": true
-    },
+
     "show_featured_products": {
       "type": "boolean"
+    },
+    "marquee_items": {
+      "type": "component",
+      "component": "shared.marquee-item",
+      "repeatable": true
     }
   }
 }

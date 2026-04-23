@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_marquee_items",
+  "info": {
+    "displayName": "Marquee Item",
+    "description": "A single text item for the scrolling marquee banner",
+    "icon": "text"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
