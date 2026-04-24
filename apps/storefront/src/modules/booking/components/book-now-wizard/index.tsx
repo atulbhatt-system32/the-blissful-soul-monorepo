@@ -68,16 +68,22 @@ export default function BookNowClient({
 
   // Set category if initialServiceId is provided
   useEffect(() => {
-    if (initialServiceId) {
+    if (initialServiceId && products.length > 0 && categories.length > 0) {
       const prod = products.find((p) => p.id === initialServiceId)
-      if (prod && prod.categories && prod.categories.length > 0) {
-        setSelectedCategory(prod.categories[0].id)
+      if (prod && prod.categories) {
+        // Find which of the product's categories is in our "Services" list
+        const matchingCat = prod.categories.find((pc: any) => 
+          categories.some((c) => c.id === pc.id)
+        )
+        if (matchingCat) {
+          setSelectedCategory(matchingCat.id)
+        }
       }
     } else if (categories.length > 0 && !selectedCategory) {
-      // Auto-select first category if none
+      // Auto-select first category if none and we don't have an initial service
       setSelectedCategory(categories[0].id)
     }
-  }, [initialServiceId, products, categories])
+  }, [initialServiceId, products, categories, selectedCategory])
 
   // Fetch real slots from Cal.com when date changes
   useEffect(() => {
@@ -247,27 +253,16 @@ export default function BookNowClient({
               </select>
             </div>
 
-            {/* Date */}
-            {!isPackage && (
-              <div>
-                <label className="block text-[#2C1E36] text-sm font-bold mb-2">I'm available on or after</label>
-                <input 
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  min={new Date().toISOString().split("T")[0]}
-                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
-                />
-              </div>
-            )}
+            {/* Date Picker Removed from Step 1 as requested - use Step 2 for scheduling */}
 
           </div>
           
           {/* Session Configuration warning removed as per user request (logic moved to handles) */}
-
-          <p className="text-xs text-gray-400 mb-6">
-            This is a non-cancellable and non-refundable session.
-          </p>
+          <div className="mt-4 mb-8">
+            <p className="text-[11px] text-gray-400 italic">
+              This is a non-cancellable and non-refundable {isPackage ? "package" : "session"}.
+            </p>
+          </div>
 
           <div className="flex justify-start">
             <button
@@ -351,6 +346,31 @@ export default function BookNowClient({
       {/* STEP 3: DETAILS */}
       {currentStep === 3 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
+          <div className="bg-[#2C1E36]/5 p-4 rounded-lg mb-8 border border-[#2C1E36]/10">
+            <p className="text-[10px] uppercase tracking-widest text-[#2C1E36]/60 mb-1 font-bold">Booking Details</p>
+            <div className="flex justify-between items-center gap-4">
+              <h4 className="text-base md:text-lg font-serif text-[#2C1E36] font-bold leading-tight">
+                {serviceObj?.title}
+                {selectedVariant && serviceObj?.variants?.find((v: any) => v.id === selectedVariant)?.title !== "Default Variant" && 
+                  ` (${serviceObj?.variants?.find((v: any) => v.id === selectedVariant)?.title})`
+                }
+              </h4>
+              <span className="text-[#2C1E36] font-bold whitespace-nowrap">
+                {(() => {
+                  const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
+                  const price = variantObj?.calculated_price
+                  const priceStr = typeof price === 'string' ? price : (price as any)?.calculated_amount != null ? String((price as any).calculated_amount) : null
+                  return priceStr || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
+                })()}
+              </span>
+            </div>
+            {!isPackage && selectedDate && selectedTime && (
+              <p className="text-[11px] text-[#2C1E36]/60 mt-2 font-medium">
+                Scheduled for: {new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at {selectedTime}
+              </p>
+            )}
+          </div>
+
           <h3 className="text-xl font-serif text-gray-800 mb-2 text-center">
             {isPackage ? "Where should we send your receipt?" : "Your Details"}
           </h3>
@@ -360,44 +380,54 @@ export default function BookNowClient({
           <div className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-600 text-sm mb-1">First Name *</label>
+                <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">First Name *</label>
                 <input 
                   type="text" 
+                  placeholder="John"
                   value={details.firstName}
                   onChange={(e) => setDetails({...details, firstName: e.target.value})}
-                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
+                  className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
                 />
               </div>
               <div>
-                <label className="block text-gray-600 text-sm mb-1">Last Name *</label>
+                <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">Last Name *</label>
                 <input 
                   type="text" 
+                  placeholder="Doe"
                   value={details.lastName}
                   onChange={(e) => setDetails({...details, lastName: e.target.value})}
-                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
+                  className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
                 />
               </div>
             </div>
             
             <div>
-              <label className="block text-gray-600 text-sm mb-1">Email *</label>
+              <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">Email Address *</label>
               <input 
                 type="email" 
+                placeholder="john@example.com"
                 value={details.email}
                 onChange={(e) => setDetails({...details, email: e.target.value})}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
+                className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
               />
             </div>
             
             <div>
-              <label className="block text-gray-600 text-sm mb-1">Phone *</label>
+              <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">Phone Number *</label>
               <input 
                 type="tel" 
+                placeholder="+91 00000 00000"
                 value={details.phone}
                 onChange={(e) => setDetails({...details, phone: e.target.value})}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30"
+                className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
               />
             </div>
+          </div>
+
+          <div className="mb-8 pt-4 border-t border-gray-50">
+            <p className="text-[11px] text-gray-400 text-center italic leading-relaxed">
+              This is a non-cancellable and non-refundable {isPackage ? "package" : "session"}. By proceeding, you agree to our terms of service.
+            </p>
           </div>
 
           <div className="flex justify-between">
