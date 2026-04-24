@@ -27,7 +27,7 @@ const TrustCarousel = ({ items }: { items?: any[] }) => {
       <div className="content-container">
         <Swiper
           modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
           pagination={{
             clickable: true,
             el: '.trust-pagination',
