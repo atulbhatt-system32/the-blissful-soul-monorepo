@@ -32,7 +32,7 @@ const intentConfig = [
   {
     key: "protection",
     label: "NAZAR/EVIL EYE",
-    id: "collection-protection",
+    id: "collection-nazar",
     image: nazarImg,
     color: "#000000",
     gradient: "from-neutral-800 to-black",

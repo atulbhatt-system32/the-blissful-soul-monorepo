@@ -44,23 +44,16 @@ export default async function Nav() {
               {/* Logo image (visible on all screens now) */}
               <div className="relative w-14 h-14 md:w-16 md:h-16 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/pragya-vijh-logo.png"
+                  src="/logo-main.png"
                   alt="Pragya Vijh"
                   fill
                   className="object-contain"
                   priority
+                  unoptimized
                 />
               </div>
 
-              {/* Text content */}
-              <div className="flex flex-col items-start min-w-0">
-                <span className="font-serif text-lg md:text-2xl text-primary leading-tight font-semibold truncate">
-                  Pragya Vijh
-                </span>
-                <span className="text-[7px] md:text-[9px] text-[#C5A059] uppercase tracking-[0.25em] font-sans font-semibold mt-0 whitespace-nowrap">
-                  HEALING & CRYSTALS
-                </span>
-              </div>
+
             </LocalizedClientLink>
           </div>
 
