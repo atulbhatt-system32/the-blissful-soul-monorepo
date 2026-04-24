@@ -84,11 +84,11 @@ const ShopByIntentClient = ({
   }
 
   return (
-    <section className="pt-12 md:pt-20 pb-20 md:pb-32 bg-[#FAF9F6]">
+    <section className="pt-8 md:pt-12 pb-16 md:pb-24 bg-[#FAF9F6]">
       <div className="content-container">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-24">
-          <h2 className="text-3xl md:text-5xl font-serif text-[#2C1E36] mb-5 tracking-tight leading-tight">
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-serif text-[#2C1E36] mb-4 tracking-tight leading-tight">
             What’s troubling you ??
           </h2>
           <div className="flex items-center justify-center gap-3">
@@ -98,12 +98,18 @@ const ShopByIntentClient = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          {intentConfig.map((cfg) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          {intents.map((intent) => {
+            const cfg = intentConfig.find(c => 
+              intent.handle?.includes(c.key) || 
+              intent.title?.toLowerCase().includes(c.key)
+            ) || intentConfig[0] // fallback to first one if no match
+
+            return (
             <motion.button
-              key={cfg.key}
-              onClick={() => scrollToSection(cfg.id)}
-              onHoverStart={() => setHoveredKey(cfg.key)}
+              key={intent.key || intent.id}
+              onClick={() => scrollToSection(intent.handle || intent.id)}
+              onHoverStart={() => setHoveredKey(intent.handle || intent.key)}
               onHoverEnd={() => setHoveredKey(null)}
               className="group relative flex flex-col items-center p-1 rounded-[40px] transition-all duration-700 ease-in-out w-full mx-auto"
               whileHover={{ y: -8 }}
@@ -185,7 +191,8 @@ const ShopByIntentClient = ({
                 )}
               />
             </motion.button>
-          ))}
+          )
+        })}
         </div>
       </div>
     </section>
