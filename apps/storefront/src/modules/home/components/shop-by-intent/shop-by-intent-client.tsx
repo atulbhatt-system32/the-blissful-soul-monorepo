@@ -98,7 +98,7 @@ const ShopByIntentClient = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {intents.map((intent) => {
             const cfg = intentConfig.find(c =>
               intent.handle?.includes(c.key) ||
@@ -107,22 +107,35 @@ const ShopByIntentClient = ({
 
             return (
               <motion.button
-                key={intent.key || intent.id}
+                key={intent.handle || intent.id}
                 onClick={() => scrollToSection(intent.handle || intent.id)}
                 onHoverStart={() => setHoveredKey(intent.handle || intent.key)}
                 onHoverEnd={() => setHoveredKey(null)}
                 className="group relative flex flex-col items-center p-1 rounded-[40px] transition-all duration-700 ease-in-out w-full mx-auto"
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ y: 0 }}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: false, margin: "-10% 0px -75% 0px" }}
               >
                 {/* Main Card Surface */}
-                <div className="relative w-full h-full p-4 md:p-8 rounded-[24px] md:rounded-[32px] bg-white border border-[#2C1E36]/5 overflow-hidden shadow-sm md:hover:shadow-xl transition-all duration-500">
-                  {/* Background Layer */}
+                <div className="relative w-full h-full p-5 md:p-8 rounded-[24px] md:rounded-[32px] bg-white border border-[#2C1E36]/5 overflow-hidden shadow-sm md:hover:shadow-xl transition-all duration-500 min-h-[260px] md:min-h-[420px] flex flex-col justify-center">
+                  
+                  {/* Mobile Reveal Background (Animate on Scroll) */}
+                  <motion.div
+                    variants={{
+                      initial: { opacity: 0 },
+                      animate: { opacity: 1 }
+                    }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className={clx(
+                      "absolute inset-0 bg-gradient-to-br md:hidden",
+                      cfg.gradient
+                    )}
+                  />
+
+                  {/* Desktop Hover Background */}
                   <div
                     className={clx(
-                      "absolute inset-0 bg-gradient-to-br transition-opacity duration-500",
-                      "opacity-100 md:opacity-0 md:group-hover:opacity-100",
+                      "absolute inset-0 bg-gradient-to-br hidden md:block transition-opacity duration-500 opacity-0 group-hover:opacity-100",
                       cfg.gradient
                     )}
                   />
@@ -130,14 +143,14 @@ const ShopByIntentClient = ({
                   {/* Content Wrapper */}
                   <div className="relative z-10 flex flex-col items-center">
                     {/* Image with Decorative Frame */}
-                    <div className="relative w-full aspect-square mb-4 md:mb-8">
+                    <div className="relative w-20 h-20 md:w-48 md:h-48 mb-4 md:mb-8">
                       <div
                         className={clx(
-                          "absolute -inset-1 rounded-[16px] md:rounded-[24px] border transition-colors duration-500",
+                          "absolute -inset-1 rounded-[24px] md:rounded-[32px] border transition-colors duration-500",
                           "border-white/20 md:border-[#2C1E36]/5 md:group-hover:border-white/20"
                         )}
                       />
-                      <div className="relative h-full w-full overflow-hidden rounded-[12px] md:rounded-[20px] shadow-sm">
+                      <div className="relative h-full w-full overflow-hidden rounded-[20px] md:rounded-[28px] shadow-sm bg-[#F3EFE7] flex items-center justify-center p-4 md:p-8">
                         <motion.div
                           className="h-full w-full"
                           whileHover={{ scale: 1.1 }}
@@ -155,36 +168,54 @@ const ShopByIntentClient = ({
                       </div>
                     </div>
 
-                    <h3 className={clx(
-                      "text-lg md:text-3xl font-serif font-medium tracking-tight mb-2 md:mb-3 transition-colors duration-500",
-                      cfg.key === "health"
-                        ? "text-[#2C1E36]"
-                        : "text-white md:text-[#2C1E36] md:group-hover:text-white"
-                    )}>
+                    <motion.h3 
+                      variants={{
+                        initial: { color: "#2C1E36" },
+                        animate: { color: cfg.key === "health" ? "#2C1E36" : "#FFFFFF" }
+                      }}
+                      className={clx(
+                        "text-2xl md:text-3xl font-serif font-medium tracking-tight mb-2 md:mb-3 transition-colors duration-500",
+                        "md:text-[#2C1E36] md:group-hover:text-white",
+                        cfg.key === "health" && "md:group-hover:text-[#2C1E36]"
+                      )}
+                    >
                       {cfg.label}
-                    </h3>
+                    </motion.h3>
 
                     {/* Explore Text */}
-                    <div className={clx(
-                      "flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500",
-                      "opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-y-0 md:translate-y-2",
-                      cfg.key === "health"
-                        ? "text-[#2C1E36]"
-                        : "text-white md:text-[#2C1E36] md:group-hover:text-white"
-                    )}>
+                    <motion.div 
+                      variants={{
+                        initial: { opacity: 0, y: 10, color: "#2C1E36" },
+                        animate: { 
+                          opacity: 1, 
+                          y: 0, 
+                          color: cfg.key === "health" ? "#2C1E36" : "#FFFFFF" 
+                        }
+                      }}
+                      className={clx(
+                        "flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500",
+                        "md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-y-0 md:translate-y-2",
+                        "md:text-[#2C1E36] md:group-hover:text-white",
+                        cfg.key === "health" && "md:group-hover:text-[#2C1E36]"
+                      )}
+                    >
                       <span>Explore</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
 
                 {/* Reflection/Shadow under card */}
-                <div
+                <motion.div 
+                  variants={{
+                    initial: { opacity: 0 },
+                    animate: { opacity: 0.3 }
+                  }}
                   className={clx(
                     "mt-4 h-1 w-1/2 rounded-full blur-md transition-opacity duration-500",
-                    "opacity-30 md:opacity-0 md:group-hover:opacity-30",
+                    "md:opacity-0 md:group-hover:opacity-30",
                     cfg.key === "money" ? "bg-green-400" :
                       cfg.key === "love" ? "bg-rose-400" :
                         cfg.key === "health" ? "bg-yellow-400" : "bg-black"
