@@ -30,11 +30,12 @@ export default function CheckoutLayout({
               data-testid="store-link"
             >
               <Image
-                src="/pragya-vijh-logo.png"
+                src="/logo-main.png"
                 alt="Pragya Vijh"
                 width={180}
                 height={60}
                 className="h-10 w-auto md:h-12"
+                unoptimized
               />
             </LocalizedClientLink>
           </div>

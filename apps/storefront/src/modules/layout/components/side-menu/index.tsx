@@ -103,20 +103,14 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                           >
                             <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
                               <Image
-                                src="/pragya-vijh-logo.png"
+                                src="/logo-main.png"
                                 alt="Pragya Vijh"
                                 fill
                                 className="object-contain"
+                                unoptimized
                               />
                             </div>
-                            <div className="flex flex-col items-start min-w-0">
-                              <span className="font-serif text-lg text-white leading-tight font-semibold truncate">
-                                Pragya Vijh
-                              </span>
-                              <span className="text-[7px] text-[#C5A059] uppercase tracking-[0.25em] font-sans font-semibold mt-0 whitespace-nowrap">
-                                HEALING & CRYSTALS
-                              </span>
-                            </div>
+
                           </LocalizedClientLink>
 
                           <button
