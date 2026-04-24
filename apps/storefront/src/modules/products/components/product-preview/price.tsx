@@ -14,7 +14,7 @@ export default function PreviewPrice({ price }: { price: VariantPrice }) {
             {price.original_price}
           </span>
         )}
-        <span className={clx("text-sm md:text-base font-bold whitespace-nowrap", {
+        <span className={clx("text-base md:text-xl font-extrabold whitespace-nowrap", {
           "text-[#C5A059]": price.price_type === "sale",
           "text-[#2C1E36]": price.price_type !== "sale",
         })}>

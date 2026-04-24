@@ -276,7 +276,7 @@ export default function ProductPreview({
 
             <div className="p-3 md:p-6 flex flex-col items-center text-center w-full">
               <div className="h-[32px] md:h-[54px] flex items-center justify-center mb-1 md:mb-4 w-full">
-                <Text className="font-serif text-[#2C1E36] text-[13px] md:text-[22px] group-hover:text-[#C5A059] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-medium" data-testid="product-title">
+                <Text className="font-serif text-[#0A0A0A] text-[17px] md:text-[27px] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-bold" data-testid="product-title">
                   {product.title}
                 </Text>
               </div>
@@ -311,7 +311,7 @@ export default function ProductPreview({
 
                 {/* Session Duration (Metadata) */}
                 {!!displayDuration && (
-                  <div className="flex items-center gap-x-1 md:gap-x-2 text-[#665D6B] text-[8px] md:text-[11px] font-bold tracking-[0.05em] uppercase bg-[#F5F4F0] px-2 md:px-4 py-1 md:py-1.5 rounded-full border border-[#2C1E36]/5">
+                  <div className="flex items-center gap-x-1 md:gap-x-2 text-[#665D6B] text-[10px] md:text-[13px] font-extrabold tracking-[0.05em] uppercase bg-[#F5F4F0] px-2 md:px-4 py-1 md:py-1.5 rounded-full border border-[#2C1E36]/5">
                     <Clock className="text-[#C5A059] w-2.5 md:w-3.5 h-2.5 md:h-3.5" />
                      <span>{String(displayDuration)}</span>
                   </div>
