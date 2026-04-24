@@ -138,13 +138,18 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
         </div>
         
         <div className="mt-12 text-center">
-           <LocalizedClientLink href="/contact" className="inline-flex items-center gap-3 px-10 py-5 bg-[#2C1E36] text-white rounded-full text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl shadow-[#2C1E36]/20 group">
+           <a 
+             href="https://search.google.com/local/writereview?placeid=ChIJS_HxOGgDDTkR3wv8wsslNLY" 
+             target="_blank"
+             rel="noopener noreferrer"
+             className="inline-flex items-center gap-3 px-10 py-5 bg-[#2C1E36] text-white rounded-full text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl shadow-[#2C1E36]/20 group"
+           >
               Share Your Journey
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
-           </LocalizedClientLink>
+           </a>
         </div>
       </div>
 
