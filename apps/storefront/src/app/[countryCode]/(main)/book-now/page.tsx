@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { getRegion } from "@lib/data/regions"
 import { listProducts } from "@lib/data/products"
-import { listCategories } from "@lib/data/categories"
+import { listCategories, getServiceCategories } from "@lib/data/categories"
 import BookNowClient from "@modules/booking/components/book-now-wizard"
 import { retrieveCustomer } from "@lib/data/customer"
 
@@ -27,9 +27,8 @@ export default async function BookNowPage(props: {
     return null
   }
 
-  // Fetch Categories
-  const categoriesUrl = await listCategories({ fields: "id,name,handle" })
-  const categories = categoriesUrl || []
+  // Fetch Categories (only those under the "Services" parent)
+  const categories = await getServiceCategories()
   
   // Fetch a base list of session products (all products that are sessions)
   // We can just fetch all products for now, or filter by a specific category if needed

@@ -41,10 +41,7 @@ export default function BookNowClient({
 }: BookNowProps) {
   // Determine if initial service is a package to skip Steps 1 & 2
   const initialServiceObj = products.find((p) => p.id === (initialServiceId || ""))
-  const isInitialPackage = initialServiceObj?.title?.toLowerCase().includes("package") || 
-                           initialServiceObj?.title?.toLowerCase().includes("days") || 
-                           initialServiceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package") ||
-                           initialServiceObj?.categories?.some((c: any) => c.name?.toLowerCase().includes("package") || c.handle?.toLowerCase().includes("package"))
+  const isInitialPackage = initialServiceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package")
 
   const [currentStep, setCurrentStep] = useState(isInitialPackage ? 3 : 1)
 
@@ -120,10 +117,7 @@ export default function BookNowClient({
 
   // Selected Service details
   const serviceObj = products.find((p) => p.id === selectedService)
-  const isPackage = serviceObj?.title?.toLowerCase().includes("package") || 
-                    serviceObj?.title?.toLowerCase().includes("days") || 
-                    serviceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package") ||
-                    serviceObj?.categories?.some((c: any) => c.name?.toLowerCase().includes("package") || c.handle?.toLowerCase().includes("package"))
+  const isPackage = serviceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package")
 
   const handleNext = () => {
     if (currentStep === 1 && isPackage) {
