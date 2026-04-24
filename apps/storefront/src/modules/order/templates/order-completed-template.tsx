@@ -9,7 +9,6 @@ import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
 import SessionBooking from "@modules/order/components/session-booking"
-import GuestAutoRegister from "@modules/order/components/guest-auto-register"
 import { retrieveCustomer } from "@lib/data/customer"
 
 type OrderCompletedTemplateProps = {
@@ -63,13 +62,6 @@ export default async function OrderCompletedTemplate({
       <div className="content-container flex flex-col justify-center items-center gap-y-16 max-w-4xl h-full w-full relative z-10">
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         
-        {!customer && (
-          <GuestAutoRegister 
-            email={order.email || ""} 
-            firstName={order.shipping_address?.first_name || ""} 
-            lastName={order.shipping_address?.last_name || ""}
-          />
-        )}
 
         <div className="flex flex-col items-center text-center gap-y-8 animate-in fade-in slide-in-from-top-12 duration-1000">
            <div className="relative">

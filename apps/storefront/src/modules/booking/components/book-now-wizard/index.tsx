@@ -5,7 +5,6 @@ import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
 import { fetchAvailableSlots } from "@lib/data/calcom"
-import GuestAutoRegister from "@modules/order/components/guest-auto-register"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type BookNowProps = {
@@ -529,15 +528,6 @@ export default function BookNowClient({
             </div>
           )}
 
-          {!customer && (
-            <div className="mt-8 pt-6 border-t border-gray-100">
-              <GuestAutoRegister 
-                email={details.email} 
-                firstName={details.firstName} 
-                lastName={details.lastName}
-              />
-            </div>
-          )}
         </div>
       )}
 

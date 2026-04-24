@@ -120,8 +120,9 @@ export default function MedusaCheckoutPayment({
                   bookingTime: isPackage ? "To be scheduled" : time,
                   price: price,
                   calBookingId,
-                  calMeetUrl, // Added meeting URL
-                  eventSlug, // Pass the event slug for rescheduling
+                  calMeetUrl,
+                  eventSlug,
+                  isPackage,
                 }),
               })
               console.log("Confirmation email triggered.")

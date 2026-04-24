@@ -16,6 +16,7 @@ type BookingOrderPayload = {
   calBookingId: string
   calMeetUrl?: string
   eventSlug: string
+  isPackage?: boolean
 }
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -33,6 +34,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     calBookingId,
     calMeetUrl,
     eventSlug,
+    isPackage,
   } = req.body as BookingOrderPayload
 
   console.log(`[Booking Confirmation] Processing for ${email} | Razorpay: ${razorpayPaymentId} | Cal: ${calBookingId}`)
@@ -198,7 +200,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
                 <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; margin: 10px 0;">Join Live Session</a>
                 <p style="margin-bottom: 0; color: rgba(197, 160, 89, 0.6); font-size: 11px;">Direct Link: ${calMeetUrl}</p>
               </div>
-              ` : `
+              ` : isPackage ? `` : `
               <p style="color: #333; background: #fff9eb; padding: 15px; border-radius: 8px; border: 1px solid #ffe6a8; font-size: 14px;">
                 <strong>Note:</strong> Your unique meeting link will be sent to you via email shortly before the session starts.
               </p>
