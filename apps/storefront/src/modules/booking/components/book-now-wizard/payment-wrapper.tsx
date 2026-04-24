@@ -16,6 +16,7 @@ export default function MedusaCheckoutPayment({
   eventSlug,
   meetingAbout,
   price,
+  isPackage,
   onSuccess,
   onBack
 }: {
@@ -29,6 +30,7 @@ export default function MedusaCheckoutPayment({
   eventSlug?: string
   meetingAbout?: string
   price: number
+  isPackage?: boolean
   onSuccess: () => void
   onBack: () => void
 }) {
@@ -64,7 +66,7 @@ export default function MedusaCheckoutPayment({
         amount: price * 100,
         currency: "INR",
         name: "The Blissful Soul",
-        description: `Session Booking - ${date} ${time}`,
+        description: isPackage ? `Package Purchase` : `Session Booking - ${date} ${time}`,
         prefill: {
           name: `${details.firstName} ${details.lastName}`,
           email: details.email,
@@ -76,23 +78,30 @@ export default function MedusaCheckoutPayment({
           
           // Always call onSuccess — never let Cal.com or backend errors block the user
           try {
-            // 1. Create Cal.com booking only if we have a slug
-            if (!eventSlug) {
-              throw new Error("CRITICAL: Missing eventSlug. Please check product metadata 'cal_link' in Medusa admin.");
+            let calBookingId = undefined
+            let calMeetUrl = undefined
+
+            // 1. Create Cal.com booking only if NOT a package
+            if (!isPackage) {
+              if (!eventSlug) {
+                throw new Error("CRITICAL: Missing eventSlug. Please check product metadata 'cal_link' in Medusa admin.");
+              }
+              
+              const calResult = await createCalBooking({
+                startTime: slotIsoStart,
+                attendeeName: `${details.firstName} ${details.lastName}`,
+                attendeeEmail: details.email,
+                attendeeTimeZone: "Asia/Kolkata",
+                eventSlug: eventSlug,
+                meetingAbout,
+                notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
+              })
+              calBookingId = calResult?.uid
+              calMeetUrl = calResult?.meetingUrl || calResult?.location
+              console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
+            } else {
+              console.log("Package purchase detected. Skipping Cal.com booking.")
             }
-            
-            const calResult = await createCalBooking({
-              startTime: slotIsoStart,
-              attendeeName: `${details.firstName} ${details.lastName}`,
-              attendeeEmail: details.email,
-              attendeeTimeZone: "Asia/Kolkata",
-              eventSlug: eventSlug,
-              meetingAbout,
-              notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
-            })
-            const calBookingId = calResult?.uid
-            const calMeetUrl = calResult?.meetingUrl || calResult?.location
-            console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
 
             // 2. Send confirmation email via Next.js API proxy (avoids CORS)
             try {
@@ -107,8 +116,8 @@ export default function MedusaCheckoutPayment({
                   phone: details.phone,
                   countryCode,
                   razorpayPaymentId: response.razorpay_payment_id,
-                  bookingDate: date,
-                  bookingTime: time,
+                  bookingDate: isPackage ? "Flexible" : date,
+                  bookingTime: isPackage ? "To be scheduled" : time,
                   price: price,
                   calBookingId,
                   calMeetUrl, // Added meeting URL

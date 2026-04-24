@@ -155,7 +155,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     // 7. Send a confirmation email via notification service
     const notificationService = req.scope.resolve("notification") as any
-    await notificationService.createNotifications([
+    const notifications: any[] = [
       {
         to: email,
         channel: "email",
@@ -219,11 +219,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             },
           ],
         },
-      },
-      {
-        to: process.env.ADMIN_NOTIFICATION_EMAIL!,
-        channel: "email",
+      }
+    ]
 
+    if (process.env.ADMIN_NOTIFICATION_EMAIL) {
+      notifications.push({
+        to: process.env.ADMIN_NOTIFICATION_EMAIL,
+        channel: "email",
         template: "booking-admin-notification",
         data: {
           subject: `NEW BOOKING: ${firstName} for ${bookingDate} at ${bookingTime}`,
@@ -244,8 +246,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             </div>
           `,
         },
-      }
-    ])
+      })
+    }
+
+    await notificationService.createNotifications(notifications)
 
     console.log(`[Booking Confirmation] Email sent successfully to ${email}`)
     return res.status(200).json({ success: true, orderId: order.id, message: "Booking recorded and email sent." })

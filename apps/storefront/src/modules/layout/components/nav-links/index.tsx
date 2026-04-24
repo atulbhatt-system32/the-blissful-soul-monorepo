@@ -10,7 +10,7 @@ const NavLinks = () => {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/store", label: "Shop Crystals" },
-    { href: "/book-session", label: "Sessions" },
+    { href: "/#sacred-services", label: "Our Sacred Services" },
   ]
 
   const isActive = (href: string) => {
@@ -21,7 +21,7 @@ const NavLinks = () => {
       // Only country code segment means we're on the home page
       return parts.length === 1 && parts[0].length <= 3
     }
-    return pathname.includes(href)
+    return pathname.includes(href) && href !== "/#sacred-services"
   }
 
   return (
@@ -32,6 +32,16 @@ const NavLinks = () => {
           <LocalizedClientLink
             key={link.href}
             href={link.href}
+            onClick={(e) => {
+              if (link.href.includes("#")) {
+                const id = link.href.split("#")[1]
+                const element = document.getElementById(id)
+                if (element) {
+                  e.preventDefault()
+                  element.scrollIntoView({ behavior: "smooth" })
+                }
+              }
+            }}
             className={`font-sans text-[13px] font-medium transition-all relative py-1 ${
               active 
                 ? "text-primary border-b-2 border-primary" 
