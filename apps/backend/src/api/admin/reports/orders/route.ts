@@ -2,22 +2,22 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 // HSN/SAC Code Mapping (same as invoice.ts)
 const HSN_MAPPING: Record<string, string> = {
-  "kundli": "998611",
-  "astrology": "998611",
+  "kundli": "9983",
+  "astrology": "9983",
   "tarot": "9983",
-  "counseling": "998631",
-  "healing": "998631",
-  "session": "998611",
-  "reading": "998611",
-  "consultation": "998631",
+  "counseling": "9983",
+  "healing": "9983",
+  "session": "9983",
+  "reading": "9983",
+  "consultation": "9983",
   "crystal": "7103",
   "gemstone": "7103",
   "jewelry": "7103",
-  "book": "4901",
-  "incense": "3307",
-  "candle": "3406",
-  "yoga": "9506",
-  "meditation": "9506",
+  "book": "7103",
+  "incense": "7103",
+  "candle": "7103",
+  "yoga": "7103",
+  "meditation": "7103",
 }
 
 function getHSNCode(title: string, handle: string): string {
@@ -59,7 +59,7 @@ function getHSNCode(title: string, handle: string): string {
     }
   }
   
-  return "998611"
+  return "9983"
 }
 
 function computeNetTotal(order: any): number {

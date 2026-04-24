@@ -64,24 +64,24 @@ const GST_RATE_FALLBACK = 3 // Fallback GST % if no tax lines present on item
 // HSN/SAC Code Mapping for products and services
 const HSN_MAPPING: Record<string, string> = {
   // Services (SAC codes)
-  "kundli": "998611",
-  "astrology": "998611",
+  "kundli": "9983",
+  "astrology": "9983",
   "tarot": "9983",
-  "counseling": "998631",
-  "healing": "998631",
-  "session": "998611",
-  "reading": "998611",
-  "consultation": "998631",
+  "counseling": "9983",
+  "healing": "9983",
+  "session": "9983",
+  "reading": "9983",
+  "consultation": "9983",
   
   // Products (HSN codes)
   "crystal": "7103",
   "gemstone": "7103",
   "jewelry": "7103",
-  "book": "4901",
-  "incense": "3307",
-  "candle": "3406",
-  "yoga": "9506",
-  "meditation": "9506",
+  "book": "7103",
+  "incense": "7103",
+  "candle": "7103",
+  "yoga": "7103",
+  "meditation": "7103",
 }
 
 // Function to get HSN code based on product title/handle
@@ -128,7 +128,7 @@ function getHSNCode(title: string, handle: string): string {
   }
   
   // Default for services
-  return "998611"
+  return "9983"
 }
 
 const MARGIN = 40
