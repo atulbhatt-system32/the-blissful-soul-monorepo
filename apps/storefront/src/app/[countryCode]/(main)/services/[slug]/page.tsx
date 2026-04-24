@@ -50,7 +50,7 @@ export default async function ServiceDetailPage({
       <div className="bg-[#FDF2F4] py-16 md:py-24">
         <div className="content-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="max-w-xl">
+            <div className="max-w-xl order-2 lg:order-1">
               <span className="text-[12px] md:text-sm uppercase tracking-[0.4em] font-bold text-primary font-sans block mb-4">
                 SERVICE
               </span>
@@ -64,7 +64,7 @@ export default async function ServiceDetailPage({
               )}
             </div>
 
-            <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden shadow-2xl">
+            <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden shadow-2xl order-1 lg:order-2">
               {heroImage ? (
                 <Image
                   src={heroImage}

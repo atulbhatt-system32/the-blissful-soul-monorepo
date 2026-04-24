@@ -139,9 +139,7 @@ export default async function HomeNew(props: {
       )}
 
       {/* ⑥ COLLECTION - Shop Healing Crystals (Intent Based Rows) */}
-      <div className="bg-white py-16 md:py-24">
-        <IntentCollections region={region} title={homepageData?.shop_by_intent_title} />
-      </div>
+      <IntentCollections region={region} title={homepageData?.shop_by_intent_title} />
 
       {/* Instagram Banner */}
       {homepageData?.show_instagram !== false && (

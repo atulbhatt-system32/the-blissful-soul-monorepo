@@ -42,7 +42,7 @@ export default async function Nav() {
               data-testid="nav-store-link"
             >
               {/* Logo image (visible on all screens now) */}
-              <div className="relative w-24 h-24 md:w-32 md:h-32 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-20 h-20 md:w-24 md:h-24 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/logo-main.png"
                   alt="Pragya Vijh"
