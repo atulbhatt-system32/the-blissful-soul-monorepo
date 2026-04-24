@@ -86,7 +86,7 @@ export default async function passwordResetHandler({
       },
     },
     {
-      to: process.env.ADMIN_NOTIFICATION_EMAIL!,
+      to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com",
       channel: "email",
       template: "password-reset-admin-alert",
 

@@ -47,7 +47,7 @@ const TrustCarousel = ({ items }: { items?: any[] }) => {
                 <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[32px] bg-slate-100 shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-1">
                   <Image
                     src={item.image}
-                    alt={item.title}
+                    alt={item.title || "Trust Carousel Image"}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 50vw"

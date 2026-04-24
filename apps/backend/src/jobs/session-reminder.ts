@@ -93,7 +93,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
           // 2. Send to Admin (User)
           await notificationService.createNotifications([{
             ...reminderData,
-            to: process.env.ADMIN_NOTIFICATION_EMAIL!, // Admin Email
+            to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com", // Admin Email
             data: {
 
               ...reminderData.data,

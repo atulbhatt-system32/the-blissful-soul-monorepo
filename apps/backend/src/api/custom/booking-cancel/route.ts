@@ -104,7 +104,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       { ...notificationData, to: order.email },
       { 
         ...notificationData, 
-        to: process.env.ADMIN_NOTIFICATION_EMAIL!,
+        to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com",
         data: {
 
           ...notificationData.data,

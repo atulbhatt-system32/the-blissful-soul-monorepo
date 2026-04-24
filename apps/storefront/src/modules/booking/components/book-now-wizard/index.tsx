@@ -39,7 +39,14 @@ export default function BookNowClient({
   countryCode,
   customer
 }: BookNowProps) {
-  const [currentStep, setCurrentStep] = useState(1)
+  // Determine if initial service is a package to skip Steps 1 & 2
+  const initialServiceObj = products.find((p) => p.id === (initialServiceId || ""))
+  const isInitialPackage = initialServiceObj?.title?.toLowerCase().includes("package") || 
+                           initialServiceObj?.title?.toLowerCase().includes("days") || 
+                           initialServiceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package") ||
+                           initialServiceObj?.categories?.some((c: any) => c.name?.toLowerCase().includes("package") || c.handle?.toLowerCase().includes("package"))
+
+  const [currentStep, setCurrentStep] = useState(isInitialPackage ? 3 : 1)
 
   // Form State
   const [selectedCategory, setSelectedCategory] = useState<string>("")
@@ -113,8 +120,16 @@ export default function BookNowClient({
 
   // Selected Service details
   const serviceObj = products.find((p) => p.id === selectedService)
+  const isPackage = serviceObj?.title?.toLowerCase().includes("package") || 
+                    serviceObj?.title?.toLowerCase().includes("days") || 
+                    serviceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package") ||
+                    serviceObj?.categories?.some((c: any) => c.name?.toLowerCase().includes("package") || c.handle?.toLowerCase().includes("package"))
 
   const handleNext = () => {
+    if (currentStep === 1 && isPackage) {
+      setCurrentStep(3)
+      return
+    }
     if (currentStep === 3) {
       // Step 3 Validation
       if (!details.firstName.trim() || !details.lastName.trim()) {
@@ -133,48 +148,56 @@ export default function BookNowClient({
     }
     setCurrentStep((p) => Math.min(p + 1, 5))
   }
-  const handlePrev = () => setCurrentStep((p) => Math.max(p - 1, 1))
+  const handlePrev = () => {
+    if (currentStep === 3 && isPackage) {
+      setCurrentStep(1)
+      return
+    }
+    setCurrentStep((p) => Math.max(p - 1, 1))
+  }
 
   const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
   const lengthValue = variantObj?.length || serviceObj?.length || serviceObj?.variants?.[0]?.length
   const isConfigValid = !!lengthValue
 
-  const isStep1Valid = selectedService && selectedCategory && selectedDate && selectedEmployee
+  const isStep1Valid = selectedService && selectedCategory && selectedEmployee && (isPackage || selectedDate)
   const isStep2Valid = selectedTime !== ""
   const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && details.phone.trim() !== ""
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-10">
       
-      {/* Progress Bar */}
-      <div className="flex flex-col mb-10">
-        <div className="flex justify-between mb-2">
-          {STEPS.map((step, idx) => {
-            const stepNum = idx + 1
-            const isActive = currentStep === stepNum
-            const isCompleted = currentStep > stepNum
-            return (
-              <div 
-                key={step} 
-                className={`text-[10px] md:text-sm font-bold uppercase ${isActive ? 'text-[#2C1E36]' : isCompleted ? 'text-[#2C1E36]/70' : 'text-gray-400'}`}
-              >
-                {stepNum}. {step}
-              </div>
-            )
-          })}
+      {/* Progress Bar - Hidden for packages to feel like a direct checkout */}
+      {!isPackage && (
+        <div className="flex flex-col mb-10">
+          <div className="flex justify-between mb-2">
+            {STEPS.map((step, idx) => {
+              const stepNum = idx + 1
+              const isActive = currentStep === stepNum
+              const isCompleted = currentStep > stepNum
+              return (
+                <div 
+                  key={step} 
+                  className={`text-[10px] md:text-sm font-bold uppercase ${isActive ? 'text-[#2C1E36]' : isCompleted ? 'text-[#2C1E36]/70' : 'text-gray-400'}`}
+                >
+                  {stepNum}. {step}
+                </div>
+              )
+            })}
+          </div>
+          <div className="flex gap-1 h-3 w-full bg-gray-100 rounded-full overflow-hidden">
+            {STEPS.map((_, idx) => {
+              const stepNum = idx + 1
+              return (
+                <div 
+                  key={idx} 
+                  className={`h-full flex-1 ${stepNum <= currentStep ? 'bg-[#2C1E36]' : 'bg-transparent'}`}
+                ></div>
+              )
+            })}
+          </div>
         </div>
-        <div className="flex gap-1 h-3 w-full bg-gray-100 rounded-full overflow-hidden">
-          {STEPS.map((_, idx) => {
-            const stepNum = idx + 1
-            return (
-              <div 
-                key={idx} 
-                className={`h-full flex-1 ${stepNum <= currentStep ? 'bg-[#2C1E36]' : 'bg-transparent'}`}
-              ></div>
-            )
-          })}
-        </div>
-      </div>
+      )}
 
       {/* STEP 1: SERVICE */}
       {currentStep === 1 && (
@@ -231,16 +254,18 @@ export default function BookNowClient({
             </div>
 
             {/* Date */}
-            <div>
-              <label className="block text-[#2C1E36] text-sm font-bold mb-2">I'm available on or after</label>
-              <input 
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                min={new Date().toISOString().split("T")[0]}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
-              />
-            </div>
+            {!isPackage && (
+              <div>
+                <label className="block text-[#2C1E36] text-sm font-bold mb-2">I'm available on or after</label>
+                <input 
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  min={new Date().toISOString().split("T")[0]}
+                  className="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
+                />
+              </div>
+            )}
 
           </div>
           
@@ -332,7 +357,11 @@ export default function BookNowClient({
       {/* STEP 3: DETAILS */}
       {currentStep === 3 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
-          <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">Your Details</h3>
+          <h3 className="text-xl font-serif text-gray-800 mb-2 text-center">
+            {isPackage ? "Where should we send your receipt?" : "Your Details"}
+          </h3>
+          {isPackage && <p className="text-center text-sm text-gray-500 mb-6">We need your email to send the automated confirmation mail you requested.</p>}
+          {!isPackage && <div className="mb-6"></div>}
           
           <div className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-4">
@@ -403,7 +432,7 @@ export default function BookNowClient({
             </div>
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Date & Time:</span>
-              <span className="font-medium text-right">{new Date(selectedDate).toLocaleDateString()}, {selectedTime}</span>
+              <span className="font-medium text-right">{isPackage ? "Flexible (To be scheduled)" : `${new Date(selectedDate).toLocaleDateString()}, ${selectedTime}`}</span>
             </div>
             <div className="flex justify-between mb-2 text-[#2C1E36] font-bold mt-4 pt-4 border-t">
               <span>Total:</span>
@@ -432,6 +461,7 @@ export default function BookNowClient({
               const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
               return (variantObj?.calculated_price as any)?.calculated_amount || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0
             })()}
+            isPackage={isPackage}
             onSuccess={() => setCurrentStep(5)}
             onBack={handlePrev}
           />
@@ -448,7 +478,7 @@ export default function BookNowClient({
           </div>
           <h2 className="text-3xl font-serif text-gray-800 mb-4">Booking Confirmed!</h2>
           <p className="text-gray-600 mb-8">
-            Thank you, {details.firstName}. Your session for <strong>{serviceObj?.title}</strong> on <strong>{new Date(selectedDate).toLocaleDateString()} at {selectedTime}</strong> has been successfully booked.
+            Thank you, {details.firstName}. Your {isPackage ? "package" : "session"} for <strong>{serviceObj?.title}</strong> {isPackage ? "has been successfully purchased." : `on ${new Date(selectedDate).toLocaleDateString()} at ${selectedTime} has been successfully booked.`}
             We've sent a confirmation email to {details.email}.
           </p>
 
