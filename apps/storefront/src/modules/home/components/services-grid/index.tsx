@@ -11,13 +11,26 @@ const ServicesGrid = async () => {
   return (
     <section id="sacred-services" className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
+        {/* Premium Scroll Bridge */}
+        <div className="flex flex-col items-center mb-12 md:mb-20 pt-10 group">
+          <div className="relative mb-3">
+            <span className="text-sm md:text-lg uppercase tracking-[0.4em] font-bold text-[#2C1E36] font-sans">
+              Still confused?
+            </span>
+          </div>
+
+          <div className="text-[#C5A059] animate-bounce">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="7 13 12 18 17 13" />
+              <polyline points="7 6 12 11 17 6" className="opacity-30" />
+            </svg>
+          </div>
+        </div>
+
         {/* Section heading */}
         <div className="text-center mb-10 md:mb-14">
-          <span className="text-[11px] uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-2 block">
-            Still confused?
-          </span>
           <h2 className="text-3xl md:text-4xl font-serif text-[#2C1E36] mb-5 uppercase tracking-tighter leading-tight">
-            OUR SACRED SERVICES
+            BOOK OUR SACRED SERVICES
           </h2>
           <div className="flex items-center justify-center gap-2">
             <div className="h-[1px] w-10 bg-[#C5A059]/30" />
@@ -83,11 +96,11 @@ const ServicesGrid = async () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-12 md:mt-16">
-          <LocalizedClientLink
+          <LocalizedClientLink 
             href="/store"
-            className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
+            className="inline-block text-[13px] md:text-[14px] font-black uppercase tracking-[0.4em] text-[#2C1E36] border-b-2 border-[#2C1E36]/20 pb-2 hover:border-[#C5A059] transition-all"
           >
-            Explore All Offerings &rarr;
+            EXPLORE OUR SERVICES &rarr;
           </LocalizedClientLink>
         </div>
       </div>

@@ -10,6 +10,26 @@ import { Navigation, Pagination } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"
 
+const CTACard = () => (
+  <LocalizedClientLink 
+    href="/book-session"
+    className="flex flex-col items-center justify-center h-full p-6 rounded-[24px] md:rounded-[32px] bg-[#FAF9F6] border-2 border-dashed border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-white transition-all duration-500 group text-center"
+  >
+    <div className="w-16 h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <span className="text-3xl">🔮</span>
+    </div>
+    <h4 className="text-lg md:text-xl font-serif text-[#2C1E36] mb-3 leading-tight font-bold">
+      Not sure what <br/> you are looking for?
+    </h4>
+    <p className="text-[#685D6B] text-[13px] leading-relaxed mb-6">
+      Have a Quick session with <span className="text-[#C5A059] font-bold">Master Pragya Vijh</span> to find your perfect match.
+    </p>
+    <div className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] border-b border-[#C5A059]/30 pb-1 group-hover:border-[#C5A059] transition-all">
+      Book Session Now
+    </div>
+  </LocalizedClientLink>
+)
+
 const IntentCollectionsClient = ({ 
   intents, 
   region,
@@ -20,9 +40,9 @@ const IntentCollectionsClient = ({
   title?: string
 }) => {
   return (
-    <div className="bg-[#FAF9F6] rounded-[40px] md:rounded-[64px] p-6 md:p-14 border border-[#2C1E36]/5 shadow-[0_4px_20px_rgba(44,30,54,0.02)]">
-      {/* Main Section Header inside Card */}
-      <div className="text-center mb-12 md:mb-16">
+    <div className="w-full">
+      {/* Main Section Header */}
+      <div className="content-container text-center mb-12 md:mb-16">
         <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-3 block">
            COLLECTION
         </span>
@@ -39,7 +59,7 @@ const IntentCollectionsClient = ({
         <div className="w-12 md:w-20 h-0.5 md:h-1 bg-[#C5A059]/20 mx-auto mt-4 md:mt-6 rounded-full"></div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 md:gap-12">
+      <div className="content-container grid grid-cols-1 gap-8 md:gap-12">
       {intents.map((section) => (
         <div 
           key={section.title} 
@@ -59,47 +79,54 @@ const IntentCollectionsClient = ({
             </LocalizedClientLink>
           </div>
 
-          {/* Swiper Carousel (Same as Hot Seller) */}
+          {/* Swiper Carousel */}
           <div className="w-full">
             {section.products.length > 0 ? (
-              <Swiper
-                modules={[Navigation, Pagination]}
-                spaceBetween={16}
-                slidesPerView={1.2}
-                breakpoints={{
-                  640: { slidesPerView: 2.2, spaceBetween: 20 },
-                  1024: { slidesPerView: 3, spaceBetween: 24 },
-                  1280: { slidesPerView: 4, spaceBetween: 32 }
-                }}
-                className="intent-swiper !pb-10"
-              >
-                {section.products.slice(0, 3).map((product: any) => (
-                  <SwiperSlide key={product.id} className="!h-auto">
-                    <ProductPreview product={product} region={region} isFeatured />
-                  </SwiperSlide>
-                ))}
-                
-                {/* 4th Card: Not Sure / CTA */}
-                <SwiperSlide className="!h-auto">
-                  <LocalizedClientLink 
-                    href="/book-session"
-                    className="flex flex-col items-center justify-center h-full p-6 rounded-[24px] md:rounded-[32px] bg-[#FAF9F6] border-2 border-dashed border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-white transition-all duration-500 group text-center"
+              <>
+                {/* Desktop View: Swiper Carousel (Limit to 3 + CTA) */}
+                <div className="hidden md:block">
+                  <Swiper
+                    modules={[Navigation, Pagination]}
+                    spaceBetween={16}
+                    slidesPerView={1.2}
+                    breakpoints={{
+                      768: { slidesPerView: 2.2, spaceBetween: 20 },
+                      1024: { slidesPerView: 3, spaceBetween: 24 },
+                      1280: { slidesPerView: 4, spaceBetween: 32 }
+                    }}
+                    className="intent-swiper !pb-10"
                   >
-                    <div className="w-16 h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <span className="text-3xl">🔮</span>
-                    </div>
-                    <h4 className="text-lg md:text-xl font-serif text-[#2C1E36] mb-3 leading-tight font-bold">
-                      Not sure what <br/> you are looking for?
-                    </h4>
-                    <p className="text-[#685D6B] text-[13px] leading-relaxed mb-6">
-                      Have a Quick session with <span className="text-[#C5A059] font-bold">Master Pragya Vijh</span> to find your perfect match.
-                    </p>
-                    <div className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] border-b border-[#C5A059]/30 pb-1 group-hover:border-[#C5A059] transition-all">
-                      Book Session Now
-                    </div>
-                  </LocalizedClientLink>
-                </SwiperSlide>
-              </Swiper>
+                    {section.products.slice(0, 3).map((product: any) => (
+                      <SwiperSlide key={product.id} className="!h-auto">
+                        <ProductPreview product={product} region={region} isFeatured />
+                      </SwiperSlide>
+                    ))}
+                    <SwiperSlide className="!h-auto">
+                      <CTACard />
+                    </SwiperSlide>
+                  </Swiper>
+                </div>
+
+                {/* Mobile View: Swiper Carousel (Show All assigned items) */}
+                <div className="block md:hidden">
+                  <Swiper
+                    modules={[Pagination]}
+                    spaceBetween={16}
+                    slidesPerView={1.2}
+                    pagination={{ clickable: true }}
+                    className="intent-swiper !pb-12"
+                  >
+                    {section.products.map((product: any) => (
+                      <SwiperSlide key={product.id} className="!h-auto">
+                        <ProductPreview product={product} region={region} isFeatured />
+                      </SwiperSlide>
+                    ))}
+                    <SwiperSlide className="!h-auto">
+                      <CTACard />
+                    </SwiperSlide>
+                  </Swiper>
+                </div>
+              </>
             ) : (
               <div className="py-12 text-center w-full">
                 <p className="text-[#685D6B]/40 font-serif italic text-sm">
@@ -112,7 +139,7 @@ const IntentCollectionsClient = ({
       ))}
       </div>
       {/* Bottom Explore CTA */}
-      <div className="mt-12 md:mt-16 text-center">
+      <div className="content-container mt-12 md:mt-16 text-center">
         <LocalizedClientLink 
           href="/store"
           className="inline-flex items-center justify-center bg-black border border-black text-white px-12 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-[12px] md:text-[14px] hover:bg-white hover:text-black transition-all duration-300 shadow-sm hover:shadow-xl active:scale-95 group min-w-[280px]"

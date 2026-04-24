@@ -35,7 +35,7 @@ export default async function IntentCollections({
           regionId: region.id,
           queryParams: {
             category_id: [category.id],
-            limit: 3,
+            limit: 12,
             fields: "*variants.calculated_price",
           },
         })
@@ -47,7 +47,7 @@ export default async function IntentCollections({
               regionId: region.id,
               queryParams: {
                   q: intent.title,
-                  limit: 3,
+                  limit: 12,
                   fields: "*variants.calculated_price",
               }
           })
@@ -62,10 +62,8 @@ export default async function IntentCollections({
   )
 
   return (
-    <section id="shop-healing-crystals" className="pt-12 pb-16 md:pt-16 md:pb-20">
-      <div className="content-container">
-        <IntentCollectionsClient title={title} intents={intentsData} region={region} />
-      </div>
+    <section id="shop-healing-crystals" className="pt-12 pb-16 md:pt-16 md:pb-20 bg-[#FAF9F6]">
+      <IntentCollectionsClient title={title} intents={intentsData} region={region} />
     </section>
   )
 }

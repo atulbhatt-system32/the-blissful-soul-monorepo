@@ -104,7 +104,7 @@ const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
                 <span className="text-[22px] md:text-[48px] font-serif font-semibold text-[#C5A059] tracking-tight leading-none">
                   <AnimatedNumber value={stat.value} inView={isVisible} />
                 </span>
-                <span className="text-[7px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.5em] font-medium text-white/40 px-1 font-sans text-center">
+                <span className="text-[7px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.5em] font-medium text-white/80 px-1 font-sans text-center">
                   {stat.label}
                 </span>
               </motion.div>
