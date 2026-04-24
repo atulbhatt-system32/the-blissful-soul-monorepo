@@ -365,7 +365,9 @@ export default function BookNowClient({
                   const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
                   const price = variantObj?.calculated_price
                   const priceStr = typeof price === 'string' ? price : (price as any)?.calculated_amount != null ? String((price as any).calculated_amount) : null
-                  return priceStr || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
+                  if (priceStr) return `₹${priceStr}`
+                  const cheapest = getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price
+                  return cheapest || 'Free'
                 })()}
               </span>
             </div>
@@ -470,7 +472,9 @@ export default function BookNowClient({
                   const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
                   const price = variantObj?.calculated_price
                   const priceStr = typeof price === 'string' ? price : (price as any)?.calculated_amount != null ? String((price as any).calculated_amount) : null
-                  return priceStr || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price || 'Free'
+                  if (priceStr) return `₹${priceStr}`
+                  const cheapest = getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price
+                  return cheapest || 'Free'
                 })()}
               </span>
             </div>
