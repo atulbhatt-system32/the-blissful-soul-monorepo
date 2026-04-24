@@ -62,8 +62,8 @@ const IntentCollectionsClient = ({
       <div className="content-container grid grid-cols-1 gap-8 md:gap-12">
       {intents.map((section) => (
         <div 
-          key={section.title} 
-          id={`collection-${section.title.toLowerCase()}`} 
+          key={section.handle || section.title} 
+          id={section.handle || `collection-${section.title.toLowerCase()}`} 
           className="bg-white rounded-[32px] p-6 md:p-10 shadow-sm border border-[#2C1E36]/5 scroll-mt-32"
         >
           {/* Header inside Card */}
