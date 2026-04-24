@@ -66,22 +66,27 @@ export default function BookNowClient({
     phone: ""
   })
 
+  // Track if we have already initialized from URL params
+  const hasInitialized = React.useRef(false)
+
   // Set category if initialServiceId is provided
   useEffect(() => {
-    if (initialServiceId && products.length > 0 && categories.length > 0) {
+    if (hasInitialized.current || products.length === 0 || categories.length === 0) return
+
+    if (initialServiceId) {
       const prod = products.find((p) => p.id === initialServiceId)
       if (prod && prod.categories) {
-        // Find which of the product's categories is in our "Services" list
         const matchingCat = prod.categories.find((pc: any) => 
           categories.some((c) => c.id === pc.id)
         )
         if (matchingCat) {
           setSelectedCategory(matchingCat.id)
+          hasInitialized.current = true
         }
       }
     } else if (categories.length > 0 && !selectedCategory) {
-      // Auto-select first category if none and we don't have an initial service
       setSelectedCategory(categories[0].id)
+      hasInitialized.current = true
     }
   }, [initialServiceId, products, categories, selectedCategory])
 
