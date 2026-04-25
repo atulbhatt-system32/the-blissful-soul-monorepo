@@ -9,11 +9,12 @@ WORKDIR /app
 
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
-
 # Copy cms app files
 COPY apps/cms ./apps/cms
 
-# Install dependencies for the whole monorepo
+# Remove patchedDependencies before install — Razorpay patch is backend-only
+RUN node -e "const fs=require('fs'),p=JSON.parse(fs.readFileSync('package.json','utf8')); delete p?.pnpm?.patchedDependencies; fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+
 RUN pnpm install
 
 # Force rebuild better-sqlite3 for this platform (lockfile is Mac-generated)

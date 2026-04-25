@@ -1,13 +1,58 @@
 diff --git a/.medusa/server/src/providers/razorpay/core/razorpay-base.js b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
-index 940ffa46976af76d45579a7860222f6352ab6728..39dc9de0fea3911021468a9f5ab4909f00fa82cd 100644
+index 940ffa46976af76d45579a7860222f6352ab6728..72839d21ad66bc0abef9f56c94a298de0e2b8bfd 100644
 --- a/.medusa/server/src/providers/razorpay/core/razorpay-base.js
 +++ b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
-@@ -421,7 +421,7 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
+@@ -421,32 +421,34 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
      }
      async refundPayment(input) {
          const { data, amount } = input;
 -        const id = data.id;
 +        const id = data.id ?? data?.data?.data?.id;
++        const rawAmount = (amount && typeof amount === "object") ? Number(amount.value ?? amount.numeric) : Number(amount);
          const paymentList = await this.razorpay_.orders.fetchPayments(id);
          const payment_id = paymentList.items?.find((p) => {
-             return (parseInt(`${p.amount}`) >= Number(amount) * 100 &&
+-            return (parseInt(`${p.amount}`) >= Number(amount) * 100 &&
++            return (parseInt(`${p.amount}`) >= rawAmount * 100 &&
+                 (p.status == "authorized" || p.status == "captured"));
+         })?.id;
+-        if (payment_id) {
+-            const refundRequest = {
+-                amount: Number(amount) * 100,
+-            };
+-            try {
+-                const refundSession = await this.razorpay_.payments.refund(payment_id, refundRequest);
+-                const refundsIssued = data?.refundSessions;
+-                if (refundsIssued?.length > 0) {
+-                    refundsIssued.push(refundSession);
+-                }
+-                else {
+-                    if (data) {
+-                        data.refundSessions = [refundSession];
+-                    }
+-                }
++        if (!payment_id) {
++            throw new utils_1.MedusaError(utils_1.MedusaError.Types.INVALID_DATA, "No captured payment found to refund. Please ensure the payment is captured in Razorpay before issuing a refund.", utils_1.MedusaError.Codes.UNKNOWN_MODULES);
++        }
++        const refundRequest = {
++            amount: rawAmount * 100,
++        };
++        try {
++            const refundSession = await this.razorpay_.payments.refund(payment_id, refundRequest);
++            const refundsIssued = data?.refundSessions;
++            if (refundsIssued?.length > 0) {
++                refundsIssued.push(refundSession);
+             }
+-            catch (e) {
+-                new utils_1.MedusaError(utils_1.MedusaError.Types.INVALID_DATA, e, utils_1.MedusaError.Codes.UNKNOWN_MODULES);
++            else {
++                if (data) {
++                    data.refundSessions = [refundSession];
++                }
+             }
+         }
++        catch (e) {
++            throw new utils_1.MedusaError(utils_1.MedusaError.Types.INVALID_DATA, e, utils_1.MedusaError.Codes.UNKNOWN_MODULES);
++        }
+         return { data };
+     }
+     async retrievePayment(paymentSessionData) {

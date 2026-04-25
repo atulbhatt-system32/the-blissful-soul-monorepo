@@ -10,7 +10,9 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 # Copy storefront app files
 COPY apps/storefront ./apps/storefront
 
-# Install dependencies for the whole monorepo
+# Remove patchedDependencies before install — Razorpay patch is backend-only
+RUN node -e "const fs=require('fs'),p=JSON.parse(fs.readFileSync('package.json','utf8')); delete p?.pnpm?.patchedDependencies; fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+
 RUN pnpm install
 
 WORKDIR /app/apps/storefront
