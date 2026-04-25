@@ -15,6 +15,8 @@ export default async function orderInvoiceHandler({
       fields: [
         "*", 
         "items.*",
+        "items.variant.*",
+        "items.variant.product.hs_code",
         "items.adjustments.*",
         "items.tax_lines.*",
         "shipping_address.*", 

@@ -7,10 +7,10 @@ client_max_body_size 50M;
 resolver 127.0.0.11 valid=10s;
 resolver_timeout 5s;
 
-# Redirect HTTP to HTTPS (main domain)
+# Redirect HTTP to HTTPS (main domain + www)
 server {
     listen 80;
-    server_name ${DOMAIN};
+    server_name ${DOMAIN} www.${DOMAIN};
 
     # ACME-challenge for Let's Encrypt renewal
     location /.well-known/acme-challenge/ {
@@ -98,10 +98,10 @@ server {
     }
 }
 
-# HTTPS server — main domain (storefront only)
+# HTTPS server — main domain + www (storefront only)
 server {
     listen 443 ssl;
-    server_name ${DOMAIN};
+    server_name ${DOMAIN} www.${DOMAIN};
 
     ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;

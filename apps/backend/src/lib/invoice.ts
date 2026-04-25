@@ -61,75 +61,6 @@ function getIndiaStateCode(province: string | null | undefined): string {
 
 const GST_RATE_FALLBACK = 3 // Fallback GST % if no tax lines present on item
 
-// HSN/SAC Code Mapping for products and services
-const HSN_MAPPING: Record<string, string> = {
-  // Services (SAC codes)
-  "kundli": "9983",
-  "astrology": "9983",
-  "tarot": "9983",
-  "counseling": "9983",
-  "healing": "9983",
-  "session": "9983",
-  "reading": "9983",
-  "consultation": "9983",
-  
-  // Products (HSN codes)
-  "crystal": "7103",
-  "gemstone": "7103",
-  "jewelry": "7103",
-  "book": "7103",
-  "incense": "7103",
-  "candle": "7103",
-  "yoga": "7103",
-  "meditation": "7103",
-}
-
-// Function to get HSN code based on product title/handle
-function getHSNCode(title: string, handle: string): string {
-  const searchTerms = [title.toLowerCase(), handle.toLowerCase()]
-  
-  for (const term of searchTerms) {
-    // Check for service keywords
-    if (term.includes("kundli") || term.includes("astrology") || term.includes("birth chart")) {
-      return HSN_MAPPING["kundli"]
-    }
-    if (term.includes("tarot")) {
-      return HSN_MAPPING["tarot"]
-    }
-    if (term.includes("counseling") || term.includes("therapy") || term.includes("psychological")) {
-      return HSN_MAPPING["counseling"]
-    }
-    if (term.includes("healing") || term.includes("reiki") || term.includes("energy")) {
-      return HSN_MAPPING["healing"]
-    }
-    if (term.includes("session") || term.includes("reading") || term.includes("consultation")) {
-      return HSN_MAPPING["session"]
-    }
-    
-    // Check for product keywords
-    if (term.includes("crystal") || term.includes("stone")) {
-      return HSN_MAPPING["crystal"]
-    }
-    if (term.includes("gem")) {
-      return HSN_MAPPING["gemstone"]
-    }
-    if (term.includes("jewelry") || term.includes("pendant") || term.includes("ring")) {
-      return HSN_MAPPING["jewelry"]
-    }
-    if (term.includes("book")) {
-      return HSN_MAPPING["book"]
-    }
-    if (term.includes("incense") || term.includes("agarbatti")) {
-      return HSN_MAPPING["incense"]
-    }
-    if (term.includes("candle")) {
-      return HSN_MAPPING["candle"]
-    }
-  }
-  
-  // Default for services
-  return "9983"
-}
 
 const MARGIN = 40
 const PAGE_WIDTH = 595.28     // A4
@@ -443,7 +374,7 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         cell(doc, colX, rowY, cols[3], rH, fmt(rate), { fontSize: 6.5, align: "right" }); colX += cols[3]
         cell(doc, colX, rowY, cols[4], rH, fmt(discount), { fontSize: 6.5, align: "right" }); colX += cols[4]
         cell(doc, colX, rowY, cols[5], rH, fmt(taxable), { fontSize: 6.5, align: "right" }); colX += cols[5]
-        const hsnCode = getHSNCode(item.title || "", item.handle || "")
+        const hsnCode = item.variant?.hs_code || item.variant?.product?.hs_code || item.metadata?.hs_code || ""
         cell(doc, colX, rowY, cols[6], rH, hsnCode, { fontSize: 6.5, align: "center" }); colX += cols[6]
         cell(doc, colX, rowY, cols[7], rH, `${gstPct}`, { fontSize: 6.5, align: "center" }); colX += cols[7]
         cell(doc, colX, rowY, cols[8], rH, fmt(cgst), { fontSize: 6.5, align: "right" }); colX += cols[8]

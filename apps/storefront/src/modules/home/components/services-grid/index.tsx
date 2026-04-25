@@ -94,15 +94,6 @@ const ServicesGrid = async () => {
           })}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-12 md:mt-16">
-          <LocalizedClientLink 
-            href="/store"
-            className="inline-block text-[13px] md:text-[14px] font-black uppercase tracking-[0.4em] text-[#2C1E36] border-b-2 border-[#2C1E36]/20 pb-2 hover:border-[#C5A059] transition-all"
-          >
-            EXPLORE OUR SERVICES &rarr;
-          </LocalizedClientLink>
-        </div>
       </div>
     </section>
   )
