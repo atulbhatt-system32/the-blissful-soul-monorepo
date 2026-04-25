@@ -1,6 +1,24 @@
 import PDFDocument from "pdfkit"
 
 // ──────────────────────────────────────────────
+// HSN/SAC Code Lookup
+// ──────────────────────────────────────────────
+const HSN_MAPPING: Record<string, string> = {
+  kundli: "9983", astrology: "9983", tarot: "9983", counseling: "9983",
+  healing: "9983", session: "9983", reading: "9983", consultation: "9983",
+  crystal: "7103", gemstone: "7103", jewelry: "7103", book: "49011000",
+  incense: "33074900", candle: "34060000", yoga: "9983", meditation: "9983",
+}
+
+function getHSNCode(title: string): string {
+  const t = title.toLowerCase()
+  for (const [keyword, code] of Object.entries(HSN_MAPPING)) {
+    if (t.includes(keyword)) return code
+  }
+  return "9983"
+}
+
+// ──────────────────────────────────────────────
 // Constants
 // ──────────────────────────────────────────────
 const COMPANY = {
@@ -374,7 +392,7 @@ export async function generateInvoice(order: any): Promise<Buffer> {
         cell(doc, colX, rowY, cols[3], rH, fmt(rate), { fontSize: 6.5, align: "right" }); colX += cols[3]
         cell(doc, colX, rowY, cols[4], rH, fmt(discount), { fontSize: 6.5, align: "right" }); colX += cols[4]
         cell(doc, colX, rowY, cols[5], rH, fmt(taxable), { fontSize: 6.5, align: "right" }); colX += cols[5]
-        const hsnCode = item.variant?.hs_code || item.variant?.product?.hs_code || item.metadata?.hs_code || ""
+        const hsnCode = item.variant?.hs_code || item.variant?.product?.hs_code || item.metadata?.hs_code || getHSNCode(item.title || "")
         cell(doc, colX, rowY, cols[6], rH, hsnCode, { fontSize: 6.5, align: "center" }); colX += cols[6]
         cell(doc, colX, rowY, cols[7], rH, `${gstPct}`, { fontSize: 6.5, align: "center" }); colX += cols[7]
         cell(doc, colX, rowY, cols[8], rH, fmt(cgst), { fontSize: 6.5, align: "right" }); colX += cols[8]
