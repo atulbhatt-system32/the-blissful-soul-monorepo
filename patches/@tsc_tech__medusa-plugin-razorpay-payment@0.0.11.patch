@@ -1,0 +1,13 @@
+diff --git a/.medusa/server/src/providers/razorpay/core/razorpay-base.js b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
+index 940ffa46976af76d45579a7860222f6352ab6728..39dc9de0fea3911021468a9f5ab4909f00fa82cd 100644
+--- a/.medusa/server/src/providers/razorpay/core/razorpay-base.js
++++ b/.medusa/server/src/providers/razorpay/core/razorpay-base.js
+@@ -421,7 +421,7 @@ class RazorpayBase extends utils_1.AbstractPaymentProvider {
+     }
+     async refundPayment(input) {
+         const { data, amount } = input;
+-        const id = data.id;
++        const id = data.id ?? data?.data?.data?.id;
+         const paymentList = await this.razorpay_.orders.fetchPayments(id);
+         const payment_id = paymentList.items?.find((p) => {
+             return (parseInt(`${p.amount}`) >= Number(amount) * 100 &&

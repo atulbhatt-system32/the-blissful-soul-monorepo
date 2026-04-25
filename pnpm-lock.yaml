@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11':
+    hash: d8c6694ca7e973201f561da2ee6b0b38aac17abf397c4d081d49bd8f957af30e
+    path: patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
+
 importers:
 
   .:
@@ -46,7 +51,7 @@ importers:
         version: 4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@tsc_tech/medusa-plugin-razorpay-payment':
         specifier: ^0.0.11
-        version: 0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
+        version: 0.0.11(patch_hash=d8c6694ca7e973201f561da2ee6b0b38aac17abf397c4d081d49bd8f957af30e)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)
       axios:
         specifier: ^1.13.6
         version: 1.14.0
@@ -22401,8 +22406,8 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)':
-    dependencies:
+  ? '@tsc_tech/medusa-plugin-razorpay-payment@0.0.11(patch_hash=d8c6694ca7e973201f561da2ee6b0b38aac17abf397c4d081d49bd8f957af30e)(@medusajs/admin-sdk@2.13.1)(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@medusajs/framework@2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76))(@medusajs/icons@2.1.2(react@18.3.1))(@medusajs/medusa@2.13.1)(@medusajs/test-utils@2.13.1)(@medusajs/ui@4.1.5(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(@mikro-orm/cli@6.4.16(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/core@6.4.16)(@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@20.19.37)(better-sqlite3@12.4.1)(pg@8.16.0))(@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.4.1))(awilix@8.0.1)(pg@8.16.0)'
+  : dependencies:
       '@medusajs/admin-sdk': 2.13.1
       '@medusajs/cli': 2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1)
       '@medusajs/framework': 2.13.1(@medusajs/cli@2.13.1(@types/node@20.19.37)(better-sqlite3@12.4.1))(@types/node@20.19.37)(better-sqlite3@12.4.1)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.37)(terser@5.46.1))(zod@3.25.76)
