@@ -59,7 +59,7 @@ function getIndiaStateCode(province: string | null | undefined): string {
   return INDIA_STATE_CODES[province.trim().toLowerCase()] ?? ""
 }
 
-const GST_RATE_FALLBACK = 3 // Fallback GST % if no tax lines present on item
+const GST_RATE_FALLBACK = 18 // Fallback GST % if no tax lines present on item
 
 
 const MARGIN = 40

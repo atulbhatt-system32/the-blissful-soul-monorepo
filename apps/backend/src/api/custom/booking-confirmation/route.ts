@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { generateInvoice } from "../../../lib/invoice"
 
 type BookingOrderPayload = {
@@ -52,6 +52,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const orderModuleService = req.scope.resolve(Modules.ORDER) as any
     const regionModuleService = req.scope.resolve(Modules.REGION) as any
     const customerModuleService = req.scope.resolve(Modules.CUSTOMER) as any
+    const paymentModuleService = req.scope.resolve(Modules.PAYMENT) as any
+    const remoteLink = req.scope.resolve(ContainerRegistrationKeys.LINK) as any
+    const productModuleService = req.scope.resolve(Modules.PRODUCT) as any
+    const taxModuleService = req.scope.resolve(Modules.TAX) as any
 
     // 2. Get default region
     const [regions] = await regionModuleService.listAndCountRegions({})
@@ -110,6 +114,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         title: `Session Booking - ${bookingDate} ${bookingTime}`,
         quantity: 1,
         unit_price: price || 0,
+        requires_shipping: false,
+        is_discountable: false,
         metadata: {
           booking_date: bookingDate,
           booking_time: bookingTime,
@@ -121,7 +127,62 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     console.log(`[Booking Order] Added line item to order ${order.id}`)
 
-    // 6. Generate PDF invoice
+    // 6. Register payment collection so admin shows "Paid"
+    try {
+      const currencyCode = region.currency_code || "inr"
+      const paymentAmount = price || 0
+
+      const paymentCollection = await paymentModuleService.createPaymentCollections({
+        currency_code: currencyCode,
+        amount: paymentAmount,
+        region_id: region.id,
+      })
+
+      // Use pp_system_default (Medusa's built-in manual provider) — no external API calls
+      const paymentSession = await paymentModuleService.createPaymentSession(paymentCollection.id, {
+        provider_id: "pp_system_default",
+        amount: paymentAmount,
+        currency_code: currencyCode,
+        data: { razorpay_payment_id: razorpayPaymentId },
+      })
+
+      const payment = await paymentModuleService.authorizePaymentSession(paymentSession.id, {})
+
+      await paymentModuleService.capturePayment({
+        payment_id: payment.id,
+        amount: paymentAmount,
+      })
+
+      await remoteLink.create({
+        [Modules.ORDER]: { order_id: order.id },
+        [Modules.PAYMENT]: { payment_collection_id: paymentCollection.id },
+      })
+
+      console.log(`[Booking Order] Payment captured and linked to order ${order.id}`)
+    } catch (paymentError: any) {
+      console.error(`[Booking Order] Could not register payment for order ${order.id}:`, paymentError.message)
+    }
+
+    // 7. Fetch tax lines from Medusa's tax module so the rate reflects admin overrides
+    let invoiceTaxLines: { rate: number }[] = []
+    try {
+      const [variants] = await productModuleService.listProductVariants(
+        { id: variantId },
+        { relations: ["product"] }
+      )
+      const variant = variants?.[0]
+      if (variant?.product_id) {
+        const taxLines = await taxModuleService.getTaxLines(
+          [{ id: "booking-item", product_id: variant.product_id, product_type_id: variant.product?.type_id ?? undefined, quantity: 1, unit_price: price || 0, currency_code: region.currency_code || "inr" }],
+          { address: { country_code: countryCode || "in" } }
+        )
+        invoiceTaxLines = taxLines.map((t: any) => ({ rate: t.rate }))
+      }
+    } catch (taxErr: any) {
+      console.warn("[Booking Order] Could not fetch tax lines, invoice will use fallback rate:", taxErr.message)
+    }
+
+    // 8. Generate PDF invoice
     const invoiceOrder = {
       created_at: order.created_at || new Date().toISOString(),
       display_id: order.display_id || order.id,
@@ -142,7 +203,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
           quantity: 1,
           unit_price: price || 0,
           adjustments: [],
-          tax_lines: [],
+          tax_lines: invoiceTaxLines,
+          metadata: { hs_code: "9983" },
         },
       ],
       shipping_total: 0,
@@ -155,7 +217,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const pdfBuffer = await generateInvoice(invoiceOrder)
     const pdfBase64 = pdfBuffer.toString("base64")
 
-    // 7. Send a confirmation email via notification service
+    // 9. Send a confirmation email via notification service
     const notificationService = req.scope.resolve("notification") as any
     const notifications: any[] = [
       {
