@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy root monorepo files
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
+COPY patches ./patches
 
 # Copy ONLY backend package.json to avoid busting cache on code changes
 COPY apps/backend/package.json ./apps/backend/
@@ -23,6 +24,10 @@ RUN pnpm run build
 # Install production dependencies inside the build output (required by Medusa docs)
 # --legacy-peer-deps matches pnpm's peer dep resolution used above
 RUN cd .medusa/server && npm install --omit=dev --legacy-peer-deps
+
+# Re-apply the Razorpay refund patch — npm install above pulls from registry without pnpm patches
+RUN find /app/apps/backend/.medusa/server/node_modules -path "*tsc_tech*razorpay-base.js" \
+    -exec sed -i 's/const id = data\.id;/const id = data.id ?? data?.data?.data?.id;/' {} \;
 
 # Verify admin build is present
 RUN test -f .medusa/server/public/admin/index.html || (echo "ERROR: Admin build missing. medusa build did not produce admin assets." && exit 1)
