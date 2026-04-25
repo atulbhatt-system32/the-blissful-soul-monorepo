@@ -102,15 +102,27 @@ export default async function orderInvoiceHandler({
     const billingAddr = order.billing_address || order.shipping_address
     const shippingAddr = order.shipping_address
 
+    // Support for session-specific details
+    const bookingDate = order.metadata?.booking_date
+    const bookingTime = order.metadata?.booking_time
+    const calMeetUrl = order.metadata?.cal_meet_url
+    const isSession = order.metadata?.is_session === true || order.metadata?.is_session === "true"
+
+    const sessionDetailsHtml = isSession ? `
+      <div style="background: #F9F7F9; padding: 25px; border-left: 4px solid #C5A059; border-radius: 4px; margin: 25px 0;">
+        <p style="margin: 0 0 10px 0; font-weight: bold; color: #2C1E36;">🗓️ Session Appointment:</p>
+        <p style="margin: 0; font-size: 18px; color: #2C1E36;">${bookingDate} at ${bookingTime}</p>
+        ${calMeetUrl ? `
+          <div style="margin-top: 20px; text-align: center; background: #2C1E36; padding: 20px; border-radius: 12px; border: 1px solid #C5A059;">
+            <p style="margin-top: 0; color: #C5A059; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Your Meeting Link</p>
+            <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 15px; margin: 5px 0;">Join Live Session</a>
+          </div>
+        ` : ""}
+      </div>
+    ` : ""
+
     if (notificationService) {
-      await (notificationService as any).createNotifications([
-        {
-          to: order.email,
-          channel: "email",
-          template: "order-placed",
-          data: {
-            subject: `Order Confirmed: #${order.display_id} - The Blissful Soul`,
-            html_body: `
+      const commonBodyPrefix = `
       <div style="font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background-color: #FBFAF8; padding: 40px 30px; color: #110E17; max-width: 620px; margin: 0 auto; border: 1px solid #E1DFE3; border-radius: 24px;">
 
         <!-- ═══ HEADER ═══ -->
@@ -120,14 +132,9 @@ export default async function orderInvoiceHandler({
           </div>
           <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 14px; color: #2C1E36; margin: 0; font-weight: 700; letter-spacing: 0.05em;">The Blissful Soul</h1>
           <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 4px 0 0;">Healing &amp; Crystals</p>
-        </div>
+        </div>`
 
-        <!-- ═══ ORDER TITLE ═══ -->
-        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">New order: #${order.display_id}</h2>
-        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
-          You've received a new order from ${customerName}:
-        </p>
-
+      const commonBodySuffix = `
         <!-- ═══ ORDER SUMMARY ═══ -->
         <div style="margin-bottom: 30px;">
           <h3 style="font-size: 18px; font-weight: 700; color: #2C1E36; margin: 0 0 6px;">Order summary</h3>
@@ -203,8 +210,40 @@ export default async function orderInvoiceHandler({
           <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: #C5A059; margin: 0;">The Blissful Soul Team</p>
         </div>
 
-      </div>
-            `,
+      </div>`
+
+      const clientHtmlBody = `
+        ${commonBodyPrefix}
+        <!-- ═══ CLIENT ORDER TITLE ═══ -->
+        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${order.display_id}</h2>
+        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+          Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. It shall be energised and dispatched soon.
+        </p>
+        ${sessionDetailsHtml}
+        ${commonBodySuffix}
+      `
+
+      const adminHtmlBody = `
+        ${commonBodyPrefix}
+        <!-- ═══ ADMIN ORDER TITLE ═══ -->
+        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">New order: #${order.display_id}</h2>
+        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+          You've received a new order from ${customerName}:
+        </p>
+        ${sessionDetailsHtml}
+        ${commonBodySuffix}
+      `
+
+      const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com"
+
+      await (notificationService as any).createNotifications([
+        {
+          to: order.email,
+          channel: "email",
+          template: "order-placed",
+          data: {
+            subject: `Order Confirmed: #${order.display_id} - The Blissful Soul`,
+            html_body: clientHtmlBody,
             pdf_attachments: [
               {
                 content: pdfBase64,
@@ -214,8 +253,18 @@ export default async function orderInvoiceHandler({
               },
             ],
           },
+        },
+        {
+          to: adminEmail,
+          channel: "email",
+          template: "order-placed-admin",
+          data: {
+            subject: `New order: #${order.display_id} from ${customerName}`,
+            html_body: adminHtmlBody,
+          },
         }
       ]);
+      console.log(`[Order Processing] Client confirmation and admin alert sent for Order #${order.display_id}`);
       console.log(`[Order Processing] Local PDF Invoice generated and email queued for Order #${order.display_id}`);
     } else {
       console.warn("[Order Processing] Notification service not found. Skipping email.");
