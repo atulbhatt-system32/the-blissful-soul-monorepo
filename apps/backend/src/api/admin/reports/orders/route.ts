@@ -94,10 +94,11 @@ function formatCurrency(amount: number): string {
 }
 
 function escapeCSV(value: string): string {
-  if (value.includes(",") || value.includes('"') || value.includes("\n")) {
-    return `"${value.replace(/"/g, '""')}"`
+  const v = value ?? ""
+  if (v.includes(",") || v.includes('"') || v.includes("\n")) {
+    return `"${v.replace(/"/g, '""')}"`
   }
-  return value
+  return v
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -121,12 +122,18 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       const { data: orders } = await (query as any).graph({
         entity: "order",
         fields: [
-          "*",
+          "id",
+          "display_id",
+          "created_at",
+          "status",
+          "email",
+          "currency_code",
           "items.*",
           "items.adjustments.*",
           "items.tax_lines.*",
           "shipping_methods.*",
           "shipping_methods.adjustments.*",
+          "shipping_address.*",
           "promotions.*",
         ],
         filters,
@@ -197,10 +204,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           .join(", ")
 
         return [
-          new Date(order.created_at).toISOString().replace("T", " ").substring(0, 19),
-          String(order.display_id),
+          order.created_at ? new Date(order.created_at).toISOString().replace("T", " ").substring(0, 19) : "",
+          String(order.display_id ?? ""),
           formatCurrency(netTotal),
-          order.status,
+          String(order.status ?? ""),
           customerName,
           isNew,
           products,
@@ -213,7 +220,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n")
 
-    const filename = `medusa-orders-${new Date().toISOString().slice(0, 10)}.csv`
+    const filename = `revenue-report-${new Date().toISOString().slice(0, 10)}.csv`
     res.setHeader("Content-Type", "text/csv")
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`)
     res.send(csv)

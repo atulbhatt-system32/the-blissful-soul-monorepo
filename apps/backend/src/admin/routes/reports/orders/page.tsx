@@ -3,6 +3,9 @@ import { ArrowDownTray, DocumentText } from "@medusajs/icons"
 import { Button, DatePicker, Heading, Text, toast } from "@medusajs/ui"
 import { useState } from "react"
 
+const today = new Date()
+today.setHours(23, 59, 59, 999)
+
 const OrdersReportPage = () => {
   const [from, setFrom] = useState<Date | undefined>()
   const [to, setTo] = useState<Date | undefined>()
@@ -26,7 +29,7 @@ const OrdersReportPage = () => {
       const blob = await res.blob()
       const anchor = document.createElement("a")
       anchor.href = URL.createObjectURL(blob)
-      anchor.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`
+      anchor.download = `revenue-report-${new Date().toISOString().slice(0, 10)}.csv`
       anchor.click()
       URL.revokeObjectURL(anchor.href)
       toast.success("Report downloaded")
@@ -41,10 +44,10 @@ const OrdersReportPage = () => {
     <div className="flex flex-col gap-y-4 p-8">
       <div className="flex items-center gap-x-3">
         <DocumentText className="text-ui-fg-subtle" />
-        <Heading level="h1">Orders Report</Heading>
+        <Heading level="h1">Revenue Report</Heading>
       </div>
       <Text className="text-ui-fg-subtle">
-        Download a CSV export of orders matching the same format as WooCommerce order reports.
+        Download a CSV export of revenue data matching the same format as WooCommerce order reports.
       </Text>
 
       <div className="bg-ui-bg-base border-ui-border-base mt-2 flex flex-col gap-y-4 rounded-xl border p-6 shadow-elevation-card-rest">
@@ -58,6 +61,7 @@ const OrdersReportPage = () => {
               value={from}
               onChange={setFrom}
               placeholder="Start date"
+              maxValue={today}
             />
           </div>
           <div className="flex flex-col gap-y-1">
@@ -68,6 +72,8 @@ const OrdersReportPage = () => {
               value={to}
               onChange={setTo}
               placeholder="End date"
+              minValue={from}
+              maxValue={today}
             />
           </div>
         </div>
@@ -98,7 +104,7 @@ const OrdersReportPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Orders Report",
+  label: "Revenue Report",
 })
 
 export default OrdersReportPage
