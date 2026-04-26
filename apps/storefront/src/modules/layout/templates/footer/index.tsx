@@ -35,7 +35,7 @@ export default async function Footer() {
                    {contactData?.phone || "+91 98116 11341"}
                  </p>
                  <p className="break-all opacity-90 text-white/60">
-                   {contactData?.email || "theblissfulsoul27@gmail.com"}
+                   {contactData?.email || "tbspragya@gmail.com"}
                  </p>
               </div>
             </div>
@@ -62,6 +62,7 @@ export default async function Footer() {
                 <ul className="flex flex-col gap-y-4 text-[15px] text-white/50 font-sans">
                     <li><LocalizedClientLink href="/terms" className="hover:text-[#C5A059] transition-colors">Terms of Service</LocalizedClientLink></li>
                     <li><LocalizedClientLink href="/privacy" className="hover:text-[#C5A059] transition-colors">Privacy Policy</LocalizedClientLink></li>
+                    <li><LocalizedClientLink href="/refund-policy" className="hover:text-[#C5A059] transition-colors">Refund & Returns</LocalizedClientLink></li>
                 </ul>
               </div>
               
@@ -80,7 +81,7 @@ export default async function Footer() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                   </a>
                   {/* Mail */}
-                  <a href={`mailto:${contactData?.email || "theblissfulsoul27@gmail.com"}`} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:border-[#C5A059] hover:text-[#C5A059] transition-all">
+                  <a href={`mailto:${contactData?.email || "tbspragya@gmail.com"}`} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:border-[#C5A059] hover:text-[#C5A059] transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   </a>
                </div>

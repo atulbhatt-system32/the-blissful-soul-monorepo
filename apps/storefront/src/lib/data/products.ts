@@ -63,7 +63,7 @@ export const listProducts = async ({
           offset,
           region_id: region?.id,
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
+            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,+categories,+type",
           ...queryParams,
         },
         headers,
@@ -131,14 +131,18 @@ export const listProductsWithSort = async ({
 
   const sortedProducts = sortProducts(products, sortBy)
 
-  // Further exclude 'session' products from general store views (if they aren't already tagged 'hidden')
   const excludeCategoryHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
 
-  const finalFilteredProducts = sortedProducts.filter(
-    (p) => 
-      !p.tags?.some((t: any) => t.value === "session") &&
-      !p.categories?.some((c: any) => excludeCategoryHandles.includes(c.handle))
-  )
+  const finalFilteredProducts = sortedProducts.filter((p) => {
+    const isSession =
+      p.type?.value === "session" ||
+      p.tags?.some((t: any) => t.value === "session") ||
+      p.metadata?.is_service === true ||
+      p.metadata?.is_service === "true" ||
+      p.categories?.some((c: any) => excludeCategoryHandles.includes(c.handle))
+
+    return !isSession
+  })
 
   const pageParam = (page - 1) * limit
 
