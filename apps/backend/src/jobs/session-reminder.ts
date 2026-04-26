@@ -90,29 +90,36 @@ export default async function sessionReminderJob(container: MedusaContainer) {
           // 1. Send to Customer
           await notificationService.createNotifications([reminderData]);
 
-          // 2. Send to Admin (User)
-          await notificationService.createNotifications([{
-            ...reminderData,
-            to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com", // Admin Email
-            data: {
-
-              ...reminderData.data,
-              subject: `[ADMIN REMINDER] Session with ${order.shipping_address?.first_name} at ${bookingTime}`,
-              html_body: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f0f8ff; border-radius: 8px;">
-                  <h2>Host Reminder: Upcoming Session</h2>
-                  <p>You have a session starting in 1 hour.</p>
-                  <ul>
-                    <li><strong>Customer:</strong> ${order.shipping_address?.first_name} ${order.shipping_address?.last_name}</li>
-                    <li><strong>Email:</strong> ${order.email}</li>
-                    <li><strong>Time:</strong> ${bookingTime}</li>
-                    <li><strong>Order ID:</strong> #${order.display_id}</li>
-                  </ul>
-                  <p>Preparation is key. Good luck! 🙏</p>
-                </div>
-              `
-            }
-          }]);
+          // 2. Send to Admin(s)
+          const adminEmails = [...new Set([
+            process.env.ADMIN_NOTIFICATION_EMAIL,
+            process.env.GOOGLE_SMTP_USER,
+          ].filter(Boolean) as string[])]
+          if (adminEmails.length > 0) {
+            await notificationService.createNotifications(
+              adminEmails.map((adminEmail: string) => ({
+                ...reminderData,
+                to: adminEmail,
+                data: {
+                  ...reminderData.data,
+                  subject: `[ADMIN REMINDER] Session with ${order.shipping_address?.first_name} at ${bookingTime}`,
+                  html_body: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f0f8ff; border-radius: 8px;">
+                      <h2>Host Reminder: Upcoming Session</h2>
+                      <p>You have a session starting in 1 hour.</p>
+                      <ul>
+                        <li><strong>Customer:</strong> ${order.shipping_address?.first_name} ${order.shipping_address?.last_name}</li>
+                        <li><strong>Email:</strong> ${order.email}</li>
+                        <li><strong>Time:</strong> ${bookingTime}</li>
+                        <li><strong>Order ID:</strong> #${order.display_id}</li>
+                      </ul>
+                      <p>Preparation is key. Good luck! 🙏</p>
+                    </div>
+                  `
+                }
+              }))
+            );
+          }
 
           // 3. Mark as sent in metadata
           await orderModuleService.updateOrders([{

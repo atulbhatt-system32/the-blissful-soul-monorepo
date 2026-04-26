@@ -100,13 +100,17 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       }
     }
 
+    const adminEmails = [...new Set([
+      process.env.ADMIN_NOTIFICATION_EMAIL,
+      process.env.GOOGLE_SMTP_USER,
+    ].filter(Boolean) as string[])]
+
     await notificationService.createNotifications([
       { ...notificationData, to: order.email },
-      { 
-        ...notificationData, 
-        to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com",
+      ...adminEmails.map((adminEmail: string) => ({
+        ...notificationData,
+        to: adminEmail,
         data: {
-
           ...notificationData.data,
           subject: `[ADMIN ALERT] Session Cancelled by Customer - #${order.display_id}`,
           html_body: `
@@ -121,7 +125,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             </div>
           `
         }
-      }
+      })),
     ])
 
     return res.status(200).json({ success: true, message: "Booking cancelled successfully." })

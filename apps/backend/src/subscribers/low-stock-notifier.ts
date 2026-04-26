@@ -29,17 +29,22 @@ export default async function lowStockHandler({
 
     // 4. Send Email to Admin
     try {
-      await (notificationService as any).createNotifications([
-        {
-          to: process.env.ADMIN_EMAIL || "admin@theblissfulsoul.com",
+      const adminEmails = [...new Set([
+        process.env.ADMIN_NOTIFICATION_EMAIL,
+        process.env.GOOGLE_SMTP_USER,
+      ].filter(Boolean) as string[])]
+
+      await (notificationService as any).createNotifications(
+        adminEmails.map((adminEmail) => ({
+          to: adminEmail,
           channel: "email",
           template: "inventory-alert",
           data: {
             subject: `Inventory Alert: ${status}`,
             html_body: `<p>Attention Admin,</p><p>An item is ${status}.</p><p>Inventory Item ID: ${data.id}</p><p>Current Balance: <b>${totalStock}</b></p>`,
           },
-        }
-      ])
+        }))
+      )
     } catch (error) {
       logger.error(`Failed to send low stock notification for ${data.id}:`, error)
     }

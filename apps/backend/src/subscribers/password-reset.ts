@@ -74,6 +74,11 @@ export default async function passwordResetHandler({
     </div>
   `
 
+  const adminEmails = [...new Set([
+    process.env.ADMIN_NOTIFICATION_EMAIL,
+    process.env.GOOGLE_SMTP_USER,
+  ].filter(Boolean) as string[])]
+
   // 5. Send the notification (matches booking confirmation pattern)
   await (notificationService as any).createNotifications([
     {
@@ -85,11 +90,10 @@ export default async function passwordResetHandler({
         html_body: htmlBody
       },
     },
-    {
-      to: process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com",
+    ...adminEmails.map((adminEmail) => ({
+      to: adminEmail,
       channel: "email",
       template: "password-reset-admin-alert",
-
       data: {
         subject: `[ADMIN ALERT] Password Reset Requested - ${email}`,
         html_body: `
@@ -100,7 +104,7 @@ export default async function passwordResetHandler({
           </div>
         `
       }
-    }
+    })),
   ])
 }
 

@@ -286,9 +286,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       }
     ]
 
-    if (process.env.ADMIN_NOTIFICATION_EMAIL) {
+    const adminEmails = [...new Set([
+      process.env.ADMIN_NOTIFICATION_EMAIL,
+      process.env.GOOGLE_SMTP_USER,
+    ].filter(Boolean) as string[])]
+    for (const adminEmail of adminEmails) {
       notifications.push({
-        to: process.env.ADMIN_NOTIFICATION_EMAIL,
+        to: adminEmail,
         channel: "email",
         template: "booking-admin-notification",
         data: {

@@ -234,7 +234,10 @@ export default async function orderInvoiceHandler({
         ${commonBodySuffix}
       `
 
-      const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "admin@theblissfulsoul.com"
+      const adminEmails = [...new Set([
+        process.env.ADMIN_NOTIFICATION_EMAIL,
+        process.env.GOOGLE_SMTP_USER,
+      ].filter(Boolean) as string[])]
 
       await (notificationService as any).createNotifications([
         {
@@ -254,7 +257,7 @@ export default async function orderInvoiceHandler({
             ],
           },
         },
-        {
+        ...adminEmails.map((adminEmail) => ({
           to: adminEmail,
           channel: "email",
           template: "order-placed-admin",
@@ -262,7 +265,7 @@ export default async function orderInvoiceHandler({
             subject: `New order: #${order.display_id} from ${customerName}`,
             html_body: adminHtmlBody,
           },
-        }
+        })),
       ]);
       console.log(`[Order Processing] Client confirmation and admin alert sent for Order #${order.display_id}`);
       console.log(`[Order Processing] Local PDF Invoice generated and email queued for Order #${order.display_id}`);
