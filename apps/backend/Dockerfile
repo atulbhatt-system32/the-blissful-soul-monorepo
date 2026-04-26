@@ -1,4 +1,5 @@
 FROM node:20-slim AS builder
+RUN apt-get update && apt-get install -y --no-install-recommends patch && rm -rf /var/lib/apt/lists/*
 RUN npm install -g pnpm@10.5.2
 
 WORKDIR /app
@@ -28,9 +29,9 @@ RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 # --legacy-peer-deps matches pnpm's peer dep resolution used above
 RUN cd .medusa/server && npm install --omit=dev --legacy-peer-deps
 
-# Re-apply the Razorpay refund patch — npm install above pulls from registry without pnpm patches
-RUN find /app/apps/backend/.medusa/server/node_modules -path "*tsc_tech*razorpay-base.js" \
-    -exec sed -i 's/const id = data\.id;/const id = data.id ?? data?.data?.data?.id;/' {} \;
+# Re-apply the full Razorpay refund patch — npm install above pulls from registry without pnpm patches
+RUN cd /app/apps/backend/.medusa/server/node_modules/@tsc_tech/medusa-plugin-razorpay-payment \
+    && patch -p1 --forward --ignore-whitespace < /app/patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
 
 # Verify admin build is present
 RUN test -f .medusa/server/public/admin/index.html || (echo "ERROR: Admin build missing. medusa build did not produce admin assets." && exit 1)
