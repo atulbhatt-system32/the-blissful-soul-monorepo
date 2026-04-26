@@ -196,7 +196,8 @@ const Shipping: React.FC<ShippingProps> = ({
         {!isOpen &&
           cart?.shipping_address &&
           cart?.billing_address &&
-          cart?.email && (
+          cart?.email &&
+          ((_shippingMethods?.length ?? 0) > 1 || hasPickupOptions) && (
             <button
               onClick={handleEdit}
               className="text-[10px] items-center uppercase tracking-widest font-black text-[#C5A059] border-b-2 border-[#C5A059]/30 hover:border-[#C5A059] transition-all pb-1 min-w-fit mt-5"

@@ -354,6 +354,8 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     return "No existing cart found"
   }
 
+  let updatedCart: HttpTypes.StoreCart | undefined
+
   try {
     if (!formData) {
       throw new Error("No form data found when setting addresses")
@@ -391,13 +393,18 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         province: formData.get("billing_address.province"),
         phone: formData.get("billing_address.phone"),
       }
-    await updateCart(data)
+    updatedCart = await updateCart(data)
   } catch (e: any) {
     return e.message
   }
 
   const isDigitalOnly = formData.get("is_digital_only") === "true"
   let nextStep: string = "delivery"
+
+  // If a shipping method is already applied (e.g. user is refining address), skip
+  // re-adding it — re-calling addShippingMethod while a promo is active causes
+  // Medusa to recompute discounts incorrectly, producing a negative shipping total.
+  const hasExistingShippingMethod = (updatedCart?.shipping_methods?.length ?? 0) > 0
 
   try {
     const { shipping_options } = await listCartOptions()
@@ -406,14 +413,16 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     )
 
     if (isDigitalOnly) {
-      if (validShippingOptions?.length) {
+      if (validShippingOptions?.length && !hasExistingShippingMethod) {
         // Prefer free shipping for digital items, otherwise take the first one
         const option = validShippingOptions.find(o => o.amount === 0 || o.price_type === "calculated") || validShippingOptions[0]
         await setShippingMethod({ cartId, shippingMethodId: option.id })
       }
       nextStep = "payment"
     } else if (validShippingOptions?.length === 1) {
-      await setShippingMethod({ cartId, shippingMethodId: validShippingOptions[0].id })
+      if (!hasExistingShippingMethod) {
+        await setShippingMethod({ cartId, shippingMethodId: validShippingOptions[0].id })
+      }
       nextStep = "payment"
     }
   } catch (err: any) {

@@ -33,13 +33,25 @@ export default async function RelatedProducts({
   }
   queryParams.is_giftcard = false
 
+  const isCurrentSession =
+    product.type?.value === "session" ||
+    product.tags?.some((t) => t.value === "session") ||
+    product.metadata?.is_service === true ||
+    product.metadata?.is_service === "true"
+
   const products = await listProducts({
     queryParams,
     countryCode,
   }).then(({ response }) => {
-    return response.products.filter(
-      (responseProduct) => responseProduct.id !== product.id
-    )
+    return response.products.filter((responseProduct) => {
+      if (responseProduct.id === product.id) return false
+      const isRelatedSession =
+        responseProduct.type?.value === "session" ||
+        responseProduct.tags?.some((t) => t.value === "session") ||
+        responseProduct.metadata?.is_service === true ||
+        responseProduct.metadata?.is_service === "true"
+      return isCurrentSession === isRelatedSession
+    })
   })
 
   if (!products.length) {
