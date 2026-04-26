@@ -21,6 +21,9 @@ WORKDIR /app/apps/backend
 # Build outputs to .medusa/server/ — do NOT set NODE_ENV=production before build
 RUN pnpm run build
 
+# Copy static assets not handled by the TypeScript compiler
+RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
+
 # Install production dependencies inside the build output (required by Medusa docs)
 # --legacy-peer-deps matches pnpm's peer dep resolution used above
 RUN cd .medusa/server && npm install --omit=dev --legacy-peer-deps
