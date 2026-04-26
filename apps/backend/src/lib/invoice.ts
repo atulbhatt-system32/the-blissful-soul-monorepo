@@ -1,4 +1,5 @@
 import PDFDocument from "pdfkit"
+import path from "path"
 
 // ──────────────────────────────────────────────
 // HSN/SAC Code Lookup
@@ -25,12 +26,12 @@ const COMPANY = {
   name: "The Blissful Soul",
   tagline: "The Blissful Soul Shakti Nagar",
   gstin: "07APLPV9864M1ZN",
-  email: "theblissfulsoul27x1@gmail.com",
+  email: process.env.GOOGLE_SMTP_USER ?? "tbspragya@gmail.com",
   website: "theblissfulsoul.in",
-  phone: "PRAGYA VUH : 9811611341",
+  phone: "PRAGYA VIJH : 9811611341",
   state: "Delhi",
   stateCode: "07",
-  signatory: "PRAGYA VUH",
+  signatory: "PRAGYA VIJH",
 }
 
 const INDIA_STATE_CODES: Record<string, string> = {
@@ -187,34 +188,17 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       doc.font("Helvetica-Bold").fontSize(7).fillColor("#000000")
         .text(`GSTIN : ${COMPANY.gstin}`, INNER_LEFT, y + 30, { width: 250 })
 
-      // Centered logo area – draw a diamond shape
-      const logoX = PAGE_WIDTH / 2
-      const logoY = y + 18
-      const logoSize = 22
-      doc.save()
-        .moveTo(logoX, logoY - logoSize)
-        .lineTo(logoX + logoSize, logoY)
-        .lineTo(logoX, logoY + logoSize)
-        .lineTo(logoX - logoSize, logoY)
-        .closePath()
-        .lineWidth(1.5)
-        .strokeColor("#C5A059")
-        .fillColor("#2C1E36")
-        .fillAndStroke()
-        .restore()
+      // Centered logo image
+      const logoPath = path.join(__dirname, "logo.png")
+      const logoW = 110
+      const logoH = 55
+      const logoX = (PAGE_WIDTH - logoW) / 2
+      const logoY = y + 5
+      doc.image(logoPath, logoX, logoY, { width: logoW, height: logoH, fit: [logoW, logoH], align: "center" })
 
-      // TBS text inside diamond
-      doc.font("Helvetica-Bold").fontSize(5).fillColor("#C5A059")
-        .text("TBS", logoX - 7, logoY - 3, { width: 14, align: "center" })
-
-      // Company name under logo
-      const nameBlockY = logoY + logoSize + 5
-      doc.font("Helvetica-Bold").fontSize(8).fillColor("#000000")
-        .text("The Blissful Soul", MARGIN, nameBlockY, { width: INNER_WIDTH, align: "center" })
-      doc.font("Helvetica-Bold").fontSize(7).fillColor("#000000")
-        .text("The Blissful Soul", MARGIN, nameBlockY + 10, { width: INNER_WIDTH, align: "center" })
+      const nameBlockY = logoY + logoH + 2
       doc.font("Helvetica").fontSize(6).fillColor("#000000")
-        .text(COMPANY.tagline, MARGIN, nameBlockY + 20, { width: INNER_WIDTH, align: "center" })
+        .text(COMPANY.tagline, MARGIN, nameBlockY, { width: INNER_WIDTH, align: "center" })
 
       // Contact row
       const contactY = nameBlockY + 34
@@ -427,15 +411,19 @@ export async function generateInvoice(order: any): Promise<Buffer> {
       const totalCGST = itemRows.reduce((s, r) => s + r.cgst, 0)
       const totalSGST = itemRows.reduce((s, r) => s + r.sgst, 0)
       const totalTax = totalCGST + totalSGST
-      // Use Medusa's own computed shipping_total (net after all promos — already 0 for free shipping)
-      const shippingTotal = order.shipping_total ?? 0
-      // Use tax-inclusive discount from itemRows (already scaled above)
-      const itemDiscounts = itemRows.reduce((s, r) => s + r.discount, 0)
       const shippingGross = (order.shipping_methods || []).reduce((sum: number, sm: any) => sum + (sm.amount ?? 0), 0)
-      const shippingDiscounts = Math.max(0, shippingGross - shippingTotal)
-      const discountTotal = itemDiscounts + shippingDiscounts
+      const itemDiscounts = itemRows.reduce((s, r) => s + r.discount, 0)
 
-      const totalAfterTax = totalTaxableAmount + totalTax + shippingTotal
+      // Scale shipping pre-tax adjustment to tax-inclusive using the shipping GST rate
+      const shippingTaxRate = (order.shipping_methods || []).reduce((maxRate: number, sm: any) =>
+        Math.max(maxRate, (sm.tax_lines || []).reduce((s: number, t: any) => s + (t.rate ?? 0), 0)), 0)
+      const shippingAdjPreTax = (order.shipping_methods || []).reduce(
+        (sum: number, sm: any) => sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
+      const shippingDiscountInclusive = shippingAdjPreTax * (1 + shippingTaxRate / 100)
+      const discountTotal = itemDiscounts + shippingDiscountInclusive
+      const shippingNetInclusive = Math.max(0, shippingGross - shippingDiscountInclusive)
+
+      const totalAfterTax = totalTaxableAmount + totalTax + shippingNetInclusive
       const roundedTotal = Math.round(totalAfterTax)
       const roundOff = roundedTotal - totalAfterTax
 
@@ -482,7 +470,7 @@ export async function generateInvoice(order: any): Promise<Buffer> {
 
       // Shipping
       cell(doc, rX, rY, labelW, sumH, "Shipping Amount(₹)", { fontSize: 6 })
-      cell(doc, rX + labelW, rY, valW, sumH, fmt(shippingTotal), { fontSize: 6, align: "right" })
+      cell(doc, rX + labelW, rY, valW, sumH, fmt(shippingGross), { fontSize: 6, align: "right" })
       rY += sumH
 
       // Total amount after Tax

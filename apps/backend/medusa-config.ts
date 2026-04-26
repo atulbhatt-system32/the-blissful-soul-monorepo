@@ -34,6 +34,7 @@ module.exports = defineConfig({
             options: {
               key_id: process.env.RAZORPAY_ID,
               key_secret: process.env.RAZORPAY_SECRET,
+              webhook_secret: process.env.RAZORPAY_WEBHOOK_SECRET,
               auto_capture: true,
             },
           },

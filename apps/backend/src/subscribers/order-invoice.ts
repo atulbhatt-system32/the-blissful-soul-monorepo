@@ -24,6 +24,7 @@ export default async function orderInvoiceHandler({
         "payment_collections.payments.*",
         "shipping_methods.*",
         "shipping_methods.adjustments.*",
+        "shipping_methods.tax_lines.*",
         "+total",
         "+subtotal",
         "+shipping_total",
@@ -51,13 +52,22 @@ export default async function orderInvoiceHandler({
   
     // Robust computation of totals
     const rawItemsSubtotal = items.reduce((sum: number, item: any) => sum + ((item.unit_price || 0) * (item.quantity || 0)), 0)
-    const shippingTotal = order.shipping_total ?? (order.shipping_methods || []).reduce((sum: number, sm: any) => sum + (sm.amount ?? 0), 0)
-    const itemDiscounts = items.reduce((sum: number, item: any) => sum + (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
-    const shippingDiscounts = (order.shipping_methods || []).reduce((sum: number, sm: any) => sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
-    const discountTotal = order.discount_total || (itemDiscounts + shippingDiscounts)
-    const taxTotal = order.tax_total || 0
+    const shippingGross = (order.shipping_methods || []).reduce((sum: number, sm: any) => sum + (sm.amount ?? 0), 0)
+    // Scale item discounts to tax-inclusive using each item's GST rate
+    const itemDiscounts = items.reduce((sum: number, item: any) => {
+      const adjPreTax = (item.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0)
+      const gstRate = (item.tax_lines || []).reduce((s: number, t: any) => s + (t.rate ?? 0), 0)
+      return sum + Math.min((item.unit_price || 0) * (item.quantity || 1), adjPreTax * (1 + gstRate / 100))
+    }, 0)
+    // Scale shipping discount to tax-inclusive using shipping GST rate
+    const shippingTaxRate = (order.shipping_methods || []).reduce((maxRate: number, sm: any) =>
+      Math.max(maxRate, (sm.tax_lines || []).reduce((s: number, t: any) => s + (t.rate ?? 0), 0)), 0)
+    const shippingAdjPreTax = (order.shipping_methods || []).reduce((sum: number, sm: any) =>
+      sum + (sm.adjustments || []).reduce((s: number, a: any) => s + (a.amount ?? 0), 0), 0)
+    const shippingDiscounts = shippingAdjPreTax * (1 + shippingTaxRate / 100)
+    const discountTotal = itemDiscounts + shippingDiscounts
     const subtotal = order.subtotal || rawItemsSubtotal
-    const calculatedTotal = order.total || (subtotal + shippingTotal - discountTotal + taxTotal)
+    const calculatedTotal = order.total || (subtotal + shippingGross - discountTotal)
 
     const customerName = `${order.shipping_address?.first_name || ''} ${order.shipping_address?.last_name || ''}`.trim() || 'Valued Customer'
     const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -127,11 +137,8 @@ export default async function orderInvoiceHandler({
 
         <!-- ═══ HEADER ═══ -->
         <div style="text-align: center; margin-bottom: 35px;">
-          <div style="width: 56px; height: 56px; margin: 0 auto 16px; background: #2C1E36; transform: rotate(45deg); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-            <span style="color: #C5A059; font-weight: 800; font-size: 14px; transform: rotate(-45deg); display: block;">TBS</span>
-          </div>
-          <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 14px; color: #2C1E36; margin: 0; font-weight: 700; letter-spacing: 0.05em;">The Blissful Soul</h1>
-          <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 4px 0 0;">Healing &amp; Crystals</p>
+          <h1 style="font-family: Georgia, serif; font-size: 20px; color: #2C1E36; margin: 0 0 4px; font-weight: 700; letter-spacing: 0.05em;">The Blissful Soul</h1>
+          <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 0;">Healing &amp; Crystals</p>
         </div>`
 
       const commonBodySuffix = `
@@ -158,7 +165,7 @@ export default async function orderInvoiceHandler({
             </tr>
             <tr>
               <td style="font-size: 14px; color: #665D6B; padding: 5px 0;">Shipping: ${shippingMethodName}</td>
-              <td style="font-size: 14px; color: #2C1E36; text-align: right; padding: 5px 0; font-weight: 500;">₹${shippingTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-size: 14px; color: #2C1E36; text-align: right; padding: 5px 0; font-weight: 500;">₹${shippingGross.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             </tr>
             ${discountTotal > 0 ? `
             <tr>
@@ -174,11 +181,6 @@ export default async function orderInvoiceHandler({
               <td style="font-size: 13px; color: #2C1E36; text-align: right; padding: 5px 0;">${paymentMethod}</td>
             </tr>
           </table>
-        </div>
-
-        <!-- ═══ DOWNLOAD INVOICE BUTTON ═══ -->
-        <div style="margin: 28px 0;">
-          <a href="${storefrontUrl}/order/lookup?display_id=${order.display_id}&email=${order.email}" style="display: inline-block; background: #2C1E36; color: #C5A059; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 4px 15px rgba(44,30,54,0.25);">Download GST Invoice</a>
         </div>
 
         <!-- ═══ BILLING + SHIPPING ADDRESS ═══ -->
