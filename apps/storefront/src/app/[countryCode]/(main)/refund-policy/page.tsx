@@ -21,7 +21,7 @@ export default function RefundPolicyPage() {
           </h1>
           <div className="w-24 h-0.5 bg-[#C5A059] mt-8 mx-auto md:mx-0"></div>
           <p className="mt-8 text-lg text-[#665D6B] font-sans max-w-2xl leading-relaxed">
-            Our policy lasts <span className="font-bold text-[#2C1E36]">30 days</span>. If 30 days have gone by since your purchase, unfortunately, we cannot offer you a full refund or exchange.
+            Our policy: <span className="font-bold text-[#2C1E36]">proper unpackaging video required for any claims</span>. If this is not provided, unfortunately, we cannot offer you a full refund or exchange.
           </p>
         </div>
         
@@ -100,7 +100,7 @@ export default function RefundPolicyPage() {
                   </li>
                   <li className="flex gap-4">
                     <span className="text-[#C5A059]">•</span>
-                    <span>Any item that is returned more than 30 days after delivery.</span>
+                    <span>Any item that is returned without a proper unpackaging video required for any claims.</span>
                   </li>
                 </ul>
               </div>
