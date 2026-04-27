@@ -89,7 +89,17 @@ export const getServiceCategoryDetail = async (
       next: nextOpts,
       cache: "no-store",
     })
-    .then(({ products }) => products)
+    .then(({ products }) => {
+      return products.sort((a: any, b: any) => {
+        const rankA = a.metadata?.[`rank_${handle}`]
+        const rankB = b.metadata?.[`rank_${handle}`]
+        
+        if (rankA !== undefined && rankB !== undefined) return Number(rankA) - Number(rankB)
+        if (rankA !== undefined) return -1
+        if (rankB !== undefined) return 1
+        return 0
+      })
+    })
 
   return { category, products, region }
 }

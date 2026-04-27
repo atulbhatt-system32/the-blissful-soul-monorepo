@@ -1,26 +1,25 @@
-import { Modules } from "@medusajs/framework/utils"
-import { initialize as initAuth } from "@medusajs/auth"
-import { config } from "dotenv"
+import { sdk } from "./apps/storefront/src/lib/config";
 
-config({ path: "apps/backend/.env" })
+async function checkHandles() {
+  const intentionsRoot = await sdk.client
+    .fetch("/store/product-categories", {
+      query: {
+        fields: "*category_children",
+        handle: "intentions",
+        limit: 1,
+      },
+    })
+    .then((res: any) => res.product_categories[0]);
 
-async function test() {
-  try {
-    const authModuleService = await initAuth({
-        database: {
-            clientUrl: process.env.DATABASE_URL
-        }
-    })
-    const email = "nynisaso@rxzig.com" // that's what's in the screenshot!
-    const authIdentities = await authModuleService.listAuthIdentities({
-      provider_identities: { 
-        entity_id: email, 
-        provider_id: "emailpass" 
-      }
-    })
-    console.log("Found:", JSON.stringify(authIdentities, null, 2))
-  } catch (e) {
-    console.error(e)
+  if (!intentionsRoot) {
+    console.log("Intentions category not found");
+    return;
   }
+
+  console.log("Intentions Children Handles:");
+  intentionsRoot.category_children.forEach((c: any) => {
+    console.log(`- ${c.name}: ${c.handle}`);
+  });
 }
-test()
+
+checkHandles();
