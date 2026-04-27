@@ -49,12 +49,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "backend.pragyavijh.com",
-        pathname: "/static/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "pragyavijh.com",
-        pathname: "/api/static/**",
+        pathname: "/**",
       },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
