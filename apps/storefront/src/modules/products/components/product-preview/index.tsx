@@ -246,7 +246,6 @@ export default function ProductPreview({
               images={product.images}
               size="full"
               isFeatured={isFeatured}
-              priority={isFeatured}
               className="!rounded-[18px] md:!rounded-[24px] overflow-hidden aspect-square grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 scale-[0.99] group-hover:scale-100"
             />
 
