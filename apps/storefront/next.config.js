@@ -28,7 +28,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "http",
@@ -49,12 +49,22 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "backend.pragyavijh.com",
-        pathname: "/static/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "pragyavijh.com",
-        pathname: "/api/static/**",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cms.pragyavijh.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
       },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
