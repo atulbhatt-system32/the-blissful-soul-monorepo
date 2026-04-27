@@ -8,9 +8,6 @@ const ServicesGrid = async () => {
 
   if (!categories.length) return null
 
-  // Sort categories by rank if available
-  const sortedCategories = [...categories].sort((a, b) => (a.rank || 0) - (b.rank || 0))
-
   return (
     <section id="sacred-services" className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="content-container relative z-10">
@@ -44,7 +41,7 @@ const ServicesGrid = async () => {
 
         {/* Services Flip Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {sortedCategories.map((category, index) => {
+          {categories.map((category) => {
             const images = (category as any).product_category_images as Array<{ url: string }> | undefined
             const imageUrl = images?.[0]?.url
             const color = (category.metadata?.color as string) || "bg-purple-100"
@@ -62,9 +59,6 @@ const ServicesGrid = async () => {
                         alt={category.name}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        quality={75}
-                        priority={index < 3} // Load first 3 images with high priority
                       />
                     ) : (
                       <div className="w-full h-full bg-purple-50 flex items-center justify-center">
