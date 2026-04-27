@@ -4,7 +4,8 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { getServiceCategories } from "@lib/data/categories"
 
 const ServicesGrid = async () => {
-  const categories = await getServiceCategories()
+  const categoriesRaw = await getServiceCategories()
+  const categories = categoriesRaw.sort((a, b) => (a.rank || 0) - (b.rank || 0))
 
   if (!categories.length) return null
 
@@ -58,6 +59,7 @@ const ServicesGrid = async () => {
                         src={imageUrl}
                         alt={category.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover"
                       />
                     ) : (
