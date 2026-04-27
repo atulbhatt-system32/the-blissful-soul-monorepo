@@ -29,10 +29,14 @@ export default async function IntentCollections({
         queryParams: {
           category_id: [category.id],
           limit: 12,
-          fields: "*variants.calculated_price",
+          fields: "*variants.calculated_price,+metadata",
         },
       })
-      products = response.products
+      products = response.products.sort((a, b) => {
+        const rankA = a.metadata?.rank ?? a.metadata?.sequence ?? 999
+        const rankB = b.metadata?.rank ?? b.metadata?.sequence ?? 999
+        return Number(rankA) - Number(rankB)
+      })
 
       return {
         key: category.id,
