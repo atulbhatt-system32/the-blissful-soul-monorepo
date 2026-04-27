@@ -108,15 +108,17 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
           return (
             <SwiperSlide key={slideIndex}>
               <div className="relative flex h-full w-full items-center justify-center">
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0 bg-[#2C1E36]">
                   <Image
                     key={imageUrl}
                     src={imageUrl}
                     alt={slide.title || "Hero image"}
                     fill
                     priority={slideIndex === 0}
+                    fetchPriority={slideIndex === 0 ? "high" : "auto"}
                     className="object-cover object-top"
-                    sizes="100vw"
+                    sizes="(max-width: 768px) 100vw, 100vw"
+                    quality={90}
                   />
                 </div>
 
