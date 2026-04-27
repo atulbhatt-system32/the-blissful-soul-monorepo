@@ -48,7 +48,10 @@ export const getServiceCategories = async () => {
         cache: "no-store",
       }
     )
-    .then(({ product_categories }) => product_categories[0]?.category_children ?? [])
+    .then(({ product_categories }) => {
+      const children = product_categories[0]?.category_children ?? []
+      return children.sort((a: any, b: any) => (a.rank ?? 0) - (b.rank ?? 0))
+    })
 }
 
 export const getServiceCategoryDetail = async (
