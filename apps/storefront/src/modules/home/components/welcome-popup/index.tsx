@@ -59,41 +59,45 @@ const WelcomePopup = ({ data }: PopUpProps) => {
       />
       
       {/* Pop-up Modal */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[90%] max-w-lg bg-[#2C1E36] rounded-3xl shadow-[0_0_60px_rgba(197,160,89,0.15)] overflow-hidden flex flex-col md:flex-row border border-[#C5A059]/20 animate-in fade-in zoom-in duration-300">
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[95%] max-w-4xl bg-[#2C1E36] rounded-[2rem] shadow-[0_0_80px_rgba(197,160,89,0.2)] overflow-hidden flex flex-col md:flex-row border border-[#C5A059]/30 animate-in fade-in zoom-in duration-300">
         
         {/* Close Button */}
         <button 
           onClick={handleClose}
-          className="absolute top-4 right-4 z-[102] p-2 bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white hover:rotate-90 transition-all duration-300"
+          className="absolute top-6 right-6 z-[102] p-2 bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white hover:rotate-90 transition-all duration-300"
           aria-label="Close popup"
         >
           <XMark />
         </button>
 
-        {/* Optional Image side */}
+        {/* Image side */}
         {imageUrl && (
-          <div className="relative w-full md:w-5/12 aspect-[4/3] md:aspect-auto hidden md:block border-r border-[#C5A059]/10">
-            <Image 
-              src={imageUrl} 
-              alt={data.title} 
-              fill 
-              className="object-cover" 
-            />
+          <div className="relative w-full md:w-1/2 min-h-[350px] md:min-h-full flex items-center justify-center p-6 md:p-8 bg-[#2C1E36]/50">
+            <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border border-[#C5A059]/30 shadow-2xl">
+              <Image 
+                src={imageUrl} 
+                alt={data.title} 
+                fill 
+                className="object-contain bg-[#1F1426]" 
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </div>
         )}
 
         {/* Content Side */}
-        <div className="p-8 md:p-10 flex flex-col items-center justify-center text-center flex-1 relative overflow-hidden">
+        <div className="p-10 md:p-16 flex flex-col items-center justify-center text-center flex-1 relative overflow-hidden">
           {/* Decorative glow */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 blur-[50px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-600/10 blur-[50px] rounded-full pointer-events-none" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-[#C5A059]/10 blur-[60px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-600/10 blur-[60px] rounded-full pointer-events-none" />
 
-          <h3 className="font-serif text-2xl md:text-3xl text-[#C5A059] mb-4 tracking-tight uppercase relative z-10">
+          <h3 className="font-serif text-2xl md:text-3xl text-[#C5A059] mb-4 md:mb-6 tracking-[0.05em] uppercase leading-[1.2] relative z-10 max-w-[500px]">
             {data.title}
           </h3>
           
           {data.description && (
-            <p className="text-purple-100/70 text-sm md:text-base mb-8 leading-relaxed italic relative z-10">
+            <p className="text-purple-100/80 text-sm md:text-lg mb-8 md:mb-10 leading-relaxed italic relative z-10 max-w-[450px]">
               {data.description}
             </p>
           )}
@@ -102,7 +106,7 @@ const WelcomePopup = ({ data }: PopUpProps) => {
             <LocalizedClientLink 
               href={data.button_link}
               onClick={handleClose}
-              className="inline-block w-full px-8 py-3.5 bg-[#C5A059] text-[#2C1E36] rounded-full font-black uppercase tracking-widest text-xs hover:bg-white transition-all shadow-lg hover:shadow-[#C5A059]/20 relative z-10"
+              className="inline-block w-full px-10 py-5 bg-[#C5A059] text-[#2C1E36] rounded-full font-black uppercase tracking-widest text-sm hover:bg-white transition-all shadow-xl hover:shadow-[#C5A059]/30 relative z-10"
             >
               {data.button_text}
             </LocalizedClientLink>
@@ -110,7 +114,7 @@ const WelcomePopup = ({ data }: PopUpProps) => {
 
           <button 
             onClick={handleClose}
-            className="mt-6 text-[10px] text-white/30 uppercase tracking-widest hover:text-[#C5A059] transition-colors relative z-10"
+            className="mt-8 text-[11px] text-white/40 uppercase tracking-widest hover:text-[#C5A059] transition-colors relative z-10 font-bold"
           >
             No thanks, maybe later
           </button>

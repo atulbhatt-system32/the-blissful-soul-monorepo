@@ -38,6 +38,8 @@ export default async function StorePage(props: Params) {
       countryCode={params.countryCode}
       heroTitle={storeData?.hero_title}
       heroSubtitle={storeData?.hero_subtitle}
+      announcements={storeData?.announcements}
+      heroImage={storeData?.hero_image}
     />
   )
 }
