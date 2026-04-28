@@ -70,6 +70,8 @@ const IntentCollectionsClient = ({
 
       <div className="content-container grid grid-cols-1 gap-8 md:gap-12">
       {intents.map((section) => (
+
+        
         <div 
           key={section.handle || section.title} 
           id={section.handle || `collection-${section.title.toLowerCase()}`} 

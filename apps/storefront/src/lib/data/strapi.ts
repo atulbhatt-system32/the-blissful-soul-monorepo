@@ -39,7 +39,8 @@ export interface HomepageData {
     marquee_items?: Array<{ id: number; text: string }>
 }
 
-const STRAPI_URL = process.env.STOREFRONT_STRAPI_URL || "http://localhost:1337"
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+const STRAPI_INTERNAL_URL = process.env.STOREFRONT_STRAPI_URL || "http://cms:1337"
 const STRAPI_TOKEN = process.env.CMS_API_TOKEN
 
 // Returns a map keyed by product handle (stable across environments)
@@ -232,18 +233,19 @@ export async function getBookSessionPageData() {
 }
 
 export async function getStorePageData() {
+    // In Docker, we must use the service name 'cms' instead of localhost
+    const baseUrl = STRAPI_INTERNAL_URL
+    
     try {
         const query = qs.stringify({
             populate: {
                 hero_image: true,
-                seo: true,
                 announcements: true,
-                product_offers: true,
             },
         })
 
-        const url = `${STRAPI_URL}/api/store-config?${query}`
-        console.log("[Strapi] Fetching store config:", url)
+        const url = `${baseUrl}/api/store-page?${query}&cb=${Date.now()}`
+        console.log("[Strapi] Attempting fetch from:", url)
         
         const response = await fetch(url, {
             headers: {
@@ -252,11 +254,18 @@ export async function getStorePageData() {
             cache: "no-store",
         })
 
+        if (!response.ok) {
+            console.error(`[Strapi] Fetch failed with status: ${response.status} at ${url}`)
+            return null
+        }
+
         const json = await response.json()
-        return json.data?.attributes || json.data || null
+        
+        // Handle Strapi 4 and Strapi 5 response structures
+        const data = json.data?.attributes || json.data || json
+        return data || null
     } catch (error: any) {
-        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
-        console.error("Error fetching store page data:", error)
+        console.error("[Strapi] Fetching Error:", error.message)
         return null
     }
 }

@@ -21,6 +21,8 @@ const StoreTemplate = ({
   heroSubtitle,
   announcements,
   heroImage,
+  showHero = true,
+  showAnnouncements = true,
 }: {
   sortBy?: SortOptions
   page?: string
@@ -32,24 +34,29 @@ const StoreTemplate = ({
   heroSubtitle?: string
   announcements?: any[]
   heroImage?: any
+  showHero?: boolean
+  showAnnouncements?: boolean
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
-  const announcementMessages = announcements?.map((a: any) => a.text) || []
-
-  const bannerUrl = heroImage?.url 
-    ? (heroImage.url.startsWith("http") ? heroImage.url : `${STRAPI_URL}${heroImage.url}`)
+  const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
+  const bannerUrl = heroData?.url
+    ? (heroData.url.startsWith("http") ? heroData.url : `${STRAPI_URL}${heroData.url}`)
     : null
+
+  const announcementMessages = announcements?.map((a: any) => a.text || a.attributes?.text || a.data?.attributes?.text).filter(Boolean) || []
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen relative pb-12 md:pb-0">
       {/* Top Marquee for Store Page */}
-      <div className="hidden md:block">
-        <DiscountMarquee messages={announcementMessages} />
-      </div>
+      {showAnnouncements && (
+        <div className="hidden md:block">
+          <DiscountMarquee messages={announcementMessages} />
+        </div>
+      )}
 
       {/* Store Hero Banner */}
-      {bannerUrl && (
+      {showHero && bannerUrl && (
         <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-gray-100">
           <Image
             src={bannerUrl}
@@ -91,8 +98,8 @@ const StoreTemplate = ({
         </div>
       )}
 
-      {/* Show basic header if no banner image is provided */}
-      {!bannerUrl && (
+      {/* Show basic header if hero is enabled but no banner image */}
+      {showHero && !bannerUrl && (
         <div className="content-container !px-3 md:!px-8 pt-8 md:pt-12">
           <nav className="flex items-center gap-x-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-4">
             <LocalizedClientLink href="/" className="hover:text-[#2C1E36] transition-colors">
@@ -150,9 +157,11 @@ const StoreTemplate = ({
       </div>
 
       {/* Mobile Sticky Discount Bar - Only for Store Page */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
-        <DiscountMarquee messages={announcementMessages} />
-      </div>
+      {showAnnouncements && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
+          <DiscountMarquee messages={announcementMessages} />
+        </div>
+      )}
     </div>
   )
 }
