@@ -24,7 +24,7 @@ const IntentCollectionsClient = ({
     if (t.includes('love')) return '#E11D48'
     if (t.includes('money')) return '#059669'
     if (t.includes('nazar') || t.includes('protection')) return '#2C1E36'
-    if (t.includes('health')) return '#EAB308'
+    if (t.includes('health')) return '#2563EB'
     return '#C5A059'
   }
 
