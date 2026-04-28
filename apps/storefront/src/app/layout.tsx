@@ -21,8 +21,8 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
   title: {
-    template: "%s | The Blissful Soul",
-    default: "The Blissful Soul",
+    template: "%s | Pragya Vijh",
+    default: "Pragya Vijh",
   },
   icons: {
     icon: "/pragya-vijh-logo.png",
