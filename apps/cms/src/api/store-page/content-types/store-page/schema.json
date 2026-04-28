@@ -1,0 +1,44 @@
+{
+  "kind": "singleType",
+  "collectionName": "store_pages",
+  "info": {
+    "singularName": "store-page",
+    "pluralName": "store-pages",
+    "displayName": "Store Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_subtitle": {
+      "type": "text"
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "show_hero": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_announcements": {
+      "type": "boolean",
+      "default": true
+    },
+    "announcements": {
+      "type": "component",
+      "component": "shared.announcement",
+      "repeatable": true
+    }
+  }
+}

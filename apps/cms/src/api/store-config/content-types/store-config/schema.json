@@ -1,48 +1,30 @@
 {
-    "kind": "singleType",
-    "collectionName": "store_configs",
-    "info": {
-        "singularName": "store-config",
-        "pluralName": "store-configs",
-        "displayName": "Store Config",
-        "description": "Manage the Shop Crystals page banner and settings"
+  "kind": "singleType",
+  "collectionName": "store_configs",
+  "info": {
+    "singularName": "store-config",
+    "pluralName": "store-configs",
+    "displayName": "Store Config",
+    "description": "Manage the Shop Crystals page banner and settings"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     },
-    "options": {
-        "draftAndPublish": true
+    "show_announcement": {
+      "type": "boolean",
+      "default": true
     },
-    "attributes": {
-        "hero_title": {
-            "type": "string",
-            "default": "All Products"
-        },
-        "hero_subtitle": {
-            "type": "text"
-        },
-        "hero_image": {
-            "type": "media",
-            "multiple": false,
-            "allowedTypes": [
-                "images"
-            ]
-        },
-        "seo": {
-            "type": "component",
-            "repeatable": false,
-            "component": "shared.seo"
-        },
-        "announcements": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.announcement"
-        },
-        "show_announcement": {
-            "type": "boolean",
-            "default": true
-        },
-        "product_offers": {
-            "type": "component",
-            "repeatable": true,
-            "component": "shared.product-offer"
-        }
+    "product_offers": {
+      "type": "component",
+      "component": "shared.product-offer",
+      "repeatable": true
     }
+  }
 }
