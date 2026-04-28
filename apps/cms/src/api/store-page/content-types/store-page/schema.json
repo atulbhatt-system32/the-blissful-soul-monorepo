@@ -39,6 +39,12 @@
       "type": "component",
       "component": "shared.announcement",
       "repeatable": true
+    },
+    "title_color": {
+      "type": "string"
+    },
+    "subtitle_color": {
+      "type": "string"
     }
   }
 }

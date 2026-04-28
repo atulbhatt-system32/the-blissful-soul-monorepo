@@ -21,6 +21,8 @@ const StoreTemplate = ({
   heroSubtitle,
   announcements,
   heroImage,
+  titleColor,
+  subtitleColor,
   showHero = true,
   showAnnouncements = true,
 }: {
@@ -34,6 +36,8 @@ const StoreTemplate = ({
   heroSubtitle?: string
   announcements?: any[]
   heroImage?: any
+  titleColor?: string
+  subtitleColor?: string
   showHero?: boolean
   showAnnouncements?: boolean
 }) => {
@@ -82,14 +86,20 @@ const StoreTemplate = ({
             <div className="flex flex-col gap-y-3 md:gap-y-5 max-w-[650px] p-4 md:p-0 rounded-2xl md:bg-transparent bg-white/10 backdrop-blur-[2px] md:backdrop-blur-0">
               <div className="flex flex-col gap-y-1">
                 {heroTitle && (
-                  <h1 className="text-4xl md:text-[68px] font-serif text-[#2C1E36] leading-tight drop-shadow-sm">
+                  <h1 
+                    className="text-4xl md:text-[68px] font-serif leading-tight drop-shadow-sm"
+                    style={{ color: titleColor || "#2C1E36" }}
+                  >
                     {heroTitle}
                   </h1>
                 )}
                 <div className="h-1.5 w-24 bg-[#C5A059] rounded-full shadow-sm"></div>
               </div>
               {heroSubtitle && (
-                <p className="text-[#2C1E36]/90 text-base md:text-2xl font-sans leading-relaxed font-medium">
+                <p 
+                  className="text-base md:text-2xl font-sans leading-relaxed font-medium"
+                  style={{ color: subtitleColor || "#2C1E36" }}
+                >
                   {heroSubtitle}
                 </p>
               )}
@@ -111,14 +121,20 @@ const StoreTemplate = ({
           <div className="flex flex-col gap-y-4 max-w-[800px]">
             <div className="flex flex-col gap-y-1">
               {heroTitle && (
-                <h1 className="text-4xl md:text-[56px] font-serif text-[#2C1E36] leading-tight">
+                <h1 
+                  className="text-4xl md:text-[56px] font-serif leading-tight"
+                  style={{ color: titleColor || "#2C1E36" }}
+                >
                   {heroTitle}
                 </h1>
               )}
               <div className="h-1 w-20 bg-[#C5A059] rounded-full mt-1"></div>
             </div>
             {heroSubtitle && (
-              <p className="text-[#2C1E36]/80 text-base md:text-xl font-sans leading-relaxed italic">
+              <p 
+                className="text-base md:text-xl font-sans leading-relaxed italic"
+                style={{ color: subtitleColor || "#2C1E36" }}
+              >
                 {heroSubtitle}
               </p>
             )}
