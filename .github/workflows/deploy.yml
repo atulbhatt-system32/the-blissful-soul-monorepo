@@ -200,6 +200,14 @@ jobs:
             export APP_DIR="$HOME/app"
             export REPO_OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
             export IMAGE_TAG="${GITHUB_SHA}"
+            export REPO_ACTOR=$(echo "${GITHUB_ACTOR}" | tr '[:upper:]' '[:lower:]')
+
+            # Pre-flight connectivity check
+            echo "Checking connectivity to GitHub Container Registry..."
+            if ! curl -Is --connect-timeout 10 https://ghcr.io/v2/ > /dev/null; then
+              echo "Error: Cannot reach ghcr.io. Your server might have network issues or be blocking GitHub."
+              # We don't exit here, we try to continue, but this provides a better error log.
+            fi
 
             mkdir -p "$APP_DIR"
             # Pre-create bind-mount directories if they don't exist.
@@ -245,7 +253,7 @@ jobs:
             EOF
             chmod 600 .env
 
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$REPO_ACTOR" --password-stdin
             
             echo "Backing up current images for changed apps..."
             for app in $APPS; do
@@ -255,8 +263,14 @@ jobs:
               fi
             done
             
-            echo "Pulling images for: $APPS"
-            docker compose -f docker-compose.prod.yml pull $APPS
+            echo "Pulling images for: $APPS (with retries)"
+            for i in 1 2 3; do
+              if docker compose -f docker-compose.prod.yml pull $APPS; then
+                break
+              fi
+              echo "Pull failed, retrying in 10 seconds... ($i/3)"
+              sleep 10
+            done
 
             echo "Deploying version $IMAGE_TAG for services: $APPS"
             if ! docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 600 --no-deps $APPS; then
