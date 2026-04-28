@@ -274,18 +274,18 @@ export default function ProductPreview({
             </button>
             </div>
 
-            <div className="p-3 md:p-6 flex flex-col items-center text-center w-full">
-              <div className="h-[32px] md:h-[54px] flex items-center justify-center mb-1 md:mb-4 w-full">
-                <Text className="font-serif text-[#0A0A0A] text-[17px] md:text-[27px] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-bold" data-testid="product-title">
+            <div className="p-2 md:p-6 flex flex-col items-center text-center w-full">
+              <div className="h-[28px] md:h-[54px] flex items-center justify-center mb-1 md:mb-4 w-full">
+                <Text className="font-serif text-[#0A0A0A] text-[14px] md:text-[27px] transition-colors line-clamp-2 leading-[1.2] px-1 md:px-2 font-bold" data-testid="product-title">
                   {product.title}
                 </Text>
               </div>
 
               {/* One-line description */}
-              <div className="mb-2 md:mb-3 px-1 w-full text-center">
-                <div className="h-[14px] md:h-[18px] flex items-center justify-center">
+              <div className="mb-1 md:mb-3 px-1 w-full text-center">
+                <div className="h-[12px] md:h-[18px] flex items-center justify-center">
                   {hasDescription ? (
-                    <p className="text-[#665D6B] text-[10px] md:text-[12px] leading-snug line-clamp-1">
+                    <p className="text-[#665D6B] text-[8px] md:text-[12px] leading-snug line-clamp-1">
                       {descriptionSnippet}
                     </p>
                   ) : (
@@ -295,14 +295,14 @@ export default function ProductPreview({
                 {hasRichContent && (
                   <button
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowModal(true) }}
-                    className="text-[#C5A059] text-[9px] md:text-[11px] font-semibold hover:underline mt-0.5"
+                    className="text-[#C5A059] text-[8px] md:text-[11px] font-semibold hover:underline mt-0.5"
                   >
                     Read more →
                   </button>
                 )}
               </div>
 
-              <div className="flex flex-col items-center gap-y-1 md:gap-y-4 mb-2">
+              <div className="flex flex-col items-center gap-y-0.5 md:gap-y-4 mb-1">
                 {displayPrice && (
                   <div className="flex items-center justify-center w-full px-2">
                      <PreviewPrice price={displayPrice} />
@@ -311,8 +311,8 @@ export default function ProductPreview({
 
                 {/* Session Duration (Metadata) */}
                 {!!displayDuration && (
-                  <div className="flex items-center gap-x-1 md:gap-x-2 text-[#665D6B] text-[10px] md:text-[13px] font-extrabold tracking-[0.05em] uppercase bg-[#F5F4F0] px-2 md:px-4 py-1 md:py-1.5 rounded-full border border-[#2C1E36]/5">
-                    <Clock className="text-[#C5A059] w-2.5 md:w-3.5 h-2.5 md:h-3.5" />
+                  <div className="flex items-center gap-x-1 md:gap-x-2 text-[#665D6B] text-[8px] md:text-[13px] font-extrabold tracking-[0.05em] uppercase bg-[#F5F4F0] px-1.5 md:px-4 py-0.5 md:py-1.5 rounded-full border border-[#2C1E36]/5">
+                    <Clock className="text-[#C5A059] w-2 md:w-3.5 h-2 md:h-3.5" />
                      <span>{String(displayDuration)}</span>
                   </div>
                 )}
@@ -320,11 +320,11 @@ export default function ProductPreview({
             </div>
           </div>
         </LocalizedClientLink>
-        <div className="px-3 md:px-6 pb-4 md:pb-8 mt-auto">
+        <div className="px-2 md:px-6 pb-3 md:pb-8 mt-auto">
           <button
             onClick={handleBooking}
             disabled={isAdding}
-            className="w-full py-2.5 md:py-4 bg-[#2C1E36] text-white rounded-[12px] md:rounded-[20px] font-bold hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-[0.05em] md:tracking-[0.2em] text-[8px] md:text-[11px] flex items-center justify-center gap-x-1 md:gap-x-3 active:scale-95"
+            className="w-full py-2 md:py-4 bg-[#2C1E36] text-white rounded-[10px] md:rounded-[20px] font-bold hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-[0.05em] md:tracking-[0.2em] text-[7px] md:text-[11px] flex items-center justify-center gap-x-1 md:gap-x-3 active:scale-95"
           >
             {isAdding ? (
               <>
