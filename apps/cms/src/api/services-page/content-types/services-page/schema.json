@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "store_pages",
+  "collectionName": "services_pages",
   "info": {
-    "singularName": "store-page",
-    "pluralName": "store-pages",
-    "displayName": "Store Page"
+    "singularName": "services-page",
+    "pluralName": "services-pages",
+    "displayName": "Services Page"
   },
   "options": {
     "draftAndPublish": true
@@ -37,6 +37,12 @@
         "audios"
       ]
     },
+    "title_color": {
+      "type": "string"
+    },
+    "subtitle_color": {
+      "type": "string"
+    },
     "show_hero": {
       "type": "boolean",
       "default": true
@@ -50,11 +56,10 @@
       "component": "shared.announcement",
       "repeatable": true
     },
-    "title_color": {
-      "type": "string"
-    },
-    "subtitle_color": {
-      "type": "string"
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

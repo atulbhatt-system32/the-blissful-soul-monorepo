@@ -54,70 +54,102 @@ const WelcomePopup = ({ data }: PopUpProps) => {
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 z-[100] bg-[#2C1E36]/80 transition-opacity"
+        className="fixed inset-0 z-[100] bg-[#2C1E36]/85 transition-opacity"
         onClick={handleClose}
       />
       
       {/* Pop-up Modal */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[95%] max-w-4xl bg-[#2C1E36] rounded-[2rem] shadow-[0_0_80px_rgba(197,160,89,0.2)] overflow-hidden flex flex-col md:flex-row border border-[#C5A059]/30 animate-in fade-in zoom-in duration-300">
+      {/* Pop-up Modal — Vertical layout: image top, text bottom */}
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[92%] max-w-lg max-h-[90vh] bg-[#2C1E36] rounded-2xl md:rounded-[2rem] shadow-[0_0_80px_rgba(197,160,89,0.2)] overflow-y-auto flex flex-col border border-[#C5A059]/30 animate-in fade-in zoom-in duration-300">
         
         {/* Close Button */}
         <button 
           onClick={handleClose}
-          className="absolute top-6 right-6 z-[102] p-2 bg-white/5 backdrop-blur-md rounded-full text-white/50 hover:bg-white/10 hover:text-white hover:rotate-90 transition-all duration-300"
+          className="absolute top-4 right-4 z-[102] p-1.5 md:p-2 bg-white/10 rounded-full text-white/70 hover:bg-white/20 hover:text-white hover:rotate-90 transition-all duration-300"
           aria-label="Close popup"
         >
           <XMark />
         </button>
 
-        {/* Image side */}
+        {/* Image — Top */}
         {imageUrl && (
-          <div className="relative w-full md:w-1/2 min-h-[350px] md:min-h-full flex items-center justify-center p-6 md:p-8 bg-[#2C1E36]/50">
-            <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border border-[#C5A059]/30 shadow-2xl">
+          <div className="relative w-full h-[180px] md:h-[260px] flex-shrink-0 p-3 md:p-4 bg-[#2C1E36]/50">
+            <div className="relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-[#C5A059]/20 shadow-2xl">
               <Image 
                 src={imageUrl} 
                 alt={data.title} 
                 fill 
-                className="object-contain bg-[#1F1426]" 
+                className="object-cover bg-[#1F1426]" 
                 priority
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 768px) 100vw, 520px"
               />
             </div>
           </div>
         )}
 
-        {/* Content Side */}
-        <div className="p-10 md:p-16 flex flex-col items-center justify-center text-center flex-1 relative overflow-hidden">
+        {/* Content — Bottom */}
+        <div className={`px-6 py-6 md:px-10 md:py-8 flex flex-col items-center justify-center text-center relative overflow-hidden ${!imageUrl ? 'py-12 md:py-16' : ''}`}>
           {/* Decorative glow */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#C5A059]/10 blur-[60px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-600/10 blur-[60px] rounded-full pointer-events-none" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 blur-[60px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-600/10 blur-[60px] rounded-full pointer-events-none" />
 
-          <h3 className="font-serif text-2xl md:text-3xl text-[#C5A059] mb-4 md:mb-6 tracking-[0.05em] uppercase leading-[1.2] relative z-10 max-w-[500px]">
-            {data.title}
-          </h3>
+          {/* Title — rendered as bullet list if it contains '•' */}
+          {data.title.includes('•') ? (
+            <ul className="text-left space-y-2 md:space-y-3 relative z-10 mb-4 md:mb-6 w-full max-w-[380px]">
+              {data.title.split('•').map((line, i) => {
+                const trimmed = line.trim()
+                if (!trimmed) return null
+                return (
+                  <li key={i} className="flex items-start gap-2.5">
+                    <span className="text-[#C5A059] mt-1 flex-shrink-0 text-xs">✦</span>
+                    <span className="text-[#C5A059] font-serif text-sm md:text-base leading-snug tracking-wide">
+                      {trimmed}
+                    </span>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
+            <h3 className="font-serif text-lg md:text-2xl text-[#C5A059] mb-2 md:mb-4 tracking-[0.03em] uppercase leading-[1.3] relative z-10">
+              {data.title}
+            </h3>
+          )}
           
+          {/* Description — also supports bullet points with '•' */}
           {data.description && (
-            <p className="text-purple-100/80 text-sm md:text-lg mb-8 md:mb-10 leading-relaxed italic relative z-10 max-w-[450px]">
-              {data.description}
-            </p>
+            data.description.includes('•') ? (
+              <ul className="text-left space-y-1.5 relative z-10 mb-5 md:mb-8 w-full max-w-[380px]">
+                {data.description.split('•').map((line, i) => {
+                  const trimmed = line.trim()
+                  if (!trimmed) return null
+                  return (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <span className="text-[#C5A059]/60 mt-0.5 flex-shrink-0 text-[10px]">●</span>
+                      <span className="text-purple-100/70 text-xs md:text-sm leading-snug italic">
+                        {trimmed}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            ) : (
+              <p className="text-purple-100/70 text-xs md:text-sm mb-5 md:mb-8 leading-relaxed italic relative z-10 max-w-[380px]">
+                {data.description}
+              </p>
+            )
           )}
           
           {data.button_text && data.button_link && (
             <LocalizedClientLink 
               href={data.button_link}
               onClick={handleClose}
-              className="inline-block w-full px-10 py-5 bg-[#C5A059] text-[#2C1E36] rounded-full font-black uppercase tracking-widest text-sm hover:bg-white transition-all shadow-xl hover:shadow-[#C5A059]/30 relative z-10"
+              className="inline-block px-8 md:px-10 py-3 md:py-3.5 bg-[#C5A059] text-[#2C1E36] rounded-full font-black uppercase tracking-[0.15em] text-xs md:text-sm hover:bg-white transition-all shadow-xl hover:shadow-[#C5A059]/30 relative z-10"
             >
               {data.button_text}
             </LocalizedClientLink>
           )}
 
-          <button 
-            onClick={handleClose}
-            className="mt-8 text-[11px] text-white/40 uppercase tracking-widest hover:text-[#C5A059] transition-colors relative z-10 font-bold"
-          >
-            No thanks, maybe later
-          </button>
+
         </div>
       </div>
     </>

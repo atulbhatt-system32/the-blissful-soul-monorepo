@@ -161,3 +161,60 @@ export const listProductsWithSort = async ({
     queryParams,
   }
 }
+export const listSessionsWithSort = async ({
+  page = 0,
+  queryParams,
+  sortBy = "created_at",
+  countryCode,
+}: {
+  page?: number
+  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  sortBy?: SortOptions
+  countryCode: string
+}): Promise<{
+  response: { products: HttpTypes.StoreProduct[]; count: number }
+  nextPage: number | null
+  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+}> => {
+  const limit = queryParams?.limit || 12
+
+  const {
+    response: { products, count },
+  } = await listProducts({
+    pageParam: 0,
+    queryParams: {
+      ...queryParams,
+      limit: 100,
+    },
+    countryCode,
+  })
+
+  const sortedProducts = sortProducts(products, sortBy)
+
+  const sessionCategoryHandles = ["services", "sessions", "audio-sessions", "video-sessions", "top-services"]
+
+  const finalFilteredProducts = sortedProducts.filter((p) => {
+    const isSession =
+      p.type?.value === "session" ||
+      p.tags?.some((t: any) => t.value.toLowerCase() === "session") ||
+      p.metadata?.is_service === true ||
+      p.metadata?.is_service === "true" ||
+      p.categories?.some((c: any) => sessionCategoryHandles.includes(c.handle))
+
+    return isSession // Only include sessions
+  })
+
+  const pageParam = (page - 1) * limit
+  const newCount = finalFilteredProducts.length
+  const nextPage = newCount > pageParam + limit ? pageParam + limit : null
+  const paginatedProducts = finalFilteredProducts.slice(pageParam, pageParam + limit)
+
+  return {
+    response: {
+      products: paginatedProducts,
+      count: newCount,
+    },
+    nextPage,
+    queryParams,
+  }
+}

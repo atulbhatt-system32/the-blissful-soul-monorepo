@@ -171,13 +171,19 @@ const CartDropdown = ({
                               </div>
                             </div>
                           </div>
-                          <div
-                            className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"
-                          >
-                             <DeleteButton id={item.id} className="text-inherit" data-testid="cart-item-remove-button">
-                                Remove
-                             </DeleteButton>
-                          </div>
+                          {item.metadata?.is_auto_gift === true ? (
+                             <span className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
+                                Free Gift
+                             </span>
+                          ) : (
+                            <div
+                              className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"
+                            >
+                               <DeleteButton id={item.id} className="text-inherit" data-testid="cart-item-remove-button">
+                                  Remove
+                               </DeleteButton>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}

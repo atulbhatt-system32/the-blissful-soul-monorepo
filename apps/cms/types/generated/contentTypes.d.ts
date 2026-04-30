@@ -693,6 +693,43 @@ export interface ApiStoreConfigStoreConfig extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiServicesPageServicesPage extends Struct.SingleTypeSchema {
+  collectionName: 'services_pages';
+  info: {
+    displayName: 'Services Page';
+    pluralName: 'services-pages';
+    singularName: 'services-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    announcements: Schema.Attribute.Component<'shared.announcement', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hero_image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    hero_subtitle: Schema.Attribute.Text;
+    hero_title: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::services-page.services-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    show_announcements: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    show_hero: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    subtitle_color: Schema.Attribute.String;
+    title_color: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiStorePageStorePage extends Struct.SingleTypeSchema {
   collectionName: 'store_pages';
   info: {
@@ -1245,6 +1282,7 @@ declare module '@strapi/strapi' {
       'api::contact-page.contact-page': ApiContactPageContactPage;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::product.product': ApiProductProduct;
+      'api::services-page.services-page': ApiServicesPageServicesPage;
       'api::store-config.store-config': ApiStoreConfigStoreConfig;
       'api::store-page.store-page': ApiStorePageStorePage;
       'plugin::content-releases.release': PluginContentReleasesRelease;

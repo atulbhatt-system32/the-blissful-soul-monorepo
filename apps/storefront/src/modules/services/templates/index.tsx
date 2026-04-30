@@ -1,0 +1,169 @@
+import { Suspense } from "react"
+import Image from "next/image"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ScrollingMarquee from "@modules/home/components/scrolling-marquee"
+import RefinementList from "@modules/store/components/refinement-list"
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import StoreSearch from "@modules/store/components/search"
+import PaginatedProducts from "@modules/store/templates/paginated-products"
+import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+
+const ServicesTemplate = async ({
+  sortBy,
+  page,
+  limit,
+  view,
+  q,
+  countryCode,
+  heroTitle,
+  heroSubtitle,
+  announcements,
+  heroImage,
+  mobileHeroImage,
+  titleColor,
+  subtitleColor,
+  showHero = true,
+  showAnnouncements = true,
+}: {
+  sortBy?: SortOptions
+  page?: string
+  limit?: string
+  view?: string
+  q?: string
+  countryCode: string
+  heroTitle?: string
+  heroSubtitle?: string
+  announcements?: any[]
+  heroImage?: any
+  mobileHeroImage?: any
+  titleColor?: string
+  subtitleColor?: string
+  showHero?: boolean
+  showAnnouncements?: boolean
+}) => {
+  const pageNumber = page ? parseInt(page) : 1
+  const sort = sortBy || "created_at"
+  
+  const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
+  const bannerUrl = heroData?.url
+    ? (heroData.url.startsWith("http") ? heroData.url : `${STRAPI_URL}${heroData.url}`)
+    : null
+
+  const mobileHeroData = mobileHeroImage?.data?.attributes || mobileHeroImage?.attributes || mobileHeroImage || null
+  const mobileBannerUrl = mobileHeroData?.url
+    ? (mobileHeroData.url.startsWith("http") ? mobileHeroData.url : `${STRAPI_URL}${mobileHeroData.url}`)
+    : null
+
+  const marqueeItems = announcements?.map((a: any, idx: number) => ({
+    id: a.id || idx,
+    text: a.text || a.attributes?.text || a.data?.attributes?.text
+  })).filter(a => a.text) || []
+
+  return (
+    <div className="bg-[#FAF9F6] min-h-screen relative overflow-hidden pb-12 md:pb-0">
+      {/* Hero Section (Conditional Text/Image with Mobile Support) */}
+      {showHero && (heroTitle || bannerUrl || mobileBannerUrl) && (
+        <section className={`relative overflow-hidden ${bannerUrl || mobileBannerUrl ? 'w-full h-auto bg-[#FAF9F6]' : 'bg-[#1A0E22] py-16 md:py-24'} flex flex-col items-center justify-center text-center`}>
+          {bannerUrl || mobileBannerUrl ? (
+            <div className="w-full h-auto">
+               {bannerUrl && (
+                  <img
+                    src={bannerUrl}
+                    alt={heroTitle || "Sacred Services"}
+                    className={`w-full h-auto block ${mobileBannerUrl ? 'hidden md:block' : ''}`}
+                  />
+               )}
+               {mobileBannerUrl && (
+                  <img
+                    src={mobileBannerUrl}
+                    alt={heroTitle || "Sacred Services"}
+                    className={`w-full h-auto block ${bannerUrl ? 'md:hidden' : ''}`}
+                  />
+               )}
+            </div>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none"></div>
+              <div className="content-container flex flex-col items-center gap-y-7 relative z-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+                <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-bold text-[#C5A059] font-sans">
+                   SACRED SERVICES
+                </span>
+                <div className="flex flex-col gap-y-5 max-w-4xl px-4">
+                  {heroTitle && (
+                    <h1 
+                      className="font-serif text-4xl md:text-[64px] text-white leading-[1.1] font-medium tracking-tight uppercase"
+                      style={titleColor ? { color: titleColor } : undefined}
+                    >
+                      {heroTitle.includes(' ') ? (
+                        <>
+                          {heroTitle.split(' ').slice(0, -1).join(' ')} <span className="italic font-normal text-[#C5A059]">{heroTitle.split(' ').slice(-1)}</span>
+                        </>
+                      ) : heroTitle}
+                    </h1>
+                  )}
+                  {heroSubtitle && (
+                    <p 
+                      className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-relaxed font-sans font-medium"
+                      style={subtitleColor ? { color: subtitleColor } : undefined}
+                    >
+                      {heroSubtitle}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </section>
+      )}
+
+      {/* ① TOP MARQUEE (Desktop Only) - Moved below Hero */}
+      {showAnnouncements && marqueeItems.length > 0 && (
+        <div className="hidden md:block border-b border-[#C5A059]/10">
+          <ScrollingMarquee items={marqueeItems} />
+        </div>
+      )}
+
+      {/* Main Content with Filters (Matching Store Layout) */}
+      <div className="content-container !px-3 md:!px-8 py-8 md:py-12">
+        <div className="w-full">
+          {/* Combined Search & Sort Toolbar */}
+          <div className="flex flex-row items-center gap-2 md:gap-4 w-full mb-8 md:mb-12">
+            <div className="flex-1 relative z-[20]">
+              <StoreSearch initialQuery={q} />
+            </div>
+            <div className="relative z-[40] flex items-center shrink-0">
+              <div className="md:bg-white/70 md:backdrop-blur-md p-0 md:p-3 md:rounded-[32px] md:border md:border-gray-100 md:shadow-xl md:shadow-[#2C1E36]/5 flex items-center">
+                <RefinementList sortBy={sort} limit={limit} view={view} />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 md:mt-16">
+            <Suspense fallback={<SkeletonProductGrid />}>
+              <PaginatedProducts
+                sortBy={sort}
+                page={pageNumber}
+                limit={limit}
+                view={view}
+                q={q}
+                countryCode={countryCode}
+                isSession={true}
+              />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+
+      {/* ② STICKY BOTTOM MARQUEE (Mobile Only) */}
+      {showAnnouncements && marqueeItems.length > 0 && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
+          <ScrollingMarquee items={marqueeItems} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default ServicesTemplate

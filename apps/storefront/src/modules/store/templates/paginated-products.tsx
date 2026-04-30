@@ -1,4 +1,4 @@
-import { listProductsWithSort } from "@lib/data/products"
+import { listProductsWithSort, listSessionsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
@@ -25,6 +25,7 @@ export default async function PaginatedProducts({
   limit,
   view,
   q,
+  isSession = false,
 }: {
   sortBy?: SortOptions
   page: number
@@ -35,6 +36,7 @@ export default async function PaginatedProducts({
   limit?: string
   view?: string
   q?: string
+  isSession?: boolean
 }) {
   const currentLimit = limit ? parseInt(limit) : 12
 
@@ -70,12 +72,19 @@ export default async function PaginatedProducts({
 
   let {
     response: { products, count },
-  } = await listProductsWithSort({
-    page,
-    queryParams,
-    sortBy,
-    countryCode,
-  })
+  } = isSession 
+    ? await listSessionsWithSort({
+        page,
+        queryParams,
+        sortBy,
+        countryCode,
+      })
+    : await listProductsWithSort({
+        page,
+        queryParams,
+        sortBy,
+        countryCode,
+      })
 
   const totalPages = Math.ceil(count / currentLimit)
 

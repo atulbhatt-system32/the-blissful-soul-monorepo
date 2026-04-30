@@ -40,6 +40,7 @@ export default async function StorePage(props: Params) {
       heroSubtitle={storeData?.hero_subtitle}
       announcements={storeData?.announcements}
       heroImage={storeData?.hero_image}
+      mobileHeroImage={storeData?.mobile_hero_image}
       titleColor={storeData?.title_color}
       subtitleColor={storeData?.subtitle_color}
       showHero={storeData?.show_hero ?? true}

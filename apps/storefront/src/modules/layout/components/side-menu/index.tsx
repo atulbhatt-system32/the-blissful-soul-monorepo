@@ -16,7 +16,7 @@ import { useWishlist } from "@lib/context/wishlist-context"
 const SideMenuItems = {
   Home: "/",
   "About Master": "/about",
-  "Sacred Services": "/#sacred-services",
+  "Sacred Services": "/services",
   "Shop Crystals": "/store",
   Cart: "/cart",
   Wishlist: "/wishlist",

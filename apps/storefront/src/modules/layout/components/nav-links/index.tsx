@@ -10,18 +10,16 @@ const NavLinks = () => {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/store", label: "Shop Crystals" },
-    { href: "/#sacred-services", label: "Our Sacred Services" },
+    { href: "/services", label: "Our Sacred Services" },
   ]
 
   const isActive = (href: string) => {
     if (href === "/") {
-      // Home is active when pathname is "/" or just a country code like "/in"
-      if (pathname === "/") return true
       const parts = pathname.split("/").filter(Boolean)
-      // Only country code segment means we're on the home page
-      return parts.length === 1 && parts[0].length <= 3
+      // Home is active when pathname is "/" or just "/in" or "/us" etc.
+      return pathname === "/" || (parts.length === 1 && parts[0].length <= 3)
     }
-    return pathname.includes(href) && href !== "/#sacred-services"
+    return pathname.includes(href)
   }
 
   return (

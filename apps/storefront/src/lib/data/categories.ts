@@ -104,6 +104,34 @@ export const getServiceCategoryDetail = async (
   return { category, products, region }
 }
 
+export const getAllServicesGrouped = async (countryCode: string) => {
+  const categories = await getServiceCategories()
+  if (!categories.length) return []
+
+  const region = await getRegion(countryCode)
+  const nextOpts = { ...(await getCacheOptions("categories")) }
+
+  const grouped = await Promise.all(
+    categories.map(async (category) => {
+      const { products } = await sdk.client.fetch<{
+        products: HttpTypes.StoreProduct[]
+      }>("/store/products", {
+        query: {
+          category_id: [category.id],
+          fields: "*variants,*variants.calculated_price,+tags,+metadata,+images",
+          ...(region ? { region_id: region.id } : {}),
+          limit: 20,
+        },
+        next: nextOpts,
+        cache: "no-store",
+      })
+      return { category, products, region }
+    })
+  )
+
+  return grouped.filter((g) => g.products.length > 0)
+}
+
 export const getCategoryByHandle = async (categoryHandle: string[]) => {
   const handle = `${categoryHandle.join("/")}`
 
