@@ -35,9 +35,10 @@ export default async function BookNowPage(props: {
   // To keep it simple, we load everything and filter on the client, assuming small catalog
   const productsResponse = await listProducts({
     regionId: region.id,
+    includeHidden: true,
     queryParams: {
       limit: 100,
-      fields: "*variants.calculated_price,+tags,+metadata,*categories"
+      fields: "*variants.calculated_price,*tags,+metadata,*categories,+thumbnail,*images,*variants.images"
     }
   })
   

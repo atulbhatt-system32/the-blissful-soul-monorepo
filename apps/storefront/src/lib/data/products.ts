@@ -12,11 +12,13 @@ export const listProducts = async ({
   queryParams,
   countryCode,
   regionId,
+  includeHidden = false,
 }: {
   pageParam?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
   countryCode?: string
   regionId?: string
+  includeHidden?: boolean
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -75,7 +77,7 @@ export const listProducts = async ({
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
       // Filter out products tagged as 'free-gift' or 'hidden' OR marked in metadata
-      const filteredProducts = products.filter(p => {
+      const filteredProducts = includeHidden ? products : products.filter(p => {
         const isExcludedTag = p.tags?.some(t => {
           const val = t.value.toLowerCase()
           return val === "free-gift" || val === "hidden"
