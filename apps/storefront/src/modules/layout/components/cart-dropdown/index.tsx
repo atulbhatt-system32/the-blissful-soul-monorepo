@@ -172,9 +172,16 @@ const CartDropdown = ({
                             </div>
                           </div>
                           {item.metadata?.is_auto_gift === true ? (
-                             <span className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
+                            <div className="flex flex-col gap-y-1">
+                              <span className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
                                 Free Gift
-                             </span>
+                              </span>
+                              {(item.variant?.product?.metadata?.gift_label as string | undefined) && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[8px] font-bold tracking-wide w-fit">
+                                  {item.variant?.product?.metadata?.gift_label as string}
+                                </span>
+                              )}
+                            </div>
                           ) : (
                             <div
                               className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"

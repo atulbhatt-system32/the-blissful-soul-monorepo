@@ -8,7 +8,6 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import { getStorePageData } from "@lib/data/strapi"
 import SearchToggle from "@modules/layout/components/search-toggle"
 import NavLinks from "@modules/layout/components/nav-links"
 import StickyWrapper from "@modules/layout/components/sticky-wrapper"
@@ -17,11 +16,10 @@ import MobileCartButton from "../../components/mobile-cart-button"
 import { retrieveCart } from "@lib/data/cart"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale, storeConfig, cart] = await Promise.all([
+  const [regions, locales, currentLocale, cart] = await Promise.all([
     listRegions().then((regions: HttpTypes.StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
-    getStorePageData(),
     retrieveCart().catch(() => null),
   ])
 
