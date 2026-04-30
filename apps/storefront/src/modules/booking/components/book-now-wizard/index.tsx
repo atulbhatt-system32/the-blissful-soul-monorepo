@@ -179,6 +179,25 @@ export default function BookNowClient({
   const isStep2Valid = selectedTime !== ""
   const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && details.phone.trim() !== ""
 
+  const sessionPrice = (() => {
+    if (!serviceObj) return 0
+    const vObj = serviceObj.variants?.find((v: any) => v.id === selectedVariant)
+    return (vObj?.calculated_price as any)?.calculated_amount || getProductPrice({ product: serviceObj }).cheapestPrice?.calculated_price_number || 0
+  })()
+
+  const hamperTiers = products
+    .filter((p: any) => p.tags?.some((t: any) => t.value === "gift-hamper") && p.metadata?.hamper_threshold != null)
+    .map((p: any) => ({
+      threshold: Number(p.metadata.hamper_threshold),
+      title: p.title,
+      gift_label: p.metadata?.gift_label as string | undefined,
+      thumbnail: p.thumbnail || p.images?.[0]?.url || p.variants?.[0]?.images?.[0]?.url,
+    }))
+    .filter((t: any) => !isNaN(t.threshold))
+    .sort((a: any, b: any) => b.threshold - a.threshold)
+
+  const qualifiedHamper = hamperTiers.find((t: any) => sessionPrice >= t.threshold)
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-10">
       
@@ -386,6 +405,22 @@ export default function BookNowClient({
                 Scheduled for: {new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at {selectedTime}
               </p>
             )}
+            {qualifiedHamper && (
+              <div className="mt-4 border-t border-[#2C1E36]/10 pt-4">
+                <div className="w-full pl-2 pr-4 py-2 rounded-full bg-[#FAF5EB] border border-[#DAB97B] flex items-center shadow-sm">
+                  <div className="flex items-center gap-3">
+                    {qualifiedHamper.thumbnail && (
+                      <div className="w-8 h-8 rounded-full overflow-hidden border border-[#DAB97B]/50 bg-white flex-shrink-0">
+                        <img src={qualifiedHamper.thumbnail} alt={qualifiedHamper.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <span className="text-[#B8860B] font-bold text-[12px] tracking-wide">
+                      {qualifiedHamper.gift_label || `Free Gift: ${qualifiedHamper.title}`}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <h3 className="text-xl font-serif text-gray-800 mb-2 text-center">
@@ -465,6 +500,29 @@ export default function BookNowClient({
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
           <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">Payment securing your booking</h3>
           
+          {qualifiedHamper ? (
+            <div className="bg-gradient-to-r from-[#2C1E36]/5 to-[#2C1E36]/10 p-5 rounded-xl border border-[#C5A059]/40 mb-8 flex items-start gap-4 shadow-sm">
+              <div className="text-3xl leading-none pt-1">🎁</div>
+              <div>
+                <p className="text-[#C5A059] font-bold text-[12px] uppercase tracking-widest mb-1">Free Gift Included!</p>
+                <p className="text-[#2C1E36] text-sm font-medium">Because your session qualifies, you will receive a complimentary <strong>{qualifiedHamper.title}</strong> along with your booking.</p>
+              </div>
+            </div>
+          ) : hamperTiers.length > 0 ? (
+            (() => {
+              const lowestTier = hamperTiers[hamperTiers.length - 1]
+              return (
+                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-8 flex items-start gap-4">
+                  <div className="text-3xl leading-none pt-1 opacity-50">🎁</div>
+                  <div>
+                    <p className="text-gray-500 font-bold text-[12px] uppercase tracking-widest mb-1">Unlock a Free Gift</p>
+                    <p className="text-gray-600 text-sm">Sessions of <strong>₹{lowestTier.threshold}</strong> or more include a complimentary <strong>{lowestTier.title}</strong>.</p>
+                  </div>
+                </div>
+              )
+            })()
+          ) : null}
+
           <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
             <h4 className="font-bold text-gray-800 mb-4 border-b pb-2">Booking Summary</h4>
             <div className="flex justify-between mb-2">
@@ -475,6 +533,12 @@ export default function BookNowClient({
               <span className="text-gray-600">Date & Time:</span>
               <span className="font-medium text-right">{isPackage ? "Flexible (To be scheduled)" : `${new Date(selectedDate).toLocaleDateString()}, ${selectedTime}`}</span>
             </div>
+            {qualifiedHamper && (
+              <div className="flex justify-between mb-2">
+                <span className="text-[#C5A059]">Free Gift:</span>
+                <span className="font-medium text-[#C5A059] text-right">🎁 {qualifiedHamper.title} (Free)</span>
+              </div>
+            )}
             <div className="flex justify-between mb-2 text-[#2C1E36] font-bold mt-4 pt-4 border-t">
               <span>Total:</span>
               <span>
