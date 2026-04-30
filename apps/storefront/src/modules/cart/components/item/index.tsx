@@ -26,6 +26,9 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
   const [error, setError] = useState<string | null>(null)
 
   const isAutoGift = item.metadata?.is_auto_gift === true
+  const giftLabel = isAutoGift
+    ? (item.variant?.product?.metadata?.gift_label as string | undefined)
+    : undefined
 
   const changeQuantity = async (quantity: number) => {
     if (isAutoGift) {
@@ -72,7 +75,12 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
             <div className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
               <LineItemOptions variant={item.variant} metadata={item.metadata} />
             </div>
-            
+            {giftLabel && (
+              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[9px] font-bold tracking-wide">
+                {giftLabel}
+              </span>
+            )}
+
             {(item as any).adjustments && (item as any).adjustments.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-1">
                 {(item as any).adjustments.map((adjustment: any) => (
@@ -170,6 +178,11 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
           <div className="text-[7px] small:text-[9px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
             <LineItemOptions variant={item.variant} metadata={item.metadata} data-testid="product-variant" />
           </div>
+          {giftLabel && (
+            <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[8px] small:text-[10px] font-bold tracking-wide">
+              {giftLabel}
+            </span>
+          )}
 
           {(item as any).adjustments && (item as any).adjustments.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1.5">

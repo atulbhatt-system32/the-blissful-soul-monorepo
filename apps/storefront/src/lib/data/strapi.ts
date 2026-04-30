@@ -256,7 +256,7 @@ export async function getStorePageData() {
         })
 
         if (!response.ok) {
-            console.error(`[Strapi] Fetch failed with status: ${response.status} at ${url}`)
+            console.warn(`[Strapi] Fetch failed with status: ${response.status} at ${url}`)
             return null
         }
 
