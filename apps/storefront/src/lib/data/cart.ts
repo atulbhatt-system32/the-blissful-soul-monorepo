@@ -195,6 +195,10 @@ export async function updateLineItem({
   await sdk.store.cart
     .updateLineItem(cartId, lineId, { quantity }, {}, headers)
     .then(async () => {
+      // Wait for async subscribers (e.g. auto-gift) to complete before
+      // invalidating the cache, so the first re-render already includes the correct hamper
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
@@ -222,6 +226,10 @@ export async function deleteLineItem(lineId: string) {
   await sdk.store.cart
     .deleteLineItem(cartId, lineId, {}, headers)
     .then(async () => {
+      // Wait for async subscribers (e.g. auto-gift) to complete before
+      // invalidating the cache, so the first re-render already includes the correct hamper
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 

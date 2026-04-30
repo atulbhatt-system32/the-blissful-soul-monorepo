@@ -240,6 +240,7 @@ export async function getStorePageData() {
         const query = qs.stringify({
             populate: {
                 hero_image: true,
+                mobile_hero_image: true,
                 announcements: true,
             },
         })
@@ -255,6 +256,48 @@ export async function getStorePageData() {
         })
 
         if (!response.ok) {
+            console.error(`[Strapi] Fetch failed with status: ${response.status} at ${url}`)
+            return null
+        }
+
+        const json = await response.json()
+        
+        // Handle Strapi 4 and Strapi 5 response structures
+        const data = json.data?.attributes || json.data || json
+        return data || null
+    } catch (error: any) {
+        console.error("[Strapi] Fetching Error:", error.message)
+        return null
+    }
+}
+
+export async function getServicesPageData() {
+    // In Docker, we must use the service name 'cms' instead of localhost
+    const baseUrl = STRAPI_INTERNAL_URL
+    
+    try {
+        const query = qs.stringify({
+            populate: {
+                hero_image: true,
+                mobile_hero_image: true,
+                announcements: true,
+                seo: true,
+            },
+        })
+
+        const url = `${baseUrl}/api/services-page?${query}&cb=${Date.now()}`
+        console.log("[Strapi] Attempting fetch from:", url)
+        
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${STRAPI_TOKEN}`,
+            },
+            cache: "no-store",
+            next: { revalidate: 0 }
+        })
+
+        if (!response.ok) {
+            if (response.status === 404) return null
             console.error(`[Strapi] Fetch failed with status: ${response.status} at ${url}`)
             return null
         }

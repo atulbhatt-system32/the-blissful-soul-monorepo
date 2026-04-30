@@ -6,7 +6,7 @@ import StoreSearch from "@modules/store/components/search"
 import PaginatedProducts from "./paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
-import DiscountMarquee from "@modules/layout/components/discount-marquee"
+import ScrollingMarquee from "@modules/home/components/scrolling-marquee"
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
@@ -21,6 +21,7 @@ const StoreTemplate = ({
   heroSubtitle,
   announcements,
   heroImage,
+  mobileHeroImage,
   titleColor,
   subtitleColor,
   showHero = true,
@@ -36,6 +37,7 @@ const StoreTemplate = ({
   heroSubtitle?: string
   announcements?: any[]
   heroImage?: any
+  mobileHeroImage?: any
   titleColor?: string
   subtitleColor?: string
   showHero?: boolean
@@ -48,60 +50,64 @@ const StoreTemplate = ({
     ? (heroData.url.startsWith("http") ? heroData.url : `${STRAPI_URL}${heroData.url}`)
     : null
 
-  const announcementMessages = announcements?.map((a: any) => a.text || a.attributes?.text || a.data?.attributes?.text).filter(Boolean) || []
+  const mobileHeroData = mobileHeroImage?.data?.attributes || mobileHeroImage?.attributes || mobileHeroImage || null
+  const mobileBannerUrl = mobileHeroData?.url
+    ? (mobileHeroData.url.startsWith("http") ? mobileHeroData.url : `${STRAPI_URL}${mobileHeroData.url}`)
+    : null
+
+  const marqueeItems = announcements?.map((a: any, idx: number) => ({
+    id: a.id || idx,
+    text: a.text || a.attributes?.text || a.data?.attributes?.text
+  })).filter(a => a.text) || []
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen relative pb-12 md:pb-0">
-      {/* Top Marquee for Store Page */}
-      {showAnnouncements && (
-        <div className="hidden md:block">
-          <DiscountMarquee messages={announcementMessages} />
-        </div>
-      )}
-
-      {/* Store Hero Banner */}
-      {showHero && bannerUrl && (
-        <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-gray-100">
-          <Image
-            src={bannerUrl}
-            alt={heroTitle || "Shop Crystals"}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          {/* Subtle Bottom Fade to blend with page background */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-transparent to-transparent opacity-40" />
+      {/* Store Hero Banner - Fully Responsive & Natural Height */}
+      {showHero && (bannerUrl || mobileBannerUrl) && (
+        <div className="w-full bg-[#FAF9F6] relative">
+          <div className="w-full h-auto">
+            {/* Desktop Banner */}
+            {bannerUrl && (
+              <img
+                src={bannerUrl}
+                alt={heroTitle || "Shop Crystals"}
+                className={`w-full h-auto block ${mobileBannerUrl ? 'hidden md:block' : ''}`}
+              />
+            )}
+            {/* Mobile Banner */}
+            {mobileBannerUrl && (
+              <img
+                src={mobileBannerUrl}
+                alt={heroTitle || "Shop Crystals"}
+                className={`w-full h-auto block ${bannerUrl ? 'md:hidden' : ''}`}
+              />
+            )}
+          </div>
           
-          <div className="content-container relative z-10 h-full flex flex-col justify-center py-8 md:py-16 !px-3 md:!px-8">
-            {/* Breadcrumb inside banner */}
-            <nav className="flex items-center gap-x-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-[#2C1E36]/50 mb-4 md:mb-8">
-              <LocalizedClientLink href="/" className="hover:text-[#2C1E36] transition-colors">
-                Home
-              </LocalizedClientLink>
-              <span className="text-[#2C1E36]/20">/</span>
-              <span className="text-[#2C1E36]/80">Shop Crystals</span>
-            </nav>
-
-            <div className="flex flex-col gap-y-3 md:gap-y-5 max-w-[650px] p-4 md:p-0 rounded-2xl md:bg-transparent bg-white/10 backdrop-blur-[2px] md:backdrop-blur-0">
-              <div className="flex flex-col gap-y-1">
-                {heroTitle && (
-                  <h1 
-                    className="text-4xl md:text-[68px] font-serif leading-tight drop-shadow-sm"
-                    style={{ color: titleColor || "#2C1E36" }}
-                  >
-                    {heroTitle}
-                  </h1>
-                )}
-                <div className="h-1.5 w-24 bg-[#C5A059] rounded-full shadow-sm"></div>
-              </div>
-              {heroSubtitle && (
-                <p 
-                  className="text-base md:text-2xl font-sans leading-relaxed font-medium"
-                  style={{ color: subtitleColor || "#2C1E36" }}
-                >
-                  {heroSubtitle}
-                </p>
+          <div className="absolute inset-0 z-10 flex flex-col justify-end pb-8 md:pb-16 !px-3 md:!px-8 pointer-events-none">
+            <div className="content-container w-full">
+              {/* We only show text if it's explicitly different from what's in the image */}
+              {!(bannerUrl?.includes('followers') || mobileBannerUrl?.includes('followers')) && (
+                <div className="flex flex-col gap-y-3 md:gap-y-5 max-w-[650px] pointer-events-auto">
+                  <div className="flex flex-col gap-y-1">
+                    {heroTitle && (
+                      <h1 
+                        className="text-4xl md:text-[68px] font-serif leading-tight drop-shadow-sm"
+                        style={{ color: titleColor || "#2C1E36" }}
+                      >
+                        {heroTitle}
+                      </h1>
+                    )}
+                  </div>
+                  {heroSubtitle && (
+                    <p 
+                      className="text-base md:text-2xl font-sans leading-relaxed font-medium"
+                      style={{ color: subtitleColor || "#2C1E36" }}
+                    >
+                      {heroSubtitle}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -111,13 +117,6 @@ const StoreTemplate = ({
       {/* Show basic header if hero is enabled but no banner image */}
       {showHero && !bannerUrl && (
         <div className="content-container !px-3 md:!px-8 pt-8 md:pt-12">
-          <nav className="flex items-center gap-x-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-4">
-            <LocalizedClientLink href="/" className="hover:text-[#2C1E36] transition-colors">
-              Home
-            </LocalizedClientLink>
-            <span className="text-gray-300">/</span>
-            <span className="text-[#2C1E36]/60">Shop Crystals</span>
-          </nav>
           <div className="flex flex-col gap-y-4 max-w-[800px]">
             <div className="flex flex-col gap-y-1">
               {heroTitle && (
@@ -139,6 +138,13 @@ const StoreTemplate = ({
               </p>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Top Marquee for Store Page - Moved below Hero */}
+      {showAnnouncements && marqueeItems.length > 0 && (
+        <div className="hidden md:block border-b border-[#C5A059]/10">
+          <ScrollingMarquee items={marqueeItems} />
         </div>
       )}
 
@@ -172,10 +178,10 @@ const StoreTemplate = ({
         </div>
       </div>
 
-      {/* Mobile Sticky Discount Bar - Only for Store Page */}
-      {showAnnouncements && (
+      {/* Mobile Sticky Marquee - Only for Store Page */}
+      {showAnnouncements && marqueeItems.length > 0 && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
-          <DiscountMarquee messages={announcementMessages} />
+          <ScrollingMarquee items={marqueeItems} />
         </div>
       )}
     </div>

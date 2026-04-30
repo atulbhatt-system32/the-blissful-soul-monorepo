@@ -2,11 +2,6 @@ import { type SubscriberConfig, type SubscriberArgs } from "@medusajs/medusa"
 import { addToCartWorkflow, deleteLineItemsWorkflow } from "@medusajs/medusa/core-flows"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
-// Fallback threshold in rupees (₹1499).
-// Any product with "gift_threshold" in its metadata is treated as the gift product.
-// Set the product's metadata key "gift_threshold" to override this value (e.g. 2999).
-const GIFT_THRESHOLD = 1499
-
 // Metadata key used to mark auto-added gift line items
 const GIFT_METADATA_KEY = "is_auto_gift"
 
@@ -18,6 +13,7 @@ export default async function autoAddGift({
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
     try {
+        // 1. Fetch the cart with items
         const { data: carts } = await query.graph({
             entity: "cart",
             fields: [
@@ -35,37 +31,35 @@ export default async function autoAddGift({
         if (!carts || carts.length === 0) return
         const cart = carts[0]
 
-        // Separate gift items from regular items
-        const nonGiftItems = (cart.items ?? []).filter(
-            (i: any) => !i.metadata?.[GIFT_METADATA_KEY]
-        )
+        const allItems = cart.items ?? []
+        const giftItems = allItems.filter((i: any) => i.metadata?.[GIFT_METADATA_KEY])
+        const nonGiftItems = allItems.filter((i: any) => !i.metadata?.[GIFT_METADATA_KEY])
 
-        // Resolve the gift product: must have the "free-gift" tag AND
-        // "gift_threshold" set in its metadata.
-        const { data: taggedProducts } = await query.graph({
+        // 2. Load hamper products — tagged "gift-hamper" with "hamper_threshold" in metadata.
+        //    No handles or thresholds are hardcoded here; everything comes from the product.
+        const { data: hamperProducts } = await query.graph({
             entity: "product",
-            fields: ["id", "variants.id", "metadata"],
-            filters: { status: "published", tags: { value: "free-gift" } },
+            fields: ["id", "variants.id", "metadata", "title"],
+            filters: { status: "published", tags: { value: "gift-hamper" } },
         })
 
-        const giftProduct = (taggedProducts ?? []).find(
-            (p: any) => p.metadata?.gift_threshold != null
-        )
+        const hamperTiers = (hamperProducts ?? [])
+            .filter((p: any) => p.metadata?.hamper_threshold != null && p.variants?.[0]?.id)
+            .map((p: any) => ({
+                productId: p.id,
+                variantId: p.variants[0].id,
+                threshold: Number(p.metadata.hamper_threshold),
+                title: p.title,
+            }))
+            .filter((t: any) => !isNaN(t.threshold))
+            .sort((a: any, b: any) => b.threshold - a.threshold) // highest first
 
-        if (!giftProduct) {
-            logger.warn(`[auto-gift] No published product with tag "free-gift" and "gift_threshold" metadata found — skipping`)
+        if (hamperTiers.length === 0) {
+            logger.info(`[auto-gift] No hamper tiers configured. Skipping.`)
             return
         }
-        const giftVariantId = giftProduct.variants?.[0]?.id
-        if (!giftVariantId) return
 
-        // gift_threshold metadata is in rupees; unit_price is also in rupees in this setup
-        const rawThreshold = Number((giftProduct as any).metadata?.gift_threshold ?? GIFT_THRESHOLD)
-        const threshold = isNaN(rawThreshold) ? GIFT_THRESHOLD : rawThreshold
-
-        // Calculate effective total from non-gift items only.
-        // Subtract line-level adjustment amounts (discounts/promotions) so the
-        // threshold check reflects what the customer actually pays.
+        // 3. Cart total from non-gift items only
         const cartTotal = nonGiftItems.reduce((sum: number, item: any) => {
             const lineTotal = (item.unit_price ?? 0) * (item.quantity ?? 1)
             const adjustments = (item.adjustments ?? []).reduce(
@@ -75,55 +69,76 @@ export default async function autoAddGift({
             return sum + lineTotal - adjustments
         }, 0)
 
-        logger.info(`[auto-gift] cart ${cart.id} — total: ${cartTotal}, threshold: ${threshold}`)
-
-        // If non-gift items exist but their total is 0, the cart is in a transitional
-        // state (e.g. emitted mid-way through addToCartWorkflow before prices are hydrated).
-        // Skip to avoid incorrectly removing the gift.
-        if (nonGiftItems.length > 0 && cartTotal === 0) return
-
-        // Collect ALL auto-gift line items to handle any duplicates from race conditions
-        const giftItems = (cart.items ?? []).filter(
-            (i: any) => i.product_id === giftProduct.id && i.metadata?.[GIFT_METADATA_KEY]
+        logger.info(
+            `[auto-gift] Cart ${cart.id} total: ${cartTotal}. Tiers: ${hamperTiers.map((t) => `${t.title}@${t.threshold}`).join(", ")}`
         )
-        const hasGift = giftItems.length > 0
 
-        if (cartTotal >= threshold) {
-            if (!hasGift) {
-                logger.info(`[auto-gift] Adding free gift to cart ${cart.id}`)
-                await addToCartWorkflow(container).run({
-                    input: {
-                        cart_id: cart.id,
-                        items: [{
-                            variant_id: giftVariantId,
+        // Skip transitional state where items exist but total hasn't resolved yet
+        if (nonGiftItems.length > 0 && cartTotal === 0) {
+            logger.info(`[auto-gift] Transitional state — items present but total is 0. Skipping.`)
+            return
+        }
+
+        // 4. Highest tier the cart qualifies for (null if below all thresholds)
+        const qualifiedTier = hamperTiers.find((t: any) => cartTotal >= t.threshold) ?? null
+
+        // 5. Any gift item that doesn't belong to the qualified tier is "wrong"
+        const wrongGiftItems = giftItems.filter(
+            (i: any) => !qualifiedTier || i.product_id !== qualifiedTier.productId
+        )
+
+        // 6. Remove wrong-tier items, then RETURN EARLY.
+        //    deleteLineItemsWorkflow fires cart.updated, which triggers a fresh subscriber
+        //    run. That clean run handles the add — avoiding concurrent duplicate adds.
+        if (wrongGiftItems.length > 0) {
+            logger.info(`[auto-gift] Removing ${wrongGiftItems.length} incorrect hamper(s)`)
+            await deleteLineItemsWorkflow(container).run({
+                input: {
+                    cart_id: cart.id,
+                    ids: wrongGiftItems.map((i: any) => i.id),
+                },
+            })
+            return
+        }
+
+        // 7. No wrong items in cart at this point
+        if (!qualifiedTier) {
+            logger.info(`[auto-gift] Cart total ${cartTotal} is below all thresholds. Nothing to add.`)
+            return
+        }
+
+        const correctGiftItems = giftItems.filter(
+            (i: any) => i.product_id === qualifiedTier.productId
+        )
+
+        if (correctGiftItems.length === 0) {
+            logger.info(`[auto-gift] Adding "${qualifiedTier.title}" to cart`)
+            await addToCartWorkflow(container).run({
+                input: {
+                    cart_id: cart.id,
+                    items: [
+                        {
+                            variant_id: qualifiedTier.variantId,
                             quantity: 1,
                             metadata: { [GIFT_METADATA_KEY]: true },
-                        }],
-                    },
-                })
-            } else if (giftItems.length > 1) {
-                // Remove duplicate gifts that may have been added by concurrent events
-                logger.info(`[auto-gift] Removing ${giftItems.length - 1} duplicate gift(s) from cart ${cart.id}`)
-                await deleteLineItemsWorkflow(container).run({
-                    input: {
-                        cart_id: cart.id,
-                        ids: giftItems.slice(1).map((i: any) => i.id),
-                    },
-                })
-            }
+                        },
+                    ],
+                },
+            })
+        } else if (correctGiftItems.length > 1) {
+            // Deduplicate if somehow more than one slipped in
+            logger.info(`[auto-gift] Removing ${correctGiftItems.length - 1} duplicate hamper(s)`)
+            await deleteLineItemsWorkflow(container).run({
+                input: {
+                    cart_id: cart.id,
+                    ids: correctGiftItems.slice(1).map((i: any) => i.id),
+                },
+            })
         } else {
-            if (hasGift) {
-                logger.info(`[auto-gift] Removing free gift(s) from cart ${cart.id} (total dropped to ${cartTotal})`)
-                await deleteLineItemsWorkflow(container).run({
-                    input: {
-                        cart_id: cart.id,
-                        ids: giftItems.map((i: any) => i.id),
-                    },
-                })
-            }
+            logger.info(`[auto-gift] "${qualifiedTier.title}" already in cart. Nothing to do.`)
         }
     } catch (error) {
-        logger.error("[auto-gift] Error:", error)
+        logger.error("[auto-gift] Error processing cart gift logic:", error)
     }
 }
 
