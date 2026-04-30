@@ -41,7 +41,7 @@ export default async function Nav() {
                 {/* Logo image (visible on all screens now) */}
                 <div className="relative w-20 h-20 md:w-24 md:h-24 transition-transform duration-300 group-hover:scale-105">
                   <Image
-                    src="/pragya-vijh-logo1.png"
+                    src="/logo-main.png"
                     alt="Pragya Vijh"
                     fill
                     className="object-contain"
