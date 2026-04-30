@@ -32,6 +32,7 @@ async function sendConfirmationEmail({
   isPackage,
   orderId,
   pdfBase64,
+  hamperGiftTitle,
 }: {
   notificationService: any
   email: string
@@ -45,6 +46,7 @@ async function sendConfirmationEmail({
   isPackage?: boolean
   orderId: string | number
   pdfBase64: string | null
+  hamperGiftTitle?: string | null
 }) {
   const pdfAttachments = pdfBase64
     ? [{ content: pdfBase64, encoding: "base64", filename: `invoice_${orderId}.pdf`, contentType: "application/pdf" }]
@@ -98,6 +100,14 @@ async function sendConfirmationEmail({
               <strong>Note:</strong> Your unique meeting link will be sent to you via email shortly before the session starts.
             </p>
             `}
+
+            ${hamperGiftTitle ? `
+            <div style="margin: 20px 0; text-align: center; background: linear-gradient(135deg, #2C1E36, #4a2d5e); padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
+              <p style="margin: 0 0 6px; color: #C5A059; font-weight: bold; font-size: 18px;">🎁 You've earned a Free Gift!</p>
+              <p style="margin: 0; color: #fff; font-size: 14px;">${hamperGiftTitle}</p>
+              <p style="margin: 8px 0 0; color: rgba(255,255,255,0.6); font-size: 11px;">This complimentary hamper will be shipped to you separately.</p>
+            </div>
+            ` : ''}
 
             <p style="color: #333;">Thank you for trusting <strong>The Blissful Soul</strong> on your journey. 🙏</p>
 
@@ -255,6 +265,52 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     ])
 
+    // 4b. Auto-add gift hamper — same logic as the cart subscriber but applied
+    //     to the booking order which bypasses the Medusa cart entirely.
+    let hamperGiftTitle: string | null = null
+    try {
+      const query = req.scope.resolve(ContainerRegistrationKeys.QUERY) as any
+      const { data: hamperProducts } = await query.graph({
+        entity: "product",
+        fields: ["id", "variants.id", "metadata", "title"],
+        filters: { status: "published", tags: { value: "gift-hamper" } },
+      })
+
+      const hamperTiers = (hamperProducts ?? [])
+        .filter((p: any) => p.metadata?.hamper_threshold != null && p.variants?.[0]?.id)
+        .map((p: any) => ({
+          productId: p.id,
+          variantId: p.variants[0].id,
+          threshold: Number(p.metadata.hamper_threshold),
+          title: p.title,
+          gift_label: p.metadata?.gift_label as string | undefined,
+        }))
+        .filter((t: any) => !isNaN(t.threshold))
+        .sort((a: any, b: any) => b.threshold - a.threshold)
+
+      const sessionPrice = price || 0
+      const qualifiedTier = hamperTiers.find((t: any) => sessionPrice >= t.threshold) ?? null
+
+      if (qualifiedTier) {
+        await orderModuleService.createOrderLineItems(order.id, [
+          {
+            title: `🎁 ${qualifiedTier.title}`,
+            quantity: 1,
+            unit_price: 0,
+            requires_shipping: true,
+            is_discountable: false,
+            metadata: { is_auto_gift: true, hamper_product_id: qualifiedTier.productId },
+          },
+        ])
+        hamperGiftTitle = qualifiedTier.gift_label || qualifiedTier.title
+        console.log(`[Booking Order] Gift hamper "${qualifiedTier.title}" added to order ${order.id} (session price: ${sessionPrice} >= threshold: ${qualifiedTier.threshold})`)
+      } else {
+        console.log(`[Booking Order] No hamper tier qualifies for session price ${sessionPrice}`)
+      }
+    } catch (hamperErr: any) {
+      console.error(`[Booking Order] Could not add gift hamper (non-blocking):`, hamperErr.message)
+    }
+
     // 5. Register payment collection
     try {
       const currencyCode = region.currency_code || "inr"
@@ -325,7 +381,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     await sendConfirmationEmail({
       notificationService, email, firstName, lastName, phone,
       bookingDate, bookingTime, razorpayPaymentId, calMeetUrl, isPackage,
-      orderId: order.display_id || order.id, pdfBase64,
+      orderId: order.display_id || order.id, pdfBase64, hamperGiftTitle,
     })
 
     console.log(`[Booking Confirmation] Email sent successfully to ${email}`)
