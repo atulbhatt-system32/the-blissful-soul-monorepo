@@ -44,7 +44,7 @@ const ServicesTemplate = async ({
   showAnnouncements?: boolean
 }) => {
   const pageNumber = page ? parseInt(page) : 1
-  const sort = sortBy || "created_at"
+  const sort = sortBy || "price_asc"
   
   const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
   const bannerUrl = heroData?.url
