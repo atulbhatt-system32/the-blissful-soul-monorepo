@@ -41,7 +41,7 @@ function SessionDetailModal({
   return (
     <div className="fixed inset-0 z-[100] flex flex-col justify-end md:items-center md:justify-center md:p-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-[#2C1E36]/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#2C1E36]/60" onClick={onClose} />
 
       {/* Sheet — slides up on mobile, centered card on desktop */}
       <div className="relative bg-white w-full rounded-t-[28px] md:rounded-[24px] shadow-2xl md:max-w-lg flex flex-col max-h-[75vh] md:max-h-[85vh]">
