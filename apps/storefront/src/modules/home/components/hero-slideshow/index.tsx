@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Navigation, Pagination } from "swiper/modules"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 import "swiper/css"
 
@@ -107,8 +108,8 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
 
           return (
             <SwiperSlide key={slideIndex}>
-              <div className="relative flex h-full w-full items-center justify-center">
-                <div className="absolute inset-0 z-0 bg-[#2C1E36]">
+              <div className="relative flex h-full w-full items-center justify-center cursor-pointer group">
+                <LocalizedClientLink href={slide.cta_link || "/services"} className="absolute inset-0 z-0 bg-[#2C1E36]">
                   <Image
                     key={imageUrl}
                     src={imageUrl}
@@ -116,13 +117,15 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     fill
                     priority={slideIndex === 0}
                     fetchPriority={slideIndex === 0 ? "high" : "auto"}
-                    className="object-cover object-top"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 100vw"
                     quality={90}
                   />
-                </div>
+                  {/* Subtle overlay to ensure text readability if needed */}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-500" />
+                </LocalizedClientLink>
 
-                <div className="relative z-10 container mx-auto px-4 text-center">
+                <div className="relative z-10 container mx-auto px-4 text-center pointer-events-none">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -130,12 +133,12 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     className={slide.theme === "light" ? "text-gray-900" : "text-white"}
                   >
                     {slide.title && (
-                      <h1 className="text-4xl md:text-7xl font-bold mb-4 uppercase tracking-tighter">
+                      <h1 className="text-4xl md:text-7xl font-bold mb-4 uppercase tracking-tighter drop-shadow-md">
                         {slide.title}
                       </h1>
                     )}
                     {slide.subtitle && (
-                      <p className="text-lg md:text-2xl mb-8 font-medium max-w-2xl mx-auto opacity-90 px-4 md:px-0">
+                      <p className="text-lg md:text-2xl mb-8 font-medium max-w-2xl mx-auto opacity-90 px-4 md:px-0 drop-shadow-md">
                         {slide.subtitle}
                       </p>
                     )}
