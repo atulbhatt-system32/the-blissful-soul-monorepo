@@ -42,36 +42,30 @@ function getImages(image: any): HeroImage[] {
 }
 
 const HeroSlideshow = ({ slides }: HeroProps) => {
-  const [isMobile, setIsMobile] = useState(false)
+  // Instead of using React state and window.innerWidth (which causes SSR lag and layout shift),
+  // we generate slides that hold BOTH desktop and mobile images, and use CSS to show/hide the correct one.
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
-
-  // Compute slides based on viewport. 
-  // If mobile, we use mobile_image count. If desktop, we use image count.
   const allSlides = useMemo(() => {
     return (slides || []).flatMap(slide => {
       const desktopImages = getImages(slide.image)
       const mobileImages = getImages(slide.mobile_image)
       
-      const imagesToUse = isMobile 
-        ? (mobileImages.length > 0 ? mobileImages : desktopImages)
-        : desktopImages
-        
-      if (imagesToUse.length === 0) return []
+      if (desktopImages.length === 0 && mobileImages.length === 0) return []
 
-      return imagesToUse.map((img) => ({
-        ...slide,
-        displayImage: img
-      }))
+      // If there are multiple images for a slide, we create multiple Swiper slides.
+      const count = Math.max(desktopImages.length, mobileImages.length, 1)
+      
+      const generatedSlides = []
+      for (let i = 0; i < count; i++) {
+        generatedSlides.push({
+          ...slide,
+          desktopImg: desktopImages[i] || desktopImages[0] || null,
+          mobileImg: mobileImages[i] || mobileImages[0] || desktopImages[i] || desktopImages[0] || null
+        })
+      }
+      return generatedSlides
     })
-  }, [slides, isMobile])
+  }, [slides])
 
   const totalSlides = allSlides.length
 
@@ -82,7 +76,6 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
 
       {/* Swiper */}
       <Swiper
-        key={isMobile ? "mobile" : "desktop"}
         modules={[Autoplay, Navigation, Pagination]}
         autoplay={totalSlides > 1 ? { delay: 5000, disableOnInteraction: false } : false}
         loop={totalSlides > 1}
@@ -102,25 +95,43 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
         className="h-full w-full"
       >
         {allSlides.map((slide, slideIndex) => {
-          const imageUrl = (slide as any).displayImage.url.startsWith("http") 
-            ? (slide as any).displayImage.url 
-            : `${STRAPI_URL}${(slide as any).displayImage.url}`
+          const desktopUrl = slide.desktopImg ? (slide.desktopImg.url.startsWith("http") ? slide.desktopImg.url : `${STRAPI_URL}${slide.desktopImg.url}`) : null
+          const mobileUrl = slide.mobileImg ? (slide.mobileImg.url.startsWith("http") ? slide.mobileImg.url : `${STRAPI_URL}${slide.mobileImg.url}`) : null
+          
+          const hasSeparateMobile = mobileUrl && mobileUrl !== desktopUrl
 
           return (
             <SwiperSlide key={slideIndex}>
               <div className="relative flex h-full w-full items-center justify-center cursor-pointer group">
                 <LocalizedClientLink href={slide.cta_link || "/services"} className="absolute inset-0 z-0 bg-[#2C1E36]">
-                  <Image
-                    key={imageUrl}
-                    src={imageUrl}
-                    alt={slide.title || "Hero image"}
-                    fill
-                    priority={slideIndex === 0}
-                    fetchPriority={slideIndex === 0 ? "high" : "auto"}
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 100vw"
-                    quality={90}
-                  />
+                  {/* Desktop Image */}
+                  {desktopUrl && (
+                    <Image
+                      key={`desktop-${desktopUrl}`}
+                      src={desktopUrl}
+                      alt={slide.title || "Hero image"}
+                      fill
+                      priority={slideIndex === 0}
+                      fetchPriority={slideIndex === 0 ? "high" : "auto"}
+                      className={`object-cover object-top transition-transform duration-700 group-hover:scale-105 ${hasSeparateMobile ? 'hidden md:block' : 'block'}`}
+                      sizes="(min-width: 768px) 100vw, 100vw"
+                      quality={90}
+                    />
+                  )}
+                  {/* Mobile Image */}
+                  {hasSeparateMobile && (
+                    <Image
+                      key={`mobile-${mobileUrl}`}
+                      src={mobileUrl}
+                      alt={slide.title || "Hero image mobile"}
+                      fill
+                      priority={slideIndex === 0}
+                      fetchPriority={slideIndex === 0 ? "high" : "auto"}
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105 md:hidden block"
+                      sizes="(max-width: 767px) 100vw, 0vw"
+                      quality={90}
+                    />
+                  )}
                   {/* Subtle overlay to ensure text readability if needed */}
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-500" />
                 </LocalizedClientLink>
