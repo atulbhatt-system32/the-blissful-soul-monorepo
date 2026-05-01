@@ -111,7 +111,7 @@ const BookSessionClient = ({
               ))}
             </ul>
           ) : (
-            <div className="flex flex-col items-center justify-center text-center py-24 bg-white/50 backdrop-blur-sm rounded-[40px] border border-dashed border-[#2C1E36]/10 animate-in fade-in duration-500">
+            <div className="flex flex-col items-center justify-center text-center py-24 bg-white/50 rounded-[40px] border border-dashed border-[#2C1E36]/10 animate-in fade-in duration-500">
               <p className="text-[#665D6B]/50 font-serif italic text-lg">
                 No services available in this category yet.
               </p>

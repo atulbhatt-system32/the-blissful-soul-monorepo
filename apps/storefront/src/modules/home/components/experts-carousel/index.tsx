@@ -110,7 +110,7 @@ const ExpertsCarousel = () => {
             <SwiperSlide key={idx}>
               <a
                 href={expert.link || "#"}
-                className="group flex flex-col items-center text-center p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#C5A059]/40 hover:bg-white/10 transition-all duration-500 cursor-pointer"
+                className="group flex flex-col items-center text-center p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#C5A059]/40 hover:bg-white/10 transition-all duration-500 cursor-pointer"
               >
                 {/* Profile image */}
                 <div className="relative w-20 h-20 md:w-24 md:h-24 mb-4 rounded-full overflow-hidden ring-2 ring-[#C5A059]/30 ring-offset-2 ring-offset-[#1A0E22] group-hover:ring-[#C5A059]/60 group-hover:scale-105 transition-all duration-500">

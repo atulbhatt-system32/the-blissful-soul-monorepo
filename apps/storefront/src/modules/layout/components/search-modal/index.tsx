@@ -77,7 +77,7 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-xl overflow-y-auto outline-none animate-in fade-in zoom-in-95 duration-300 ease-out">
+    <div className="fixed inset-0 z-[100] bg-white/95 overflow-y-auto outline-none animate-in fade-in zoom-in-95 duration-300 ease-out">
       {/* Search Header Area */}
       <div className="content-container py-12 relative min-h-screen flex flex-col">
         <button

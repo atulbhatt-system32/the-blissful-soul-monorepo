@@ -460,7 +460,7 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
       )}
       {/* Cancel Confirmation Modal */}
       {confirmCancelId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/40 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/40 animate-in fade-in duration-300">
           <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-300 p-8 md:p-10 text-center">
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">

@@ -78,7 +78,7 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+              <div className="fixed inset-0 bg-black/40" />
             </TransitionChild>
 
             <div className="fixed inset-0 overflow-hidden">
