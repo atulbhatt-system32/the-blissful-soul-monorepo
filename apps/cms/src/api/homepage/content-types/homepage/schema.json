@@ -17,59 +17,63 @@
       "component": "shared.hero",
       "repeatable": true
     },
-    "seo": {
+    "marquee_items": {
       "type": "component",
-      "component": "shared.seo",
-      "repeatable": false
-    },
-    "featured_products_title": {
-      "type": "string",
-      "default": "New Arrivals"
-    },
-    "pop_up": {
-      "type": "component",
-      "component": "shared.pop-up",
-      "repeatable": false
-    },
-    "stats": {
-      "type": "component",
-      "component": "shared.stat-item",
+      "component": "shared.marquee-item",
       "repeatable": true
     },
-    "hot_seller_title": {
-      "type": "string",
-      "default": "Hot Seller"
-    },
-    "testimonials_title": {
-      "type": "string",
-      "default": "Client Testimonials"
-    },
-    "testimonials": {
-      "type": "component",
-      "component": "shared.testimonial",
-      "repeatable": true
-    },
-    "hot_sellers": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "featured_products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
+    "show_trust_carousel": {
+      "type": "boolean",
+      "default": true
     },
     "trust_cards": {
       "type": "component",
       "component": "shared.trust-card",
       "repeatable": true
     },
-    "faqs": {
+    "stats": {
       "type": "component",
-      "component": "shared.faq-item",
+      "component": "shared.stat-item",
       "repeatable": true
     },
-
+    "show_featured_products": {
+      "type": "boolean",
+      "default": true
+    },
+    "featured_products_label": {
+      "type": "string",
+      "default": "NEW SELECTION"
+    },
+    "featured_products_title": {
+      "type": "string",
+      "default": "New Arrivals"
+    },
+    "featured_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "show_hot_sellers": {
+      "type": "boolean",
+      "default": true
+    },
+    "hot_seller_title": {
+      "type": "string",
+      "default": "Hot Seller"
+    },
+    "hot_sellers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "show_services": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_instagram": {
+      "type": "boolean",
+      "default": true
+    },
     "instagram_handle": {
       "type": "string"
     },
@@ -80,34 +84,33 @@
         "images"
       ]
     },
-    "show_hot_sellers": {
-      "type": "boolean",
-      "default": true
-    },
-    "show_services": {
-      "type": "boolean",
-      "default": true
-    },
-    "show_trust_carousel": {
-      "type": "boolean",
-      "default": true
-    },
     "show_faq": {
       "type": "boolean",
       "default": true
     },
-    "show_instagram": {
-      "type": "boolean",
-      "default": true
-    },
-
-    "show_featured_products": {
-      "type": "boolean"
-    },
-    "marquee_items": {
+    "faqs": {
       "type": "component",
-      "component": "shared.marquee-item",
+      "component": "shared.faq-item",
       "repeatable": true
+    },
+    "testimonials_title": {
+      "type": "string",
+      "default": "Client Testimonials"
+    },
+    "testimonials": {
+      "type": "component",
+      "component": "shared.testimonial",
+      "repeatable": true
+    },
+    "pop_up": {
+      "type": "component",
+      "component": "shared.pop-up",
+      "repeatable": false
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

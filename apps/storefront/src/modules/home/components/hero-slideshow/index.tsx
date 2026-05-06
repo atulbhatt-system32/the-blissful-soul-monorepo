@@ -17,11 +17,9 @@ interface HeroProps {
   slides: Array<{
     title?: string
     subtitle?: string
-    cta_text?: string
     cta_link?: string
     image: HeroImage | HeroImage[]
     mobile_image?: HeroImage | HeroImage[]
-    theme?: "dark" | "light"
   }>
 }
 
@@ -141,7 +139,7 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className={slide.theme === "light" ? "text-gray-900" : "text-white"}
+                    className="text-white"
                   >
                     {slide.title && (
                       <h1 className="text-4xl md:text-7xl font-bold mb-4 uppercase tracking-tighter drop-shadow-md">
