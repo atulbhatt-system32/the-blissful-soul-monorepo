@@ -3,24 +3,11 @@ import qs from "qs"
 export interface HomepageData {
     hero_slideshow?: any[]
     pop_up?: any
-    intro_section?: {
-        label?: string
-        heading?: string
-        description?: string
-        button_text?: string
-        button_link?: string
-    }
     featured_products_label?: string
     featured_products_title?: string
     featured_products?: any[]
     hot_seller_title?: string
     hot_sellers?: any[]
-    healing_crystals_title?: string
-    healing_crystals?: any[]
-    book_session_title?: string
-    tarot_services?: any[]
-    audio_sessions?: any[]
-    video_sessions?: any[]
     testimonials_title?: string
     testimonials?: any[]
     trust_cards?: any[]
@@ -31,7 +18,6 @@ export interface HomepageData {
     shop_by_intent_title?: string
     show_hot_sellers?: boolean
     show_featured_products?: boolean
-    show_book_session?: boolean
     show_services?: boolean
     show_trust_carousel?: boolean
     show_faq?: boolean
@@ -110,9 +96,6 @@ export async function getHomepageData() {
                 },
                 seo: true,
                 stats: true,
-                tarot_services: true,
-                audio_sessions: true,
-                video_sessions: true,
                 testimonials: {
                     populate: "image"
                 },
@@ -122,10 +105,6 @@ export async function getHomepageData() {
                 hot_sellers: {
                     populate: "*"
                 },
-                healing_crystals: {
-                    populate: "*"
-                },
-                intro_section: true,
                 featured_products: {
                     populate: "*"
                 },

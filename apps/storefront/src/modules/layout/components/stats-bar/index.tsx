@@ -3,12 +3,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
-const defaultStats = [
-  { label: "Happy Clients", value: "50K+" },
-  { label: "Years Experience", value: "10+" },
-  { label: "Insta Followers", value: "80K+" },
-]
-
 type StatItem = {
   label: string
   value: string
@@ -68,7 +62,10 @@ function AnimatedNumber({ value, inView }: { value: string; inView: boolean }) {
 }
 
 const StatsBar = ({ stats }: { stats?: StatItem[] | null }) => {
-  const data = stats && stats.length > 0 ? stats : defaultStats
+  if (!stats || stats.length === 0) {
+    return null
+  }
+  const data = stats
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
