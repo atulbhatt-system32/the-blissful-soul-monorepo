@@ -17,7 +17,10 @@ export const listRegions = async () => {
       cache: "force-cache",
     })
     .then(({ regions }) => regions)
-    .catch(medusaError)
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error listing regions:", err.message || err)
+      return []
+    })
 }
 
 export const retrieveRegion = async (id: string) => {
@@ -32,7 +35,10 @@ export const retrieveRegion = async (id: string) => {
       cache: "force-cache",
     })
     .then(({ region }) => region)
-    .catch(medusaError)
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error retrieving region:", err.message || err)
+      return null
+    })
 }
 
 const regionMap = new Map<string, HttpTypes.StoreRegion>()

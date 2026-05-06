@@ -27,6 +27,10 @@ export const listCategories = async (query?: Record<string, any>) => {
       }
     )
     .then(({ product_categories }) => product_categories)
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error listing categories:", err.message || err)
+      return []
+    })
 }
 
 export const getServiceCategories = async () => {
@@ -51,6 +55,10 @@ export const getServiceCategories = async () => {
     .then(({ product_categories }) => {
       const children = product_categories[0]?.category_children ?? []
       return children.sort((a: any, b: any) => (a.rank ?? 0) - (b.rank ?? 0))
+    })
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error getting service categories:", err.message || err)
+      return []
     })
 }
 

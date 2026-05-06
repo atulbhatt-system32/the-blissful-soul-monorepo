@@ -97,6 +97,14 @@ export const listProducts = async ({
         queryParams,
       }
     })
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error listing products:", err.message || err)
+      return {
+        response: { products: [], count: 0 },
+        nextPage: null,
+        queryParams,
+      }
+    })
 }
 
 /**

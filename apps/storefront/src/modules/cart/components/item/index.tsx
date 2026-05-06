@@ -75,10 +75,17 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
             <div className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
               <LineItemOptions variant={item.variant} metadata={item.metadata} />
             </div>
-            {giftLabel && (
-              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[9px] font-bold tracking-wide">
-                {giftLabel}
-              </span>
+            {isAutoGift && (
+              <div className="flex flex-col gap-y-1.5 mt-1">
+                <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">
+                  FREE GIFT
+                </span>
+                {giftLabel && (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#C5A059]/5 border border-[#C5A059]/30 text-[#C5A059] text-[10px] font-bold leading-none w-fit">
+                    {giftLabel}
+                  </span>
+                )}
+              </div>
             )}
 
             {(item as any).adjustments && (item as any).adjustments.length > 0 && (
@@ -127,11 +134,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 Remove
               </button>
             )}
-            {isAutoGift && (
-              <span className="text-[9px] uppercase tracking-widest text-[#C5A059] font-black">
-                Free Gift
-              </span>
-            )}
+            {isAutoGift && <div className="w-12" />}
           </div>
           <ErrorMessage error={error} />
         </div>
@@ -178,10 +181,17 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
           <div className="text-[7px] small:text-[9px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
             <LineItemOptions variant={item.variant} metadata={item.metadata} data-testid="product-variant" />
           </div>
-          {giftLabel && (
-            <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[8px] small:text-[10px] font-bold tracking-wide">
-              {giftLabel}
-            </span>
+          {isAutoGift && (
+            <div className="flex flex-col gap-y-1.5 mt-1">
+              <span className="text-[8px] small:text-[10px] uppercase tracking-widest text-[#C5A059] font-black">
+                FREE GIFT
+              </span>
+              {giftLabel && (
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#C5A059]/5 border border-[#C5A059]/30 text-[#C5A059] text-[9px] small:text-[11px] font-bold leading-none w-fit">
+                  {giftLabel}
+                </span>
+              )}
+            </div>
           )}
 
           {(item as any).adjustments && (item as any).adjustments.length > 0 && (
@@ -232,11 +242,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 Remove
               </button>
             )}
-            {isAutoGift && (
-              <span className="text-[7px] small:text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
-                Free Gift
-              </span>
-            )}
+            {isAutoGift && <div className="h-4" />}
             <ErrorMessage error={error} data-testid="product-error-message" />
           </div>
         </Table.Cell>

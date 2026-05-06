@@ -2,8 +2,17 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { generateInvoice } from "../../../lib/invoice"
 
+type ItemPayload = {
+  title: string
+  variant_id?: string
+  quantity: number
+  unit_price: number
+  metadata?: any
+}
+
 type BookingOrderPayload = {
   variantId: string
+  serviceTitle?: string
   email: string
   firstName: string
   lastName: string
@@ -13,10 +22,18 @@ type BookingOrderPayload = {
   bookingDate: string
   bookingTime: string
   price: number
-  calBookingId: string
+  calBookingId?: string | null
   calMeetUrl?: string
   eventSlug: string
   isPackage?: boolean
+  hasSession?: boolean
+  items?: ItemPayload[]
+  shippingAddress?: {
+    address1: string
+    city: string
+    state: string
+    postalCode: string
+  }
 }
 
 async function sendConfirmationEmail({
@@ -25,32 +42,161 @@ async function sendConfirmationEmail({
   firstName,
   lastName,
   phone,
+  serviceTitle,
   bookingDate,
   bookingTime,
+  price,
   razorpayPaymentId,
   calMeetUrl,
   isPackage,
   orderId,
   pdfBase64,
   hamperGiftTitle,
+  items,
+  hasSession,
 }: {
   notificationService: any
   email: string
   firstName: string
   lastName: string
   phone: string
+  serviceTitle?: string
   bookingDate: string
   bookingTime: string
+  price: number
   razorpayPaymentId: string
   calMeetUrl?: string
   isPackage?: boolean
   orderId: string | number
   pdfBase64: string | null
   hamperGiftTitle?: string | null
+  items?: ItemPayload[]
+  hasSession?: boolean
 }) {
   const pdfAttachments = pdfBase64
     ? [{ content: pdfBase64, encoding: "base64", filename: `invoice_${orderId}.pdf`, contentType: "application/pdf" }]
     : []
+
+  const displayItems = items?.length ? items : [
+    {
+      title: serviceTitle || "Session Booking",
+      quantity: 1,
+      unit_price: price,
+      metadata: { booking_date: bookingDate, booking_time: bookingTime }
+    }
+  ]
+
+  const subtotal = displayItems.reduce((acc, item) => acc + (item.unit_price * item.quantity), 0)
+  
+  // Calculate shipping if there are physical items
+  const hasPhysicalItems = displayItems.some(item => !item.metadata?.is_booking && !item.metadata?.booking_date)
+  const shippingTotal = hasPhysicalItems ? 99 : 0
+  const grandTotal = subtotal + shippingTotal
+
+  const orderDate = new Date().toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })
+  
+  const itemRowsHtml = displayItems.map((item: any) => {
+    const isSession = !!item.metadata?.booking_date || !!item.metadata?.is_booking
+    return `
+      <tr>
+        <td style="padding: 18px 0; vertical-align: top; border-bottom: 1px solid #F0EDE8;">
+          <div style="font-size: 14px; font-weight: 600; color: #2C1E36; margin-bottom: 4px;">${item.title}</div>
+          ${isSession && item.metadata?.booking_date ? `<div style="font-size: 11px; color: #9B949F;">${item.metadata.booking_date} at ${item.metadata.booking_time || ''}</div>` : ''}
+          <div style="font-size: 11px; color: #9B949F;">3% GST Included</div>
+        </td>
+        <td style="padding: 18px 10px; vertical-align: top; border-bottom: 1px solid #F0EDE8; text-align: center; color: #665D6B; font-size: 14px;">×${item.quantity}</td>
+        <td style="padding: 18px 0; vertical-align: top; border-bottom: 1px solid #F0EDE8; text-align: right; font-size: 14px; font-weight: 600; color: #2C1E36; white-space: nowrap;">₹${(item.unit_price * item.quantity).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+      </tr>`
+  }).join('')
+
+  const sessionDetailsHtml = hasSession ? `
+    <div style="background: #F9F7F9; padding: 25px; border-left: 4px solid #C5A059; border-radius: 4px; margin: 25px 0;">
+      <p style="margin: 0 0 10px 0; font-weight: bold; color: #2C1E36;">🗓️ Session Appointment:</p>
+      <p style="margin: 0; font-size: 18px; color: #2C1E36;">${bookingDate} at ${bookingTime}</p>
+      ${calMeetUrl ? `
+        <div style="margin-top: 20px; text-align: center; background: #2C1E36; padding: 20px; border-radius: 12px; border: 1px solid #C5A059;">
+          <p style="margin-top: 0; color: #C5A059; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Your Meeting Link</p>
+          <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 15px; margin: 5px 0;">Join Live Session</a>
+        </div>
+      ` : isPackage ? "" : `
+        <p style="margin-top: 15px; font-size: 12px; color: #665D6B;">Note: Your meeting link will be sent separately before the session.</p>
+      `}
+    </div>
+  ` : ""
+
+  const commonBodyPrefix = `
+    <div style="font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background-color: #FBFAF8; padding: 40px 30px; color: #110E17; max-width: 620px; margin: 0 auto; border: 1px solid #E1DFE3; border-radius: 24px;">
+      <div style="text-align: center; margin-bottom: 35px;">
+        <h1 style="font-family: Georgia, serif; font-size: 20px; color: #2C1E36; margin: 0 0 4px; font-weight: 700; letter-spacing: 0.05em;">The Blissful Soul</h1>
+        <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 0;">Healing &amp; Crystals</p>
+      </div>`
+
+  const commonBodySuffix = `
+      <div style="margin-bottom: 30px;">
+        <h3 style="font-size: 18px; font-weight: 700; color: #2C1E36; margin: 0 0 6px;">Order summary</h3>
+        <span style="font-size: 13px; color: #C5A059; font-weight: bold;">Order #${orderId}</span>
+        <span style="font-size: 13px; color: #9B949F; margin-left: 4px;">(${orderDate})</span>
+      </div>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 10px;">
+        <tbody>
+          ${itemRowsHtml}
+        </tbody>
+      </table>
+
+      <div style="border-top: 2px solid #E1DFE3; padding-top: 20px; margin-bottom: 10px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+          <tr>
+            <td style="font-size: 14px; color: #665D6B; padding: 5px 0;">Subtotal:</td>
+            <td style="font-size: 14px; color: #2C1E36; text-align: right; padding: 5px 0; font-weight: 500;">₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          </tr>
+          ${shippingTotal > 0 ? `
+          <tr>
+            <td style="font-size: 14px; color: #665D6B; padding: 5px 0;">Shipping: Standard Delivery</td>
+            <td style="font-size: 14px; color: #2C1E36; text-align: right; padding: 5px 0; font-weight: 500;">₹${shippingTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          </tr>
+          ` : ''}
+          <tr>
+            <td style="font-size: 16px; color: #2C1E36; padding: 14px 0 5px; font-weight: 800; border-top: 1px solid #2C1E36;">Total:</td>
+            <td style="font-size: 20px; color: #2C1E36; text-align: right; padding: 14px 0 5px; font-weight: 800; border-top: 1px solid #2C1E36;">₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 13px; color: #665D6B; padding: 5px 0;">Payment method:</td>
+            <td style="font-size: 13px; color: #2C1E36; text-align: right; padding: 5px 0;">Razorpay (${razorpayPaymentId})</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="border-top: 1px solid #E1DFE3; padding-top: 25px; margin-bottom: 25px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+          <tr>
+            <td style="width: 100%; vertical-align: top;">
+              <p style="font-size: 14px; font-weight: 700; color: #2C1E36; margin: 0 0 10px;">Customer details</p>
+              <span style="display: block; font-size: 13px; color: #665D6B; line-height: 1.6;">${firstName} ${lastName}</span>
+              <span style="display: block; font-size: 13px; color: #665D6B; line-height: 1.6;">${phone}</span>
+              <span style="display: block; font-size: 13px; color: #665D6B; line-height: 1.6;">${email}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="border-top: 1px solid #E1DFE3; padding-top: 25px; text-align: center;">
+        <p style="font-size: 13px; color: #9B949F; margin: 0 0 8px;">
+          Your GST invoice is attached to this email.<br/>
+          May the energy of these crystals find you well.
+        </p>
+        <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; font-style: italic; color: #2C1E36; margin: 18px 0 4px;">Stay Blissful,</p>
+        <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: #C5A059; margin: 0;">The Blissful Soul Team</p>
+      </div>
+    </div>`
+
+  const hamperHtml = hamperGiftTitle ? `
+    <div style="margin: 20px 0; text-align: center; background: linear-gradient(135deg, #2C1E36, #4a2d5e); padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
+      <p style="margin: 0 0 6px; color: #C5A059; font-weight: bold; font-size: 18px;">🎁 You've earned a Free Gift!</p>
+      <p style="margin: 0; color: #fff; font-size: 14px;">${hamperGiftTitle}</p>
+      <p style="margin: 8px 0 0; color: rgba(255,255,255,0.6); font-size: 11px;">This complimentary hamper will be shipped to you separately.</p>
+    </div>
+  ` : ""
 
   const notifications: any[] = [
     {
@@ -58,62 +204,16 @@ async function sendConfirmationEmail({
       channel: "email",
       template: "booking-confirmed",
       data: {
-        subject: `Session Booking Confirmed - The Blissful Soul`,
+        subject: `Order Confirmed: #${orderId}`,
         html_body: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fafafa; border-radius: 8px;">
-            <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 4px;">Booking Confirmed! ✓</h1>
-            <p style="color: #555; font-size: 14px; margin-bottom: 8px;">Order ID: ${orderId}</p>
-            <p style="color: #555; font-size: 14px; margin-bottom: 24px;">The Blissful Soul</p>
-
-            <p style="color: #333;">Hi <strong>${firstName}</strong>,</p>
-            <p style="color: #333;">Your session booking has been confirmed. Here are your booking details:</p>
-
-            <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr style="border-bottom: 1px solid #f0f0f0;">
-                  <td style="padding: 10px 0; color: #666; font-size: 14px;">Date</td>
-                  <td style="padding: 10px 0; color: #1a1a1a; font-weight: bold; text-align: right;">${bookingDate}</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #f0f0f0;">
-                  <td style="padding: 10px 0; color: #666; font-size: 14px;">Time</td>
-                  <td style="padding: 10px 0; color: #1a1a1a; font-weight: bold; text-align: right;">${bookingTime}</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #f0f0f0;">
-                  <td style="padding: 10px 0; color: #666; font-size: 14px;">Payment ID</td>
-                  <td style="padding: 10px 0; color: #1a1a1a; font-size: 12px; text-align: right;">${razorpayPaymentId}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px 0; color: #666; font-size: 14px;">Contact</td>
-                  <td style="padding: 10px 0; color: #1a1a1a; text-align: right;">${phone}</td>
-                </tr>
-              </table>
-            </div>
-
-            ${calMeetUrl ? `
-            <div style="margin: 30px 0; text-align: center; background: #2C1E36; padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
-              <p style="margin-top: 0; color: #C5A059; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Private Meeting Link</p>
-              <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; margin: 10px 0;">Join Live Session</a>
-              <p style="margin-bottom: 0; color: rgba(197, 160, 89, 0.6); font-size: 11px;">Direct Link: ${calMeetUrl}</p>
-            </div>
-            ` : isPackage ? `` : `
-            <p style="color: #333; background: #fff9eb; padding: 15px; border-radius: 8px; border: 1px solid #ffe6a8; font-size: 14px;">
-              <strong>Note:</strong> Your unique meeting link will be sent to you via email shortly before the session starts.
-            </p>
-            `}
-
-            ${hamperGiftTitle ? `
-            <div style="margin: 20px 0; text-align: center; background: linear-gradient(135deg, #2C1E36, #4a2d5e); padding: 25px; border-radius: 12px; border: 1px solid #C5A059;">
-              <p style="margin: 0 0 6px; color: #C5A059; font-weight: bold; font-size: 18px;">🎁 You've earned a Free Gift!</p>
-              <p style="margin: 0; color: #fff; font-size: 14px;">${hamperGiftTitle}</p>
-              <p style="margin: 8px 0 0; color: rgba(255,255,255,0.6); font-size: 11px;">This complimentary hamper will be shipped to you separately.</p>
-            </div>
-            ` : ''}
-
-            <p style="color: #333;">Thank you for trusting <strong>The Blissful Soul</strong> on your journey. 🙏</p>
-
-            <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;" />
-            <p style="color: #999; font-size: 12px;">If you have any questions, please contact us at tbspragya@gmail.com</p>
-          </div>
+          ${commonBodyPrefix}
+          <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${orderId}</h2>
+          <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+            Hi ${firstName}, We have received your order. It shall be energised and dispatched soon.
+          </p>
+          ${sessionDetailsHtml}
+          ${hamperHtml}
+          ${commonBodySuffix}
         `,
         pdf_attachments: pdfAttachments,
       },
@@ -131,22 +231,15 @@ async function sendConfirmationEmail({
       channel: "email",
       template: "booking-admin-notification",
       data: {
-        subject: `NEW BOOKING: ${firstName} for ${bookingDate} at ${bookingTime}`,
+        subject: `NEW ${hasSession ? 'BOOKING' : 'ORDER'}: ${firstName} | #${orderId}`,
         html_body: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #e0f2f1; border-radius: 8px;">
-            <h2>New Session Booked! ✅</h2>
-            <p>A new booking has been confirmed via Razorpay.</p>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr><td><strong>Customer:</strong></td><td>${firstName} ${lastName}</td></tr>
-              <tr><td><strong>Email:</strong></td><td>${email}</td></tr>
-              <tr><td><strong>Phone:</strong></td><td>${phone}</td></tr>
-              <tr><td><strong>Date:</strong></td><td>${bookingDate}</td></tr>
-              <tr><td><strong>Time:</strong></td><td>${bookingTime}</td></tr>
-              <tr><td><strong>Order ID:</strong></td><td>#${orderId}</td></tr>
-              <tr><td><strong>Razorpay ID:</strong></td><td>${razorpayPaymentId}</td></tr>
-            </table>
-            <p>Please prepare for the session accordingly.</p>
-          </div>
+          ${commonBodyPrefix}
+          <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">New ${hasSession ? 'Booking' : 'Order'} Received</h2>
+          <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+            You have received a new ${hasSession ? 'booking' : 'order'} from ${firstName} ${lastName}.
+          </p>
+          ${sessionDetailsHtml}
+          ${commonBodySuffix}
         `,
       },
     })
@@ -158,6 +251,7 @@ async function sendConfirmationEmail({
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const {
     variantId,
+    serviceTitle,
     email,
     firstName,
     lastName,
@@ -171,6 +265,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     calMeetUrl,
     eventSlug,
     isPackage,
+    items,
+    hasSession,
+    shippingAddress,
   } = req.body as BookingOrderPayload
 
   console.log(`[Booking Confirmation] Processing for ${email} | Razorpay: ${razorpayPaymentId} | Cal: ${calBookingId}`)
@@ -199,8 +296,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       console.log(`[Booking Confirmation] Order ${existing.id} already exists for Razorpay ${razorpayPaymentId} — resending email`)
       await sendConfirmationEmail({
         notificationService, email, firstName, lastName, phone,
-        bookingDate, bookingTime, razorpayPaymentId, calMeetUrl, isPackage,
+        serviceTitle, bookingDate, bookingTime, price: price || 0,
+        razorpayPaymentId, calMeetUrl, isPackage,
         orderId: existing.display_id || existing.id, pdfBase64: null,
+        items, hasSession,
       })
       return res.status(200).json({ success: true, orderId: existing.id, message: "Order already existed — confirmation email resent." })
     }
@@ -222,16 +321,28 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       console.warn("[Booking Order] Could not resolve customer:", e.message)
     }
 
-    // 3. Create order
-    const addressPayload = {
-      first_name: firstName,
-      last_name: lastName || "Customer",
-      phone: phone || "",
-      address_1: "Digital Delivery",
-      city: "Online",
-      country_code: countryCode || "in",
-      postal_code: "000000",
-    }
+    // 3. Create order — use real address when physical products present
+    const hasPhysicalItems = (items ?? []).some(i => !i.metadata?.is_booking && !i.metadata?.booking_date)
+    const addressPayload = hasPhysicalItems && shippingAddress?.address1
+      ? {
+          first_name: firstName,
+          last_name: lastName || "Customer",
+          phone: phone || "",
+          address_1: shippingAddress.address1,
+          city: shippingAddress.city,
+          province: shippingAddress.state || "",
+          country_code: countryCode || "in",
+          postal_code: shippingAddress.postalCode,
+        }
+      : {
+          first_name: firstName,
+          last_name: lastName || "Customer",
+          phone: phone || "",
+          address_1: "Digital Delivery",
+          city: "Online",
+          country_code: countryCode || "in",
+          postal_code: "000000",
+        }
 
     const order = await orderModuleService.createOrders({
       region_id: region.id,
@@ -253,17 +364,28 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     console.log(`[Booking Order] Created order ${order.id} for ${email}`)
 
-    // 4. Add line item
-    await orderModuleService.createOrderLineItems(order.id, [
-      {
-        title: `Session Booking - ${bookingDate} ${bookingTime}`,
-        quantity: 1,
-        unit_price: price || 0,
-        requires_shipping: false,
+    // 4. Add line items
+    if (items?.length) {
+      await orderModuleService.createOrderLineItems(order.id, items.map(item => ({
+        title: item.title,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        requires_shipping: !item.metadata?.is_booking,
         is_discountable: false,
-        metadata: { booking_date: bookingDate, booking_time: bookingTime, razorpay_id: razorpayPaymentId, variant_id: variantId },
-      },
-    ])
+        metadata: { ...item.metadata, razorpay_id: razorpayPaymentId },
+      })))
+    } else {
+      await orderModuleService.createOrderLineItems(order.id, [
+        {
+          title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
+          quantity: 1,
+          unit_price: price || 0,
+          requires_shipping: false,
+          is_discountable: false,
+          metadata: { booking_date: bookingDate, booking_time: bookingTime, razorpay_id: razorpayPaymentId, variant_id: variantId },
+        },
+      ])
+    }
 
     // 4b. Auto-add gift hamper — same logic as the cart subscriber but applied
     //     to the booking order which bypasses the Medusa cart entirely.
@@ -362,13 +484,22 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         city: "Online", postal_code: "000000",
         phone: phone || "", province: null, country_code: countryCode || "in",
       },
-      items: [
-        {
-          title: `Session Booking - ${bookingDate} ${bookingTime}`,
-          quantity: 1, unit_price: price || 0, adjustments: [],
-          tax_lines: invoiceTaxLines, metadata: { hs_code: "9983" },
-        },
-      ],
+      items: items?.length 
+        ? items.map(item => ({
+            title: item.title,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            adjustments: [],
+            tax_lines: [], // In multi-item, we'd ideally fetch all taxes, but for now we keep it simple or fallback
+            metadata: item.metadata || {},
+          }))
+        : [
+          {
+            title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
+            quantity: 1, unit_price: price || 0, adjustments: [],
+            tax_lines: invoiceTaxLines, metadata: { hs_code: "9983" },
+          },
+        ],
       shipping_total: 0,
       shipping_methods: [],
       payment_collections: [{ payments: [{ provider_id: "razorpay" }] }],
@@ -380,8 +511,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     // 8. Send confirmation emails
     await sendConfirmationEmail({
       notificationService, email, firstName, lastName, phone,
-      bookingDate, bookingTime, razorpayPaymentId, calMeetUrl, isPackage,
+      serviceTitle, bookingDate, bookingTime, price: price || 0,
+      razorpayPaymentId, calMeetUrl, isPackage,
       orderId: order.display_id || order.id, pdfBase64, hamperGiftTitle,
+      items, hasSession,
     })
 
     console.log(`[Booking Confirmation] Email sent successfully to ${email}`)
