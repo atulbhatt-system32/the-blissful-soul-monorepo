@@ -13,10 +13,6 @@
         "subtitle": {
             "type": "text"
         },
-        "cta_text": {
-            "type": "string",
-            "default": "Shop Now"
-        },
         "cta_link": {
             "type": "string",
             "default": "/store"
@@ -35,14 +31,6 @@
             "allowedTypes": [
                 "images"
             ]
-        },
-        "theme": {
-            "type": "enumeration",
-            "enum": [
-                "dark",
-                "light"
-            ],
-            "default": "dark"
         }
     }
 }
