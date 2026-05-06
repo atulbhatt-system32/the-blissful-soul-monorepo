@@ -50,7 +50,7 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
       setError("Free gift quantity cannot be changed")
       return
     }
-    if (isService) {
+    if (isService && quantity !== 0) {
       return
     }
 
