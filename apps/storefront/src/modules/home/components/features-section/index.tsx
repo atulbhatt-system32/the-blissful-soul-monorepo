@@ -63,7 +63,7 @@ const FeaturesSection = () => {
 
               {/* Link */}
               <LocalizedClientLink 
-                href="/book-session" 
+                href="/services" 
                 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#2C1E36] border-b-2 border-transparent hover:border-[#C5A059] pb-1 transition-all duration-300"
               >
                 Explore more

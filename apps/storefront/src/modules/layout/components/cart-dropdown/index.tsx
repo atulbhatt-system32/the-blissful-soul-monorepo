@@ -119,81 +119,112 @@ const CartDropdown = ({
                         ? -1
                         : 1
                     })
-                    .map((item) => (
-                      <div
-                        className="grid grid-cols-[64px_1fr] gap-x-4 group"
-                        key={item.id}
-                        data-testid="cart-item"
-                      >
-                        <LocalizedClientLink
-                          href={`/products/${item.product_handle}`}
-                          className="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shadow-sm"
+                    .map((item) => {
+                      const p = item.variant?.product as any;
+                      const typeValue = (p?.type?.value || p?.type || "").toLowerCase();
+                      const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || [];
+                      const isService = (
+                        typeValue === "session" || 
+                        typeValue === "booking" ||
+                        tags.includes("session") ||
+                        tags.includes("booking") ||
+                        p?.metadata?.is_service === true || 
+                        p?.metadata?.is_service === "true" ||
+                        item.variant?.metadata?.is_service === true ||
+                        item.metadata?.is_booking === "true" ||
+                        item.metadata?.is_session === true
+                      );
+
+                      return (
+                        <div
+                          className="grid grid-cols-[64px_1fr] gap-x-4 group"
+                          key={item.id}
+                          data-testid="cart-item"
                         >
-                          <Thumbnail
-                            thumbnail={item.thumbnail}
-                            images={item.variant?.product?.images}
-                            size="square"
-                            className="group-hover:scale-105 transition-transform duration-700"
-                          />
-                        </LocalizedClientLink>
-                        <div className="flex flex-col justify-between py-0.5">
-                          <div className="flex flex-col">
-                            <div className="flex items-start justify-between">
-                              <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-2 w-[160px]">
-                                <h3 className="text-[13px] font-serif text-[#2C1E36] font-bold overflow-hidden text-ellipsis">
-                                  <LocalizedClientLink
-                                    href={`/products/${item.product_handle}`}
-                                    data-testid="product-link"
-                                  >
-                                    {item.product_title || item.title}
-                                  </LocalizedClientLink>
-                                </h3>
-                                <div className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
-                                  <LineItemOptions
-                                    variant={item.variant}
-                                    metadata={item.metadata}
-                                    data-testid="cart-item-variant"
-                                  />
-                                </div>
-                                <span
-                                  className="text-[9px] text-gray-400 font-bold"
-                                  data-testid="cart-item-quantity"
-                                >
-                                  Qty: {item.quantity}
-                                </span>
-                              </div>
-                              <div className="flex justify-end text-[12px] font-black text-[#2C1E36]">
-                                <LineItemPrice
-                                  item={item}
-                                  style="tight"
-                                  currencyCode={cartState.currency_code}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          {item.metadata?.is_auto_gift === true ? (
-                            <div className="flex flex-col gap-y-1">
-                              <span className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
-                                Free Gift
-                              </span>
-                              {(item.variant?.product?.metadata?.gift_label as string | undefined) && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[8px] font-bold tracking-wide w-fit">
-                                  {item.variant?.product?.metadata?.gift_label as string}
-                                </span>
-                              )}
+                          {isService ? (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+                              <Thumbnail
+                                thumbnail={item.thumbnail}
+                                images={item.variant?.product?.images}
+                                size="square"
+                              />
                             </div>
                           ) : (
-                            <div
-                              className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"
+                            <LocalizedClientLink
+                              href={`/products/${item.product_handle}`}
+                              className="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shadow-sm"
                             >
-                               <DeleteButton id={item.id} className="text-inherit" data-testid="cart-item-remove-button">
-                                  Remove
-                               </DeleteButton>
-                            </div>
+                              <Thumbnail
+                                thumbnail={item.thumbnail}
+                                images={item.variant?.product?.images}
+                                size="square"
+                                className="group-hover:scale-105 transition-transform duration-700"
+                              />
+                            </LocalizedClientLink>
                           )}
+                          <div className="flex flex-col justify-between py-0.5">
+                            <div className="flex flex-col">
+                              <div className="flex items-start justify-between">
+                                <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-2 w-[160px]">
+                                  <h3 className="text-[13px] font-serif text-[#2C1E36] font-bold overflow-hidden text-ellipsis">
+                                    {isService ? (
+                                      <span>{item.product_title || item.title}</span>
+                                    ) : (
+                                      <LocalizedClientLink
+                                        href={`/products/${item.product_handle}`}
+                                        data-testid="product-link"
+                                      >
+                                        {item.product_title || item.title}
+                                      </LocalizedClientLink>
+                                    )}
+                                  </h3>
+                                  <div className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
+                                    <LineItemOptions
+                                      variant={item.variant}
+                                      metadata={item.metadata}
+                                      data-testid="cart-item-variant"
+                                    />
+                                  </div>
+                                  <span
+                                    className="text-[9px] text-gray-400 font-bold"
+                                    data-testid="cart-item-quantity"
+                                  >
+                                    Qty: {item.quantity}
+                                  </span>
+                                </div>
+                                <div className="flex justify-end text-[12px] font-black text-[#2C1E36]">
+                                  <LineItemPrice
+                                    item={item}
+                                    style="tight"
+                                    currencyCode={cartState.currency_code}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            {item.metadata?.is_auto_gift === true ? (
+                              <div className="flex flex-col gap-y-1">
+                                <span className="text-[8px] uppercase tracking-widest text-[#C5A059] font-black">
+                                  Free Gift
+                                </span>
+                                {(item.variant?.product?.metadata?.gift_label as string | undefined) && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/40 text-[#C5A059] text-[8px] font-bold tracking-wide w-fit">
+                                    {item.variant?.product?.metadata?.gift_label as string}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <div
+                                className="text-[8px] uppercase tracking-widest text-gray-300 font-black hover:text-red-500 transition-colors w-fit"
+                              >
+                                <DeleteButton id={item.id} className="text-inherit" data-testid="cart-item-remove-button">
+                                    Remove
+                                </DeleteButton>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                 </div>
                 <div className="px-6 py-5 bg-gray-50/50 flex flex-col gap-y-4">
                   <div className="flex items-center justify-between">

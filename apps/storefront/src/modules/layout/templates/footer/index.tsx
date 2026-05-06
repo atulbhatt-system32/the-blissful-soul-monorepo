@@ -47,7 +47,7 @@ export default async function Footer() {
               </span>
               <ul className="flex flex-col gap-y-4 text-[15px] text-white/50 font-sans">
                   <li><LocalizedClientLink href="/about" className="hover:text-[#C5A059] transition-colors">About Master</LocalizedClientLink></li>
-                  <li><LocalizedClientLink href="/book-session" className="hover:text-[#C5A059] transition-colors">Book a session</LocalizedClientLink></li>
+                  <li><LocalizedClientLink href="/services" className="hover:text-[#C5A059] transition-colors">Book a session</LocalizedClientLink></li>
                   <li><LocalizedClientLink href="/store" className="hover:text-[#C5A059] transition-colors">Shop crystals</LocalizedClientLink></li>
                   <li><LocalizedClientLink href="/contact" className="hover:text-[#C5A059] transition-colors">Contact</LocalizedClientLink></li>
               </ul>

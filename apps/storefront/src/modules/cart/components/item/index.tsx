@@ -30,9 +30,27 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
     ? (item.variant?.product?.metadata?.gift_label as string | undefined)
     : undefined
 
+  const p = item.variant?.product as any;
+  const typeValue = (p?.type?.value || p?.type || "").toLowerCase();
+  const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || [];
+  const isService = (
+    typeValue === "session" || 
+    typeValue === "booking" ||
+    tags.includes("session") ||
+    tags.includes("booking") ||
+    p?.metadata?.is_service === true || 
+    p?.metadata?.is_service === "true" ||
+    item.variant?.metadata?.is_service === true ||
+    item.metadata?.is_booking === "true" ||
+    item.metadata?.is_session === true
+  );
+
   const changeQuantity = async (quantity: number) => {
     if (isAutoGift) {
       setError("Free gift quantity cannot be changed")
+      return
+    }
+    if (isService) {
       return
     }
 
@@ -58,16 +76,26 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
     return (
       <div className="flex flex-col gap-y-4 py-6 border-b border-gray-100 last:border-0 grow animate-in fade-in slide-in-from-bottom-2">
         <div className="flex gap-x-4 items-start">
-          <LocalizedClientLink
-            href={`/products/${item.product_handle}`}
-            className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shadow-sm shrink-0"
-          >
-            <Thumbnail
-              thumbnail={item.thumbnail}
-              images={item.variant?.product?.images}
-              size="square"
-            />
-          </LocalizedClientLink>
+          {isService ? (
+            <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shadow-sm shrink-0">
+              <Thumbnail
+                thumbnail={item.thumbnail}
+                images={item.variant?.product?.images}
+                size="square"
+              />
+            </div>
+          ) : (
+            <LocalizedClientLink
+              href={`/products/${item.product_handle}`}
+              className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shadow-sm shrink-0"
+            >
+              <Thumbnail
+                thumbnail={item.thumbnail}
+                images={item.variant?.product?.images}
+                size="square"
+              />
+            </LocalizedClientLink>
+          )}
           <div className="flex flex-col gap-y-1">
             <h3 className="text-sm font-serif font-bold text-[#2C1E36] leading-tight">
               {item.product_title}
@@ -114,27 +142,33 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
         
         <div className="flex items-center justify-between pl-24">
           <div className="flex items-center gap-x-2">
-            <div className="bg-gray-50/80 rounded-lg border border-gray-100 p-0.5">
-              <CartItemSelect
-                value={item.quantity}
-                onChange={(value) => changeQuantity(parseInt(value.target.value))}
-                className="w-12 h-8 text-xs font-bold border-none bg-transparent focus:ring-0"
-                disabled={isAutoGift}
-              >
-                {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
-                  <option value={i + 1} key={i}>{i + 1}</option>
-                ))}
-              </CartItemSelect>
-            </div>
+            {isService ? (
+              <div className="flex items-center justify-center bg-gray-50/80 rounded-lg border border-gray-100 h-8 px-3">
+                <span className="text-[10px] font-black text-[#2C1E36] uppercase tracking-widest">Qty: {item.quantity}</span>
+              </div>
+            ) : (
+              <div className="bg-gray-50/80 rounded-lg border border-gray-100 p-0.5">
+                <CartItemSelect
+                  value={item.quantity}
+                  onChange={(value) => changeQuantity(parseInt(value.target.value))}
+                  className="w-12 h-8 text-xs font-bold border-none bg-transparent focus:ring-0"
+                  disabled={isAutoGift}
+                >
+                  {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
+                    <option value={i + 1} key={i}>{i + 1}</option>
+                  ))}
+                </CartItemSelect>
+              </div>
+            )}
             {!isAutoGift && (
-              <button 
+              <button
                 onClick={() => changeQuantity(0)}
                 className="text-[9px] uppercase tracking-widest text-gray-400 font-bold hover:text-red-500 transition-colors"
               >
                 Remove
               </button>
             )}
-            {isAutoGift && <div className="w-12" />}
+            {(isAutoGift || isService) && <div className="w-4" />}
           </div>
           <ErrorMessage error={error} />
         </div>
@@ -151,20 +185,33 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
       data-testid="product-row"
     >
       <Table.Cell className="!pl-0 py-4 small:py-6 w-16 small:w-20">
-        <LocalizedClientLink
-          href={`/products/${item.product_handle}`}
-          className={clx("flex overflow-hidden rounded-xl transition-all", {
+        {isService ? (
+          <div className={clx("flex overflow-hidden rounded-xl transition-all", {
             "w-12 small:w-14 border border-white/10 shadow-none": type === "preview",
             "w-14 small:w-20 border border-gray-100 shadow-sm": type === "full",
-          })}
-        >
-          <Thumbnail
-            thumbnail={item.thumbnail}
-            images={item.variant?.product?.images}
-            size="square"
-            className="group-hover:scale-105 transition-transform duration-700"
-          />
-        </LocalizedClientLink>
+          })}>
+            <Thumbnail
+              thumbnail={item.thumbnail}
+              images={item.variant?.product?.images}
+              size="square"
+            />
+          </div>
+        ) : (
+          <LocalizedClientLink
+            href={`/products/${item.product_handle}`}
+            className={clx("flex overflow-hidden rounded-xl transition-all", {
+              "w-12 small:w-14 border border-white/10 shadow-none": type === "preview",
+              "w-14 small:w-20 border border-gray-100 shadow-sm": type === "full",
+            })}
+          >
+            <Thumbnail
+              thumbnail={item.thumbnail}
+              images={item.variant?.product?.images}
+              size="square"
+              className="group-hover:scale-105 transition-transform duration-700"
+            />
+          </LocalizedClientLink>
+        )}
       </Table.Cell>
 
       <Table.Cell className="text-left py-4 small:py-6 px-2 small:px-4">
@@ -214,28 +261,32 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
       {type === "full" && (
         <Table.Cell className="py-4 small:py-6 px-1 small:px-4">
           <div className="flex flex-col items-center gap-y-1">
-            <div className="flex items-center gap-x-1 bg-white border border-gray-100 rounded-lg p-0 shadow-sm">
-              <CartItemSelect
-                value={item.quantity}
-                onChange={(value) => changeQuantity(parseInt(value.target.value))}
-                className="w-10 small:w-12 h-6 small:h-7 text-[10px] small:text-xs font-bold border-none bg-transparent focus:ring-0"
-                data-testid="product-select-button"
-                disabled={isAutoGift}
-              >
-                {Array.from(
-                  {
-                    length: Math.min(maxQuantity, 10),
-                  },
-                  (_, i) => (
-                    <option value={i + 1} key={i}>
-                      {i + 1}
-                    </option>
-                  )
-                )}
-              </CartItemSelect>
-            </div>
+            {isService ? (
+              <div className="flex items-center justify-center h-6 small:h-7 px-3">
+                <span className="text-[9px] small:text-[11px] font-black text-[#2C1E36] uppercase tracking-widest">Qty: {item.quantity}</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-x-1 bg-white border border-gray-100 rounded-lg p-0 shadow-sm">
+                <CartItemSelect
+                  value={item.quantity}
+                  onChange={(value) => changeQuantity(parseInt(value.target.value))}
+                  className="w-10 small:w-12 h-6 small:h-7 text-[10px] small:text-xs font-bold border-none bg-transparent focus:ring-0"
+                  data-testid="product-select-button"
+                  disabled={isAutoGift}
+                >
+                  {Array.from(
+                    { length: Math.min(maxQuantity, 10) },
+                    (_, i) => (
+                      <option value={i + 1} key={i}>
+                        {i + 1}
+                      </option>
+                    )
+                  )}
+                </CartItemSelect>
+              </div>
+            )}
             {!isAutoGift && (
-              <button 
+              <button
                 onClick={() => changeQuantity(0)}
                 className="text-[7px] small:text-[8px] uppercase tracking-widest text-gray-400 font-black hover:text-red-500 transition-colors flex items-center gap-x-1"
               >
