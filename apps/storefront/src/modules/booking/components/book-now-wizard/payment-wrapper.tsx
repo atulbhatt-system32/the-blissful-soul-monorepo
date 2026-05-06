@@ -188,25 +188,25 @@ export default function MedusaCheckoutPayment({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-4">
+      <div className="flex flex-col-reverse sm:flex-row gap-4">
         <Button
           variant="secondary"
           size="large"
-          className="w-1/3 py-3"
+          className="w-full sm:w-1/3 py-4 sm:py-3 rounded-xl uppercase font-bold tracking-widest text-xs"
           onClick={onBack}
           disabled={isProcessing}
         >
-          Cancel
+          Back
         </Button>
         <Button
-          className="w-2/3 py-3 bg-[#2C1E36] hover:opacity-90 border-none text-white text-md uppercase font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full sm:w-2/3 py-4 sm:py-3 bg-[#2C1E36] hover:opacity-90 border-none text-white rounded-xl text-xs uppercase font-bold tracking-widest disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-purple-900/10"
           size="large"
           onClick={handleBookingPayment}
           isLoading={isProcessing}
           disabled={isProcessing || !isAddressValid}
           data-testid="booking-payment-button"
         >
-          Pay & Confirm Booking
+          Pay & Confirm
         </Button>
       </div>
 
