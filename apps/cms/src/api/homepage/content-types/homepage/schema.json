@@ -40,29 +40,6 @@
       "type": "string",
       "default": "Hot Seller"
     },
-    "healing_crystals_title": {
-      "type": "string",
-      "default": "Shop Healing Crystals"
-    },
-    "book_session_title": {
-      "type": "string",
-      "default": "Book Your Session"
-    },
-    "tarot_services": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "audio_sessions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "video_sessions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
     "testimonials_title": {
       "type": "string",
       "default": "Client Testimonials"
@@ -76,16 +53,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product"
-    },
-    "healing_crystals": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "intro_section": {
-      "type": "component",
-      "component": "shared.intro-section",
-      "repeatable": false
     },
     "featured_products": {
       "type": "relation",
