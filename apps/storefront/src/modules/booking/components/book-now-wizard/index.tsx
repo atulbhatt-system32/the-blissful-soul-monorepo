@@ -159,6 +159,8 @@ export default function BookNowClient({
     setCartLoading(true)
     try {
       const varId = selectedVariant || serviceObj?.variants?.[0]?.id || ""
+      const selectedVariantObj = serviceObj?.variants?.find(v => v.id === varId)
+      
       if (!varId) {
         alert("No variant selected. Please go back and select a service.")
         return
@@ -181,9 +183,16 @@ export default function BookNowClient({
         countryCode,
         metadata: {
           is_booking: "true",
+          is_session: "true",
           booking_date: isPackage ? "" : selectedDate,
           booking_time: isPackage ? "" : selectedTime,
           booking_slot_iso: isPackage ? "" : selectedSlotIso,
+          slot_iso_start: isPackage ? "" : selectedSlotIso,
+          patient_first_name: details.firstName,
+          patient_last_name: details.lastName,
+          patient_email: details.email,
+          patient_phone: details.phone,
+          event_slug: (selectedVariantObj?.metadata?.event_slug as string) || (serviceObj?.metadata?.event_slug as string) || "",
         },
       })
       const cart = await getCartForBookingStep()

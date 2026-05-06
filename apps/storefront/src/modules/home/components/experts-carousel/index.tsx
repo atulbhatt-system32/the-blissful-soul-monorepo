@@ -22,28 +22,28 @@ const experts: Expert[] = [
     title: "Astrologer",
     specialization: "Vedic Astrology & Life Guidance",
     image: "/experts/astrologer.jpg",
-    link: "/book-session",
+    link: "/services",
   },
   {
     name: "Master Pragya Vijh",
     title: "Tarot Reader",
     specialization: "Tarot Card Reading & Insights",
     image: "/experts/tarot-reader.jpg",
-    link: "/book-session",
+    link: "/services",
   },
   {
     name: "Master Pragya Vijh",
     title: "Crystal Healer",
     specialization: "Crystal Healing & Energy Work",
     image: "/experts/crystal-healer.jpg",
-    link: "/book-session",
+    link: "/services",
   },
   {
     name: "Master Pragya Vijh",
     title: "Counselor",
     specialization: "Spiritual Counseling & Wellness",
     image: "/experts/counselor.jpg",
-    link: "/book-session",
+    link: "/services",
   },
 ]
 

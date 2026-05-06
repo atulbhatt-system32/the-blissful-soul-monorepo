@@ -121,7 +121,7 @@ const BookSessionClient = ({
 
         <div className="text-center mt-12">
           <LocalizedClientLink
-            href="/book-session"
+            href="/services"
             className="inline-block text-[11px] font-bold uppercase tracking-[0.4em] text-[#C5A059] border-b border-[#C5A059]/30 pb-2 hover:text-[#2C1E36] hover:border-[#2C1E36] transition-all"
           >
             Explore All Sessions &rarr;

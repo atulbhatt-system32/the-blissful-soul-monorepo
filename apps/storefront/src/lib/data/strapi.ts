@@ -205,32 +205,6 @@ export async function getContactPageData() {
     }
 }
 
-export async function getBookSessionPageData() {
-    try {
-        const query = qs.stringify({
-            populate: {
-                top_services: true,
-                audio_sessions: true,
-                video_sessions: true,
-                seo: true,
-            },
-        })
-
-        const response = await fetch(`${STRAPI_URL}/api/book-session-page?${query}`, {
-            headers: {
-                Authorization: `Bearer ${STRAPI_TOKEN}`,
-            },
-            cache: "no-store",
-        })
-
-        const json = await response.json()
-        return (json.data?.attributes || json.data || null) as any
-    } catch (error: any) {
-        if (error?.digest === "DYNAMIC_SERVER_USAGE") throw error;
-        console.error("Error fetching book session page data:", error)
-        return null
-    }
-}
 
 export async function getStorePageData() {
     // In Docker, we must use the service name 'cms' instead of localhost

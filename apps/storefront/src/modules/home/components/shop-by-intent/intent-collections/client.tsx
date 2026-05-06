@@ -29,8 +29,8 @@ const IntentCollectionsClient = ({
   }
 
   const CTACard = () => (
-    <Link 
-      href="/book-session"
+    <LocalizedClientLink 
+      href="/services"
       className="flex flex-col items-center justify-center h-full p-6 rounded-[24px] md:rounded-[32px] bg-[#FAF9F6] border-2 border-dashed border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-white transition-all duration-500 group text-center"
     >
       <div className="w-16 h-16 rounded-full bg-[#C5A059]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -45,7 +45,7 @@ const IntentCollectionsClient = ({
       <div className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] border-b border-[#C5A059]/30 pb-1 group-hover:border-[#C5A059] transition-all">
         Book Session Now
       </div>
-    </Link>
+    </LocalizedClientLink>
   )
 
   return (
