@@ -412,11 +412,11 @@ export default function BookNowClient({
             </p>
           </div>
 
-          <div className="flex justify-start">
+          <div className="flex justify-start mt-8">
             <button
               disabled={!isStep1Valid}
               onClick={handleNext}
-              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
+              className="w-full sm:w-auto px-10 py-4 sm:py-3 bg-[#2C1E36] text-white rounded-xl font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-purple-900/10"
             >
               Next
             </button>
@@ -478,12 +478,17 @@ export default function BookNowClient({
             </div>
           )}
 
-          <div className="flex justify-between mt-6">
-            <button onClick={handlePrev} className="px-8 py-3 bg-gray-100 text-gray-600 rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-colors">Back</button>
+          <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 mt-8">
+            <button 
+              onClick={handlePrev} 
+              className="w-full sm:w-auto px-8 py-4 sm:py-3 bg-gray-100 text-gray-600 rounded-xl font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-all active:scale-95"
+            >
+              Back
+            </button>
             <button 
               disabled={!isStep2Valid}
               onClick={handleNext}
-              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
+              className="w-full sm:w-auto px-10 py-4 sm:py-3 bg-[#2C1E36] text-white rounded-xl font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-purple-900/10"
             >
               Next
             </button>
@@ -596,17 +601,22 @@ export default function BookNowClient({
             </p>
           </div>
 
-          <div className="flex justify-between">
-            <button onClick={handlePrev} className="px-8 py-3 bg-gray-100 text-gray-600 rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-colors">Back</button>
+          <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
+            <button 
+              onClick={handlePrev} 
+              className="w-full sm:w-auto px-8 py-4 sm:py-3 bg-gray-100 text-gray-600 rounded-xl font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-all active:scale-95"
+            >
+              Back
+            </button>
             <button
               disabled={!isStep3Valid || cartLoading}
               onClick={handleNext}
-              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95 flex items-center gap-2"
+              className="w-full sm:w-auto px-10 py-4 sm:py-3 bg-[#2C1E36] text-white rounded-xl font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-purple-900/10"
             >
               {cartLoading && (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               )}
-              {cartLoading ? "Adding to cart..." : "Proceed to Payment"}
+              {cartLoading ? "Adding to cart..." : "Add to Cart"}
             </button>
           </div>
         </div>
