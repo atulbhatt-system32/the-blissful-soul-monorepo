@@ -40,6 +40,10 @@ export const listCollections = async (
       }
     )
     .then(({ collections }) => ({ collections, count: collections.length }))
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error listing collections:", err.message || err)
+      return { collections: [], count: 0 }
+    })
 }
 
 export const getCollectionByHandle = async (

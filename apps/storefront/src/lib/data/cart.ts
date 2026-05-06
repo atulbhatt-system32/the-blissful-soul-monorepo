@@ -239,6 +239,26 @@ export async function deleteLineItem(lineId: string) {
     .catch(medusaError)
 }
 
+export async function getCartForBookingStep() {
+  const cartId = await getCartId()
+  if (!cartId) return null
+
+  const headers = { ...(await getAuthHeaders()) }
+
+  return sdk.client
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${cartId}`, {
+      method: "GET",
+      query: {
+        fields:
+          "*items, *items.variant, *items.variant.product, *items.variant.product.images, *items.metadata, +items.total, *region",
+      },
+      headers,
+      cache: "no-store",
+    })
+    .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
+    .catch(() => null)
+}
+
 export async function setShippingMethod({
   cartId,
   shippingMethodId,
@@ -530,6 +550,9 @@ export async function listCartOptions() {
     next,
     headers,
     cache: "force-cache",
+  }).catch((err) => {
+    console.error("[Medusa SDK] Error listing cart options:", err.message || err)
+    return { shipping_options: [] }
   })
 }
 

@@ -8,6 +8,7 @@ import { createCalBooking } from "@lib/data/calcom"
 export default function MedusaCheckoutPayment({
   serviceId,
   variantId,
+  serviceTitle,
   details,
   date,
   time,
@@ -17,11 +18,16 @@ export default function MedusaCheckoutPayment({
   meetingAbout,
   price,
   isPackage,
+  hasSession,
+  cartItems,
+  shippingAddress,
+  isAddressRequired,
   onSuccess,
   onBack
 }: {
   serviceId: string
   variantId: string
+  serviceTitle?: string
   details: { firstName: string, lastName: string, email: string, phone: string }
   date: string
   time: string
@@ -31,11 +37,22 @@ export default function MedusaCheckoutPayment({
   meetingAbout?: string
   price: number
   isPackage?: boolean
+  hasSession?: boolean
+  cartItems?: any[]
+  shippingAddress?: { address1: string; city: string; state: string; postalCode: string }
+  isAddressRequired?: boolean
   onSuccess: () => void
   onBack: () => void
 }) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Validate address if required
+  const isAddressValid = !isAddressRequired || (
+    !!shippingAddress?.address1?.trim() &&
+    !!shippingAddress?.city?.trim() &&
+    !!shippingAddress?.postalCode?.trim()
+  )
 
   // Load Razorpay SDK on mount
   useEffect(() => {
@@ -66,7 +83,7 @@ export default function MedusaCheckoutPayment({
         amount: price * 100,
         currency: "INR",
         name: "The Blissful Soul",
-        description: isPackage ? `Package Purchase` : `Session Booking - ${date} ${time}`,
+        description: !hasSession ? `Product Purchase` : isPackage ? `Package Purchase` : `Session Booking - ${date} ${time}`,
         prefill: {
           name: `${details.firstName} ${details.lastName}`,
           email: details.email,
@@ -81,8 +98,8 @@ export default function MedusaCheckoutPayment({
             let calBookingId = undefined
             let calMeetUrl = undefined
 
-            // 1. Create Cal.com booking only if NOT a package
-            if (!isPackage) {
+            // 1. Create Cal.com booking only if NOT a package AND has a session
+            if (hasSession && !isPackage) {
               if (!eventSlug) {
                 throw new Error("CRITICAL: Missing eventSlug. Please check product metadata 'cal_link' in Medusa admin.");
               }
@@ -110,6 +127,7 @@ export default function MedusaCheckoutPayment({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   variantId,
+                  serviceTitle: serviceTitle || "",
                   email: details.email,
                   firstName: details.firstName,
                   lastName: details.lastName,
@@ -119,10 +137,19 @@ export default function MedusaCheckoutPayment({
                   bookingDate: isPackage ? "Flexible" : date,
                   bookingTime: isPackage ? "To be scheduled" : time,
                   price: price,
-                  calBookingId,
+                  calBookingId: calBookingId ?? null,
                   calMeetUrl,
                   eventSlug,
                   isPackage,
+                  hasSession,
+                  shippingAddress: shippingAddress || null,
+                  items: cartItems?.map(item => ({
+                    title: item.variant?.product?.title || item.title || "Product",
+                    variant_id: item.variant_id || item.variant?.id,
+                    quantity: item.quantity,
+                    unit_price: item.unit_price,
+                    metadata: item.metadata
+                  })) || []
                 }),
               })
               console.log("Confirmation email triggered.")
@@ -172,10 +199,11 @@ export default function MedusaCheckoutPayment({
           Cancel
         </Button>
         <Button
-          className="w-2/3 py-3 bg-[#2C1E36] hover:opacity-90 border-none text-white text-md uppercase font-bold"
+          className="w-2/3 py-3 bg-[#2C1E36] hover:opacity-90 border-none text-white text-md uppercase font-bold disabled:opacity-40 disabled:cursor-not-allowed"
           size="large"
           onClick={handleBookingPayment}
           isLoading={isProcessing}
+          disabled={isProcessing || !isAddressValid}
           data-testid="booking-payment-button"
         >
           Pay & Confirm Booking

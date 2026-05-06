@@ -6,6 +6,8 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
 import { fetchAvailableSlots } from "@lib/data/calcom"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { addToCart, deleteLineItem, getCartForBookingStep } from "@lib/data/cart"
+import { convertToLocale } from "@lib/util/money"
 
 type BookNowProps = {
   categories: any[]
@@ -64,6 +66,19 @@ export default function BookNowClient({
     email: "",
     phone: ""
   })
+
+  const [shippingAddress, setShippingAddress] = useState({
+    address1: "",
+    city: "",
+    state: "",
+    postalCode: "",
+  })
+
+  // Cart state for step 4
+  const [cartItems, setCartItems] = useState<HttpTypes.StoreCartLineItem[]>([])
+  const [cartLoading, setCartLoading] = useState(false)
+  const [sessionLineItemId, setSessionLineItemId] = useState<string | null>(null)
+  const [removingItemId, setRemovingItemId] = useState<string | null>(null)
 
   // Track if we have already initialized from URL params
   const hasInitialized = React.useRef(false)
@@ -140,6 +155,79 @@ export default function BookNowClient({
   const serviceObj = products.find((p) => p.id === selectedService)
   const isPackage = serviceObj?.tags?.some((t: any) => t.value?.toLowerCase() === "package")
 
+  const addSessionToCartAndProceed = async () => {
+    setCartLoading(true)
+    try {
+      const varId = selectedVariant || serviceObj?.variants?.[0]?.id || ""
+      if (!varId) {
+        alert("No variant selected. Please go back and select a service.")
+        return
+      }
+
+      // Remove any stale booking items for this variant before adding fresh one
+      const existingCart = await getCartForBookingStep()
+      const staleBookings = (existingCart?.items || []).filter(
+        (i) =>
+          ((i as any).variant_id === varId || (i as any).variant?.id === varId) &&
+          i.metadata?.is_booking === "true"
+      )
+      for (const stale of staleBookings) {
+        await deleteLineItem(stale.id)
+      }
+
+      await addToCart({
+        variantId: varId,
+        quantity: 1,
+        countryCode,
+        metadata: {
+          is_booking: "true",
+          booking_date: isPackage ? "" : selectedDate,
+          booking_time: isPackage ? "" : selectedTime,
+          booking_slot_iso: isPackage ? "" : selectedSlotIso,
+        },
+      })
+      const cart = await getCartForBookingStep()
+      const items: HttpTypes.StoreCartLineItem[] = (cart?.items || []) as HttpTypes.StoreCartLineItem[]
+      setCartItems(items)
+      const bookingItem = items.find(
+        (i) =>
+          ((i as any).variant_id === varId || (i as any).variant?.id === varId) &&
+          i.metadata?.is_booking === "true"
+      )
+      if (bookingItem) setSessionLineItemId(bookingItem.id)
+      setCurrentStep(4)
+    } catch (err: any) {
+      console.error("Failed to add session to cart:", err)
+      alert("Failed to prepare booking. Please try again.")
+    } finally {
+      setCartLoading(false)
+    }
+  }
+
+  const handleRemoveCartItem = async (lineId: string) => {
+    setRemovingItemId(lineId)
+    try {
+      await deleteLineItem(lineId)
+      const cart = await getCartForBookingStep()
+      const items: HttpTypes.StoreCartLineItem[] = (cart?.items || []) as HttpTypes.StoreCartLineItem[]
+      setCartItems(items)
+      
+      const isRemovingSession = lineId === sessionLineItemId
+      if (isRemovingSession) {
+        setSessionLineItemId(null)
+      }
+
+      // Only go back to Step 1 if the cart is now empty
+      if (items.length === 0) {
+        setCurrentStep(1)
+      }
+    } catch (err: any) {
+      console.error("Failed to remove cart item:", err)
+    } finally {
+      setRemovingItemId(null)
+    }
+  }
+
   const handleNext = () => {
     if (currentStep === 1 && isPackage) {
       setCurrentStep(3)
@@ -160,10 +248,23 @@ export default function BookNowClient({
         alert("Please enter a valid phone number (at least 10 digits).")
         return
       }
+      addSessionToCartAndProceed()
+      return
     }
     setCurrentStep((p) => Math.min(p + 1, 5))
   }
+
   const handlePrev = () => {
+    if (currentStep === 4) {
+      if (sessionLineItemId) {
+        const id = sessionLineItemId
+        setSessionLineItemId(null)
+        deleteLineItem(id).catch(console.error)
+      }
+      setCartItems([])
+      setCurrentStep(3)
+      return
+    }
     if (currentStep === 3 && isPackage) {
       setCurrentStep(1)
       return
@@ -196,7 +297,11 @@ export default function BookNowClient({
     .filter((t: any) => !isNaN(t.threshold))
     .sort((a: any, b: any) => b.threshold - a.threshold)
 
-  const qualifiedHamper = hamperTiers.find((t: any) => sessionPrice >= t.threshold)
+  // Use full cart total (session + products) if available, otherwise fall back to session price alone (Step 3 preview)
+  const cartTotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+  const effectiveTotal = cartTotal > 0 ? cartTotal : sessionPrice
+
+  const qualifiedHamper = sessionLineItemId ? hamperTiers.find((t: any) => effectiveTotal >= t.threshold) : null
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-10">
@@ -484,12 +589,15 @@ export default function BookNowClient({
 
           <div className="flex justify-between">
             <button onClick={handlePrev} className="px-8 py-3 bg-gray-100 text-gray-600 rounded-md font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-colors">Back</button>
-            <button 
-              disabled={!isStep3Valid}
+            <button
+              disabled={!isStep3Valid || cartLoading}
               onClick={handleNext}
-              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95"
+              className="px-10 py-3 bg-[#2C1E36] text-white rounded-md font-bold disabled:bg-gray-200 disabled:cursor-not-allowed uppercase tracking-wider text-sm hover:opacity-90 transition-all active:scale-95 flex items-center gap-2"
             >
-              Proceed to Payment
+              {cartLoading && (
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              )}
+              {cartLoading ? "Adding to cart..." : "Proceed to Payment"}
             </button>
           </div>
         </div>
@@ -498,65 +606,187 @@ export default function BookNowClient({
       {/* STEP 4: PAYMENT */}
       {currentStep === 4 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
-          <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">Payment securing your booking</h3>
-          
-          {qualifiedHamper ? (
-            <div className="bg-gradient-to-r from-[#2C1E36]/5 to-[#2C1E36]/10 p-5 rounded-xl border border-[#C5A059]/40 mb-8 flex items-start gap-4 shadow-sm">
-              <div className="text-3xl leading-none pt-1">🎁</div>
-              <div>
-                <p className="text-[#C5A059] font-bold text-[12px] uppercase tracking-widest mb-1">Free Gift Included!</p>
-                <p className="text-[#2C1E36] text-sm font-medium">Because your session qualifies, you will receive a complimentary <strong>{qualifiedHamper.title}</strong> along with your booking.</p>
-              </div>
-            </div>
-          ) : hamperTiers.length > 0 ? (
-            (() => {
-              const lowestTier = hamperTiers[hamperTiers.length - 1]
-              return (
-                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-8 flex items-start gap-4">
-                  <div className="text-3xl leading-none pt-1 opacity-50">🎁</div>
-                  <div>
-                    <p className="text-gray-500 font-bold text-[12px] uppercase tracking-widest mb-1">Unlock a Free Gift</p>
-                    <p className="text-gray-600 text-sm">Sessions of <strong>₹{lowestTier.threshold}</strong> or more include a complimentary <strong>{lowestTier.title}</strong>.</p>
-                  </div>
-                </div>
-              )
-            })()
-          ) : null}
+          <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">Review & Pay</h3>
 
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
-            <h4 className="font-bold text-gray-800 mb-4 border-b pb-2">Booking Summary</h4>
-            <div className="flex justify-between mb-2">
-              <span className="text-gray-600">Service:</span>
-              <span className="font-medium text-right">{serviceObj?.title}</span>
-            </div>
-            <div className="flex justify-between mb-2">
-              <span className="text-gray-600">Date & Time:</span>
-              <span className="font-medium text-right">{isPackage ? "Flexible (To be scheduled)" : `${new Date(selectedDate).toLocaleDateString()}, ${selectedTime}`}</span>
-            </div>
-            {qualifiedHamper && (
-              <div className="flex justify-between mb-2">
-                <span className="text-[#C5A059]">Free Gift:</span>
-                <span className="font-medium text-[#C5A059] text-right">🎁 {qualifiedHamper.title} (Free)</span>
+          {/* Cart Items */}
+          <div className="bg-gray-50 rounded-lg border border-gray-200 mb-6 overflow-hidden">
+            <h4 className="font-bold text-gray-800 px-6 pt-5 pb-3 border-b border-gray-200">Your Cart</h4>
+            {cartLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="w-6 h-6 border-2 border-[#2C1E36]/20 border-t-[#2C1E36] rounded-full animate-spin" />
+              </div>
+            ) : cartItems.length === 0 ? (
+              <p className="text-gray-400 text-sm text-center py-6">No items in cart.</p>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {cartItems.map((item) => {
+                  const isSession = item.id === sessionLineItemId
+                  const prod = (item as any).variant?.product
+                  const thumbnail = prod?.thumbnail || prod?.images?.[0]?.url
+                  const title = prod?.title || "Product"
+                  const unitPrice = item.unit_price ?? 0
+                  const priceLabel = convertToLocale({ amount: unitPrice, currency_code: "INR" })
+                  const bookingDate = item.metadata?.booking_date as string | undefined
+                  const bookingTime = item.metadata?.booking_time as string | undefined
+                  const isRemoving = removingItemId === item.id
+                  const isAutoGift = item.metadata?.is_auto_gift === true || item.metadata?.is_auto_gift === "true"
+                  const giftLabel = isAutoGift ? (prod?.metadata?.gift_label as string | undefined) : undefined
+
+                  return (
+                    <div key={item.id} className="flex items-center gap-3 px-6 py-4">
+                      {thumbnail && (
+                        <div className="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+                          <img src={thumbnail} alt={title} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-800 text-sm truncate">{title}</p>
+                        {isSession && (
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            {isPackage
+                              ? "Package – flexible schedule"
+                              : bookingDate && bookingTime
+                              ? `${new Date(bookingDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} at ${bookingTime}`
+                              : "Appointment"}
+                          </p>
+                        )}
+                        {!isSession && (item.quantity ?? 1) > 1 && (
+                          <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
+                        )}
+                        {!isSession && unitPrice === 0 && isAutoGift && (
+                          <div className="flex flex-col gap-y-1.5 mt-0.5">
+                            <p className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black">FREE GIFT</p>
+                            {giftLabel && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#C5A059]/5 border border-[#C5A059]/30 text-[#C5A059] text-[10px] font-bold leading-none w-fit">
+                                {giftLabel}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        <p className="text-[#2C1E36] font-bold text-sm mt-1">{unitPrice === 0 ? "₹0.00" : priceLabel}</p>
+                      </div>
+                      {isAutoGift ? null : (
+                        <button
+                          onClick={() => handleRemoveCartItem(item.id)}
+                          disabled={isRemoving}
+                          className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0 p-1 disabled:opacity-40"
+                          title="Remove item"
+                        >
+                          {isRemoving ? (
+                            <span className="w-4 h-4 border-2 border-gray-300 border-t-gray-500 rounded-full animate-spin block" />
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
-            <div className="flex justify-between mb-2 text-[#2C1E36] font-bold mt-4 pt-4 border-t">
-              <span>Total:</span>
-              <span>
-                {(() => {
-                  const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-                  const price = variantObj?.calculated_price
-                  const priceStr = typeof price === 'string' ? price : (price as any)?.calculated_amount != null ? String((price as any).calculated_amount) : null
-                  if (priceStr) return `₹${priceStr}`
-                  const cheapest = getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price
-                  return cheapest || 'Free'
-                })()}
-              </span>
-            </div>
           </div>
+
+          {/* Shipping address — only when physical products are in the cart */}
+          {(() => {
+            const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
+            if (!hasPhysicalItems) return null
+            const isAddressValid = shippingAddress.address1.trim() && shippingAddress.city.trim() && shippingAddress.postalCode.trim()
+            return (
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-6">
+                <h4 className="font-bold text-[#2C1E36] text-sm mb-4 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#C5A059]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Shipping Address
+                  <span className="text-[11px] font-normal text-gray-500 ml-1">(required for physical items)</span>
+                </h4>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">Address Line 1 *</label>
+                    <input
+                      type="text"
+                      placeholder="House no., Street, Area"
+                      value={shippingAddress.address1}
+                      onChange={(e) => setShippingAddress(p => ({ ...p, address1: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">City *</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Mumbai"
+                        value={shippingAddress.city}
+                        onChange={(e) => setShippingAddress(p => ({ ...p, city: e.target.value }))}
+                        className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">State</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Maharashtra"
+                        value={shippingAddress.state}
+                        onChange={(e) => setShippingAddress(p => ({ ...p, state: e.target.value }))}
+                        className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-1/2">
+                    <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">PIN Code *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 400001"
+                      value={shippingAddress.postalCode}
+                      onChange={(e) => setShippingAddress(p => ({ ...p, postalCode: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
+                    />
+                  </div>
+                </div>
+                {!isAddressValid && (
+                  <p className="text-xs text-amber-600 mt-3 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Please fill in your delivery address to proceed.
+                  </p>
+                )}
+              </div>
+            )
+          })()}
+
+          {/* Cart total with shipping */}
+          {(() => {
+            const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
+            const subtotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+            const shipping = hasPhysicalItems ? 99 : 0  // ₹99
+            const grandTotal = subtotal + shipping
+            return (
+              <div className="border-t border-gray-200 pt-4 mb-6 space-y-2 px-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Subtotal</span>
+                  <span className="text-gray-800 font-medium">{convertToLocale({ amount: subtotal, currency_code: "INR" })}</span>
+                </div>
+                {hasPhysicalItems && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Shipping (Standard Delivery)</span>
+                    <span className="text-gray-800 font-medium">{convertToLocale({ amount: shipping, currency_code: "INR" })}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+                  <span className="text-gray-800 font-bold">Total:</span>
+                  <span className="text-[#2C1E36] font-bold text-lg">{convertToLocale({ amount: grandTotal, currency_code: "INR" })}</span>
+                </div>
+              </div>
+            )
+          })()}
 
           <MedusaCheckoutPayment
             serviceId={selectedService}
             variantId={selectedVariant || serviceObj?.variants?.[0]?.id || ""}
+            serviceTitle={serviceObj?.title || ""}
             details={details}
             date={selectedDate}
             time={selectedTime}
@@ -565,11 +795,25 @@ export default function BookNowClient({
             eventSlug={serviceObj?.handle}
             meetingAbout={`${details.firstName} ${details.lastName} | ${details.phone}`}
             price={(() => {
-              const variantObj = serviceObj?.variants?.find((v: any) => v.id === selectedVariant)
-              return (variantObj?.calculated_price as any)?.calculated_amount || getProductPrice({ product: serviceObj! }).cheapestPrice?.calculated_price_number || 0
+              const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
+              const subtotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+              return subtotal + (hasPhysicalItems ? 99 : 0)
             })()}
             isPackage={isPackage}
-            onSuccess={() => setCurrentStep(5)}
+            hasSession={!!sessionLineItemId}
+            cartItems={cartItems}
+            shippingAddress={(() => {
+              const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
+              return hasPhysicalItems ? shippingAddress : undefined
+            })()}
+            isAddressRequired={cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")}
+            onSuccess={() => {
+              if (sessionLineItemId) {
+                deleteLineItem(sessionLineItemId).catch(console.error)
+                // We keep sessionLineItemId so the success screen can show booking details
+              }
+              setCurrentStep(5)
+            }}
             onBack={handlePrev}
           />
         </div>
@@ -583,11 +827,60 @@ export default function BookNowClient({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-3xl font-serif text-gray-800 mb-4">Booking Confirmed!</h2>
-          <p className="text-gray-600 mb-8">
-            Thank you, {details.firstName}. Your {isPackage ? "package" : "session"} for <strong>{serviceObj?.title}</strong> {isPackage ? "has been successfully purchased." : `on ${new Date(selectedDate).toLocaleDateString()} at ${selectedTime} has been successfully booked.`}
-            We've sent a confirmation email to {details.email}.
+          <h2 className="text-3xl font-serif text-gray-800 mb-2">
+            {sessionLineItemId ? "Booking Confirmed!" : "Order Confirmed!"}
+          </h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            Thank you, <strong>{details.firstName}</strong>. {sessionLineItemId ? (
+              <>Your booking for <strong>{serviceObj?.title}</strong> has been successfully placed.</>
+            ) : (
+              <>Your purchase has been successfully completed.</>
+            )}
+            We've sent a confirmation email with your invoice to <strong>{details.email}</strong>.
           </p>
+
+          {/* Itemized Summary */}
+          <div className="bg-[#2C1E36]/5 rounded-2xl border border-[#2C1E36]/10 p-6 mb-10 text-left max-w-md mx-auto animate-in fade-in slide-in-from-bottom-2 duration-700 delay-300">
+             <h4 className="font-bold text-[#2C1E36] mb-4 text-[10px] uppercase tracking-[0.2em]">Purchase Summary</h4>
+             <ul className="space-y-4">
+               {cartItems.map((item) => {
+                 const isSession = item.id === sessionLineItemId
+                 const title = item.variant?.product?.title || item.title
+                 const unitPrice = item.unit_price ?? 0
+                 
+                 return (
+                   <li key={item.id} className="flex justify-between items-start gap-4">
+                     <div className="flex-1 min-w-0">
+                       <p className="text-sm font-bold text-[#2C1E36] truncate">{title}</p>
+                       {isSession && (
+                         <p className="text-[11px] text-[#2C1E36]/60 mt-0.5 font-medium">
+                           {isPackage 
+                             ? "Flexible schedule package" 
+                             : `${new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${selectedTime}`
+                           }
+                         </p>
+                       )}
+                       {!isSession && (item.quantity ?? 1) > 1 && (
+                         <p className="text-[11px] text-[#2C1E36]/60 mt-0.5 font-medium">Quantity: {item.quantity}</p>
+                       )}
+                     </div>
+                     <p className="text-sm font-bold text-[#2C1E36] whitespace-nowrap">
+                       {convertToLocale({ amount: unitPrice * (item.quantity ?? 1), currency_code: "INR" })}
+                     </p>
+                   </li>
+                 )
+               })}
+             </ul>
+             <div className="mt-6 pt-5 border-t border-[#2C1E36]/10 flex justify-between items-center">
+               <span className="text-xs font-bold text-[#2C1E36]/50 uppercase tracking-wider">Total Paid</span>
+               <span className="text-xl font-serif font-bold text-[#2C1E36]">
+                 {convertToLocale({
+                   amount: cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0),
+                   currency_code: "INR",
+                 })}
+               </span>
+             </div>
+          </div>
 
           {customer && (
             <div className="flex flex-col items-center gap-4">
