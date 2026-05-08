@@ -69,8 +69,10 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
       })
   }
 
-  const maxQtyFromInventory = 10
-  const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+  const maxQtyLimit = 100
+  const maxQuantity = item.variant?.manage_inventory 
+    ? (item.variant.inventory_quantity ?? maxQtyLimit)
+    : maxQtyLimit
 
   if (mode === "card") {
     return (
