@@ -3,7 +3,6 @@
 import { Table, Text, clx } from "@medusajs/ui"
 import { updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
-import CartItemSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import DeleteButton from "@modules/common/components/delete-button"
 import LineItemOptions from "@modules/common/components/line-item-options"
@@ -12,6 +11,7 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
+import QuantitySelector from "@modules/products/components/quantity-selector"
 import { useState } from "react"
 
 type ItemProps = {
@@ -96,10 +96,30 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
               />
             </LocalizedClientLink>
           )}
-          <div className="flex flex-col gap-y-1">
-            <h3 className="text-sm font-serif font-bold text-[#2C1E36] leading-tight">
-              {item.product_title}
-            </h3>
+          <div className="flex flex-col gap-y-1 flex-1">
+            <div className="flex justify-between items-start gap-x-2">
+              <h3 className="text-sm font-serif font-bold text-[#2C1E36] leading-tight">
+                {item.product_title}
+              </h3>
+              <div className="flex flex-col items-end shrink-0">
+                <div className="font-black text-xs text-[#2C1E36]">
+                  <LineItemPrice
+                    item={item}
+                    style="tight"
+                    currencyCode={currencyCode}
+                  />
+                </div>
+                {item.quantity > 1 && (
+                  <div className="text-[10px] text-gray-400 font-medium italic mt-0.5">
+                    <LineItemUnitPrice 
+                      item={item}
+                      currencyCode={currencyCode}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            
             <div className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black opacity-80">
               <LineItemOptions variant={item.variant} metadata={item.metadata} />
             </div>
@@ -130,13 +150,6 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 ))}
               </div>
             )}
-            <div className="font-black text-xs text-[#2C1E36] mt-1">
-              <LineItemPrice
-                item={item}
-                style="tight"
-                currencyCode={currencyCode}
-              />
-            </div>
           </div>
         </div>
         
@@ -147,18 +160,13 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 <span className="text-[10px] font-black text-[#2C1E36] uppercase tracking-widest">Qty: {item.quantity}</span>
               </div>
             ) : (
-              <div className="bg-gray-50/80 rounded-lg border border-gray-100 p-0.5">
-                <CartItemSelect
-                  value={item.quantity}
-                  onChange={(value) => changeQuantity(parseInt(value.target.value))}
-                  className="w-12 h-8 text-xs font-bold border-none bg-transparent focus:ring-0"
-                  disabled={isAutoGift}
-                >
-                  {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
-                    <option value={i + 1} key={i}>{i + 1}</option>
-                  ))}
-                </CartItemSelect>
-              </div>
+              <QuantitySelector
+                quantity={item.quantity}
+                setQuantity={(v) => changeQuantity(v)}
+                max={maxQuantity}
+                disabled={isAutoGift || updating}
+                size="sm"
+              />
             )}
             {!isAutoGift && (
               <button
@@ -266,24 +274,13 @@ const Item = ({ item, type = "full", currencyCode, mode = "table" }: ItemProps) 
                 <span className="text-[9px] small:text-[11px] font-black text-[#2C1E36] uppercase tracking-widest">Qty: {item.quantity}</span>
               </div>
             ) : (
-              <div className="flex items-center gap-x-1 bg-white border border-gray-100 rounded-lg p-0 shadow-sm">
-                <CartItemSelect
-                  value={item.quantity}
-                  onChange={(value) => changeQuantity(parseInt(value.target.value))}
-                  className="w-10 small:w-12 h-6 small:h-7 text-[10px] small:text-xs font-bold border-none bg-transparent focus:ring-0"
-                  data-testid="product-select-button"
-                  disabled={isAutoGift}
-                >
-                  {Array.from(
-                    { length: Math.min(maxQuantity, 10) },
-                    (_, i) => (
-                      <option value={i + 1} key={i}>
-                        {i + 1}
-                      </option>
-                    )
-                  )}
-                </CartItemSelect>
-              </div>
+              <QuantitySelector
+                quantity={item.quantity}
+                setQuantity={(v) => changeQuantity(v)}
+                max={maxQuantity}
+                disabled={isAutoGift || updating}
+                size="sm"
+              />
             )}
             {!isAutoGift && (
               <button
