@@ -41,27 +41,12 @@
       "default": true
     },
     "featured_products_label": {
-      "type": "string",
-      "default": "NEW SELECTION"
+      "type": "string"
     },
     "featured_products_title": {
-      "type": "string",
-      "default": "New Arrivals"
+      "type": "string"
     },
     "featured_products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "show_hot_sellers": {
-      "type": "boolean",
-      "default": true
-    },
-    "hot_seller_title": {
-      "type": "string",
-      "default": "Hot Seller"
-    },
-    "hot_sellers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product"

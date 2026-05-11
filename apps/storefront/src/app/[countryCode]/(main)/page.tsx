@@ -11,7 +11,6 @@ import HeroSlideshow from "@modules/home/components/hero-slideshow"
 import Testimonials from "@modules/home/components/testimonials"
 import WelcomePopup from "@modules/home/components/welcome-popup"
 import StatsBar from "@modules/layout/components/stats-bar"
-import BestsellerCarousel from "@modules/home/components/bestseller-carousel"
 import IntentCollections from "@modules/home/components/shop-by-intent/intent-collections"
 import ScrollingMarquee from "@modules/home/components/scrolling-marquee"
 import TrustCarousel from "@modules/home/components/trust-carousel"
@@ -27,40 +26,7 @@ export const metadata: Metadata = {
     "A sanctuary for crystals, healing, and spiritual guidance by Master Pragya Vijh.",
 }
 
-async function fetchBestsellerProducts(
-  region: HttpTypes.StoreRegion,
-  strapiHotSellers?: any[] | null
-): Promise<HttpTypes.StoreProduct[]> {
-  let products: HttpTypes.StoreProduct[] = []
 
-  if (strapiHotSellers && strapiHotSellers.length > 0) {
-    const medusaIds = strapiHotSellers.map((ps) => ps.medusa_id).filter(Boolean)
-    if (medusaIds.length > 0) {
-      const { response: { products: fetched } } = await listProducts({
-        regionId: region.id,
-        queryParams: { id: medusaIds, fields: "*variants.calculated_price" },
-      })
-      products = fetched || []
-    }
-  }
-
-  if (products.length === 0) {
-    const collection = await getCollectionByHandle("hot-sellers", { cache: "no-store" })
-    if (collection) {
-      const { response: { products: collectionProducts } } = await listProducts({
-        regionId: region.id,
-        queryParams: {
-          collection_id: [collection.id],
-          limit: 8,
-          fields: "*variants.calculated_price",
-        },
-      })
-      products = collectionProducts || []
-    }
-  }
-
-  return products
-}
 
 export default async function HomeNew(props: {
   params: Promise<{ countryCode: string }>
@@ -80,7 +46,6 @@ export default async function HomeNew(props: {
   }
 
   const heroSlides = homepageData?.hero_slideshow || []
-  const bestsellerProducts = await fetchBestsellerProducts(region, homepageData?.hot_sellers)
   
   return (
     <div className="bg-[#FAF9F6]">
@@ -116,27 +81,25 @@ export default async function HomeNew(props: {
           <div className="content-container">
             <div className="text-center mb-10 underline underline-offset-8 decoration-[#C5A059]/30">
               <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
-                {homepageData?.featured_products_label || "NEW SELECTION"}
+                {homepageData?.featured_products_label}
               </span>
               <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-6 uppercase tracking-tight leading-tight">
-                {homepageData?.featured_products_title || "New Arrivals"}
+                {homepageData?.featured_products_title}
               </h2>
             </div>
             
-            <CMSFeaturedProducts products={homepageData?.featured_products} region={region} />
+            {(!homepageData?.featured_products || homepageData.featured_products.length === 0) ? (
+              <div className="py-20 text-center">
+                <p className="text-[#2C1E36]/40 font-serif italic text-2xl">Coming Soon...</p>
+              </div>
+            ) : (
+              <CMSFeaturedProducts products={homepageData?.featured_products} region={region} />
+            )}
           </div>
         </section>
       )}
 
-      {/* ③ BESTSELLER PRODUCTS - Horizontal Scrollable Cards */}
-      {homepageData?.show_hot_sellers !== false && (
-        <BestsellerCarousel
-          title={homepageData?.hot_seller_title || "Bestsellers"}
-          label="FAVOURITES"
-          products={bestsellerProducts}
-          region={region}
-        />
-      )}
+
 
       {/* ⑥ COLLECTION - Shop Healing Crystals (Intent Based Rows) */}
       <IntentCollections region={region} title={homepageData?.shop_by_intent_title} />
