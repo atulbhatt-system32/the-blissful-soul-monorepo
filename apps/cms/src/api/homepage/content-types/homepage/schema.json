@@ -41,12 +41,10 @@
       "default": true
     },
     "featured_products_label": {
-      "type": "string",
-      "default": "NEW SELECTION"
+      "type": "string"
     },
     "featured_products_title": {
-      "type": "string",
-      "default": "New Arrivals"
+      "type": "string"
     },
     "featured_products": {
       "type": "relation",

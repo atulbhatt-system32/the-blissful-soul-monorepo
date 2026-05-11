@@ -81,14 +81,20 @@ export default async function HomeNew(props: {
           <div className="content-container">
             <div className="text-center mb-10 underline underline-offset-8 decoration-[#C5A059]/30">
               <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-4 block">
-                {homepageData?.featured_products_label || "NEW SELECTION"}
+                {homepageData?.featured_products_label}
               </span>
               <h2 className="text-4xl md:text-5xl font-serif text-[#2C1E36] mb-6 uppercase tracking-tight leading-tight">
-                {homepageData?.featured_products_title || "New Arrivals"}
+                {homepageData?.featured_products_title}
               </h2>
             </div>
             
-            <CMSFeaturedProducts products={homepageData?.featured_products} region={region} />
+            {(!homepageData?.featured_products || homepageData.featured_products.length === 0) ? (
+              <div className="py-20 text-center">
+                <p className="text-[#2C1E36]/40 font-serif italic text-2xl">Coming Soon...</p>
+              </div>
+            ) : (
+              <CMSFeaturedProducts products={homepageData?.featured_products} region={region} />
+            )}
           </div>
         </section>
       )}
