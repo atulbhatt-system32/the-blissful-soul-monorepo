@@ -10,14 +10,6 @@
     "text": {
       "type": "string",
       "required": true
-    },
-    "show_button": {
-      "type": "boolean",
-      "default": true
-    },
-    "link": {
-      "type": "string",
-      "default": "/store"
     }
   }
 }
