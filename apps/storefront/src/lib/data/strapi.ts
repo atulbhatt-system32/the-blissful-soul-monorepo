@@ -6,8 +6,6 @@ export interface HomepageData {
     featured_products_label?: string
     featured_products_title?: string
     featured_products?: any[]
-    hot_seller_title?: string
-    hot_sellers?: any[]
     testimonials_title?: string
     testimonials?: any[]
     trust_cards?: any[]
@@ -16,7 +14,6 @@ export interface HomepageData {
     instagram_banner?: any
     stats?: any[]
     shop_by_intent_title?: string
-    show_hot_sellers?: boolean
     show_featured_products?: boolean
     show_services?: boolean
     show_trust_carousel?: boolean
@@ -101,9 +98,6 @@ export async function getHomepageData() {
                 },
                 pop_up: {
                     populate: "image"
-                },
-                hot_sellers: {
-                    populate: "*"
                 },
                 featured_products: {
                     populate: "*"
