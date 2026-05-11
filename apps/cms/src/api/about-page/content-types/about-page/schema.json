@@ -48,9 +48,6 @@
       "type": "component",
       "component": "shared.seo",
       "repeatable": false
-    },
-    "show_intent_collections": {
-      "type": "boolean"
     }
   }
 }

@@ -3,7 +3,7 @@
 import React from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-const PromotionBanner = ({ announcements }: { announcements?: { text: string; show_button?: boolean; link?: string }[] }) => {
+const PromotionBanner = ({ announcements }: { announcements?: { text: string }[] }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0)
   
   const slides = announcements || []
@@ -30,14 +30,6 @@ const PromotionBanner = ({ announcements }: { announcements?: { text: string; sh
               ${index === currentIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
             {slide.text}
-            {slide.show_button !== false && (
-              <LocalizedClientLink 
-                href={slide.link || "/store"} 
-                className="ml-2 hover:text-white/80 transition-colors font-serif italic normal-case tracking-normal underline decoration-white/30 underline-offset-4 pointer-events-auto"
-              >
-                Shop now →
-              </LocalizedClientLink>
-            )}
           </span>
         ))}
       </div>
