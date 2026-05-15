@@ -7,6 +7,7 @@ import OnboardingCta from "@modules/order/components/onboarding-cta"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
+import PurchaseEvent from "@modules/order/components/purchase-event"
 import { HttpTypes } from "@medusajs/types"
 import SessionBooking from "@modules/order/components/session-booking"
 import { retrieveCustomer } from "@lib/data/customer"
@@ -55,6 +56,13 @@ export default async function OrderCompletedTemplate({
 
   return (
     <div className="py-24 min-h-screen bg-[#FBFAF8] relative overflow-hidden">
+      <PurchaseEvent
+        orderId={order.id}
+        value={order.total ?? 0}
+        currency={order.currency_code ?? "inr"}
+        contentIds={(order.items ?? []).map((item) => item.variant_id ?? item.id)}
+        numItems={order.items?.length ?? 0}
+      />
       {/* Decorative background elements */}
       <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#C5A059]/5 rounded-full blur-3xl -ml-64 -mt-64"></div>
       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-[#2C1E36]/5 rounded-full blur-3xl -mr-64 -translate-y-1/2"></div>

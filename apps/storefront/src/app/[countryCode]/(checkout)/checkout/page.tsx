@@ -3,6 +3,7 @@ import { retrieveCustomer } from "@lib/data/customer"
 import PaymentWrapper from "@modules/checkout/components/payment-wrapper"
 import CheckoutForm from "@modules/checkout/templates/checkout-form"
 import CheckoutSummary from "@modules/checkout/templates/checkout-summary"
+import InitiateCheckoutEvent from "@modules/checkout/components/initiate-checkout-event"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -21,6 +22,11 @@ export default async function Checkout() {
 
   return (
     <div className="bg-[#fdfcfb] min-h-screen">
+      <InitiateCheckoutEvent
+        value={cart.total ?? 0}
+        currency={cart.currency_code ?? "inr"}
+        numItems={cart.items?.length ?? 0}
+      />
       <div className="grid grid-cols-1 small:grid-cols-[1fr_400px] content-container gap-x-12 py-12">
         <div className="animate-in fade-in slide-in-from-left-4 duration-700">
           <PaymentWrapper cart={cart}>

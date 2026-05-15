@@ -19,6 +19,7 @@ import { useNotification } from "@lib/context/notification-context"
 import { Heart, Check } from "@medusajs/icons"
 
 import ProductOffers from "../product-offers"
+import { trackFbEvent } from "@lib/util/fbq"
 
 
 type ProductActionsProps = {
@@ -159,6 +160,15 @@ export default function ProductActions({
           quantity: quantity,
           countryCode,
         })
+        trackFbEvent("AddToCart", {
+          content_ids: [selectedVariant.id],
+          content_name: product.title,
+          content_type: "product",
+          value: selectedVariant.calculated_price?.calculated_amount != null
+            ? selectedVariant.calculated_price.calculated_amount / 100
+            : undefined,
+          currency: region.currency_code?.toUpperCase(),
+        })
         showNotification(`${product.title} added to cart`)
         window.dispatchEvent(new Event("cart:item-added"))
       }
@@ -179,6 +189,15 @@ export default function ProductActions({
         variantId: selectedVariant.id,
         quantity: quantity,
         countryCode,
+      })
+      trackFbEvent("AddToCart", {
+        content_ids: [selectedVariant.id],
+        content_name: product.title,
+        content_type: "product",
+        value: selectedVariant.calculated_price?.calculated_amount != null
+          ? selectedVariant.calculated_price.calculated_amount / 100
+          : undefined,
+        currency: region.currency_code?.toUpperCase(),
       })
       router.push(`/${countryCode}/checkout`)
     } catch (err) {

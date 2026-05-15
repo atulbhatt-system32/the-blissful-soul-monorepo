@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
+import ViewContentEvent from "@modules/products/components/view-content-event"
 import { HttpTypes } from "@medusajs/types"
 import { getStrapiProduct, getStorePageData } from "@lib/data/strapi"
 
@@ -128,7 +129,17 @@ export default async function ProductPage(props: Props) {
   ])
   const images = getImagesForVariant(pricedProduct, selectedVariantId) || []
 
+  const selectedVariant = pricedProduct.variants?.find((v) => v.id === selectedVariantId)
+    ?? pricedProduct.variants?.[0]
+
   return (
+    <>
+    <ViewContentEvent
+      productId={pricedProduct.id}
+      productName={pricedProduct.title ?? ""}
+      value={selectedVariant?.calculated_price?.calculated_amount ?? undefined}
+      currency={region.currency_code}
+    />
     <ProductTemplate
       product={pricedProduct}
       region={region}
@@ -137,5 +148,6 @@ export default async function ProductPage(props: Props) {
       strapiContent={strapiProduct}
       storeConfig={storeConfig}
     />
+    </>
   )
 }

@@ -1,10 +1,26 @@
 "use client"
 
 import Script from "next/script"
+import { usePathname } from "next/navigation"
+import { useEffect, useRef } from "react"
 
 const META_PIXEL_ID = "420184229436876"
 
 export default function MetaPixel() {
+  const pathname = usePathname()
+  const isFirstRender = useRef(true)
+
+  // Fire PageView on client-side navigations (initial load is handled by the inline script)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      ;(window as any).fbq("track", "PageView")
+    }
+  }, [pathname])
+
   return (
     <>
       <Script
