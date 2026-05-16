@@ -6,6 +6,7 @@ import "styles/globals.css"
 import { WishlistProvider } from "@lib/context/wishlist-context"
 import { NotificationProvider } from "@lib/context/notification-context"
 import MetaPixel from "@lib/components/meta-pixel"
+import GoogleAnalytics from "@lib/components/google-analytics"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" data-mode="light" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans">
         <MetaPixel />
+        <GoogleAnalytics />
         <NotificationProvider>
           <WishlistProvider>
             <main className="relative">{props.children}</main>
