@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/pragya-vijh-logo.png",
   },
+  other: {
+    "facebook-domain-verification": "qwfdleos6s8t4qj2xfa9sqywtb96ui",
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
