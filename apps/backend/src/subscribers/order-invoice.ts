@@ -1,5 +1,6 @@
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { generateInvoice } from "../lib/invoice"
+import { sendOrderConfirmationWhatsApp, sendBookingConfirmationWhatsApp } from "../lib/interakt"
 
 export default async function orderInvoiceHandler({
   event: { data },
@@ -271,6 +272,34 @@ export default async function orderInvoiceHandler({
       ]);
       console.log(`[Order Processing] Client confirmation and admin alert sent for Order #${order.display_id}`);
       console.log(`[Order Processing] Local PDF Invoice generated and email queued for Order #${order.display_id}`);
+
+      // Send WhatsApp confirmation (non-blocking)
+      const phone = order.shipping_address?.phone || ""
+      if (phone) {
+        const firstName = order.shipping_address?.first_name || "Customer"
+        const countryCode = order.shipping_address?.country_code || "in"
+        const orderId = order.display_id || order.id
+
+        if (isSession && bookingDate && bookingTime) {
+          // Session/service booking → booking_confirmation template (date + time)
+          sendBookingConfirmationWhatsApp({
+            phone, countryCode, firstName, orderId,
+            serviceTitle: items[0]?.title,
+            bookingDate,
+            bookingTime,
+            amount: calculatedTotal,
+          }).catch((err: Error) => console.error(`[WhatsApp] Booking confirmation failed for #${order.display_id}:`, err.message))
+        } else {
+          // Regular product order → order_confirmation template (order date only)
+          const itemTitles = items.slice(0, 2).map((i: any) => i.title).join(", ")
+          sendOrderConfirmationWhatsApp({
+            phone, countryCode, firstName, orderId,
+            productTitle: itemTitles,
+            orderDate,
+            amount: calculatedTotal,
+          }).catch((err: Error) => console.error(`[WhatsApp] Order confirmation failed for #${order.display_id}:`, err.message))
+        }
+      }
     } else {
       console.warn("[Order Processing] Notification service not found. Skipping email.");
     }

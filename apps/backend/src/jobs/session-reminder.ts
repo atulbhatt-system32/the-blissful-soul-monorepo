@@ -1,7 +1,8 @@
-import { 
+import {
   MedusaContainer
 } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
+import { sendSessionReminderWhatsApp } from "../lib/interakt";
 
 /**
  * Scheduled job to send session reminders 1 hour before the booking.
@@ -87,8 +88,17 @@ export default async function sessionReminderJob(container: MedusaContainer) {
             }
           };
 
-          // 1. Send to Customer
+          // 1. Send to Customer (email + WhatsApp)
           await notificationService.createNotifications([reminderData]);
+          sendSessionReminderWhatsApp({
+            phone: order.shipping_address?.phone || "",
+            countryCode: order.shipping_address?.country_code || "in",
+            firstName: order.shipping_address?.first_name || "Customer",
+            bookingDate,
+            bookingTime,
+            orderId: order.display_id || order.id,
+            calMeetUrl: order.metadata?.cal_meet_url as string | undefined,
+          }).catch((err: Error) => console.error(`[Reminder Job] WhatsApp failed for Order #${order.display_id}:`, err.message));
 
           // 2. Send to Admin(s)
           const adminEmails = [...new Set([
