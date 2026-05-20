@@ -1,5 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
+import { sendSessionCancellationWhatsApp } from "../../../lib/interakt"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { orderId, email } = req.body as { orderId: string, email: string }
@@ -127,6 +128,20 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         }
       })),
     ])
+
+    // Send WhatsApp cancellation (non-blocking)
+    const phone = order.shipping_address?.phone || ""
+    if (phone) {
+      sendSessionCancellationWhatsApp({
+        phone,
+        countryCode: order.shipping_address?.country_code || "in",
+        firstName: order.shipping_address?.first_name || "Customer",
+        orderId: order.display_id || order.id,
+        serviceTitle: order.items?.[0]?.title,
+        bookingDate: bookingDate || "",
+        bookingTime: bookingTime || "",
+      }).catch((err: Error) => console.error(`[WhatsApp] Session cancellation failed for #${order.display_id}:`, err.message))
+    }
 
     return res.status(200).json({ success: true, message: "Booking cancelled successfully." })
   } catch (error: any) {

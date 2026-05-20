@@ -83,11 +83,30 @@ export default async function calcomBookingHandler({
             console.error(`[Cal.com] Booking failed for item ${item.title}:`, errText)
           } else {
             const resJson = await bookRes.json()
-            console.log(`[Cal.com] Booking success for ${item.title}. UID:`, resJson.data?.uid || resJson.data?.id)
-            
-            // We could theoretically update the order item with the Cal.com meeting URL here,
-            // but since invoices are sent immediately, it's a bit tricky to sync perfectly.
-            // The user will get the Cal.com email separately anyway.
+            const calBookingUid = resJson.data?.uid || resJson.data?.id
+            const meetUrl = resJson.data?.meetingUrl
+              || resJson.data?.references?.find((r: any) => r.meetingUrl)?.meetingUrl
+              || null
+
+            console.log(`[Cal.com] Booking success for ${item.title}. UID: ${calBookingUid} | Meet URL: ${meetUrl}`)
+
+            // Save the Cal Video meet URL back to order metadata so reminders and WhatsApp can use it
+            if (meetUrl) {
+              const orderModuleService = container.resolve("order") as any
+              try {
+                await orderModuleService.updateOrders([{
+                  id: order.id,
+                  metadata: {
+                    ...order.metadata,
+                    cal_meet_url: meetUrl,
+                    cal_booking_uid: calBookingUid,
+                  }
+                }])
+                console.log(`[Cal.com] Saved meet URL to order ${order.id}: ${meetUrl}`)
+              } catch (updateErr: any) {
+                console.error(`[Cal.com] Failed to save meet URL to order:`, updateErr.message)
+              }
+            }
           }
 
         } catch (bookingErr) {

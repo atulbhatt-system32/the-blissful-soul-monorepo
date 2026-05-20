@@ -1,6 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { generateInvoice } from "../../../lib/invoice"
+import { sendBookingConfirmationWhatsApp } from "../../../lib/interakt"
 
 type ItemPayload = {
   title: string
@@ -301,6 +302,11 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         orderId: existing.display_id || existing.id, pdfBase64: null,
         items, hasSession,
       })
+      sendBookingConfirmationWhatsApp({
+        phone, countryCode: countryCode || "in", firstName,
+        orderId: existing.display_id || existing.id,
+        serviceTitle, bookingDate, bookingTime, amount: price || 0, calMeetUrl,
+      }).catch(err => console.error("[WhatsApp] Booking confirmation (resend) failed:", err.message))
       return res.status(200).json({ success: true, orderId: existing.id, message: "Order already existed — confirmation email resent." })
     }
 
@@ -508,7 +514,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const pdfBuffer = await generateInvoice(invoiceOrder)
     const pdfBase64 = pdfBuffer.toString("base64")
 
-    // 8. Send confirmation emails
+    // 8. Send confirmation emails + WhatsApp
     await sendConfirmationEmail({
       notificationService, email, firstName, lastName, phone,
       serviceTitle, bookingDate, bookingTime, price: price || 0,
@@ -516,8 +522,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       orderId: order.display_id || order.id, pdfBase64, hamperGiftTitle,
       items, hasSession,
     })
+    sendBookingConfirmationWhatsApp({
+      phone, countryCode: countryCode || "in", firstName,
+      orderId: order.display_id || order.id,
+      serviceTitle, bookingDate, bookingTime, amount: price || 0, calMeetUrl,
+    }).catch(err => console.error("[WhatsApp] Booking confirmation failed:", err.message))
 
-    console.log(`[Booking Confirmation] Email sent successfully to ${email}`)
+    console.log(`[Booking Confirmation] Email + WhatsApp sent successfully to ${email}`)
     return res.status(200).json({ success: true, orderId: order.id, message: "Booking recorded and email sent." })
   } catch (error: any) {
     console.error("[Booking Confirmation] Error:", error.message)
