@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import BookingSlotPicker from "@modules/booking/components/slot-picker"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import InvoiceButton from "@modules/order/components/invoice-button"
 
@@ -30,11 +29,6 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
   const [lookupOrderId, setLookupOrderId] = useState("")
   const [lookupLoading, setLookupLoading] = useState(false)
   const [lookupError, setLookupError] = useState<string | null>(null)
-
-  // Rescheduling state
-  const [reschedulingSession, setReschedulingSession] = useState<SessionBooking | null>(null)
-  const [isRescheduling, setIsRescheduling] = useState(false)
-  const [newSlot, setNewSlot] = useState<{ date: string, time: string, isoStart: string } | null>(null)
 
   // Toast notification state
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null)
@@ -138,39 +132,6 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
       setToast({ message: "An error occurred while cancelling the session.", type: "error" })
     } finally {
       setCancellingId(null)
-    }
-  }
-
-  const handleReschedule = async () => {
-    if (!reschedulingSession || !newSlot) return
-
-    setIsRescheduling(true)
-    try {
-      const response = await fetch(`/api/booking-reschedule`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          orderId: reschedulingSession.id, 
-          email,
-          newDate: newSlot.date,
-          newTime: newSlot.time,
-          slotIsoStart: newSlot.isoStart
-        }),
-      })
-
-      const data = await response.json()
-      if (response.ok) {
-        setReschedulingSession(null)
-        setNewSlot(null)
-        setToast({ message: `Session rescheduled to ${newSlot.date} at ${newSlot.time}. You'll receive a confirmation email shortly.`, type: "success" })
-        if (email) fetchSessions(email)
-      } else {
-        setToast({ message: data.message || "Failed to reschedule session.", type: "error" })
-      }
-    } catch (err) {
-      setToast({ message: "An error occurred while rescheduling.", type: "error" })
-    } finally {
-      setIsRescheduling(false)
     }
   }
 
@@ -352,12 +313,6 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
                     {checkPolicy(session) ? (
                       <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <button
-                          onClick={() => setReschedulingSession(session)}
-                          className="px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-[#2C1E36] border border-[#2C1E36]/10 rounded-xl hover:bg-[#2C1E36]/5 transition-all text-center"
-                        >
-                          Reschedule
-                        </button>
-                        <button
                           onClick={() => setConfirmCancelId(session.id)}
                           disabled={cancellingId === session.id}
                           className="px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-red-500 border border-red-50 rounded-xl hover:bg-red-50 transition-all text-center disabled:opacity-50"
@@ -409,55 +364,6 @@ export default function MySessionsPage({ email: initialEmail }: { email: string 
         ))}
       </div>
 
-      {/* Rescheduling Modal */}
-      {reschedulingSession && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/30 animate-in fade-in duration-300">
-          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 relative">
-            <div className="p-6 md:p-8 flex items-start justify-between relative z-10 border-b border-gray-50">
-              <div>
-                <h3 className="text-2xl font-serif text-[#2C1E36] mb-1">Reschedule Session</h3>
-                <p className="text-gray-400 text-xs font-medium">
-                  Choose a new available time slot for your healing session.
-                </p>
-              </div>
-              <button 
-                onClick={() => { setReschedulingSession(null); setNewSlot(null); }}
-                className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:text-[#2C1E36] hover:bg-gray-100 transition-all"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto relative z-10">
-              <BookingSlotPicker 
-                eventSlug={reschedulingSession.event_slug}
-                onSelect={(date, time, isoStart) => setNewSlot({ date, time, isoStart })}
-              />
-              
-              <div className="mt-8 flex flex-col md:flex-row gap-3">
-                <button
-                  disabled={!newSlot || isRescheduling}
-                  onClick={handleReschedule}
-                  className="flex-1 py-4 bg-[#2C1E36] text-white rounded-2xl font-bold hover:opacity-95 transition-all disabled:bg-gray-100 disabled:text-gray-400 shadow-xl shadow-[#2C1E36]/10 uppercase tracking-widest text-[11px]"
-                >
-                  {isRescheduling ? "Rescheduling..." : "Confirm New Slot"}
-                </button>
-                <button
-                  onClick={() => { setReschedulingSession(null); setNewSlot(null); }}
-                  className="px-8 py-4 bg-gray-50 text-gray-500 rounded-2xl font-bold hover:bg-gray-100 transition-all uppercase tracking-widest text-[11px]"
-                >
-                  Go Back
-                </button>
-              </div>
-            </div>
-
-            {/* Background Decorative Blur */}
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#2C1E36]/5 rounded-full -ml-32 -mb-32 blur-3xl -z-0" />
-          </div>
-        </div>
-      )}
       {/* Cancel Confirmation Modal */}
       {confirmCancelId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#2C1E36]/40 animate-in fade-in duration-300">

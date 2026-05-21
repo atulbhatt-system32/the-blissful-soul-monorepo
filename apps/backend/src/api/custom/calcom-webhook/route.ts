@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { sendSessionCancellationWhatsApp } from "../../../lib/interakt"
+import { sendSessionCancellationWhatsApp, sendSessionRescheduledWhatsApp } from "../../../lib/interakt"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const body = req.body as any
@@ -7,10 +7,30 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   console.log(`[Cal.com Webhook] Received event: ${triggerEvent}`)
 
-  if (triggerEvent !== "BOOKING_CANCELLED") {
-    return res.status(200).json({ received: true })
+  if (triggerEvent === "BOOKING_CANCELLED") {
+    return handleCancelled(req, res, body)
   }
 
+  if (triggerEvent === "BOOKING_RESCHEDULED") {
+    return handleRescheduled(req, res, body)
+  }
+
+  return res.status(200).json({ received: true })
+}
+
+async function findOrder(req: MedusaRequest, bookingUid: string, attendeeEmail: string) {
+  const query = req.scope.resolve("query") as any
+  const { data: orders } = await query.graph({
+    entity: "order",
+    fields: ["*", "items.*", "shipping_address.*"],
+    filters: bookingUid
+      ? { metadata: { cal_booking_id: bookingUid } }
+      : { email: attendeeEmail, metadata: { is_session: true } },
+  })
+  return orders?.[0] || null
+}
+
+async function handleCancelled(req: MedusaRequest, res: MedusaResponse, body: any) {
   try {
     const payload = body.payload || body
     const bookingUid = payload?.uid
@@ -21,24 +41,24 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(200).json({ received: true })
     }
 
-    console.log(`[Cal.com Webhook] Booking cancelled — UID: ${bookingUid} | Email: ${attendeeEmail}`)
+    console.log(`[Cal.com Webhook] Booking cancelled — UID: ${bookingUid}`)
 
-    // Find the matching Medusa order by cal booking UID or email
-    const query = req.scope.resolve("query") as any
     const orderModuleService = req.scope.resolve("order") as any
     const notificationService = req.scope.resolve("notification") as any
 
-    const { data: orders } = await query.graph({
-      entity: "order",
-      fields: ["*", "items.*", "shipping_address.*"],
-      filters: bookingUid
-        ? { metadata: { cal_booking_id: bookingUid } }
-        : { email: attendeeEmail, metadata: { is_session: true } },
-    })
-
-    const order = orders?.[0]
+    const order = await findOrder(req, bookingUid, attendeeEmail)
     if (!order) {
       console.warn(`[Cal.com Webhook] No order found for booking UID: ${bookingUid}`)
+      return res.status(200).json({ received: true })
+    }
+
+    // If rescheduled via website, Cal.com fires BOOKING_CANCELLED for the old booking — skip it
+    if (order.metadata?.rescheduled_via_website) {
+      console.log(`[Cal.com Webhook] Skipping — Order #${order.display_id} was rescheduled via website`)
+      await orderModuleService.updateOrders([{
+        id: order.id,
+        metadata: { ...order.metadata, rescheduled_via_website: false }
+      }])
       return res.status(200).json({ received: true })
     }
 
@@ -47,21 +67,17 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const firstName = order.shipping_address?.first_name || "Customer"
     const serviceTitle = order.items?.[0]?.title
 
-    // 1. Update order status to canceled
+    // 1. Mark order as canceled
     if (order.status !== "canceled") {
       await orderModuleService.updateOrders([{
         id: order.id,
         status: "canceled",
-        metadata: {
-          ...order.metadata,
-          canceled_at: new Date().toISOString(),
-          canceled_by: "calcom_webhook",
-        }
+        metadata: { ...order.metadata, canceled_at: new Date().toISOString(), canceled_by: "calcom_webhook" }
       }])
       console.log(`[Cal.com Webhook] Order #${order.display_id} marked as canceled`)
     }
 
-    // 2. Send cancellation email to customer
+    // 2. Send cancellation email
     if (notificationService) {
       const adminEmails = [...new Set([
         process.env.ADMIN_NOTIFICATION_EMAIL,
@@ -80,7 +96,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
                 <h1 style="font-family: Georgia, serif; font-size: 20px; color: #2C1E36; margin: 0 0 4px;">The Blissful Soul</h1>
                 <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 0 0 30px;">Healing &amp; Crystals</p>
                 <h2 style="color: #c0392b;">Session Cancelled ❌</h2>
-                <p>Hi ${firstName}, your session booking <strong>#${order.display_id}</strong> scheduled for <strong>${bookingDate} at ${bookingTime}</strong> has been cancelled.</p>
+                <p>Hi ${firstName}, your session <strong>#${order.display_id}</strong> for <strong>${bookingDate} at ${bookingTime}</strong> has been cancelled.</p>
                 <p>If a refund is applicable, it will be processed within 5–7 business days.</p>
                 <p style="margin-top: 30px; color: #C5A059; font-weight: bold;">The Blissful Soul Team</p>
               </div>`,
@@ -126,6 +142,118 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(200).json({ received: true })
   } catch (error: any) {
     console.error("[Cal.com Webhook] Error handling cancellation:", error.message)
-    return res.status(200).json({ received: true }) // Always 200 so Cal.com doesn't retry
+    return res.status(200).json({ received: true })
+  }
+}
+
+async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: any) {
+  try {
+    const payload = body.payload || body
+    const bookingUid = payload?.uid
+    const attendeeEmail = payload?.attendees?.[0]?.email || payload?.attendee?.email
+    const newStartTime = payload?.startTime
+
+    if (!newStartTime) {
+      console.warn("[Cal.com Webhook] No startTime in reschedule payload")
+      return res.status(200).json({ received: true })
+    }
+
+    const newDateObj = new Date(newStartTime)
+    const newDate = newDateObj.toLocaleDateString("en-IN", {
+      timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric",
+    })
+    const newTime = newDateObj.toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: true,
+    }).toUpperCase()
+
+    console.log(`[Cal.com Webhook] Booking rescheduled — UID: ${bookingUid} | New: ${newDate} ${newTime}`)
+
+    const orderModuleService = req.scope.resolve("order") as any
+    const notificationService = req.scope.resolve("notification") as any
+
+    const order = await findOrder(req, bookingUid, attendeeEmail)
+    if (!order) {
+      console.warn(`[Cal.com Webhook] No order found for rescheduled booking UID: ${bookingUid}`)
+      return res.status(200).json({ received: true })
+    }
+
+    const firstName = order.shipping_address?.first_name || "Customer"
+    const serviceTitle = order.items?.[0]?.title
+
+    // Update order metadata with new date/time
+    await orderModuleService.updateOrders([{
+      id: order.id,
+      metadata: {
+        ...order.metadata,
+        booking_date: newDate,
+        booking_time: newTime,
+        rescheduled_at: new Date().toISOString(),
+      }
+    }])
+
+    // Send rescheduled email
+    if (notificationService) {
+      const adminEmails = [...new Set([
+        process.env.ADMIN_NOTIFICATION_EMAIL,
+        process.env.GOOGLE_SMTP_USER,
+      ].filter(Boolean) as string[])]
+
+      await notificationService.createNotifications([
+        {
+          to: order.email,
+          channel: "email",
+          template: "session-rescheduled",
+          data: {
+            subject: `Session Rescheduled — #${order.display_id}`,
+            html_body: `
+              <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; background: #FBFAF8; border: 1px solid #E1DFE3; border-radius: 16px;">
+                <h1 style="font-family: Georgia, serif; font-size: 20px; color: #2C1E36; margin: 0 0 4px;">The Blissful Soul</h1>
+                <p style="text-transform: uppercase; font-size: 9px; letter-spacing: 0.4em; color: #C5A059; margin: 0 0 30px;">Healing &amp; Crystals</p>
+                <h2 style="color: #2C1E36;">Session Rescheduled 🗓️</h2>
+                <p>Hi ${firstName}, your session <strong>#${order.display_id}</strong> has been rescheduled to <strong>${newDate} at ${newTime}</strong>.</p>
+                <p style="margin-top: 30px; color: #C5A059; font-weight: bold;">The Blissful Soul Team</p>
+              </div>`,
+          },
+        },
+        ...adminEmails.map((adminEmail: string) => ({
+          to: adminEmail,
+          channel: "email",
+          template: "session-rescheduled-admin",
+          data: {
+            subject: `[ADMIN] Session Rescheduled — #${order.display_id}`,
+            html_body: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f0f8ff; border-radius: 8px;">
+                <h2>Session Rescheduled</h2>
+                <ul>
+                  <li><strong>Order:</strong> #${order.display_id}</li>
+                  <li><strong>Customer:</strong> ${firstName} (${order.email})</li>
+                  <li><strong>New Date:</strong> ${newDate}</li>
+                  <li><strong>New Time:</strong> ${newTime}</li>
+                </ul>
+              </div>`,
+          },
+        })),
+      ])
+    }
+
+    // Send WhatsApp reschedule (non-blocking)
+    const phone = order.shipping_address?.phone || ""
+    if (phone) {
+      sendSessionRescheduledWhatsApp({
+        phone,
+        countryCode: order.shipping_address?.country_code || "in",
+        firstName,
+        orderId: order.display_id || order.id,
+        serviceTitle,
+        newDate,
+        newTime,
+      }).catch((err: Error) => console.error(`[WhatsApp] Reschedule failed for #${order.display_id}:`, err.message))
+    }
+
+    console.log(`[Cal.com Webhook] Reschedule handled for Order #${order.display_id}`)
+    return res.status(200).json({ received: true })
+  } catch (error: any) {
+    console.error("[Cal.com Webhook] Error handling reschedule:", error.message)
+    return res.status(200).json({ received: true })
   }
 }
