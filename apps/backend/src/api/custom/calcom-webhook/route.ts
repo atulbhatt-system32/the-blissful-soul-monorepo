@@ -32,7 +32,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       entity: "order",
       fields: ["*", "items.*", "shipping_address.*"],
       filters: bookingUid
-        ? { metadata: { cal_booking_uid: bookingUid } }
+        ? { metadata: { cal_booking_id: bookingUid } }
         : { email: attendeeEmail, metadata: { is_session: true } },
     })
 
