@@ -65,6 +65,7 @@ services:
       - GOOGLE_SMTP_USER=${GOOGLE_SMTP_USER}
       - GOOGLE_SMTP_PASS=${GOOGLE_SMTP_PASS}
       - ADMIN_NOTIFICATION_EMAIL=${ADMIN_NOTIFICATION_EMAIL}
+      - INTERAKT_API_KEY=${INTERAKT_API_KEY}
     volumes:
 
       - ./apps/backend/static:/app/apps/backend/.medusa/server/static
