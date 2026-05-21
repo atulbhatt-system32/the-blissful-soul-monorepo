@@ -284,3 +284,51 @@ export async function sendSessionReminderWhatsApp({
     template: { name: "session_reminder", languageCode: "en", bodyValues },
   })
 }
+
+/**
+ * Session rescheduled notification (admin via Cal.com).
+ *
+ * Template "session_rescheduled" body params:
+ *   {{1}} – customer first name
+ *   {{2}} – order ID
+ *   {{3}} – service title
+ *   {{4}} – new session date
+ *   {{5}} – new session time
+ */
+export async function sendSessionRescheduledWhatsApp({
+  phone,
+  countryCode,
+  firstName,
+  orderId,
+  serviceTitle,
+  newDate,
+  newTime,
+}: {
+  phone: string
+  countryCode: string
+  firstName: string
+  orderId: string | number
+  serviceTitle?: string
+  newDate: string
+  newTime: string
+}): Promise<void> {
+  const { dialCode, number } = normalisePhone(phone, countryCode)
+
+  await sendWhatsAppTemplate({
+    countryCode: dialCode,
+    phoneNumber: number,
+    callbackData: `session_rescheduled_${orderId}`,
+    type: "Template",
+    template: {
+      name: "session_rescheduled",
+      languageCode: "en",
+      bodyValues: [
+        firstName,
+        String(orderId),
+        serviceTitle || "Your session",
+        newDate,
+        newTime,
+      ],
+    },
+  })
+}
