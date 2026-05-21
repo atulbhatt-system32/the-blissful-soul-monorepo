@@ -149,7 +149,8 @@ async function handleCancelled(req: MedusaRequest, res: MedusaResponse, body: an
 async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: any) {
   try {
     const payload = body.payload || body
-    const bookingUid = payload?.uid
+    const bookingUid = payload?.rescheduleUid || payload?.uid
+    const newBookingUid = payload?.uid
     const attendeeEmail = payload?.attendees?.[0]?.email || payload?.attendee?.email
     const newStartTime = payload?.startTime
 
@@ -185,6 +186,7 @@ async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: 
       id: order.id,
       metadata: {
         ...order.metadata,
+        cal_booking_id: newBookingUid,
         booking_date: newDate,
         booking_time: newTime,
         rescheduled_at: new Date().toISOString(),
