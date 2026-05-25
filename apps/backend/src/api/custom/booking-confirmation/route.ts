@@ -286,6 +286,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const remoteLink = req.scope.resolve(ContainerRegistrationKeys.LINK) as any
     const productModuleService = req.scope.resolve(Modules.PRODUCT) as any
     const taxModuleService = req.scope.resolve(Modules.TAX) as any
+    const salesChannelModuleService = req.scope.resolve(Modules.SALES_CHANNEL) as any
 
     // Idempotency — if an order already exists for this Razorpay payment, just resend the email
     const [existingOrders] = await orderModuleService.listAndCountOrders(
@@ -318,16 +319,36 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(400).json({ message: "No region found" })
     }
 
-    // 2. Resolve customer if exists
+    // 2. Resolve default sales channel
+    let salesChannelId: string | undefined
+    try {
+      const [salesChannels] = await salesChannelModuleService.listAndCountSalesChannels({})
+      if (salesChannels.length > 0) salesChannelId = salesChannels[0].id
+    } catch (e: any) {
+      console.warn("[Booking Order] Could not resolve sales channel:", e.message)
+    }
+
+    // 3. Resolve or create customer
     let customerId: string | undefined
     try {
       const [customers] = await customerModuleService.listAndCountCustomers({ email })
-      if (customers.length > 0) customerId = customers[0].id
+      if (customers.length > 0) {
+        customerId = customers[0].id
+      } else {
+        const newCustomer = await customerModuleService.createCustomers({
+          email,
+          first_name: firstName,
+          last_name: lastName || undefined,
+          phone: phone || undefined,
+        })
+        customerId = newCustomer.id
+        console.log(`[Booking Order] Created new customer ${customerId} for ${email}`)
+      }
     } catch (e: any) {
-      console.warn("[Booking Order] Could not resolve customer:", e.message)
+      console.warn("[Booking Order] Could not resolve/create customer:", e.message)
     }
 
-    // 3. Create order — use real address when physical products present
+    // 4. Create order — use real address when physical products present
     const hasPhysicalItems = (items ?? []).some(i => !i.metadata?.is_booking && !i.metadata?.booking_date)
     const addressPayload = hasPhysicalItems && shippingAddress?.address1
       ? {
@@ -352,6 +373,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     const order = await orderModuleService.createOrders({
       region_id: region.id,
+      sales_channel_id: salesChannelId,
       customer_id: customerId,
       email,
       currency_code: region.currency_code || "inr",
