@@ -89,6 +89,21 @@ export default function MedusaCheckoutPayment({
           email: details.email,
           contact: details.phone,
         },
+        notes: {
+          email: details.email,
+          first_name: details.firstName,
+          last_name: details.lastName || "",
+          phone: details.phone,
+          country_code: countryCode,
+          service_title: (serviceTitle || "").substring(0, 200),
+          booking_date: isPackage ? "Flexible" : date,
+          booking_time: isPackage ? "To be scheduled" : time,
+          event_slug: eventSlug || "",
+          is_package: isPackage ? "true" : "false",
+          has_session: hasSession ? "true" : "false",
+          variant_id: variantId || "",
+          slot_iso: slotIsoStart || "",
+        },
         theme: { color: "#2C1E36" },
         handler: async function (response: any) {
           console.log("Payment successful:", response.razorpay_payment_id)
@@ -101,21 +116,25 @@ export default function MedusaCheckoutPayment({
             // 1. Create Cal.com booking only if NOT a package AND has a session
             if (hasSession && !isPackage) {
               if (!eventSlug) {
-                throw new Error("CRITICAL: Missing eventSlug. Please check product metadata 'cal_link' in Medusa admin.");
+                console.error("CRITICAL: Missing eventSlug. Cal.com booking skipped.")
+              } else {
+                try {
+                  const calResult = await createCalBooking({
+                    startTime: slotIsoStart,
+                    attendeeName: `${details.firstName} ${details.lastName}`,
+                    attendeeEmail: details.email,
+                    attendeeTimeZone: "Asia/Kolkata",
+                    eventSlug: eventSlug,
+                    meetingAbout,
+                    notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
+                  })
+                  calBookingId = calResult?.uid
+                  calMeetUrl = calResult?.meetingUrl || calResult?.location
+                  console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
+                } catch (calErr: any) {
+                  console.error("Cal.com booking failed (non-blocking):", calErr?.message)
+                }
               }
-              
-              const calResult = await createCalBooking({
-                startTime: slotIsoStart,
-                attendeeName: `${details.firstName} ${details.lastName}`,
-                attendeeEmail: details.email,
-                attendeeTimeZone: "Asia/Kolkata",
-                eventSlug: eventSlug,
-                meetingAbout,
-                notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
-              })
-              calBookingId = calResult?.uid
-              calMeetUrl = calResult?.meetingUrl || calResult?.location
-              console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
             } else {
               console.log("Package purchase detected. Skipping Cal.com booking.")
             }
@@ -156,14 +175,13 @@ export default function MedusaCheckoutPayment({
             } catch (emailErr: any) {
               console.error("Email trigger failed (non-blocking):", emailErr?.message)
             }
-            // Always advance to success screen if everything worked
-            onSuccess()
 
           } catch (err: any) {
             console.error("Post-payment processing error:", err?.message)
-            setError(err?.message || "Payment succeeded, but we failed to register the booking on Cal.com. Please contact support.")
-            setIsProcessing(false)
-          } 
+          }
+
+          // Always advance to success regardless of Cal.com or email failures
+          onSuccess()
         },
         modal: {
           ondismiss: function () {
