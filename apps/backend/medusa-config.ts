@@ -68,6 +68,13 @@ module.exports = defineConfig({
               scope: "all"
             },
           },
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "notification-local",
+            options: {
+              channels: ["feed"],
+            },
+          },
         ],
       },
     },
