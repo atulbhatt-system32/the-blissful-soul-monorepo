@@ -314,7 +314,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     // Emit order.placed — triggers order-invoice subscriber (branded email + PDF + WhatsApp)
     try {
       const eventBusService = req.scope.resolve(Modules.EVENT_BUS) as any
-      await eventBusService.emit([{ eventName: "order.placed", data: { id: order.id } }])
+      await eventBusService.emit({ name: "order.placed", data: { id: order.id } })
       console.log(`[Razorpay Webhook] Emitted order.placed for order ${order.id}`)
     } catch (eventErr: any) {
       console.error("[Razorpay Webhook] Failed to emit order.placed:", eventErr.message)
