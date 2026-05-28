@@ -12,28 +12,26 @@ export default async function sessionReminderJob(container: MedusaContainer) {
   const orderModuleService = container.resolve(Modules.ORDER) as any;
   const notificationService = container.resolve("notification") as any;
 
-  console.log("[Reminder Job] Checking for upcoming sessions...");
+  console.log(`[Reminder Job] Running at ${new Date().toISOString()}`);
 
   try {
-    // 1. Get all pending orders with session metadata
+    // 1. Get all pending orders (metadata filter unsupported by Medusa v2 listOrders)
     const orders = await orderModuleService.listOrders(
-      { 
-        status: "pending",
-        metadata: { is_session: true }
-      },
-      { 
-        relations: ["items"],
-        take: 100 
-      }
+      { status: "pending" },
+      { select: ["id", "display_id", "email", "metadata", "shipping_address"], take: 200 }
     );
+
+    const sessionOrders = orders.filter((o: any) => o.metadata?.is_session)
+    console.log(`[Reminder Job] Found ${sessionOrders.length} session order(s) to check.`)
 
     const now = new Date();
     // Target window: 45 to 75 minutes from now
     const windowStart = new Date(now.getTime() + 45 * 60 * 1000);
     const windowEnd = new Date(now.getTime() + 75 * 60 * 1000);
 
-    for (const order of orders) {
-      // Skip if reminder already sent
+    for (const order of sessionOrders) {
+      // Skip non-session orders and already-reminded orders
+      if (!order.metadata?.is_session) continue;
       if (order.metadata?.reminder_sent) continue;
 
       const bookingDate = order.metadata?.booking_date; // e.g. "2026-04-06"
