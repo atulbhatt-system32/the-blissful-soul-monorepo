@@ -141,8 +141,8 @@ export async function sendBookingConfirmationWhatsApp({
     bookingDate,
     bookingTime,
     `₹${amount.toLocaleString("en-IN")}`,
+    calMeetUrl || "",
   ]
-  if (calMeetUrl) bodyValues.push(calMeetUrl)
 
   await sendWhatsAppTemplate({
     countryCode: dialCode,
