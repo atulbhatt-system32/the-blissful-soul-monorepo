@@ -25,9 +25,9 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     console.log(`[Reminder Job] Found ${sessionOrders.length} session order(s) to check.`)
 
     const now = new Date();
-    // Target window: 45 to 75 minutes from now
-    const windowStart = new Date(now.getTime() + 45 * 60 * 1000);
-    const windowEnd = new Date(now.getTime() + 75 * 60 * 1000);
+    // Target window: 44 to 76 minutes from now (extra 1 min buffer on each side)
+    const windowStart = new Date(now.getTime() + 44 * 60 * 1000);
+    const windowEnd = new Date(now.getTime() + 76 * 60 * 1000);
 
     for (const order of sessionOrders) {
       // Skip non-session orders and already-reminded orders
@@ -41,8 +41,17 @@ export default async function sessionReminderJob(container: MedusaContainer) {
 
       try {
         // Parse "10:30 AM" into hours and minutes
-        const [time, modifier] = bookingTime.split(' ');
-        let [hours, minutes] = time.split(':').map(Number);
+        const parts = bookingTime.trim().split(' ')
+        const timeParts = (parts[0] || '').split(':').map(Number)
+        let hours = timeParts[0]
+        const minutes = timeParts[1]
+        const modifier = parts[1]?.toUpperCase()
+
+        if (isNaN(hours) || isNaN(minutes)) {
+          console.warn(`[Reminder Job] Unrecognised time format "${bookingTime}" for Order #${order.display_id} — skipping`)
+          continue
+        }
+
         if (modifier === 'PM' && hours < 12) hours += 12;
         if (modifier === 'AM' && hours === 12) hours = 0;
 
