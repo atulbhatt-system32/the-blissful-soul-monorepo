@@ -19,64 +19,91 @@ export default async function calcomBookingHandler({
 
     console.log(`[Cal.com] Checking Order #${data.id} for session bookings...`)
 
-    const apiKey = process.env.CAL_API_KEY || process.env.NEXT_PUBLIC_CAL_API_KEY
+    // Skip if the webhook already created the Cal.com booking
+    if (order.metadata?.cal_booking_uid) {
+      console.log(`[Cal.com] Booking already exists for order #${data.id} — skipping`)
+      return
+    }
+
+    const apiKey = process.env.CAL_API_KEY
     if (!apiKey) {
       console.warn("[Cal.com] CAL_API_KEY is not set. Cannot create bookings.")
       return
     }
 
-    const headers = {
+    const authHeaders = {
       "Authorization": `Bearer ${apiKey}`,
-      "cal-api-version": "2024-09-04",
       "Content-Type": "application/json",
     }
 
     // Process each item
     for (const item of order.items || []) {
       const metadata = item.metadata || {}
-      
+
       if (metadata.is_session && !metadata.is_package && metadata.slot_iso_start && metadata.event_slug) {
         console.log(`[Cal.com] Found session booking for event slug: ${metadata.event_slug}`)
-        
+
         try {
           // Try to map event_slug to eventTypeId
-          let eventTypeId = undefined
+          let eventTypeId: number | undefined
           try {
-            const typesRes = await fetch("https://api.cal.com/v2/event-types", { headers })
+            const typesAbort = new AbortController()
+            const typesTimeout = setTimeout(() => typesAbort.abort(), 10000)
+            const typesRes = await fetch("https://api.cal.com/v2/event-types", {
+              headers: { ...authHeaders, "cal-api-version": "2024-06-14" },
+              signal: typesAbort.signal,
+            }).finally(() => clearTimeout(typesTimeout))
             if (typesRes.ok) {
               const typesData = await typesRes.json()
               const types = typesData.data || typesData || []
               const matched = types.find((t: any) => t.slug === metadata.event_slug)
               if (matched) {
                 eventTypeId = matched.id
+                console.log(`[Cal.com] Resolved eventTypeId=${eventTypeId} for slug="${metadata.event_slug}"`)
+              } else {
+                console.warn(`[Cal.com] No eventType matched slug="${metadata.event_slug}"`)
               }
+            } else {
+              console.warn(`[Cal.com] event-types lookup returned ${typesRes.status}`)
             }
-          } catch (e) {
-            console.error("[Cal.com] Failed to resolve event type ID", e)
+          } catch (e: any) {
+            console.error("[Cal.com] Failed to resolve event type ID:", e?.name === "AbortError" ? "TIMEOUT" : e?.message)
           }
 
           const attendeeName = `${metadata.patient_firstName || order.shipping_address?.first_name || ''} ${metadata.patient_lastName || order.shipping_address?.last_name || ''}`.trim()
           const attendeeEmail = metadata.patient_email || order.email
           const phone = metadata.patient_phone || order.shipping_address?.phone || ''
 
-          const bookingPayload = {
+          const bookingPayload: any = {
             start: metadata.slot_iso_start,
-            eventTypeId: eventTypeId, // Recommended if resolving works
             attendee: {
               name: attendeeName || "Valued Client",
               email: attendeeEmail,
               timeZone: "Asia/Kolkata",
             },
             notes: `Phone: ${phone} | Order ID: ${order.display_id}`,
+            bookingFieldsResponses: { title: "Session Booking" },
           }
 
-          console.log("[Cal.com] Payload:", bookingPayload)
+          if (eventTypeId) {
+            bookingPayload.eventTypeId = eventTypeId
+          } else {
+            bookingPayload.eventTypeSlug = metadata.event_slug
+            bookingPayload.username = process.env.CAL_USERNAME || ""
+          }
 
+          console.log(`[Cal.com] Creating booking for ${attendeeEmail} | eventTypeId=${eventTypeId ?? "slug-fallback"}`)
+
+          const bookAbort = new AbortController()
+          const bookTimeout = setTimeout(() => bookAbort.abort(), 10000)
+          const bookStart = Date.now()
           const bookRes = await fetch("https://api.cal.com/v2/bookings", {
             method: "POST",
-            headers,
-            body: JSON.stringify(bookingPayload)
-          })
+            headers: { ...authHeaders, "cal-api-version": "2026-02-25" },
+            body: JSON.stringify(bookingPayload),
+            signal: bookAbort.signal,
+          }).finally(() => clearTimeout(bookTimeout))
+          console.log(`[Cal.com] Booking response: ${bookRes.status} in ${Date.now() - bookStart}ms`)
 
           if (!bookRes.ok) {
             const errText = await bookRes.text()
