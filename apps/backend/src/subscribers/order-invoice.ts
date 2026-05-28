@@ -303,6 +303,7 @@ export default async function orderInvoiceHandler({
             bookingDate,
             bookingTime,
             amount: calculatedTotal,
+            calMeetUrl: calMeetUrl || undefined,
           }).catch((err: Error) => console.error(`[WhatsApp] Booking confirmation failed for #${order.display_id}:`, err.message))
         } else {
           // Regular product order → order_confirmation template (order date only)
