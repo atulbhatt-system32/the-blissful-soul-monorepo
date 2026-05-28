@@ -72,8 +72,6 @@ export default async function calcomBookingHandler({
 
           const attendeeName = `${metadata.patient_firstName || order.shipping_address?.first_name || ''} ${metadata.patient_lastName || order.shipping_address?.last_name || ''}`.trim()
           const attendeeEmail = metadata.patient_email || order.email
-          const phone = metadata.patient_phone || order.shipping_address?.phone || ''
-
           const bookingPayload: any = {
             start: metadata.slot_iso_start,
             attendee: {
@@ -81,7 +79,6 @@ export default async function calcomBookingHandler({
               email: attendeeEmail,
               timeZone: "Asia/Kolkata",
             },
-            notes: `Phone: ${phone} | Order ID: ${order.display_id}`,
             bookingFieldsResponses: { title: "Session Booking" },
           }
 

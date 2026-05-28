@@ -17,8 +17,6 @@ async function createCalComBooking(params: {
   slotIsoStart: string
   attendeeName: string
   attendeeEmail: string
-  phone: string
-  orderId: string | number
 }): Promise<{ uid?: string; meetUrl?: string }> {
   // Resolve eventTypeId from slug
   let eventTypeId: number | undefined
@@ -50,7 +48,6 @@ async function createCalComBooking(params: {
       email: params.attendeeEmail,
       timeZone: "Asia/Kolkata",
     },
-    notes: `Phone: ${params.phone} | Order ID: ${params.orderId}`,
     bookingFieldsResponses: { title: "Session Booking" },
   }
 
@@ -288,8 +285,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             slotIsoStart,
             attendeeName: `${firstName} ${lastName}`.trim(),
             attendeeEmail: email,
-            phone,
-            orderId: order.display_id || order.id,
           })
 
           if (calResult.uid || calResult.meetUrl) {
