@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { Button } from "@medusajs/ui"
-import { createCalBooking } from "@lib/data/calcom"
-
 export default function MedusaCheckoutPayment({
   serviceId,
   variantId,
@@ -107,80 +105,8 @@ export default function MedusaCheckoutPayment({
         theme: { color: "#2C1E36" },
         handler: async function (response: any) {
           console.log("Payment successful:", response.razorpay_payment_id)
-          
-          // Always call onSuccess — never let Cal.com or backend errors block the user
-          try {
-            let calBookingId = undefined
-            let calMeetUrl = undefined
-
-            // 1. Create Cal.com booking only if NOT a package AND has a session
-            if (hasSession && !isPackage) {
-              if (!eventSlug) {
-                console.error("CRITICAL: Missing eventSlug. Cal.com booking skipped.")
-              } else {
-                try {
-                  const calResult = await createCalBooking({
-                    startTime: slotIsoStart,
-                    attendeeName: `${details.firstName} ${details.lastName}`,
-                    attendeeEmail: details.email,
-                    attendeeTimeZone: "Asia/Kolkata",
-                    eventSlug: eventSlug,
-                    meetingAbout,
-                    notes: `Payment ID: ${response.razorpay_payment_id} | Phone: ${details.phone}`,
-                  })
-                  calBookingId = calResult?.uid
-                  calMeetUrl = calResult?.meetingUrl || calResult?.location
-                  console.log("Cal.com booking created successfully:", calBookingId, "Meet URL:", calMeetUrl)
-                } catch (calErr: any) {
-                  console.error("Cal.com booking failed (non-blocking):", calErr?.message)
-                }
-              }
-            } else {
-              console.log("Package purchase detected. Skipping Cal.com booking.")
-            }
-
-            // 2. Send confirmation email via Next.js API proxy (avoids CORS)
-            try {
-              await fetch(`/api/booking-confirmation`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  variantId,
-                  serviceTitle: serviceTitle || "",
-                  email: details.email,
-                  firstName: details.firstName,
-                  lastName: details.lastName,
-                  phone: details.phone,
-                  countryCode,
-                  razorpayPaymentId: response.razorpay_payment_id,
-                  bookingDate: isPackage ? "Flexible" : date,
-                  bookingTime: isPackage ? "To be scheduled" : time,
-                  price: price,
-                  calBookingId: calBookingId ?? null,
-                  calMeetUrl,
-                  eventSlug,
-                  isPackage,
-                  hasSession,
-                  shippingAddress: shippingAddress || null,
-                  items: cartItems?.map(item => ({
-                    title: item.variant?.product?.title || item.title || "Product",
-                    variant_id: item.variant_id || item.variant?.id,
-                    quantity: item.quantity,
-                    unit_price: item.unit_price,
-                    metadata: item.metadata
-                  })) || []
-                }),
-              })
-              console.log("Confirmation email triggered.")
-            } catch (emailErr: any) {
-              console.error("Email trigger failed (non-blocking):", emailErr?.message)
-            }
-
-          } catch (err: any) {
-            console.error("Post-payment processing error:", err?.message)
-          }
-
-          // Always advance to success regardless of Cal.com or email failures
+          // Order creation, Cal.com booking, and confirmation email are all handled
+          // server-side by the Razorpay webhook — nothing to do here
           onSuccess()
         },
         modal: {

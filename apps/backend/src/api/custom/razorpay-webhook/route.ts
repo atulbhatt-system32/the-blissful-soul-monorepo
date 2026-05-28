@@ -1,12 +1,92 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import * as crypto from "crypto"
-import { sendBookingConfirmationWhatsApp } from "../../../lib/interakt"
-import { generateInvoice } from "../../../lib/invoice"
+
+const CAL_API_BASE = "https://api.cal.com/v2"
+const CAL_TIMEOUT_MS = 10000
 
 function verifySignature(rawBody: string, signature: string, secret: string): boolean {
   const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("hex")
   return expected === signature
+}
+
+async function createCalComBooking(params: {
+  apiKey: string
+  username: string
+  eventSlug: string
+  slotIsoStart: string
+  attendeeName: string
+  attendeeEmail: string
+  phone: string
+  orderId: string | number
+}): Promise<{ uid?: string; meetUrl?: string }> {
+  // Resolve eventTypeId from slug
+  let eventTypeId: number | undefined
+  try {
+    const abort = new AbortController()
+    const t = setTimeout(() => abort.abort(), CAL_TIMEOUT_MS)
+    const res = await fetch(`${CAL_API_BASE}/event-types`, {
+      headers: {
+        "Authorization": `Bearer ${params.apiKey}`,
+        "cal-api-version": "2024-06-14",
+        "Content-Type": "application/json",
+      },
+      signal: abort.signal,
+    }).finally(() => clearTimeout(t))
+    if (res.ok) {
+      const json = await res.json()
+      const types = json.data || []
+      const match = Array.isArray(types) ? types.find((t: any) => t.slug === params.eventSlug) : null
+      if (match) eventTypeId = match.id
+    }
+  } catch (e: any) {
+    console.warn("[Razorpay Webhook] Cal.com event-types lookup failed:", e.message)
+  }
+
+  const payload: any = {
+    start: params.slotIsoStart,
+    attendee: {
+      name: params.attendeeName,
+      email: params.attendeeEmail,
+      timeZone: "Asia/Kolkata",
+    },
+    notes: `Phone: ${params.phone} | Order ID: ${params.orderId}`,
+    bookingFieldsResponses: { title: "Session Booking" },
+  }
+
+  if (eventTypeId) {
+    payload.eventTypeId = eventTypeId
+  } else {
+    payload.eventTypeSlug = params.eventSlug
+    payload.username = params.username
+  }
+
+  const abort = new AbortController()
+  const t = setTimeout(() => abort.abort(), CAL_TIMEOUT_MS)
+  const res = await fetch(`${CAL_API_BASE}/bookings`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${params.apiKey}`,
+      "cal-api-version": "2026-02-25",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+    signal: abort.signal,
+  }).finally(() => clearTimeout(t))
+
+  let json: any = {}
+  try { json = JSON.parse(await res.text()) } catch { /* non-JSON response */ }
+
+  if (!res.ok) {
+    console.error("[Razorpay Webhook] Cal.com booking error:", res.status, json)
+    return {}
+  }
+
+  return {
+    uid: json.data?.uid || json.data?.id,
+    meetUrl: json.data?.meetingUrl
+      || json.data?.references?.find((r: any) => r.meetingUrl)?.meetingUrl,
+  }
 }
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -18,7 +98,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(500).json({ message: "Webhook secret not configured" })
   }
 
-  // Verify signature
   const rawBody = JSON.stringify(req.body)
   if (!signature || !verifySignature(rawBody, signature, webhookSecret)) {
     console.warn("[Razorpay Webhook] Invalid signature — rejecting")
@@ -52,7 +131,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const slotIsoStart = notes.slot_iso || ""
 
   if (!email || !firstName) {
-    console.warn(`[Razorpay Webhook] Payment ${razorpayPaymentId} missing notes — skipping backup order`)
+    console.warn(`[Razorpay Webhook] Payment ${razorpayPaymentId} missing notes — skipping`)
     return res.status(200).json({ message: "No booking notes found — skipping" })
   }
 
@@ -60,14 +139,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   try {
     const orderModuleService = req.scope.resolve(Modules.ORDER) as any
-    const notificationService = req.scope.resolve("notification") as any
     const regionModuleService = req.scope.resolve(Modules.REGION) as any
     const customerModuleService = req.scope.resolve(Modules.CUSTOMER) as any
     const paymentModuleService = req.scope.resolve(Modules.PAYMENT) as any
     const remoteLink = req.scope.resolve(ContainerRegistrationKeys.LINK) as any
     const salesChannelModuleService = req.scope.resolve(Modules.SALES_CHANNEL) as any
 
-    // Idempotency — skip if order already exists (frontend handled it)
+    // Idempotency — skip if order already exists
     const [existingOrders] = await orderModuleService.listAndCountOrders(
       { metadata: { razorpay_id: razorpayPaymentId } },
       { select: ["id", "display_id"] }
@@ -77,12 +155,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(200).json({ message: "Order already exists" })
     }
 
-    console.log(`[Razorpay Webhook] No order found for ${razorpayPaymentId} — creating backup order`)
-
     // Get region
     const [regions] = await regionModuleService.listAndCountRegions({})
     const region = regions[0]
-    if (!region) return res.status(200).json({ message: "No region found" })
+    if (!region) {
+      console.error(`[Razorpay Webhook] No region found — cannot create order for ${email} | ${razorpayPaymentId}`)
+      return res.status(200).json({ message: "No region found" })
+    }
 
     // Get sales channel
     let salesChannelId: string | undefined
@@ -138,24 +217,36 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         postal_code: "000000",
       },
       metadata: {
-        is_session: true,
+        is_session: hasSession,
+        is_package: isPackage,
         razorpay_id: razorpayPaymentId,
         booking_date: bookingDate,
         booking_time: bookingTime,
         cal_event_slug: eventSlug,
-        created_by: "razorpay_webhook_backup",
+        created_by: "razorpay_webhook",
       },
     })
 
-    // Add line item
+    // Add line item — include session metadata so calcom-booking subscriber can use it as fallback
     await orderModuleService.createOrderLineItems(order.id, [
       {
-        title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
+        title: serviceTitle
+          ? `${serviceTitle}${bookingDate ? ` - ${bookingDate} ${bookingTime}` : ""}`
+          : `Session Booking - ${bookingDate} ${bookingTime}`,
         quantity: 1,
         unit_price: price,
         requires_shipping: false,
         is_discountable: false,
-        metadata: { booking_date: bookingDate, booking_time: bookingTime, razorpay_id: razorpayPaymentId, variant_id: variantId },
+        metadata: {
+          is_session: hasSession,
+          is_package: isPackage,
+          slot_iso_start: slotIsoStart,
+          event_slug: eventSlug,
+          booking_date: bookingDate,
+          booking_time: bookingTime,
+          razorpay_id: razorpayPaymentId,
+          variant_id: variantId,
+        },
       },
     ])
 
@@ -180,63 +271,60 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         [Modules.PAYMENT]: { payment_collection_id: paymentCollection.id },
       })
     } catch (paymentError: any) {
-      console.error(`[Razorpay Webhook] Could not register payment:`, paymentError.message)
+      console.error("[Razorpay Webhook] Could not register payment:", paymentError.message)
     }
 
-    // Send email
+    // Create Cal.com booking before emitting order.placed so the email includes the meet URL
+    if (hasSession && !isPackage && slotIsoStart && eventSlug) {
+      const calApiKey = process.env.CAL_API_KEY
+      const calUsername = process.env.CAL_USERNAME
+      if (calApiKey && calUsername) {
+        try {
+          console.log(`[Razorpay Webhook] Creating Cal.com booking for ${email} | ${eventSlug} | ${slotIsoStart}`)
+          const calResult = await createCalComBooking({
+            apiKey: calApiKey,
+            username: calUsername,
+            eventSlug,
+            slotIsoStart,
+            attendeeName: `${firstName} ${lastName}`.trim(),
+            attendeeEmail: email,
+            phone,
+            orderId: order.display_id || order.id,
+          })
+
+          if (calResult.uid || calResult.meetUrl) {
+            await orderModuleService.updateOrders([{
+              id: order.id,
+              metadata: {
+                ...order.metadata,
+                cal_meet_url: calResult.meetUrl || null,
+                cal_booking_uid: calResult.uid || null,
+              },
+            }])
+            console.log(`[Razorpay Webhook] Cal.com booking created — UID: ${calResult.uid} | Meet: ${calResult.meetUrl}`)
+          }
+        } catch (calErr: any) {
+          console.error("[Razorpay Webhook] Cal.com booking failed (non-blocking):", calErr.message)
+        }
+      } else {
+        console.warn("[Razorpay Webhook] CAL_API_KEY or CAL_USERNAME not set — skipping Cal.com booking")
+      }
+    }
+
+    // Emit order.placed — triggers order-invoice subscriber (branded email + PDF + WhatsApp)
     try {
-      const pdfBuffer = await generateInvoice({
-        created_at: order.created_at || new Date().toISOString(),
-        display_id: order.display_id || order.id,
-        shipping_address: { first_name: firstName, last_name: lastName, address_1: "Digital Delivery", address_2: "", city: "Online", postal_code: "000000", phone, province: null, country_code: countryCode },
-        items: [{ title: serviceTitle || "Session Booking", quantity: 1, unit_price: price, adjustments: [], tax_lines: [], metadata: {} }],
-        shipping_total: 0,
-        shipping_methods: [],
-        payment_collections: [{ payments: [{ provider_id: "razorpay" }] }],
-      })
-      const pdfBase64 = pdfBuffer.toString("base64")
-      const pdfAttachments = [{ content: pdfBase64, encoding: "base64", filename: `invoice_${order.display_id || order.id}.pdf`, contentType: "application/pdf" }]
-
-      const adminEmails = [...new Set([process.env.ADMIN_NOTIFICATION_EMAIL, process.env.GOOGLE_SMTP_USER].filter(Boolean) as string[])]
-      const notifications: any[] = [
-        {
-          to: email,
-          channel: "email",
-          template: "booking-confirmed",
-          data: {
-            subject: `Order Confirmed: #${order.display_id || order.id}`,
-            html_body: `<p>Hi ${firstName}, your booking has been confirmed. Booking: ${serviceTitle} on ${bookingDate} at ${bookingTime}. Payment ID: ${razorpayPaymentId}</p>`,
-            pdf_attachments: pdfAttachments,
-          },
-        },
-        ...adminEmails.map(adminEmail => ({
-          to: adminEmail,
-          channel: "email",
-          template: "booking-admin-notification",
-          data: {
-            subject: `NEW BOOKING (webhook backup): ${firstName} | #${order.display_id || order.id}`,
-            html_body: `<p>New booking from ${firstName} ${lastName} (${email}). Service: ${serviceTitle}. Date: ${bookingDate} ${bookingTime}. Payment: ${razorpayPaymentId}. Created via webhook backup.</p>`,
-          },
-        })),
-      ]
-      await notificationService.createNotifications(notifications)
-    } catch (emailErr: any) {
-      console.error("[Razorpay Webhook] Email failed:", emailErr.message)
+      const eventBusService = req.scope.resolve(Modules.EVENT_BUS) as any
+      await eventBusService.emit([{ eventName: "order.placed", data: { id: order.id } }])
+      console.log(`[Razorpay Webhook] Emitted order.placed for order ${order.id}`)
+    } catch (eventErr: any) {
+      console.error("[Razorpay Webhook] Failed to emit order.placed:", eventErr.message)
     }
 
-    // Send WhatsApp
-    sendBookingConfirmationWhatsApp({
-      phone, countryCode: countryCode || "in", firstName,
-      orderId: order.display_id || order.id,
-      serviceTitle, bookingDate, bookingTime, amount: price,
-    }).catch(err => console.error("[Razorpay Webhook] WhatsApp failed:", err.message))
-
-    console.log(`[Razorpay Webhook] Backup order ${order.id} created and notifications sent for ${email}`)
+    console.log(`[Razorpay Webhook] Order ${order.id} created for ${email}`)
     return res.status(200).json({ success: true, orderId: order.id })
 
   } catch (error: any) {
     console.error("[Razorpay Webhook] Error:", error.message)
-    // Return 200 so Razorpay doesn't retry — log the failure
     return res.status(200).json({ message: "Processed with error", error: error.message })
   }
 }

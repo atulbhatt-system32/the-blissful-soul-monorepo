@@ -88,14 +88,12 @@ async function sendConfirmationEmail({
   ]
 
   const subtotal = displayItems.reduce((acc, item) => acc + (item.unit_price * item.quantity), 0)
-  
-  // Calculate shipping if there are physical items
   const hasPhysicalItems = displayItems.some(item => !item.metadata?.is_booking && !item.metadata?.booking_date)
   const shippingTotal = hasPhysicalItems ? 99 : 0
   const grandTotal = subtotal + shippingTotal
 
   const orderDate = new Date().toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })
-  
+
   const itemRowsHtml = displayItems.map((item: any) => {
     const isSession = !!item.metadata?.booking_date || !!item.metadata?.is_booking
     return `
@@ -140,9 +138,7 @@ async function sendConfirmationEmail({
       </div>
 
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 10px;">
-        <tbody>
-          ${itemRowsHtml}
-        </tbody>
+        <tbody>${itemRowsHtml}</tbody>
       </table>
 
       <div style="border-top: 2px solid #E1DFE3; padding-top: 20px; margin-bottom: 10px;">
@@ -155,8 +151,7 @@ async function sendConfirmationEmail({
           <tr>
             <td style="font-size: 14px; color: #665D6B; padding: 5px 0;">Shipping: Standard Delivery</td>
             <td style="font-size: 14px; color: #2C1E36; text-align: right; padding: 5px 0; font-weight: 500;">₹${shippingTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-          </tr>
-          ` : ''}
+          </tr>` : ''}
           <tr>
             <td style="font-size: 16px; color: #2C1E36; padding: 14px 0 5px; font-weight: 800; border-top: 1px solid #2C1E36;">Total:</td>
             <td style="font-size: 20px; color: #2C1E36; text-align: right; padding: 14px 0 5px; font-weight: 800; border-top: 1px solid #2C1E36;">₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -199,6 +194,11 @@ async function sendConfirmationEmail({
     </div>
   ` : ""
 
+  const adminEmails = [...new Set([
+    process.env.ADMIN_NOTIFICATION_EMAIL,
+    process.env.GOOGLE_SMTP_USER,
+  ].filter(Boolean) as string[])]
+
   const notifications: any[] = [
     {
       to: email,
@@ -219,15 +219,7 @@ async function sendConfirmationEmail({
         pdf_attachments: pdfAttachments,
       },
     },
-  ]
-
-  const adminEmails = [...new Set([
-    process.env.ADMIN_NOTIFICATION_EMAIL,
-    process.env.GOOGLE_SMTP_USER,
-  ].filter(Boolean) as string[])]
-
-  for (const adminEmail of adminEmails) {
-    notifications.push({
+    ...adminEmails.map((adminEmail) => ({
       to: adminEmail,
       channel: "email",
       template: "booking-admin-notification",
@@ -243,8 +235,8 @@ async function sendConfirmationEmail({
           ${commonBodySuffix}
         `,
       },
-    })
-  }
+    })),
+  ]
 
   await notificationService.createNotifications(notifications)
 }
@@ -288,7 +280,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const taxModuleService = req.scope.resolve(Modules.TAX) as any
     const salesChannelModuleService = req.scope.resolve(Modules.SALES_CHANNEL) as any
 
-    // Idempotency — if an order already exists for this Razorpay payment, just resend the email
+    // Idempotency — if order already exists, just resend the email
     const [existingOrders] = await orderModuleService.listAndCountOrders(
       { metadata: { razorpay_id: razorpayPaymentId } },
       { select: ["id", "display_id", "metadata"] }
@@ -311,24 +303,21 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(200).json({ success: true, orderId: existing.id, message: "Order already existed — confirmation email resent." })
     }
 
-    // 1. Get default region
     const [regions] = await regionModuleService.listAndCountRegions({})
     const region = regions[0]
     if (!region) {
-      console.error("[Booking Order] No regions found.")
+      console.error("[Booking Confirmation] No regions found.")
       return res.status(400).json({ message: "No region found" })
     }
 
-    // 2. Resolve default sales channel
     let salesChannelId: string | undefined
     try {
       const [salesChannels] = await salesChannelModuleService.listAndCountSalesChannels({})
       if (salesChannels.length > 0) salesChannelId = salesChannels[0].id
     } catch (e: any) {
-      console.warn("[Booking Order] Could not resolve sales channel:", e.message)
+      console.warn("[Booking Confirmation] Could not resolve sales channel:", e.message)
     }
 
-    // 3. Resolve or create customer
     let customerId: string | undefined
     try {
       const [customers] = await customerModuleService.listAndCountCustomers({ email })
@@ -336,157 +325,80 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         customerId = customers[0].id
       } else {
         const newCustomer = await customerModuleService.createCustomers({
-          email,
-          first_name: firstName,
-          last_name: lastName || undefined,
-          phone: phone || undefined,
+          email, first_name: firstName, last_name: lastName || undefined, phone: phone || undefined,
         })
         customerId = newCustomer.id
-        console.log(`[Booking Order] Created new customer ${customerId} for ${email}`)
+        console.log(`[Booking Confirmation] Created new customer ${customerId} for ${email}`)
       }
     } catch (e: any) {
-      console.warn("[Booking Order] Could not resolve/create customer:", e.message)
+      console.warn("[Booking Confirmation] Could not resolve/create customer:", e.message)
     }
 
-    // 4. Create order — use real address when physical products present
     const hasPhysicalItems = (items ?? []).some(i => !i.metadata?.is_booking && !i.metadata?.booking_date)
     const addressPayload = hasPhysicalItems && shippingAddress?.address1
-      ? {
-          first_name: firstName,
-          last_name: lastName || "Customer",
-          phone: phone || "",
-          address_1: shippingAddress.address1,
-          city: shippingAddress.city,
-          province: shippingAddress.state || "",
-          country_code: countryCode || "in",
-          postal_code: shippingAddress.postalCode,
-        }
-      : {
-          first_name: firstName,
-          last_name: lastName || "Customer",
-          phone: phone || "",
-          address_1: "Digital Delivery",
-          city: "Online",
-          country_code: countryCode || "in",
-          postal_code: "000000",
-        }
+      ? { first_name: firstName, last_name: lastName || "Customer", phone: phone || "", address_1: shippingAddress.address1, city: shippingAddress.city, province: shippingAddress.state || "", country_code: countryCode || "in", postal_code: shippingAddress.postalCode }
+      : { first_name: firstName, last_name: lastName || "Customer", phone: phone || "", address_1: "Digital Delivery", city: "Online", country_code: countryCode || "in", postal_code: "000000" }
 
     const order = await orderModuleService.createOrders({
-      region_id: region.id,
-      sales_channel_id: salesChannelId,
-      customer_id: customerId,
-      email,
+      region_id: region.id, sales_channel_id: salesChannelId, customer_id: customerId, email,
       currency_code: region.currency_code || "inr",
-      shipping_address: addressPayload,
-      billing_address: addressPayload,
-      metadata: {
-        is_session: true,
-        razorpay_id: razorpayPaymentId,
-        booking_date: bookingDate,
-        booking_time: bookingTime,
-        cal_booking_id: calBookingId,
-        cal_meet_url: calMeetUrl,
-        cal_event_slug: eventSlug,
-      },
+      shipping_address: addressPayload, billing_address: addressPayload,
+      metadata: { is_session: true, razorpay_id: razorpayPaymentId, booking_date: bookingDate, booking_time: bookingTime, cal_booking_id: calBookingId, cal_meet_url: calMeetUrl, cal_event_slug: eventSlug },
     })
 
-    console.log(`[Booking Order] Created order ${order.id} for ${email}`)
+    console.log(`[Booking Confirmation] Created order ${order.id} for ${email}`)
 
-    // 4. Add line items
     if (items?.length) {
       await orderModuleService.createOrderLineItems(order.id, items.map(item => ({
-        title: item.title,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        requires_shipping: !item.metadata?.is_booking,
-        is_discountable: false,
+        title: item.title, quantity: item.quantity, unit_price: item.unit_price,
+        requires_shipping: !item.metadata?.is_booking, is_discountable: false,
         metadata: { ...item.metadata, razorpay_id: razorpayPaymentId },
       })))
     } else {
-      await orderModuleService.createOrderLineItems(order.id, [
-        {
-          title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
-          quantity: 1,
-          unit_price: price || 0,
-          requires_shipping: false,
-          is_discountable: false,
-          metadata: { booking_date: bookingDate, booking_time: bookingTime, razorpay_id: razorpayPaymentId, variant_id: variantId },
-        },
-      ])
+      await orderModuleService.createOrderLineItems(order.id, [{
+        title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
+        quantity: 1, unit_price: price || 0, requires_shipping: false, is_discountable: false,
+        metadata: { booking_date: bookingDate, booking_time: bookingTime, razorpay_id: razorpayPaymentId, variant_id: variantId },
+      }])
     }
 
-    // 4b. Auto-add gift hamper — same logic as the cart subscriber but applied
-    //     to the booking order which bypasses the Medusa cart entirely.
     let hamperGiftTitle: string | null = null
     try {
       const query = req.scope.resolve(ContainerRegistrationKeys.QUERY) as any
       const { data: hamperProducts } = await query.graph({
-        entity: "product",
-        fields: ["id", "variants.id", "metadata", "title"],
+        entity: "product", fields: ["id", "variants.id", "metadata", "title"],
         filters: { status: "published", tags: { value: "gift-hamper" } },
       })
-
       const hamperTiers = (hamperProducts ?? [])
         .filter((p: any) => p.metadata?.hamper_threshold != null && p.variants?.[0]?.id)
-        .map((p: any) => ({
-          productId: p.id,
-          variantId: p.variants[0].id,
-          threshold: Number(p.metadata.hamper_threshold),
-          title: p.title,
-          gift_label: p.metadata?.gift_label as string | undefined,
-        }))
+        .map((p: any) => ({ productId: p.id, variantId: p.variants[0].id, threshold: Number(p.metadata.hamper_threshold), title: p.title, gift_label: p.metadata?.gift_label }))
         .filter((t: any) => !isNaN(t.threshold))
         .sort((a: any, b: any) => b.threshold - a.threshold)
-
-      const sessionPrice = price || 0
-      const qualifiedTier = hamperTiers.find((t: any) => sessionPrice >= t.threshold) ?? null
-
+      const qualifiedTier = hamperTiers.find((t: any) => (price || 0) >= t.threshold) ?? null
       if (qualifiedTier) {
-        await orderModuleService.createOrderLineItems(order.id, [
-          {
-            title: `🎁 ${qualifiedTier.title}`,
-            quantity: 1,
-            unit_price: 0,
-            requires_shipping: true,
-            is_discountable: false,
-            metadata: { is_auto_gift: true, hamper_product_id: qualifiedTier.productId },
-          },
-        ])
+        await orderModuleService.createOrderLineItems(order.id, [{
+          title: `🎁 ${qualifiedTier.title}`, quantity: 1, unit_price: 0, requires_shipping: true,
+          is_discountable: false, metadata: { is_auto_gift: true, hamper_product_id: qualifiedTier.productId },
+        }])
         hamperGiftTitle = qualifiedTier.gift_label || qualifiedTier.title
-        console.log(`[Booking Order] Gift hamper "${qualifiedTier.title}" added to order ${order.id} (session price: ${sessionPrice} >= threshold: ${qualifiedTier.threshold})`)
-      } else {
-        console.log(`[Booking Order] No hamper tier qualifies for session price ${sessionPrice}`)
+        console.log(`[Booking Confirmation] Gift hamper "${qualifiedTier.title}" added to order ${order.id}`)
       }
     } catch (hamperErr: any) {
-      console.error(`[Booking Order] Could not add gift hamper (non-blocking):`, hamperErr.message)
+      console.error(`[Booking Confirmation] Could not add gift hamper:`, hamperErr.message)
     }
 
-    // 5. Register payment collection
     try {
       const currencyCode = region.currency_code || "inr"
-      const paymentCollection = await paymentModuleService.createPaymentCollections({
-        currency_code: currencyCode,
-        amount: price || 0,
-        region_id: region.id,
-      })
-      const paymentSession = await paymentModuleService.createPaymentSession(paymentCollection.id, {
-        provider_id: "pp_system_default",
-        amount: price || 0,
-        currency_code: currencyCode,
-        data: { razorpay_payment_id: razorpayPaymentId },
-      })
+      const paymentCollection = await paymentModuleService.createPaymentCollections({ currency_code: currencyCode, amount: price || 0, region_id: region.id })
+      const paymentSession = await paymentModuleService.createPaymentSession(paymentCollection.id, { provider_id: "pp_system_default", amount: price || 0, currency_code: currencyCode, data: { razorpay_payment_id: razorpayPaymentId } })
       const payment = await paymentModuleService.authorizePaymentSession(paymentSession.id, {})
       await paymentModuleService.capturePayment({ payment_id: payment.id, amount: price || 0 })
-      await remoteLink.create({
-        [Modules.ORDER]: { order_id: order.id },
-        [Modules.PAYMENT]: { payment_collection_id: paymentCollection.id },
-      })
-      console.log(`[Booking Order] Payment captured and linked to order ${order.id}`)
+      await remoteLink.create({ [Modules.ORDER]: { order_id: order.id }, [Modules.PAYMENT]: { payment_collection_id: paymentCollection.id } })
+      console.log(`[Booking Confirmation] Payment captured and linked to order ${order.id}`)
     } catch (paymentError: any) {
-      console.error(`[Booking Order] Could not register payment for order ${order.id}:`, paymentError.message)
+      console.error(`[Booking Confirmation] Could not register payment:`, paymentError.message)
     }
 
-    // 6. Fetch tax lines for invoice
     let invoiceTaxLines: { rate: number }[] = []
     try {
       const [variants] = await productModuleService.listProductVariants({ id: variantId }, { relations: ["product"] })
@@ -499,58 +411,40 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         invoiceTaxLines = taxLines.map((t: any) => ({ rate: t.rate }))
       }
     } catch (taxErr: any) {
-      console.warn("[Booking Order] Could not fetch tax lines, using fallback rate:", taxErr.message)
+      console.warn("[Booking Confirmation] Could not fetch tax lines:", taxErr.message)
     }
 
-    // 7. Generate PDF invoice
     const invoiceOrder = {
       created_at: order.created_at || new Date().toISOString(),
       display_id: order.display_id || order.id,
-      shipping_address: {
-        first_name: firstName, last_name: lastName || "Customer",
-        address_1: "Digital Delivery", address_2: "",
-        city: "Online", postal_code: "000000",
-        phone: phone || "", province: null, country_code: countryCode || "in",
-      },
-      items: items?.length 
-        ? items.map(item => ({
-            title: item.title,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            adjustments: [],
-            tax_lines: [], // In multi-item, we'd ideally fetch all taxes, but for now we keep it simple or fallback
-            metadata: item.metadata || {},
-          }))
-        : [
-          {
-            title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`,
-            quantity: 1, unit_price: price || 0, adjustments: [],
-            tax_lines: invoiceTaxLines, metadata: { hs_code: "9983" },
-          },
-        ],
-      shipping_total: 0,
-      shipping_methods: [],
+      shipping_address: { first_name: firstName, last_name: lastName || "Customer", address_1: "Digital Delivery", address_2: "", city: "Online", postal_code: "000000", phone: phone || "", province: null, country_code: countryCode || "in" },
+      items: items?.length
+        ? items.map(item => ({ title: item.title, quantity: item.quantity, unit_price: item.unit_price, adjustments: [], tax_lines: [], metadata: item.metadata || {} }))
+        : [{ title: serviceTitle ? `${serviceTitle} - ${bookingDate} ${bookingTime}` : `Session Booking - ${bookingDate} ${bookingTime}`, quantity: 1, unit_price: price || 0, adjustments: [], tax_lines: invoiceTaxLines, metadata: { hs_code: "9983" } }],
+      shipping_total: 0, shipping_methods: [],
       payment_collections: [{ payments: [{ provider_id: "razorpay" }] }],
     }
 
-    const pdfBuffer = await generateInvoice(invoiceOrder)
-    const pdfBase64 = pdfBuffer.toString("base64")
+    let pdfBase64: string | null = null
+    try {
+      const pdfBuffer = await generateInvoice(invoiceOrder)
+      pdfBase64 = pdfBuffer.toString("base64")
+    } catch (pdfErr: any) {
+      console.error(`[Booking Confirmation] PDF generation failed:`, pdfErr.message)
+    }
 
-    // 8. Send confirmation emails + WhatsApp
     await sendConfirmationEmail({
       notificationService, email, firstName, lastName, phone,
       serviceTitle, bookingDate, bookingTime, price: price || 0,
       razorpayPaymentId, calMeetUrl, isPackage,
-      orderId: order.display_id || order.id, pdfBase64, hamperGiftTitle,
-      items, hasSession,
+      orderId: order.display_id || order.id, pdfBase64, hamperGiftTitle, items, hasSession,
     })
     sendBookingConfirmationWhatsApp({
-      phone, countryCode: countryCode || "in", firstName,
-      orderId: order.display_id || order.id,
+      phone, countryCode: countryCode || "in", firstName, orderId: order.display_id || order.id,
       serviceTitle, bookingDate, bookingTime, amount: price || 0, calMeetUrl,
     }).catch(err => console.error("[WhatsApp] Booking confirmation failed:", err.message))
 
-    console.log(`[Booking Confirmation] Email + WhatsApp sent successfully to ${email}`)
+    console.log(`[Booking Confirmation] Email + WhatsApp sent to ${email} for order ${order.display_id || order.id}`)
     return res.status(200).json({ success: true, orderId: order.id, message: "Booking recorded and email sent." })
   } catch (error: any) {
     console.error("[Booking Confirmation] Error:", error.message)

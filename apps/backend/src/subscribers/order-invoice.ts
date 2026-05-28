@@ -42,9 +42,20 @@ export default async function orderInvoiceHandler({
       return;
     }
 
+    console.log(`[Order Processing] Order #${order.display_id} (${data.id}) for ${order.email} — ${order.items?.length ?? 0} item(s)`)
+
     // 2. Generate PDF using pdfkit
-    const pdfBuffer = await generateInvoice(order);
-    const pdfBase64 = pdfBuffer.toString("base64");
+    let pdfBuffer: Buffer
+    let pdfBase64: string
+    try {
+      const pdfStart = Date.now()
+      pdfBuffer = await generateInvoice(order)
+      pdfBase64 = pdfBuffer.toString("base64")
+      console.log(`[Order Processing] PDF generated for #${order.display_id} in ${Date.now() - pdfStart}ms (${Math.round(pdfBuffer.length / 1024)}KB)`)
+    } catch (pdfErr: any) {
+      console.error(`[Order Processing] PDF generation failed for #${order.display_id}:`, pdfErr.message)
+      pdfBase64 = ""
+    }
 
     // 3. Send Notification with Attachment
     const storefrontUrl = process.env.STOREFRONT_URL || 'http://localhost:8001'
@@ -242,36 +253,40 @@ export default async function orderInvoiceHandler({
         process.env.GOOGLE_SMTP_USER,
       ].filter(Boolean) as string[])]
 
-      await (notificationService as any).createNotifications([
-        {
-          to: order.email,
-          channel: "email",
-          template: "order-placed",
-          data: {
-            subject: `Order Confirmed: #${order.display_id} - The Blissful Soul`,
-            html_body: clientHtmlBody,
-            pdf_attachments: [
-              {
-                content: pdfBase64,
-                encoding: "base64",
-                filename: `invoice_${order.display_id}.pdf`,
-                contentType: "application/pdf",
-              },
-            ],
+      const emailStart = Date.now()
+      try {
+        await (notificationService as any).createNotifications([
+          {
+            to: order.email,
+            channel: "email",
+            template: "order-placed",
+            data: {
+              subject: `Order Confirmed: #${order.display_id} - The Blissful Soul`,
+              html_body: clientHtmlBody,
+              pdf_attachments: pdfBase64 ? [
+                {
+                  content: pdfBase64,
+                  encoding: "base64",
+                  filename: `invoice_${order.display_id}.pdf`,
+                  contentType: "application/pdf",
+                },
+              ] : [],
+            },
           },
-        },
-        ...adminEmails.map((adminEmail) => ({
-          to: adminEmail,
-          channel: "email",
-          template: "order-placed-admin",
-          data: {
-            subject: `New order: #${order.display_id} from ${customerName}`,
-            html_body: adminHtmlBody,
-          },
-        })),
-      ]);
-      console.log(`[Order Processing] Client confirmation and admin alert sent for Order #${order.display_id}`);
-      console.log(`[Order Processing] Local PDF Invoice generated and email queued for Order #${order.display_id}`);
+          ...adminEmails.map((adminEmail) => ({
+            to: adminEmail,
+            channel: "email",
+            template: "order-placed-admin",
+            data: {
+              subject: `New order: #${order.display_id} from ${customerName}`,
+              html_body: adminHtmlBody,
+            },
+          })),
+        ])
+        console.log(`[Order Processing] Emails queued for #${order.display_id} in ${Date.now() - emailStart}ms — client: ${order.email} | admins: ${adminEmails.join(", ")}`)
+      } catch (emailErr: any) {
+        console.error(`[Order Processing] Email notification failed for #${order.display_id}:`, emailErr.message)
+      }
 
       // Send WhatsApp confirmation (non-blocking)
       const phone = order.shipping_address?.phone || ""
