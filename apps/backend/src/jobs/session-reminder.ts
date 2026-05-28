@@ -15,39 +15,61 @@ export default async function sessionReminderJob(container: MedusaContainer) {
   console.log(`[Reminder Job] Running at ${new Date().toISOString()}`);
 
   try {
-    // 1. Get all pending orders (metadata filter unsupported by Medusa v2 listOrders)
+    // 1. Get all orders (metadata filter unsupported by Medusa v2 listOrders)
+    // NOTE: No status filter — the reminder_sent flag prevents duplicate sends.
+    // shipping_address is a relation, not a scalar, so it must be in `relations`.
     const orders = await orderModuleService.listOrders(
-      { status: "pending" },
-      { select: ["id", "display_id", "email", "metadata", "shipping_address"], take: 200 }
+      {},
+      { relations: ["shipping_address"], take: 200 }
     );
 
     const sessionOrders = orders.filter((o: any) => o.metadata?.is_session)
     console.log(`[Reminder Job] Found ${sessionOrders.length} session order(s) to check.`)
 
     const now = new Date();
-    // Target window: 45 to 75 minutes from now
-    const windowStart = new Date(now.getTime() + 45 * 60 * 1000);
-    const windowEnd = new Date(now.getTime() + 75 * 60 * 1000);
+    // Target window: 44 to 76 minutes from now (extra 1 min buffer on each side)
+    const windowStart = new Date(now.getTime() + 44 * 60 * 1000);
+    const windowEnd = new Date(now.getTime() + 76 * 60 * 1000);
+
+    console.log(`[Reminder Job] Now (IST): ${now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
+    console.log(`[Reminder Job] Window: ${windowStart.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} → ${windowEnd.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
 
     for (const order of sessionOrders) {
       // Skip non-session orders and already-reminded orders
       if (!order.metadata?.is_session) continue;
-      if (order.metadata?.reminder_sent) continue;
+      if (order.metadata?.reminder_sent) {
+        console.log(`[Reminder Job] Order #${order.display_id} — already reminded, skipping`)
+        continue;
+      }
 
       const bookingDate = order.metadata?.booking_date; // e.g. "2026-04-06"
       const bookingTime = order.metadata?.booking_time; // e.g. "10:30 AM"
 
-      if (!bookingDate || !bookingTime) continue;
+      if (!bookingDate || !bookingTime) {
+        console.log(`[Reminder Job] Order #${order.display_id} — no booking_date/time in metadata, skipping`)
+        continue;
+      }
 
       try {
         // Parse "10:30 AM" into hours and minutes
-        const [time, modifier] = bookingTime.split(' ');
-        let [hours, minutes] = time.split(':').map(Number);
+        const parts = bookingTime.trim().split(' ')
+        const timeParts = (parts[0] || '').split(':').map(Number)
+        let hours = timeParts[0]
+        const minutes = timeParts[1]
+        const modifier = parts[1]?.toUpperCase()
+
+        if (isNaN(hours) || isNaN(minutes)) {
+          console.warn(`[Reminder Job] Unrecognised time format "${bookingTime}" for Order #${order.display_id} — skipping`)
+          continue
+        }
+
         if (modifier === 'PM' && hours < 12) hours += 12;
         if (modifier === 'AM' && hours === 12) hours = 0;
 
         // Create Date object for session start explicitly in IST (+05:30)
         const sessionDateUTC = new Date(`${bookingDate}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00+05:30`);
+
+        console.log(`[Reminder Job] Order #${order.display_id} — session: ${bookingDate} ${bookingTime} (parsed: ${sessionDateUTC.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}) | in window: ${sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd}`)
 
         // Check if session falls within our 1-hour reminder window
         if (sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd) {
