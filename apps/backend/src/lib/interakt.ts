@@ -273,15 +273,16 @@ export async function sendSessionReminderWhatsApp({
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
-  const bodyValues = [firstName, bookingTime, bookingDate]
-  if (calMeetUrl) bodyValues.push(calMeetUrl)
-
   await sendWhatsAppTemplate({
     countryCode: dialCode,
     phoneNumber: number,
     callbackData: `session_reminder_${orderId}`,
     type: "Template",
-    template: { name: "session_reminder", languageCode: "en", bodyValues },
+    template: {
+      name: "session_reminder",
+      languageCode: "en",
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || ""],
+    },
   })
 }
 
