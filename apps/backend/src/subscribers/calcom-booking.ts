@@ -1,4 +1,5 @@
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
+import { toInternationalPhone } from "../lib/phone"
 
 export default async function calcomBookingHandler({
   event: { data },
@@ -72,17 +73,20 @@ export default async function calcomBookingHandler({
 
           const attendeeName = `${metadata.patient_firstName || order.shipping_address?.first_name || ''} ${metadata.patient_lastName || order.shipping_address?.last_name || ''}`.trim()
           const attendeeEmail = metadata.patient_email || order.email
-          const phone = metadata.patient_phone || order.shipping_address?.phone || ''
-
+          const rawPhone = metadata.patient_phone || order.shipping_address?.phone || ''
+          const countryCode = order.shipping_address?.country_code || 'in'
+          const attendeePhone = rawPhone ? toInternationalPhone(rawPhone, countryCode) : undefined
           const bookingPayload: any = {
             start: metadata.slot_iso_start,
             attendee: {
               name: attendeeName || "Valued Client",
               email: attendeeEmail,
               timeZone: "Asia/Kolkata",
+              ...(attendeePhone ? { phoneNumber: attendeePhone } : {}),
             },
-            notes: `Phone: ${phone} | Order ID: ${order.display_id}`,
-            bookingFieldsResponses: { title: "Session Booking" },
+            bookingFieldsResponses: {
+              title: order.display_id ? `Order #${order.display_id}` : "Session Booking",
+            },
           }
 
           if (eventTypeId) {

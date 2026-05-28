@@ -1,6 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import * as crypto from "crypto"
+import { toInternationalPhone } from "../../../lib/phone"
 
 const CAL_API_BASE = "https://api.cal.com/v2"
 const CAL_TIMEOUT_MS = 10000
@@ -10,6 +11,7 @@ function verifySignature(rawBody: string, signature: string, secret: string): bo
   return expected === signature
 }
 
+
 async function createCalComBooking(params: {
   apiKey: string
   username: string
@@ -17,8 +19,9 @@ async function createCalComBooking(params: {
   slotIsoStart: string
   attendeeName: string
   attendeeEmail: string
-  phone: string
-  orderId: string | number
+  phone?: string
+  countryCode?: string
+  orderId?: string | number
 }): Promise<{ uid?: string; meetUrl?: string }> {
   // Resolve eventTypeId from slug
   let eventTypeId: number | undefined
@@ -49,9 +52,11 @@ async function createCalComBooking(params: {
       name: params.attendeeName,
       email: params.attendeeEmail,
       timeZone: "Asia/Kolkata",
+      ...(params.phone ? { phoneNumber: toInternationalPhone(params.phone, params.countryCode || "in") } : {}),
     },
-    notes: `Phone: ${params.phone} | Order ID: ${params.orderId}`,
-    bookingFieldsResponses: { title: "Session Booking" },
+    bookingFieldsResponses: {
+      title: params.orderId ? `Order #${params.orderId}` : "Session Booking",
+    },
   }
 
   if (eventTypeId) {
@@ -288,7 +293,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
             slotIsoStart,
             attendeeName: `${firstName} ${lastName}`.trim(),
             attendeeEmail: email,
-            phone,
+            phone: phone || undefined,
+            countryCode: countryCode || "in",
             orderId: order.display_id || order.id,
           })
 
