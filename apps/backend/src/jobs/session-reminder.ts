@@ -35,8 +35,9 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     console.log(`[Reminder Job] Window: ${windowStart.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} → ${windowEnd.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
 
     for (const order of sessionOrders) {
-      // Skip non-session orders and already-reminded orders
+      // Skip non-session, cancelled, and already-reminded orders
       if (!order.metadata?.is_session) continue;
+      if (order.status === "cancelled") continue;
       if (order.metadata?.reminder_sent) {
         console.log(`[Reminder Job] Order #${order.display_id} — already reminded, skipping`)
         continue;
