@@ -48,7 +48,12 @@ async function sendWhatsAppTemplate(payload: InteraktTemplatePayload): Promise<v
 function normalisePhone(phone: string, countryCode: string): { dialCode: string; number: string } {
   const isoToDialCode: Record<string, string> = { in: "91", us: "1", gb: "44" }
   const dialCode = (isoToDialCode[countryCode.toLowerCase()] ?? countryCode.replace(/\D/g, "")) || "91"
-  const number = phone.replace(/^\+/, "").replace(new RegExp(`^${dialCode}`), "").replace(/\D/g, "")
+  const digits = phone.replace(/^\+/, "").replace(/\D/g, "")
+  // Only strip the dial code prefix if the remaining digits are still a full local number (≥10 digits).
+  // Without this guard, a 10-digit Indian number like "9136235571" would have "91" stripped,
+  // leaving only 8 digits which Interakt rejects as invalid.
+  const stripped = digits.startsWith(dialCode) ? digits.slice(dialCode.length) : digits
+  const number = stripped.length >= 10 ? stripped : digits
   return { dialCode, number }
 }
 
