@@ -20,7 +20,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     // shipping_address is a relation, not a scalar, so it must be in `relations`.
     const orders = await orderModuleService.listOrders(
       {},
-      { relations: ["shipping_address"], take: 200 }
+      { relations: ["shipping_address", "items"], take: 200 }
     );
 
     const sessionOrders = orders.filter((o: any) => o.metadata?.is_session)
@@ -112,7 +112,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
           // 1. Send to Customer (email + WhatsApp)
           await notificationService.createNotifications([reminderData]);
           sendSessionReminderWhatsApp({
-            phone: order.shipping_address?.phone || "",
+            phone: order.items?.[0]?.metadata?.patient_phone || order.shipping_address?.phone || "",
             countryCode: order.shipping_address?.country_code || "in",
             firstName: order.shipping_address?.first_name || "Customer",
             bookingDate,

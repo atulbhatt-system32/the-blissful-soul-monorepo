@@ -289,7 +289,7 @@ export default async function orderInvoiceHandler({
       }
 
       // Send WhatsApp confirmation (non-blocking)
-      const phone = order.shipping_address?.phone || ""
+      const phone = (isSession ? items[0]?.metadata?.patient_phone : null) || order.shipping_address?.phone || ""
       if (phone) {
         const firstName = order.shipping_address?.first_name || "Customer"
         const countryCode = order.shipping_address?.country_code || "in"

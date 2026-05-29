@@ -24,7 +24,7 @@ async function findOrder(req: MedusaRequest, bookingUid: string, attendeeEmail: 
     entity: "order",
     fields: ["*", "items.*", "shipping_address.*"],
     filters: bookingUid
-      ? { metadata: { cal_booking_id: bookingUid } }
+      ? { metadata: { cal_booking_uid: bookingUid } }
       : { email: attendeeEmail, metadata: { is_session: true } },
   })
   return orders?.[0] || null
@@ -125,7 +125,7 @@ async function handleCancelled(req: MedusaRequest, res: MedusaResponse, body: an
     }
 
     // 3. Send WhatsApp cancellation (non-blocking)
-    const phone = order.shipping_address?.phone || ""
+    const phone = order.items?.[0]?.metadata?.patient_phone || order.shipping_address?.phone || ""
     if (phone) {
       sendSessionCancellationWhatsApp({
         phone,
@@ -186,7 +186,7 @@ async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: 
       id: order.id,
       metadata: {
         ...order.metadata,
-        cal_booking_id: newBookingUid,
+        cal_booking_uid: newBookingUid,
         booking_date: newDate,
         booking_time: newTime,
         rescheduled_at: new Date().toISOString(),
@@ -239,7 +239,7 @@ async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: 
     }
 
     // Send WhatsApp reschedule (non-blocking)
-    const phone = order.shipping_address?.phone || ""
+    const phone = order.items?.[0]?.metadata?.patient_phone || order.shipping_address?.phone || ""
     if (phone) {
       sendSessionRescheduledWhatsApp({
         phone,
