@@ -226,7 +226,19 @@ export default async function orderInvoiceHandler({
 
       </div>`
 
-      const clientHtmlBody = `
+      const clientHtmlBody = isSession ? `
+        ${commonBodyPrefix}
+        <!-- ═══ SESSION TITLE ═══ -->
+        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Session Booked: #${order.display_id}</h2>
+        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+          Hi ${order.shipping_address?.first_name || 'Customer'}, your session has been confirmed! We look forward to connecting with you.
+        </p>
+        ${sessionDetailsHtml}
+        ${commonBodySuffix.replace(
+          'Your GST invoice is attached to this email.<br/>\n            May the energy of these crystals find you well.',
+          'Your invoice is attached to this email.<br/>\n            We look forward to your healing journey.'
+        )}
+      ` : `
         ${commonBodyPrefix}
         <!-- ═══ CLIENT ORDER TITLE ═══ -->
         <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${order.display_id}</h2>
@@ -240,9 +252,9 @@ export default async function orderInvoiceHandler({
       const adminHtmlBody = `
         ${commonBodyPrefix}
         <!-- ═══ ADMIN ORDER TITLE ═══ -->
-        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">New order: #${order.display_id}</h2>
+        <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">${isSession ? 'New Session Booking' : 'New order'}: #${order.display_id}</h2>
         <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
-          You've received a new order from ${customerName}:
+          You've received a new ${isSession ? 'session booking' : 'order'} from ${customerName}:
         </p>
         ${sessionDetailsHtml}
         ${commonBodySuffix}
@@ -261,7 +273,7 @@ export default async function orderInvoiceHandler({
             channel: "email",
             template: "order-placed",
             data: {
-              subject: `Order Confirmed: #${order.display_id} - The Blissful Soul`,
+              subject: isSession ? `Session Booked: #${order.display_id} - The Blissful Soul` : `Order Confirmed: #${order.display_id} - The Blissful Soul`,
               html_body: clientHtmlBody,
               pdf_attachments: pdfBase64 ? [
                 {
@@ -278,7 +290,7 @@ export default async function orderInvoiceHandler({
             channel: "email",
             template: "order-placed-admin",
             data: {
-              subject: `New order: #${order.display_id} from ${customerName}`,
+              subject: isSession ? `New Session Booking: #${order.display_id} from ${customerName}` : `New order: #${order.display_id} from ${customerName}`,
               html_body: adminHtmlBody,
             },
           })),
