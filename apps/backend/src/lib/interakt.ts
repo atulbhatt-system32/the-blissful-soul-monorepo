@@ -45,13 +45,35 @@ async function sendWhatsAppTemplate(payload: InteraktTemplatePayload): Promise<v
   }
 }
 
+// Dial codes sorted longest-first so "+971" is matched before "+97" or "+9" (prefix ambiguity).
+const KNOWN_DIAL_CODES = [
+  "1", "7", "20", "27", "30", "31", "32", "33", "34", "36", "39", "40", "41",
+  "43", "44", "45", "46", "47", "48", "49", "51", "52", "54", "55", "57", "60",
+  "61", "62", "63", "64", "65", "66", "81", "82", "84", "86", "90", "91", "92",
+  "94", "98", "212", "234", "254", "880", "960", "965", "966", "968", "971",
+  "973", "974", "977",
+].sort((a, b) => b.length - a.length)
+
 function normalisePhone(phone: string, countryCode: string): { dialCode: string; number: string } {
+  const digits = phone.replace(/^\+/, "").replace(/\D/g, "")
+
+  // When the stored phone has an explicit "+" prefix, parse the dial code from the
+  // number itself — do not trust the region country code, which is always "in" for
+  // this store regardless of the customer's actual country.
+  if (phone.trim().startsWith("+") && digits.length > 0) {
+    for (const code of KNOWN_DIAL_CODES) {
+      if (digits.startsWith(code)) {
+        return { dialCode: code, number: digits.slice(code.length) }
+      }
+    }
+    // Unrecognised dial code — return as-is so Interakt can surface the error.
+    return { dialCode: "", number: digits }
+  }
+
+  // Legacy path: phone stored without "+" prefix — derive dial code from region.
   const isoToDialCode: Record<string, string> = { in: "91", us: "1", gb: "44" }
   const dialCode = (isoToDialCode[countryCode.toLowerCase()] ?? countryCode.replace(/\D/g, "")) || "91"
-  const digits = phone.replace(/^\+/, "").replace(/\D/g, "")
-  // Only strip the dial code prefix if the remaining digits are still a full local number (≥10 digits).
-  // Without this guard, a 10-digit Indian number like "9136235571" would have "91" stripped,
-  // leaving only 8 digits which Interakt rejects as invalid.
+  // Only strip dial code prefix if the remainder is still a full local number (≥10 digits).
   const stripped = digits.startsWith(dialCode) ? digits.slice(dialCode.length) : digits
   const number = stripped.length >= 10 ? stripped : digits
   return { dialCode, number }

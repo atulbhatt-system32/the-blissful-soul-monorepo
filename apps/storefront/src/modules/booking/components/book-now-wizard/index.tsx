@@ -1,6 +1,53 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+
+const DIAL_CODES = [
+  { flag: "🇮🇳", code: "+91",  name: "India" },
+  { flag: "🇺🇸", code: "+1",   name: "USA / Canada" },
+  { flag: "🇬🇧", code: "+44",  name: "United Kingdom" },
+  { flag: "🇦🇺", code: "+61",  name: "Australia" },
+  { flag: "🇳🇿", code: "+64",  name: "New Zealand" },
+  { flag: "🇸🇬", code: "+65",  name: "Singapore" },
+  { flag: "🇲🇾", code: "+60",  name: "Malaysia" },
+  { flag: "🇦🇪", code: "+971", name: "UAE" },
+  { flag: "🇸🇦", code: "+966", name: "Saudi Arabia" },
+  { flag: "🇶🇦", code: "+974", name: "Qatar" },
+  { flag: "🇰🇼", code: "+965", name: "Kuwait" },
+  { flag: "🇧🇭", code: "+973", name: "Bahrain" },
+  { flag: "🇴🇲", code: "+968", name: "Oman" },
+  { flag: "🇿🇦", code: "+27",  name: "South Africa" },
+  { flag: "🇰🇪", code: "+254", name: "Kenya" },
+  { flag: "🇩🇪", code: "+49",  name: "Germany" },
+  { flag: "🇫🇷", code: "+33",  name: "France" },
+  { flag: "🇮🇹", code: "+39",  name: "Italy" },
+  { flag: "🇪🇸", code: "+34",  name: "Spain" },
+  { flag: "🇳🇱", code: "+31",  name: "Netherlands" },
+  { flag: "🇧🇪", code: "+32",  name: "Belgium" },
+  { flag: "🇨🇭", code: "+41",  name: "Switzerland" },
+  { flag: "🇸🇪", code: "+46",  name: "Sweden" },
+  { flag: "🇳🇴", code: "+47",  name: "Norway" },
+  { flag: "🇩🇰", code: "+45",  name: "Denmark" },
+  { flag: "🇵🇱", code: "+48",  name: "Poland" },
+  { flag: "🇷🇺", code: "+7",   name: "Russia" },
+  { flag: "🇨🇳", code: "+86",  name: "China" },
+  { flag: "🇯🇵", code: "+81",  name: "Japan" },
+  { flag: "🇰🇷", code: "+82",  name: "South Korea" },
+  { flag: "🇮🇩", code: "+62",  name: "Indonesia" },
+  { flag: "🇵🇭", code: "+63",  name: "Philippines" },
+  { flag: "🇹🇭", code: "+66",  name: "Thailand" },
+  { flag: "🇻🇳", code: "+84",  name: "Vietnam" },
+  { flag: "🇧🇩", code: "+880", name: "Bangladesh" },
+  { flag: "🇵🇰", code: "+92",  name: "Pakistan" },
+  { flag: "🇱🇰", code: "+94",  name: "Sri Lanka" },
+  { flag: "🇳🇵", code: "+977", name: "Nepal" },
+  { flag: "🇲🇻", code: "+960", name: "Maldives" },
+  { flag: "🇧🇷", code: "+55",  name: "Brazil" },
+  { flag: "🇲🇽", code: "+52",  name: "Mexico" },
+  { flag: "🇦🇷", code: "+54",  name: "Argentina" },
+  { flag: "🇨🇴", code: "+57",  name: "Colombia" },
+  { flag: "🇨🇦", code: "+1",   name: "Canada" },
+]
 import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
 import MedusaCheckoutPayment from "@modules/booking/components/book-now-wizard/payment-wrapper"
@@ -66,6 +113,8 @@ export default function BookNowClient({
     email: "",
     phone: ""
   })
+  const [dialCode, setDialCode] = useState("+91")
+  const [localPhone, setLocalPhone] = useState("")
 
   const [shippingAddress, setShippingAddress] = useState({
     address1: "",
@@ -253,8 +302,8 @@ export default function BookNowClient({
         alert("Please enter a valid email address.")
         return
       }
-      if (details.phone.length < 10) {
-        alert("Please enter a valid phone number (at least 10 digits).")
+      if (localPhone.replace(/\D/g, "").length < 7) {
+        alert("Please enter a valid phone number.")
         return
       }
       addSessionToCartAndProceed()
@@ -287,7 +336,7 @@ export default function BookNowClient({
 
   const isStep1Valid = selectedService && selectedCategory && selectedEmployee && (isPackage || selectedDate)
   const isStep2Valid = selectedTime !== ""
-  const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && details.phone.trim() !== ""
+  const isStep3Valid = details.firstName.trim() !== "" && details.lastName.trim() !== "" && details.email.trim() !== "" && localPhone.trim() !== ""
 
   const sessionPrice = (() => {
     if (!serviceObj) return 0
@@ -585,13 +634,33 @@ export default function BookNowClient({
             
             <div>
               <label className="block text-gray-600 text-[11px] uppercase tracking-wider font-bold mb-1">Phone Number *</label>
-              <input 
-                type="tel" 
-                placeholder="+91 00000 00000"
-                value={details.phone}
-                onChange={(e) => setDetails({...details, phone: e.target.value})}
-                className="w-full border border-gray-200 rounded-md py-2.5 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-sm"
-              />
+              <div className="flex border border-gray-200 rounded-md overflow-hidden focus-within:border-[#2C1E36]/30">
+                <select
+                  value={dialCode}
+                  onChange={(e) => {
+                    setDialCode(e.target.value)
+                    setDetails({ ...details, phone: e.target.value + localPhone })
+                  }}
+                  className="bg-gray-50 border-r border-gray-200 text-sm text-gray-700 px-2 py-2.5 focus:outline-none cursor-pointer"
+                  style={{ maxWidth: "7.5rem" }}
+                >
+                  {DIAL_CODES.map((c) => (
+                    <option key={`${c.code}-${c.name}`} value={c.code}>
+                      {c.flag} {c.code} {c.name}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="tel"
+                  placeholder="00000 00000"
+                  value={localPhone}
+                  onChange={(e) => {
+                    setLocalPhone(e.target.value)
+                    setDetails({ ...details, phone: dialCode + e.target.value })
+                  }}
+                  className="flex-1 py-2.5 px-3 focus:outline-none text-sm"
+                />
+              </div>
             </div>
           </div>
 
