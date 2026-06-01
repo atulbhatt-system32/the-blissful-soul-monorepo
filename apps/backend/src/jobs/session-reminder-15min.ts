@@ -2,7 +2,7 @@ import {
   MedusaContainer
 } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
-import { sendSessionReminderWhatsApp } from "../lib/interakt";
+import { sendSessionReminder15MinWhatsApp } from "../lib/interakt";
 
 /**
  * Scheduled job to send session reminders 15 minutes before the booking.
@@ -103,7 +103,7 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
 
           // 1. Send to Customer (email + WhatsApp)
           await notificationService.createNotifications([reminderData]);
-          sendSessionReminderWhatsApp({
+          sendSessionReminder15MinWhatsApp({
             phone: order.items?.[0]?.metadata?.patient_phone || order.shipping_address?.phone || "",
             countryCode: order.shipping_address?.country_code || "in",
             firstName: order.shipping_address?.first_name || "Customer",

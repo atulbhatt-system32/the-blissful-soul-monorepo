@@ -314,6 +314,47 @@ export async function sendSessionReminderWhatsApp({
 }
 
 /**
+ * Session reminder 15 minutes before.
+ *
+ * Template "session_reminder_15min" body params:
+ *   {{1}} – customer first name
+ *   {{2}} – session time  (e.g. "10:30 AM")
+ *   {{3}} – session date  (e.g. "2026-05-25")
+ *   {{4}} – meeting link
+ */
+export async function sendSessionReminder15MinWhatsApp({
+  phone,
+  countryCode,
+  firstName,
+  bookingDate,
+  bookingTime,
+  orderId,
+  calMeetUrl,
+}: {
+  phone: string
+  countryCode: string
+  firstName: string
+  bookingDate: string
+  bookingTime: string
+  orderId: string | number
+  calMeetUrl?: string
+}): Promise<void> {
+  const { dialCode, number } = normalisePhone(phone, countryCode)
+
+  await sendWhatsAppTemplate({
+    countryCode: dialCode,
+    phoneNumber: number,
+    callbackData: `session_reminder_15min_${orderId}`,
+    type: "Template",
+    template: {
+      name: "session_reminder_15min",
+      languageCode: "en",
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || ""],
+    },
+  })
+}
+
+/**
  * Session rescheduled notification (admin via Cal.com).
  *
  * Template "session_rescheduled" body params:
