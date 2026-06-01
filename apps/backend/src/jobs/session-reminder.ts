@@ -20,7 +20,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     // shipping_address is a relation, not a scalar, so it must be in `relations`.
     const orders = await orderModuleService.listOrders(
       {},
-      { relations: ["shipping_address", "items"], take: 200 }
+      { select: ["id", "display_id", "status", "email", "metadata"], relations: ["shipping_address", "items"], take: 200 }
     );
 
     const sessionOrders = orders.filter((o: any) => o.metadata?.is_session)

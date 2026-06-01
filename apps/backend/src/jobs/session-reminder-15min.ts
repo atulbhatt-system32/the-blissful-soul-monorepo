@@ -18,7 +18,7 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
   try {
     const orders = await orderModuleService.listOrders(
       {},
-      { relations: ["shipping_address", "items"], take: 200 }
+      { select: ["id", "display_id", "status", "email", "metadata"], relations: ["shipping_address", "items"], take: 200 }
     );
 
     const sessionOrders = orders.filter((o: any) => o.metadata?.is_session)
