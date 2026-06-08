@@ -55,7 +55,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
           <ProductInfo product={product} strapiContent={strapiContent} />
         </div>
-        <div className="block w-full relative order-first small:order-none">
+        <div className="flex-1 min-w-0 w-full relative order-first small:order-none">
           <ImageGallery images={images} />
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
