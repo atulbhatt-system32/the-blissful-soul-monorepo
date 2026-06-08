@@ -47,15 +47,6 @@
       "type": "boolean",
       "default": true
     },
-    "show_announcements": {
-      "type": "boolean",
-      "default": true
-    },
-    "announcements": {
-      "type": "component",
-      "component": "shared.announcement",
-      "repeatable": true
-    },
     "seo": {
       "type": "component",
       "component": "shared.seo",
