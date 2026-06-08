@@ -6,6 +6,9 @@ import { Clock } from "@medusajs/icons"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination } from "swiper/modules"
 import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 import { addToCart } from "@lib/data/cart"
@@ -13,6 +16,9 @@ import { useParams, useRouter } from "next/navigation"
 import { useWishlist } from "@lib/context/wishlist-context"
 import { useNotification } from "@lib/context/notification-context"
 import ProductDescription from "../product-description"
+
+import "swiper/css"
+import "swiper/css/pagination"
 
 function extractPlainText(blocks: any[]): string {
   if (!Array.isArray(blocks) || !blocks.length) return ""
@@ -241,13 +247,97 @@ export default function ProductPreview({
                 </div>
               </div>
             )}
-            <Thumbnail
-              thumbnail={product.thumbnail}
-              images={product.images}
-              size="full"
-              isFeatured={isFeatured}
-              className="!rounded-[18px] md:!rounded-[24px] overflow-hidden aspect-square grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 scale-[0.99] group-hover:scale-100"
-            />
+            {product.images && product.images.length > 1 ? (
+              <div 
+                className="relative aspect-square w-full rounded-[18px] md:rounded-[24px] overflow-hidden bg-ui-bg-subtle scale-[0.99] group-hover:scale-100 transition-all duration-700 group/preview-gallery shadow-sm border border-black/5"
+                onClick={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target.closest('.swiper-button-nav') || target.closest('.swiper-pagination-bullet')) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }
+                }}
+              >
+                <Swiper
+                  modules={[Navigation, Pagination]}
+                  slidesPerView={1}
+                  loop={false}
+                  navigation={{
+                    nextEl: `.preview-next-${product.id}`,
+                    prevEl: `.preview-prev-${product.id}`,
+                  }}
+                  pagination={{
+                    clickable: true,
+                    el: `.preview-pagination-${product.id}`,
+                    renderBullet: (index, className) =>
+                      `<span class="${className} swiper-pagination-bullet inline-block transition-all duration-500 ease-in-out cursor-pointer"></span>`
+                  }}
+                  className="w-full h-full"
+                >
+                  {product.images.map((image, index) => {
+                    const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+                    const imageUrl = image.url.startsWith("http") ? image.url : `${STRAPI_URL}${image.url}`
+                    return (
+                      <SwiperSlide key={image.id} className="w-full h-full relative">
+                        <Image
+                          src={imageUrl}
+                          alt={`${product.title} - Image ${index + 1}`}
+                          className="absolute inset-0 object-cover object-center w-full h-full"
+                          fill
+                          sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
+                          priority={index === 0}
+                          loading={index === 0 ? "eager" : "lazy"}
+                        />
+                      </SwiperSlide>
+                    )
+                  })}
+                </Swiper>
+
+                {/* Pagination Dots */}
+                <div 
+                  className={`preview-pagination-${product.id} swiper-pagination-container flex justify-center items-center gap-1.5 absolute bottom-3 left-1/2 -translate-x-1/2 z-20`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }}
+                ></div>
+
+                {/* Custom arrows styled inside the card */}
+                <button
+                  className={`preview-prev-${product.id} swiper-button-nav absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm border border-black/5 text-[#2C1E36] flex items-center justify-center shadow-md opacity-0 group-hover/preview-gallery:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#C5A059] active:scale-90 hidden md:flex`}
+                  aria-label="Previous image"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+
+                <button
+                  className={`preview-next-${product.id} swiper-button-nav absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm border border-black/5 text-[#2C1E36] flex items-center justify-center shadow-md opacity-0 group-hover/preview-gallery:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#C5A059] active:scale-90 hidden md:flex`}
+                  aria-label="Next image"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <Thumbnail
+                thumbnail={product.thumbnail}
+                images={product.images}
+                size="full"
+                isFeatured={isFeatured}
+                className="!rounded-[18px] md:!rounded-[24px] overflow-hidden aspect-square grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 scale-[0.99] group-hover:scale-100"
+              />
+            )}
 
             {/* Wishlist Button Overlay */}
             <button
@@ -350,6 +440,23 @@ export default function ProductPreview({
           isBooking={isAdding}
         />
       )}
+      <style jsx global>{`
+        .swiper-pagination-container .swiper-pagination-bullet {
+          width: 5px;
+          height: 5px;
+          background: #2C1E36;
+          opacity: 0.25;
+          border-radius: 50%;
+          margin: 0 !important;
+          transition: all 0.3s ease;
+        }
+        .swiper-pagination-container .swiper-pagination-bullet-active {
+          background: #C5A059 !important;
+          opacity: 1;
+          width: 14px !important;
+          border-radius: 12px !important;
+        }
+      `}</style>
     </>
   )
 }
