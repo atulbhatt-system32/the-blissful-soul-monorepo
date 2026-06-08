@@ -319,7 +319,7 @@ export default async function orderInvoiceHandler({
           }).catch((err: Error) => console.error(`[WhatsApp] Booking confirmation failed for #${order.display_id}:`, err.message))
         } else {
           // Regular product order → order_confirmation template (order date only)
-          const itemTitles = items.slice(0, 2).map((i: any) => i.title).join(", ")
+          const itemTitles = items.map((i: any) => i.title).join(", ")
           sendOrderConfirmationWhatsApp({
             phone, countryCode, firstName, orderId,
             productTitle: itemTitles,

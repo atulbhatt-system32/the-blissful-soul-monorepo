@@ -25,7 +25,7 @@ export default async function orderCancelledHandler({
     const orderDate = new Date(order.created_at).toLocaleDateString("en-IN", {
       month: "long", day: "numeric", year: "numeric",
     })
-    const itemTitles = (order.items || []).slice(0, 2).map((i: any) => i.title).join(", ")
+    const itemTitles = (order.items || []).map((i: any) => i.title).join(", ")
 
     // Email notification
     if (notificationService) {
