@@ -1,46 +1,28 @@
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getServiceCategories } from "@lib/data/categories"
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
 const ServicesTemplate = async ({
-  sortBy,
-  page,
-  limit,
-  view,
-  q,
   countryCode,
   heroTitle,
   heroSubtitle,
-  announcements,
   heroImage,
   mobileHeroImage,
   titleColor,
   subtitleColor,
   showHero = true,
-  showAnnouncements = true,
 }: {
-  sortBy?: SortOptions
-  page?: string
-  limit?: string
-  view?: string
-  q?: string
   countryCode: string
   heroTitle?: string
   heroSubtitle?: string
-  announcements?: any[]
   heroImage?: any
   mobileHeroImage?: any
   titleColor?: string
   subtitleColor?: string
   showHero?: boolean
-  showAnnouncements?: boolean
 }) => {
-  const pageNumber = page ? parseInt(page) : 1
-  const sort = sortBy || "price_asc"
-  
   const categories = await getServiceCategories()
   
   const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
