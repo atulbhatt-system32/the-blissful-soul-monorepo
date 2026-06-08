@@ -90,7 +90,7 @@ function computeNetTotal(order: any): number {
 }
 
 function formatCurrency(amount: number): string {
-  return `₹${(amount / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+  return `₹${amount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
 function escapeCSV(value: string): string {
@@ -135,6 +135,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           "shipping_methods.adjustments.*",
           "shipping_address.*",
           "promotions.*",
+          "+total",
+          "+subtotal",
+          "+discount_total",
+          "+shipping_total",
+          "+tax_total",
         ],
         filters,
         pagination: { take, skip: offset },
@@ -174,8 +179,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     const rows = allOrders
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .map((order) => {
-        const netTotal = computeNetTotal(order)
-        const netInRupees = netTotal / 100
+        const isCanceled = order.status === "canceled" || order.status === "failed"
+        const netTotal = isCanceled ? 0 : (order.total ?? computeNetTotal(order))
+        const netInRupees = netTotal
 
         const customerName = [order.shipping_address?.first_name, order.shipping_address?.last_name]
           .filter(Boolean)
