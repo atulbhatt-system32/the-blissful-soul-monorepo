@@ -1,12 +1,7 @@
-import { Suspense } from "react"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import ScrollingMarquee from "@modules/home/components/scrolling-marquee"
-import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import StoreSearch from "@modules/store/components/search"
-import PaginatedProducts from "@modules/store/templates/paginated-products"
-import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
+import { getServiceCategories } from "@lib/data/categories"
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
@@ -46,6 +41,8 @@ const ServicesTemplate = async ({
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "price_asc"
   
+  const categories = await getServiceCategories()
+  
   const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
   const bannerUrl = heroData?.url
     ? (heroData.url.startsWith("http") ? heroData.url : `${STRAPI_URL}${heroData.url}`)
@@ -56,10 +53,7 @@ const ServicesTemplate = async ({
     ? (mobileHeroData.url.startsWith("http") ? mobileHeroData.url : `${STRAPI_URL}${mobileHeroData.url}`)
     : null
 
-  const marqueeItems = announcements?.map((a: any, idx: number) => ({
-    id: a.id || idx,
-    text: a.text || a.attributes?.text || a.data?.attributes?.text
-  })).filter(a => a.text) || []
+
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen relative overflow-hidden pb-12 md:pb-0">
@@ -118,50 +112,83 @@ const ServicesTemplate = async ({
         </section>
       )}
 
-      {/* ① TOP MARQUEE (Desktop Only) - Moved below Hero */}
-      {showAnnouncements && marqueeItems.length > 0 && (
-        <div className="hidden md:block border-b border-[#C5A059]/10">
-          <ScrollingMarquee items={marqueeItems} />
+
+
+      {/* Main Content (Grid of Categories) */}
+      <div className="content-container !px-4 md:!px-8 py-12 md:py-20">
+        {/* Section Heading */}
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-serif text-[#2C1E36] mb-5 uppercase tracking-tighter leading-tight font-medium">
+            BOOK OUR SACRED SERVICES
+          </h2>
+          <div className="flex items-center justify-center gap-2">
+            <div className="h-[1px] w-10 bg-[#C5A059]/30" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#C5A059]/50" />
+            <div className="h-[1px] w-10 bg-[#C5A059]/30" />
+          </div>
         </div>
-      )}
 
-      {/* Main Content with Filters (Matching Store Layout) */}
-      <div className="content-container !px-3 md:!px-8 py-8 md:py-12">
-        <div className="w-full">
-          {/* Combined Search & Sort Toolbar */}
-          <div className="flex flex-row items-center gap-2 md:gap-4 w-full mb-8 md:mb-12">
-            <div className="flex-1 relative z-[20]">
-              <StoreSearch initialQuery={q} />
-            </div>
-            <div className="relative z-[40] flex items-center shrink-0">
-              <div className="md:bg-white/70 md:backdrop-blur-md p-0 md:p-3 md:rounded-[32px] md:border md:border-gray-100 md:shadow-xl md:shadow-[#2C1E36]/5 flex items-center">
-                <RefinementList sortBy={sort} limit={limit} view={view} />
+        {/* Categories Grid (Flip Cards) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {categories.map((category) => {
+            const images = (category as any).product_category_images as Array<{ url: string }> | undefined
+            const imageUrl = images?.[0]?.url
+            const color = (category.metadata?.color as string) || "bg-purple-100"
+            const oneLiner = (category.metadata?.["one-liner"] as string) || category.description
+            
+            return (
+              <div key={category.id} className="group h-[220px] md:h-[260px] [perspective:1000px]">
+                <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                  
+                  {/* Front Side */}
+                  <div className="absolute inset-0 h-full w-full rounded-[28px] overflow-hidden border border-black/5 shadow-md [backface-visibility:hidden]">
+                    {imageUrl ? (
+                      <Image
+                        src={imageUrl}
+                        alt={category.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-purple-50 flex items-center justify-center">
+                        <span className="text-4xl text-purple-300">✦</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Back Side */}
+                  <div className={`absolute inset-0 h-full w-full rounded-[28px] ${color} border border-[#C5A059]/20 shadow-xl [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center gap-2 px-4 py-4 text-center`}>
+                    <div className="flex gap-1 mb-1">
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/30" />
+                      <span className="w-1 h-1 rounded-full bg-[#C5A059]/50" />
+                    </div>
+                    <h3 className="text-sm md:text-base font-bold text-[#2C1E36] uppercase tracking-[0.18em] leading-tight">
+                      {category.name}
+                    </h3>
+                    <div className="w-8 h-[1px] bg-[#C5A059]/50" />
+                    {oneLiner && (
+                      <p className="text-[#665D6B] text-[12px] md:text-[13px] leading-snug font-medium max-w-[90%]">
+                        {oneLiner}
+                      </p>
+                    )}
+                    <LocalizedClientLink
+                      href={`/services/${category.handle}`}
+                      className="mt-1 px-6 py-2 bg-[#C5A059] text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/25 hover:bg-[#B38E4A] hover:shadow-xl transition-all active:scale-95"
+                    >
+                      Book Now
+                    </LocalizedClientLink>
+                  </div>
+
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div className="mt-8 md:mt-16">
-            <Suspense fallback={<SkeletonProductGrid />}>
-              <PaginatedProducts
-                sortBy={sort}
-                page={pageNumber}
-                limit={limit}
-                view={view}
-                q={q}
-                countryCode={countryCode}
-                isSession={true}
-              />
-            </Suspense>
-          </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* ② STICKY BOTTOM MARQUEE (Mobile Only) */}
-      {showAnnouncements && marqueeItems.length > 0 && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.1)]">
-          <ScrollingMarquee items={marqueeItems} />
-        </div>
-      )}
+
     </div>
   )
 }
