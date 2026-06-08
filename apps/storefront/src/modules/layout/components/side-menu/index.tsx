@@ -18,6 +18,7 @@ const SideMenuItems = {
   "About Master": "/about",
   "Sacred Services": "/services",
   "Shop Crystals": "/store",
+  Courses: "/courses",
   Cart: "/cart",
   Wishlist: "/wishlist",
   Contact: "/contact",

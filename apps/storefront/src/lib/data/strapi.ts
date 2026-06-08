@@ -259,3 +259,36 @@ export async function getServicesPageData() {
         return null
     }
 }
+
+export async function getCoursePageData() {
+    const baseUrl = STRAPI_INTERNAL_URL
+    
+    try {
+        const query = qs.stringify({
+            populate: {
+                hero_image: true,
+            },
+        })
+
+        const url = `${baseUrl}/api/course-page?${query}&cb=${Date.now()}`
+        
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${STRAPI_TOKEN}`,
+            },
+            cache: "no-store",
+            next: { revalidate: 0 }
+        })
+
+        if (!response.ok) {
+            return null
+        }
+
+        const json = await response.json()
+        const data = json.data?.attributes || json.data || json
+        return data || null
+    } catch (error: any) {
+        console.error("[Strapi] Fetching Error:", error.message)
+        return null
+    }
+}

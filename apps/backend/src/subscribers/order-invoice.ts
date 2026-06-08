@@ -17,6 +17,9 @@ export default async function orderInvoiceHandler({
         "*", 
         "items.*",
         "items.variant.*",
+        "items.variant.metadata",
+        "items.variant.product.*",
+        "items.variant.product.metadata",
         "items.variant.product.hs_code",
         "items.adjustments.*",
         "items.tax_lines.*",
@@ -129,6 +132,26 @@ export default async function orderInvoiceHandler({
     const bookingTime = order.metadata?.booking_time
     const calMeetUrl = order.metadata?.cal_meet_url
     const isSession = order.metadata?.is_session === true || order.metadata?.is_session === "true"
+    
+    // Check if any purchased item is a course by looking for drive_folder_id
+    let driveFolderId = order.metadata?.drive_folder_id as string | undefined
+    for (const item of items) {
+      const folderId = item.variant?.product?.metadata?.drive_folder_id
+      if (folderId) {
+        driveFolderId = folderId
+        break
+      }
+    }
+
+    // Share Google Drive folder if a course was purchased and it hasn't been shared yet
+    if (driveFolderId && order.email) {
+      try {
+        const { shareDriveFolder } = require("../lib/google-drive")
+        await shareDriveFolder(driveFolderId, order.email)
+      } catch (err: any) {
+        console.error(`[Order Processing] Failed to share Google Drive folder for #${order.display_id}:`, err.message)
+      }
+    }
 
     const sessionDetailsHtml = isSession ? `
       <div style="background: #F9F7F9; padding: 25px; border-left: 4px solid #C5A059; border-radius: 4px; margin: 25px 0;">
@@ -140,6 +163,16 @@ export default async function orderInvoiceHandler({
             <a href="${calMeetUrl}" style="background: #C5A059; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 15px; margin: 5px 0;">Join Live Session</a>
           </div>
         ` : ""}
+      </div>
+    ` : ""
+
+    const courseDetailsHtml = driveFolderId ? `
+      <div style="background: #F9F7F9; padding: 25px; border-left: 4px solid #7C3AED; border-radius: 4px; margin: 25px 0;">
+        <p style="margin: 0 0 10px 0; font-weight: bold; color: #2C1E36;">📚 Your Course Access:</p>
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: #665D6B; line-height: 1.5;">You now have access to your course materials. You should also receive a separate email directly from Google Drive confirming your access.</p>
+        <div style="text-align: center;">
+          <a href="https://drive.google.com/drive/folders/${driveFolderId}" style="background: #7C3AED; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 15px;">Access Course Materials</a>
+        </div>
       </div>
     ` : ""
 
@@ -243,9 +276,10 @@ export default async function orderInvoiceHandler({
         <!-- ═══ CLIENT ORDER TITLE ═══ -->
         <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${order.display_id}</h2>
         <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
-          Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. It shall be energised and dispatched soon.
+          Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. ${driveFolderId ? 'Your digital course access is provided below.' : 'It shall be energised and dispatched soon.'}
         </p>
         ${sessionDetailsHtml}
+        ${courseDetailsHtml}
         ${commonBodySuffix}
       `
 
@@ -257,6 +291,7 @@ export default async function orderInvoiceHandler({
           You've received a new ${isSession ? 'session booking' : 'order'} from ${customerName}:
         </p>
         ${sessionDetailsHtml}
+        ${courseDetailsHtml}
         ${commonBodySuffix}
       `
 

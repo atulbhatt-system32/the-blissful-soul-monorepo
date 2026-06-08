@@ -442,9 +442,12 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
 
     if (isDigitalOnly) {
       if (validShippingOptions?.length && !hasExistingShippingMethod) {
-        // Prefer free shipping for digital items, otherwise take the first one
-        const option = validShippingOptions.find(o => o.amount === 0 || o.price_type === "calculated") || validShippingOptions[0]
-        await setShippingMethod({ cartId, shippingMethodId: option.id })
+        // For digital items, ONLY use a free shipping option — never fall back to paid shipping
+        const freeOption = validShippingOptions.find(o => o.amount === 0 || o.price_type === "calculated")
+        if (freeOption) {
+          await setShippingMethod({ cartId, shippingMethodId: freeOption.id })
+        }
+        // If no free option exists, skip shipping entirely — digital products don't need delivery
       }
       nextStep = "payment"
     } else if (validShippingOptions?.length === 1) {

@@ -25,6 +25,28 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   // For tax-inclusive pricing, ensure we use the inclusive values from items
   const items = (totals as any).items || []
   
+  // Detect if cart is digital-only (courses, sessions — no physical shipping needed)
+  const isDigitalOnly = items.length > 0 && items.every((item: any) => {
+    const p = item.variant?.product as any
+    const typeValue = (p?.type?.value || p?.type || "").toLowerCase()
+    const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || []
+    return (
+      typeValue === "session" ||
+      typeValue === "booking" ||
+      typeValue === "course" ||
+      tags.includes("session") ||
+      tags.includes("booking") ||
+      tags.includes("course") ||
+      p?.metadata?.is_service === true ||
+      p?.metadata?.is_service === "true" ||
+      p?.metadata?.is_course === true ||
+      p?.metadata?.is_course === "true" ||
+      p?.metadata?.drive_folder_id != null ||
+      item.variant?.metadata?.is_service === true ||
+      item.requires_shipping === false
+    )
+  })
+
   // item_total is the net inclusive total (after discounts)
   const item_total = items.length > 0 
     ? items.reduce((acc: number, item: any) => acc + (item.total ?? 0), 0)
@@ -38,6 +60,10 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const discount_subtotal = item_subtotal - item_total
   const item_inclusive = item_subtotal
 
+  // For digital-only carts, don't show shipping and subtract it from total
+  const displayShipping = isDigitalOnly ? 0 : shipping_subtotal
+  const displayTotal = isDigitalOnly ? (total ?? 0) - (shipping_subtotal ?? 0) : (total ?? 0)
+
   return (
     <div className="flex flex-col gap-y-3">
       <div className="flex flex-col gap-y-2 text-[10px] uppercase tracking-widest font-bold opacity-70">
@@ -47,12 +73,18 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             {convertToLocale({ amount: item_inclusive, currency_code })}
           </span>
         </div>
-        {!!shipping_subtotal && (
+        {!!displayShipping && (
           <div className="flex items-center justify-between">
             <span>Shipping</span>
-            <span data-testid="cart-shipping" data-value={shipping_subtotal}>
-              {convertToLocale({ amount: shipping_subtotal, currency_code })}
+            <span data-testid="cart-shipping" data-value={displayShipping}>
+              {convertToLocale({ amount: displayShipping, currency_code })}
             </span>
+          </div>
+        )}
+        {isDigitalOnly && (
+          <div className="flex items-center justify-between text-emerald-400">
+            <span>Shipping</span>
+            <span>FREE (Digital)</span>
           </div>
         )}
         {!!discount_subtotal && (
@@ -77,9 +109,9 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         <span
           className="text-xl font-serif font-black"
           data-testid="cart-total"
-          data-value={total || 0}
+          data-value={displayTotal || 0}
         >
-          {convertToLocale({ amount: total ?? 0, currency_code })}
+          {convertToLocale({ amount: displayTotal ?? 0, currency_code })}
         </span>
       </div>
     </div>
@@ -87,3 +119,4 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
 }
 
 export default CartTotals
+

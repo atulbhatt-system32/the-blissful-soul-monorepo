@@ -141,15 +141,57 @@ export const listProductsWithSort = async ({
 
   const sortedProducts = sortProducts(products, sortBy)
 
-  const excludeCategoryHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
+  // Fetch product IDs belonging to excluded categories (courses, etc.)
+  // Medusa v2 Store API does not return categories on product list responses,
+  // so we must fetch category products separately and exclude by ID.
+  const excludedProductIds = new Set<string>()
+  const excludeCategoryHandles = ["courses", "course"]
+  try {
+    const { getCacheOptions: getCacheOpts } = await import("./cookies")
+    const nextOpts = { ...(await getCacheOpts("categories")) }
+    for (const handle of excludeCategoryHandles) {
+      const catRes = await sdk.client
+        .fetch<{ product_categories: any[] }>("/store/product-categories", {
+          query: { handle, fields: "id", limit: 1 },
+          next: nextOpts,
+          cache: "no-store",
+        })
+        .catch(() => ({ product_categories: [] }))
+
+      const cat = catRes.product_categories?.[0]
+      if (cat?.id) {
+        // IMPORTANT: If we are explicitly fetching THIS category (e.g. on the Courses page), do NOT exclude its products!
+        if (queryParams?.category_id?.includes(cat.id)) {
+          continue
+        }
+
+        const prodRes = await sdk.client
+          .fetch<{ products: { id: string }[] }>("/store/products", {
+            query: { category_id: [cat.id], fields: "id", limit: 100 },
+            next: nextOpts,
+            cache: "no-store",
+          })
+          .catch(() => ({ products: [] }))
+
+        prodRes.products?.forEach((p) => excludedProductIds.add(p.id))
+      }
+    }
+  } catch (err) {
+    console.warn("[Store] Could not fetch excluded category products:", err)
+  }
+
+  const sessionExcludeCategoryHandles = ["sessions", "audio-sessions", "video-sessions", "top-services"]
 
   const finalFilteredProducts = sortedProducts.filter((p) => {
+    // Exclude by product ID (courses)
+    if (excludedProductIds.has(p.id)) return false
+
     const isSession =
       p.type?.value === "session" ||
       p.tags?.some((t: any) => t.value === "session") ||
       p.metadata?.is_service === true ||
       p.metadata?.is_service === "true" ||
-      p.categories?.some((c: any) => excludeCategoryHandles.includes(c.handle))
+      p.categories?.some((c: any) => sessionExcludeCategoryHandles.includes(c.handle))
 
     return !isSession
   })
