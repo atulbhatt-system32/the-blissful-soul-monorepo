@@ -9,6 +9,7 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
+import { Heading } from "@medusajs/ui"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
 
@@ -55,8 +56,25 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
           <ProductInfo product={product} strapiContent={strapiContent} />
         </div>
-        <div className="block w-full relative order-first small:order-none">
+        <div className="flex-1 min-w-0 w-full relative order-first small:order-none flex flex-col gap-y-4">
           <ImageGallery images={images} />
+          <div className="flex flex-col small:mx-16 w-full max-w-[600px] mx-auto px-4 small:px-0">
+            {product.collection && (
+              <LocalizedClientLink
+                href={`/collections/${product.collection.handle}`}
+                className="text-medium text-ui-fg-muted hover:text-ui-fg-subtle mb-1"
+              >
+                {product.collection.title}
+              </LocalizedClientLink>
+            )}
+            <Heading
+              level="h2"
+              className="text-3xl leading-10 text-ui-fg-base"
+              data-testid="product-title"
+            >
+              {product.title}
+            </Heading>
+          </div>
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
           <ProductOnboardingCta />
