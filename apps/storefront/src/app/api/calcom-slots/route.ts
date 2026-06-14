@@ -2,6 +2,31 @@ import { NextRequest, NextResponse } from "next/server"
 
 const CAL_API_BASE = "https://api.cal.com/v2"
 
+// Extra buffer beyond Cal.com's minimum booking notice to cover the
+// checkout/payment roundtrip, so a slot that's valid when shown doesn't
+// become invalid by the time the booking is actually created.
+const CHECKOUT_BUFFER_MINUTES = 15
+
+async function getMinimumBookingNotice(eventSlug: string, apiKey: string): Promise<number> {
+  try {
+    const res = await fetch(`${CAL_API_BASE}/event-types`, {
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "cal-api-version": "2024-06-14",
+      },
+      next: { revalidate: 0 },
+    })
+    if (!res.ok) return 0
+
+    const json = await res.json()
+    const types = json.data || json || []
+    const match = types.find((t: any) => t.slug === eventSlug)
+    return match?.minimumBookingNotice ?? 0
+  } catch {
+    return 0
+  }
+}
+
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const date = searchParams.get("date")
@@ -52,6 +77,21 @@ export async function GET(req: NextRequest) {
     }
 
     const json = await response.json()
+
+    if (json?.data && typeof json.data === "object") {
+      const minimumBookingNotice = await getMinimumBookingNotice(targetSlug, apiKey)
+      const cutoff = Date.now() + (minimumBookingNotice + CHECKOUT_BUFFER_MINUTES) * 60 * 1000
+
+      for (const dateKey of Object.keys(json.data)) {
+        const slotsForDate = json.data[dateKey]
+        if (Array.isArray(slotsForDate)) {
+          json.data[dateKey] = slotsForDate.filter(
+            (slot: any) => new Date(slot.start).getTime() >= cutoff
+          )
+        }
+      }
+    }
+
     return NextResponse.json(json)
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 })
