@@ -37,7 +37,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     for (const order of sessionOrders) {
       // Skip non-session, cancelled, and already-reminded orders
       if (!order.metadata?.is_session) continue;
-      if (order.status === "cancelled") continue;
+      if (order.status === "canceled") continue;
       if (order.metadata?.reminder_sent) {
         console.log(`[Reminder Job] Order #${order.display_id} — already reminded, skipping`)
         continue;

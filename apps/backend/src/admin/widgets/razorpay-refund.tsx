@@ -5,7 +5,7 @@ import { Button, Input, Label, Text, toast } from "@medusajs/ui"
 const RazorpayRefundWidget = ({ data }: { data: any }) => {
   const razorpayId = data?.metadata?.razorpay_id
   const alreadyRefunded = data?.metadata?.razorpay_refund_id
-  const maxAmount = (data?.total ?? 0) / 100
+  const maxAmount = data?.total ?? 0
 
   const [amount, setAmount] = useState(String(maxAmount))
   const [loading, setLoading] = useState(false)

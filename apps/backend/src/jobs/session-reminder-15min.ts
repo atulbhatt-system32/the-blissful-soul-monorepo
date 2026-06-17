@@ -34,7 +34,7 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
 
     for (const order of sessionOrders) {
       if (!order.metadata?.is_session) continue;
-      if (order.status === "cancelled") continue;
+      if (order.status === "canceled") continue;
       if (order.metadata?.reminder_15min_sent) {
         console.log(`[Reminder-15min Job] Order #${order.display_id} — already reminded (15min), skipping`)
         continue;
