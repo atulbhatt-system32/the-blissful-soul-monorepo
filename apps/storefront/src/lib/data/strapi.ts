@@ -227,7 +227,6 @@ export async function getServicesPageData() {
             populate: {
                 hero_image: true,
                 mobile_hero_image: true,
-                announcements: true,
                 seo: true,
             },
         })

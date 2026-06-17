@@ -1,6 +1,6 @@
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { generateInvoice } from "../lib/invoice"
-import { sendOrderConfirmationWhatsApp, sendBookingConfirmationWhatsApp } from "../lib/interakt"
+import { sendOrderConfirmationWhatsApp, sendBookingConfirmationWhatsApp, sendCourseConfirmationWhatsApp } from "../lib/interakt"
 
 export default async function orderInvoiceHandler({
   event: { data },
@@ -352,6 +352,12 @@ export default async function orderInvoiceHandler({
             amount: calculatedTotal,
             calMeetUrl: calMeetUrl || undefined,
           }).catch((err: Error) => console.error(`[WhatsApp] Booking confirmation failed for #${order.display_id}:`, err.message))
+        } else if (driveFolderId) {
+          // Course purchase → course_confirmation template (drive link)
+          sendCourseConfirmationWhatsApp({
+            phone, countryCode, firstName, orderId,
+            driveLink: `https://drive.google.com/drive/folders/${driveFolderId}`,
+          }).catch((err: Error) => console.error(`[WhatsApp] Course confirmation failed for #${order.display_id}:`, err.message))
         } else {
           // Regular product order → order_confirmation template (order date only)
           const itemTitles = items.map((i: any) => i.title).join(", ")

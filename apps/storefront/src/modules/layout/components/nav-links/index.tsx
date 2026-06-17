@@ -10,7 +10,6 @@ const NavLinks = () => {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/store", label: "Shop Crystals" },
-    { href: "/courses", label: "Courses" },
     { href: "/services", label: "Our Sacred Services" },
   ]
 

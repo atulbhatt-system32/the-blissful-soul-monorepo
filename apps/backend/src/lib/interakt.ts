@@ -401,3 +401,38 @@ export async function sendSessionRescheduledWhatsApp({
     },
   })
 }
+
+/**
+ * Course confirmation notification.
+ *
+ * Template "course_confirmation" body params:
+ *   {{1}} – customer first name
+ *   {{2}} – google drive link
+ */
+export async function sendCourseConfirmationWhatsApp({
+  phone,
+  countryCode,
+  firstName,
+  orderId,
+  driveLink,
+}: {
+  phone: string
+  countryCode: string
+  firstName: string
+  orderId: string | number
+  driveLink: string
+}): Promise<void> {
+  const { dialCode, number } = normalisePhone(phone, countryCode)
+
+  await sendWhatsAppTemplate({
+    countryCode: dialCode,
+    phoneNumber: number,
+    callbackData: `course_confirmation_${orderId}`,
+    type: "Template",
+    template: {
+      name: "course_confirmation",
+      languageCode: "en",
+      bodyValues: [firstName, driveLink],
+    },
+  })
+}

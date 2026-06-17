@@ -36,13 +36,6 @@ export async function shareDriveFolder(folderId: string, customerEmail: string):
       sendNotificationEmail: true,
     })
 
-    // Disable download/copy for viewers
-    await drive.files.update({
-      fileId: folderId,
-      requestBody: {
-        copyRequiresWriterPermission: true,
-      },
-    })
 
     console.log(`[Google Drive] Shared folder ${folderId} with ${customerEmail} — permission: ${permission.data.id}`)
     return permission.data.id || null
