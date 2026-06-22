@@ -2,6 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import * as crypto from "crypto"
 import { toInternationalPhone } from "../../../lib/phone"
+import { shareDriveFolder, revokeDriveAccess } from "../../../lib/google-drive"
 
 const CAL_API_BASE = "https://api.cal.com/v2"
 const CAL_TIMEOUT_MS = 10000
@@ -111,6 +112,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   const event = (req.body as any)?.event
   const payment = (req.body as any)?.payload?.payment?.entity
+
+  if (event === "refund.created") {
+    return handleRefund(req, res)
+  }
 
   if (event !== "payment.captured" || !payment) {
     return res.status(200).json({ message: "Event ignored" })
@@ -317,6 +322,26 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       }
     }
 
+    // Share Google Drive folder if product has drive_folder_id in metadata (course purchase)
+    if (variantId) {
+      try {
+        const productModuleService = req.scope.resolve(Modules.PRODUCT) as any
+        const variant = await productModuleService.retrieveProductVariant(variantId, { relations: ["product"] })
+        const driveFolderId = variant?.product?.metadata?.drive_folder_id
+        if (driveFolderId) {
+          const permissionId = await shareDriveFolder(driveFolderId, email)
+          if (permissionId) {
+            await orderModuleService.updateOrders([{
+              id: order.id,
+              metadata: { ...order.metadata, drive_folder_id: driveFolderId }
+            }])
+          }
+        }
+      } catch (driveErr: any) {
+        console.error("[Razorpay Webhook] Google Drive sharing failed (non-blocking):", driveErr.message)
+      }
+    }
+
     // Emit order.placed — triggers order-invoice subscriber (branded email + PDF + WhatsApp)
     try {
       const eventBusService = req.scope.resolve(Modules.EVENT_BUS) as any
@@ -332,5 +357,55 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   } catch (error: any) {
     console.error("[Razorpay Webhook] Error:", error.message)
     return res.status(200).json({ message: "Processed with error", error: error.message })
+  }
+}
+
+async function handleRefund(req: MedusaRequest, res: MedusaResponse) {
+  try {
+    const refund = (req.body as any)?.payload?.refund?.entity
+    const paymentId = refund?.payment_id
+
+    if (!paymentId) {
+      console.warn("[Razorpay Webhook] refund.created missing payment_id")
+      return res.status(200).json({ received: true })
+    }
+
+    console.log(`[Razorpay Webhook] Refund received for payment: ${paymentId}`)
+
+    const orderModuleService = req.scope.resolve(Modules.ORDER) as any
+    const [orders] = await orderModuleService.listAndCountOrders(
+      { metadata: { razorpay_id: paymentId } },
+      { select: ["id", "display_id", "email", "metadata", "status"] }
+    )
+
+    const order = orders?.[0]
+    if (!order) {
+      console.warn(`[Razorpay Webhook] No order found for payment ${paymentId}`)
+      return res.status(200).json({ received: true })
+    }
+
+    // Revoke Google Drive access if order had a course folder
+    const driveFolderId = order.metadata?.drive_folder_id
+    if (driveFolderId && order.email) {
+      await revokeDriveAccess(driveFolderId, order.email)
+    }
+
+    // Update order status to canceled
+    if (order.status !== "canceled") {
+      await orderModuleService.updateOrders([{
+        id: order.id,
+        metadata: {
+          ...order.metadata,
+          refunded_at: new Date().toISOString(),
+          refunded_via: "razorpay_webhook",
+        }
+      }])
+    }
+
+    console.log(`[Razorpay Webhook] Refund handled for Order #${order.display_id}`)
+    return res.status(200).json({ received: true })
+  } catch (error: any) {
+    console.error("[Razorpay Webhook] Error handling refund:", error.message)
+    return res.status(200).json({ received: true })
   }
 }

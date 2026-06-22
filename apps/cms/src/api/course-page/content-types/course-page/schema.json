@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "course_pages",
+  "info": {
+    "singularName": "course-page",
+    "pluralName": "course-pages",
+    "displayName": "Course Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "LEARN & GROW"
+    },
+    "title_primary": {
+      "type": "string",
+      "default": "SPIRITUAL"
+    },
+    "title_secondary": {
+      "type": "string",
+      "default": "COURSES"
+    },
+    "description": {
+      "type": "text"
+    },
+    "show_image": {
+      "type": "boolean",
+      "default": false
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

@@ -31,10 +31,15 @@ export default async function CheckoutForm({
     return (
       typeValue === "session" || 
       typeValue === "booking" ||
+      typeValue === "course" ||
       tags.includes("session") ||
       tags.includes("booking") ||
+      tags.includes("course") ||
       p?.metadata?.is_service === true || 
       p?.metadata?.is_service === "true" ||
+      p?.metadata?.is_course === true ||
+      p?.metadata?.is_course === "true" ||
+      p?.metadata?.drive_folder_id != null ||
       item.variant?.metadata?.is_service === true
     );
   }) ?? false;
