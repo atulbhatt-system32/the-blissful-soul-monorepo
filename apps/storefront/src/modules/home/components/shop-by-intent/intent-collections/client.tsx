@@ -37,10 +37,10 @@ const IntentCollectionsClient = ({
         <span className="text-3xl">🔮</span>
       </div>
       <h4 className="text-lg md:text-xl font-serif text-[#2C1E36] mb-3 leading-tight font-bold">
-        Not sure what <br/> you are looking for?
+        Not sure what you are looking for?
       </h4>
       <p className="text-[#685D6B] text-[13px] leading-relaxed mb-6">
-        Have a Quick session with <span className="text-[#C5A059] font-bold">Master Pragya Vijh</span> to find your perfect match.
+        Have a Quick session with <span className="text-[#C5A059] font-bold"><b>Master Pragya Vijh</b></span> to find your perfect match.
       </p>
       <div className="text-[10px] uppercase tracking-widest font-black text-[#C5A059] border-b border-[#C5A059]/30 pb-1 group-hover:border-[#C5A059] transition-all">
         Book Session Now
