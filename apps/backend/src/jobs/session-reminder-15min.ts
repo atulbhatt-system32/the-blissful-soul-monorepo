@@ -25,9 +25,9 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
     console.log(`[Reminder-15min Job] Found ${sessionOrders.length} session order(s) to check.`)
 
     const now = new Date();
-    // Window: 4 to 26 minutes from now
-    const windowStart = new Date(now.getTime() + 4 * 60 * 1000);
-    const windowEnd = new Date(now.getTime() + 26 * 60 * 1000);
+    // Window: 13 to 18 minutes from now
+    const windowStart = new Date(now.getTime() + 13 * 60 * 1000);
+    const windowEnd = new Date(now.getTime() + 18 * 60 * 1000);
 
     console.log(`[Reminder-15min Job] Now (IST): ${now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
     console.log(`[Reminder-15min Job] Window: ${windowStart.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} → ${windowEnd.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
@@ -166,5 +166,5 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
 
 export const config = {
   name: "session-reminder-15min",
-  schedule: "*/15 * * * *", // Every 15 minutes
+  schedule: "*/5 * * * *", // Every 5 minutes
 };
