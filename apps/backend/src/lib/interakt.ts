@@ -1,5 +1,9 @@
 const INTERAKT_API_URL = "https://api.interakt.ai/v1/public/message/"
 
+// Interakt rejects template requests outright (400) if any body variable is an empty string,
+// so a missing Cal.com meet URL needs a non-empty fallback rather than "".
+const MEET_URL_PLACEHOLDER = "Link will be shared before the session"
+
 function getAuthHeader(): string {
   // INTERAKT_API_KEY is stored as the ready-to-use base64(key:) token
   const token = process.env.INTERAKT_API_KEY
@@ -168,7 +172,7 @@ export async function sendBookingConfirmationWhatsApp({
     bookingDate,
     bookingTime,
     `₹${amount.toLocaleString("en-IN")}`,
-    calMeetUrl || "",
+    calMeetUrl || MEET_URL_PLACEHOLDER,
   ]
 
   await sendWhatsAppTemplate({
@@ -308,7 +312,7 @@ export async function sendSessionReminderWhatsApp({
     template: {
       name: "session_reminder",
       languageCode: "en",
-      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || ""],
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || MEET_URL_PLACEHOLDER],
     },
   })
 }
@@ -351,7 +355,7 @@ export async function sendSessionReminder15MinWhatsApp({
     template: {
       name: "session_reminder_15min",
       languageCode: "en",
-      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || "", String(minutesLeft ?? 15)],
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || MEET_URL_PLACEHOLDER, String(minutesLeft ?? 15)],
     },
   })
 }
