@@ -74,7 +74,10 @@ export default async function sessionReminderJob(container: MedusaContainer) {
 
         // Check if session falls within our 1-hour reminder window
         if (sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd) {
-          console.log(`[Reminder Job] Sending reminder for Order #${order.display_id} (Session at ${bookingTime})`);
+          // Calculate actual remaining minutes dynamically
+          const minutesLeft = Math.round((sessionDateUTC.getTime() - now.getTime()) / (60 * 1000));
+          const timeLeftText = minutesLeft >= 60 ? `${Math.round(minutesLeft / 60)} hour` : `${minutesLeft} minutes`;
+          console.log(`[Reminder Job] Sending reminder for Order #${order.display_id} (Session at ${bookingTime}) — ${minutesLeft} minutes left`);
 
           const reminderData = {
             to: order.email,
@@ -92,7 +95,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
                   <p style="color: #555; font-size: 14px; margin-bottom: 24px;">The Blissful Soul</p>
                   
                   <p style="color: #333;">Hi <strong>${order.shipping_address?.first_name || "there"}</strong>,</p>
-                  <p style="color: #333;">This is a friendly reminder that your session is starting in about **1 hour**.</p>
+                  <p style="color: #333;">This is a friendly reminder that your session is starting in about <strong>${timeLeftText}</strong>.</p>
                   
                   <div style="background: #fff; border: 1px solid #ffd39b; border-radius: 8px; padding: 15px; margin: 20px 0;">
                     <p style="margin: 5px 0;"><strong>Session Time:</strong> ${bookingTime} Today</p>
@@ -133,11 +136,11 @@ export default async function sessionReminderJob(container: MedusaContainer) {
                 to: adminEmail,
                 data: {
                   ...reminderData.data,
-                  subject: `[ADMIN REMINDER] Session with ${order.shipping_address?.first_name} at ${bookingTime}`,
+                  subject: `[ADMIN REMINDER] Session with ${order.shipping_address?.first_name} at ${bookingTime} — ${timeLeftText} left`,
                   html_body: `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f0f8ff; border-radius: 8px;">
                       <h2>Host Reminder: Upcoming Session</h2>
-                      <p>You have a session starting in 1 hour.</p>
+                      <p>You have a session starting in ${timeLeftText}.</p>
                       <ul>
                         <li><strong>Customer:</strong> ${order.shipping_address?.first_name} ${order.shipping_address?.last_name}</li>
                         <li><strong>Email:</strong> ${order.email}</li>

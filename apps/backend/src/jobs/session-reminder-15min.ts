@@ -68,7 +68,9 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
         console.log(`[Reminder-15min Job] Order #${order.display_id} — session: ${bookingDate} ${bookingTime} | in window: ${sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd}`)
 
         if (sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd) {
-          console.log(`[Reminder-15min Job] Sending 15-min reminder for Order #${order.display_id}`);
+          // Calculate actual remaining minutes dynamically
+          const minutesLeft = Math.round((sessionDateUTC.getTime() - now.getTime()) / (60 * 1000));
+          console.log(`[Reminder-15min Job] Sending reminder for Order #${order.display_id} — ${minutesLeft} minutes left`);
 
           const reminderData = {
             to: order.email,
@@ -82,11 +84,11 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
               orderId: order.display_id || order.id,
               html_body: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fffaf0; border-radius: 8px; border: 1px solid #ffe4b5;">
-                  <h1 style="color: #d2691e; font-size: 20px; margin-bottom: 4px;">Starting in 15 Minutes ⏰</h1>
+                  <h1 style="color: #d2691e; font-size: 20px; margin-bottom: 4px;">Starting in ${minutesLeft} Minutes ⏰</h1>
                   <p style="color: #555; font-size: 14px; margin-bottom: 24px;">The Blissful Soul</p>
 
                   <p style="color: #333;">Hi <strong>${order.shipping_address?.first_name || "there"}</strong>,</p>
-                  <p style="color: #333;">Your session is starting in just <strong>15 minutes</strong>. Please make sure you are ready!</p>
+                  <p style="color: #333;">Your session is starting in just <strong>${minutesLeft} minutes</strong>. Please make sure you are ready!</p>
 
                   <div style="background: #fff; border: 1px solid #ffd39b; border-radius: 8px; padding: 15px; margin: 20px 0;">
                     <p style="margin: 5px 0;"><strong>Session Time:</strong> ${bookingTime} Today</p>
@@ -111,6 +113,7 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
             bookingTime,
             orderId: order.display_id || order.id,
             calMeetUrl: order.metadata?.cal_meet_url as string | undefined,
+            minutesLeft,
           }).catch((err: Error) => console.error(`[Reminder-15min Job] WhatsApp failed for Order #${order.display_id}:`, err.message));
 
           // 2. Send to Admin(s)
@@ -125,10 +128,10 @@ export default async function sessionReminder15MinJob(container: MedusaContainer
                 to: adminEmail,
                 data: {
                   ...reminderData.data,
-                  subject: `[ADMIN] Session with ${order.shipping_address?.first_name} starting in 15 min`,
+                  subject: `[ADMIN] Session with ${order.shipping_address?.first_name} starting in ${minutesLeft} min`,
                   html_body: `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f0f8ff; border-radius: 8px;">
-                      <h2>Host Reminder: Session Starting in 15 Minutes</h2>
+                      <h2>Host Reminder: Session Starting in ${minutesLeft} Minutes</h2>
                       <ul>
                         <li><strong>Customer:</strong> ${order.shipping_address?.first_name} ${order.shipping_address?.last_name}</li>
                         <li><strong>Email:</strong> ${order.email}</li>

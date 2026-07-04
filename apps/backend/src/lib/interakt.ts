@@ -330,6 +330,7 @@ export async function sendSessionReminder15MinWhatsApp({
   bookingTime,
   orderId,
   calMeetUrl,
+  minutesLeft,
 }: {
   phone: string
   countryCode: string
@@ -338,6 +339,7 @@ export async function sendSessionReminder15MinWhatsApp({
   bookingTime: string
   orderId: string | number
   calMeetUrl?: string
+  minutesLeft?: number
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
@@ -349,7 +351,7 @@ export async function sendSessionReminder15MinWhatsApp({
     template: {
       name: "session_reminder_15min",
       languageCode: "en",
-      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || ""],
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || "", String(minutesLeft ?? 15)],
     },
   })
 }
