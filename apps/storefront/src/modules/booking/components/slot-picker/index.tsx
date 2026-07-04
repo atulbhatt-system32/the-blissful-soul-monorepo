@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { fetchAvailableSlots } from "@lib/data/calcom"
+import { getISTDateString } from "@lib/util/ist-date"
 
 type SlotInfo = {
   time: string
@@ -18,7 +19,7 @@ export default function BookingSlotPicker({ eventSlug, onSelect }: BookingSlotPi
   const effectiveSlug = eventSlug
   
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0] // Start with tomorrow
+    getISTDateString(24 * 60 * 60 * 1000) // Start with tomorrow
   )
   const [selectedTime, setSelectedTime] = useState<string>("")
   const [selectedSlotIso, setSelectedSlotIso] = useState<string>("")
@@ -84,7 +85,7 @@ export default function BookingSlotPicker({ eventSlug, onSelect }: BookingSlotPi
             ref={dateInputRef}
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            min={new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]}
+            min={getISTDateString(24 * 60 * 60 * 1000)}
             className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl py-4 px-6 focus:outline-none focus:bg-white focus:border-[#2C1E36]/30 focus:ring-4 focus:ring-[#2C1E36]/5 text-[#2C1E36] font-bold text-lg transition-all appearance-none"
           />
           <div className="absolute right-5 top-1/2 -translate-y-1/2 text-[#2C1E36] flex items-center justify-center bg-white shadow-sm border border-gray-100 rounded-lg p-1.5 translate-x-1 hover:bg-gray-50 transition-colors">

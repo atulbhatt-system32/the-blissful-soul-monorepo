@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+import { getISTDateString } from "@lib/util/ist-date"
 
 const DIAL_CODES = [
   { flag: "🇮🇳", code: "+91",  name: "India" },
@@ -98,7 +99,7 @@ export default function BookNowClient({
   const [selectedService, setSelectedService] = useState<string>(initialServiceId || "")
   const [selectedVariant, setSelectedVariant] = useState<string>(initialVariantId || "")
   const selectedEmployee = EMPLOYEES[0].id
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0])
+  const [selectedDate, setSelectedDate] = useState<string>(getISTDateString())
   const [selectedTime, setSelectedTime] = useState<string>("")
   const [selectedSlotIso, setSelectedSlotIso] = useState<string>("")
   
@@ -485,7 +486,7 @@ export default function BookNowClient({
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              min={new Date().toISOString().split("T")[0]}
+              min={getISTDateString()}
               className="border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-[#2C1E36]/30 text-gray-800"
             />
           </div>
