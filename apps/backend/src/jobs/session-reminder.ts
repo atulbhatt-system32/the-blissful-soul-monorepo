@@ -81,7 +81,11 @@ export default async function sessionReminderJob(container: MedusaContainer) {
         if (sessionDateUTC >= windowStart && sessionDateUTC <= windowEnd) {
           // Calculate actual remaining minutes dynamically
           const minutesLeft = Math.round((sessionDateUTC.getTime() - now.getTime()) / (60 * 1000));
-          const timeLeftText = minutesLeft >= 60 ? `${Math.round(minutesLeft / 60)} hour` : `${minutesLeft} minutes`;
+          const hoursPart = Math.floor(minutesLeft / 60);
+          const minsPart = minutesLeft % 60;
+          const timeLeftText = hoursPart > 0
+            ? (minsPart > 0 ? `${hoursPart} hour${hoursPart > 1 ? "s" : ""} ${minsPart} minutes` : `${hoursPart} hour${hoursPart > 1 ? "s" : ""}`)
+            : `${minutesLeft} minutes`;
           console.log(`[Reminder Job] Sending reminder for Order #${order.display_id} (Session at ${bookingTime}) — ${minutesLeft} minutes left`);
 
           const reminderData = {
