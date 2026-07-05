@@ -32,9 +32,10 @@ export default async function sessionReminderJob(container: MedusaContainer) {
     console.log(`[Reminder Job] Found ${sessionOrders.length} session order(s) to check.`)
 
     const now = new Date();
-    // Target window: 44 to 76 minutes from now (extra 1 min buffer on each side)
-    const windowStart = new Date(now.getTime() + 44 * 60 * 1000);
-    const windowEnd = new Date(now.getTime() + 76 * 60 * 1000);
+    // Target window: 58 to 63 minutes from now -- tight 5-min window matching the
+    // 15-min job's precision, requires the */5 cron below to avoid gaps.
+    const windowStart = new Date(now.getTime() + 58 * 60 * 1000);
+    const windowEnd = new Date(now.getTime() + 63 * 60 * 1000);
 
     console.log(`[Reminder Job] Now (IST): ${now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
     console.log(`[Reminder Job] Window: ${windowStart.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} → ${windowEnd.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`)
@@ -188,5 +189,5 @@ export default async function sessionReminderJob(container: MedusaContainer) {
 
 export const config = {
   name: "session-reminder-1h",
-  schedule: "*/15 * * * *", // Every 15 minutes
+  schedule: "*/5 * * * *", // Every 5 minutes -- matches the tightened 5-min window above
 };
