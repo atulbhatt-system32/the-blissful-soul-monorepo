@@ -284,6 +284,7 @@ export async function sendSessionCancellationWhatsApp({
  *   {{2}} – session time  (e.g. "10:30 AM")
  *   {{3}} – session date  (e.g. "2026-05-25")
  *   {{4}} – meeting link  (omitted when not available)
+ *   {{5}} – time left     (e.g. "1 hour", "45 minutes")
  */
 export async function sendSessionReminderWhatsApp({
   phone,
@@ -293,6 +294,7 @@ export async function sendSessionReminderWhatsApp({
   bookingTime,
   orderId,
   calMeetUrl,
+  timeLeftText,
 }: {
   phone: string
   countryCode: string
@@ -301,6 +303,7 @@ export async function sendSessionReminderWhatsApp({
   bookingTime: string
   orderId: string | number
   calMeetUrl?: string
+  timeLeftText?: string
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
@@ -312,7 +315,7 @@ export async function sendSessionReminderWhatsApp({
     template: {
       name: "session_reminder",
       languageCode: "en",
-      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || MEET_URL_PLACEHOLDER],
+      bodyValues: [firstName, bookingTime, bookingDate, calMeetUrl || MEET_URL_PLACEHOLDER, timeLeftText || "1 hour"],
     },
   })
 }

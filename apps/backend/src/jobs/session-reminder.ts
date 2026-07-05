@@ -127,6 +127,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
             bookingTime,
             orderId: order.display_id || order.id,
             calMeetUrl: order.metadata?.cal_meet_url as string | undefined,
+            timeLeftText,
           }).catch((err: Error) => console.error(`[Reminder Job] WhatsApp failed for Order #${order.display_id}:`, err.message));
 
           // 2. Send to Admin(s)
