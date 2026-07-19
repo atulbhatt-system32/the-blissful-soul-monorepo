@@ -6,7 +6,7 @@
 # Keeps last 15 days of backups, auto-deletes older ones.
 # =============================================================================
 
-set -euo pipefail
+set -uo pipefail
 
 RETENTION_DAYS=15
 BACKUP_ROOT="/backups"
