@@ -183,8 +183,33 @@ services:
           memory: 128m
           cpus: '0.1'
 
+  backup:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB:-medusa_db}
+      - POSTGRES_HOST=postgres
+    volumes:
+      - backup_data:/backups
+      - cms_data:/cms-data:ro
+      - ./apps/cms/public/uploads:/cms-uploads:ro
+      - ./apps/backend/static:/backend-static:ro
+      - ./scripts/docker-backup.sh:/usr/local/bin/backup.sh:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: "/bin/sh -c 'echo \"30 20 * * * /usr/local/bin/backup.sh >> /backups/backup.log 2>&1\" | crontab - && crond -f'"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.25'
+
 volumes:
   postgres_data:
   cms_data:
+  backup_data:
   certbot-etc:
   certbot-var:

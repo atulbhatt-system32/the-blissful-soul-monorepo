@@ -74,6 +74,9 @@ yalc.lock
 **/database/*.db
 **/.tmp/data.db
 
+# Backups
+backups/
+
 # Other
 apps/**/Users/
 package-lock.json
