@@ -130,7 +130,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.prod.yml,nginx/"
+          source: "docker-compose.prod.yml,nginx/,scripts/"
           target: "app" # Relative to $HOME
 
       - name: Deploy via SSH
@@ -319,6 +319,10 @@ jobs:
 
             echo "Recreating nginx to re-render template with current DOMAIN..."
             docker compose -f docker-compose.prod.yml up -d --force-recreate --no-deps nginx
+
+            echo "Starting backup service..."
+            chmod +x "$APP_DIR/scripts/docker-backup.sh" 2>/dev/null || true
+            docker compose -f docker-compose.prod.yml up -d --force-recreate --no-deps backup
 
             echo "Deployment successful."
             docker logout ghcr.io
