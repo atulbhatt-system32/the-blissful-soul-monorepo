@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import { getServiceCategoryDetail } from "@lib/data/categories"
-import { getStrapiProductsByHandles } from "@lib/data/strapi"
+import { getServicesPageData, getStrapiProductsByHandles } from "@lib/data/strapi"
 import ProductPreview from "@modules/products/components/product-preview"
 
 export async function generateMetadata({
@@ -43,6 +43,12 @@ export default async function ServiceDetailPage({
   const strapiMap = uniqueHandles.length
     ? await getStrapiProductsByHandles(uniqueHandles)
     : {}
+
+  const servicesPageData = await getServicesPageData()
+  const sessionLabel =
+    servicesPageData?.packages_session_label || "Choose Your Session"
+  const packagesHeadingSuffix =
+    servicesPageData?.packages_heading_suffix || "Packages"
 
   return (
     <div className="bg-white min-h-screen">
@@ -89,10 +95,10 @@ export default async function ServiceDetailPage({
           <div className="content-container">
             <div className="text-center mb-12">
               <span className="text-[11px] uppercase tracking-[0.4em] font-bold text-[#C5A059] font-sans mb-2 block">
-                Choose Your Session
+                {sessionLabel}
               </span>
               <h2 className="text-2xl md:text-3xl font-serif text-[#2C1E36] uppercase tracking-tighter leading-tight">
-                {category.name} Packages
+                {category.name} {packagesHeadingSuffix}
               </h2>
             </div>
 

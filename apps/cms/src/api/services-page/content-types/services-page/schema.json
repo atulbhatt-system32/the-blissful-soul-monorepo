@@ -47,6 +47,12 @@
       "type": "boolean",
       "default": true
     },
+    "packages_session_label": {
+      "type": "string"
+    },
+    "packages_heading_suffix": {
+      "type": "string"
+    },
     "seo": {
       "type": "component",
       "component": "shared.seo",
