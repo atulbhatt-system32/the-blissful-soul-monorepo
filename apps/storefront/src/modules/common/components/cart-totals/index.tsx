@@ -1,5 +1,6 @@
 "use client"
 
+import { isDigitalOnlyCart } from "@lib/util/is-digital-cart"
 import { convertToLocale } from "@lib/util/money"
 import React from "react"
 
@@ -26,26 +27,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const items = (totals as any).items || []
   
   // Detect if cart is digital-only (courses, sessions — no physical shipping needed)
-  const isDigitalOnly = items.length > 0 && items.every((item: any) => {
-    const p = item.variant?.product as any
-    const typeValue = (p?.type?.value || p?.type || "").toLowerCase()
-    const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || []
-    return (
-      typeValue === "session" ||
-      typeValue === "booking" ||
-      typeValue === "course" ||
-      tags.includes("session") ||
-      tags.includes("booking") ||
-      tags.includes("course") ||
-      p?.metadata?.is_service === true ||
-      p?.metadata?.is_service === "true" ||
-      p?.metadata?.is_course === true ||
-      p?.metadata?.is_course === "true" ||
-      p?.metadata?.drive_folder_id != null ||
-      item.variant?.metadata?.is_service === true ||
-      item.requires_shipping === false
-    )
-  })
+  const isDigitalOnly = isDigitalOnlyCart(items)
 
   // item_total is the net inclusive total (after discounts)
   const item_total = items.length > 0 

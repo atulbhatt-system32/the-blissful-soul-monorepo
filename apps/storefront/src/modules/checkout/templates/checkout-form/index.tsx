@@ -1,5 +1,6 @@
 import { listCartShippingMethods } from "@lib/data/fulfillment"
 import { listCartPaymentMethods } from "@lib/data/payment"
+import { isDigitalOnlyCart } from "@lib/util/is-digital-cart"
 import { HttpTypes } from "@medusajs/types"
 import Addresses from "@modules/checkout/components/addresses"
 import Payment from "@modules/checkout/components/payment"
@@ -23,26 +24,7 @@ export default async function CheckoutForm({
     return null
   }
 
-  const isDigitalOnly = cart.items?.every((item) => {
-    const p = item.variant?.product as any;
-    const typeValue = (p?.type?.value || p?.type || "").toLowerCase();
-    const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || [];
-    
-    return (
-      typeValue === "session" || 
-      typeValue === "booking" ||
-      typeValue === "course" ||
-      tags.includes("session") ||
-      tags.includes("booking") ||
-      tags.includes("course") ||
-      p?.metadata?.is_service === true || 
-      p?.metadata?.is_service === "true" ||
-      p?.metadata?.is_course === true ||
-      p?.metadata?.is_course === "true" ||
-      p?.metadata?.drive_folder_id != null ||
-      item.variant?.metadata?.is_service === true
-    );
-  }) ?? false;
+  const isDigitalOnly = isDigitalOnlyCart(cart.items)
 
   return (
     <div className="w-full grid grid-cols-1 gap-y-8">

@@ -443,7 +443,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     if (isDigitalOnly) {
       if (validShippingOptions?.length && !hasExistingShippingMethod) {
         // For digital items, ONLY use a free shipping option — never fall back to paid shipping
-        const freeOption = validShippingOptions.find(o => o.amount === 0 || o.price_type === "calculated")
+        const freeOption = validShippingOptions.find(o => o.amount === 0)
         if (freeOption) {
           await setShippingMethod({ cartId, shippingMethodId: freeOption.id })
         }
