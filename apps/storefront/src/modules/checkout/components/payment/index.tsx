@@ -31,7 +31,7 @@ const Payment = ({
   const isPaymentStep = step === "payment"
 
   // Open if explicitly on payment step, or if no step is specified, and address & shipping are complete
-  const isOpen = isPaymentStep || (!step && !!cart.shipping_address?.address_1 && (cart.shipping_methods?.length ?? 0) > 0)
+  const isOpen = isPaymentStep || (!step && !!cart.shipping_address?.address_1 && (isDigitalOnly || (cart.shipping_methods?.length ?? 0) > 0))
 
   // Load Razorpay SDK
   useEffect(() => {
@@ -158,7 +158,7 @@ const Payment = ({
     <div className="bg-transparent" ref={containerRef}>
       <div className="flex flex-row items-start justify-between mb-10 gap-x-4">
         <div className="flex flex-col gap-y-2 flex-1">
-           <span className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C5A059]">Step III</span>
+           <span className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C5A059]">{isDigitalOnly ? "Step II" : "Step III"}</span>
            <div className="flex flex-row gap-x-3 items-center">
              <Heading
                level="h2"
