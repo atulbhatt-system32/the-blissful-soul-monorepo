@@ -37,6 +37,20 @@ export default async function ServiceDetailPage({
     | undefined
   const heroImage = images?.[0]?.url
 
+  const descriptionBlocks: Array<{ type: "bullet" | "text"; lines: string[] }> =
+    []
+  for (const rawLine of ((category.description as string) || "").split("\n")) {
+    const line = rawLine.trim()
+    if (!line) continue
+    const type = /^[-•*]\s*/.test(line) ? "bullet" : "text"
+    const lastBlock = descriptionBlocks[descriptionBlocks.length - 1]
+    if (lastBlock && lastBlock.type === type) {
+      lastBlock.lines.push(line)
+    } else {
+      descriptionBlocks.push({ type, lines: [line] })
+    }
+  }
+
   const uniqueHandles = products
     .map((p) => p.handle)
     .filter(Boolean) as string[]
@@ -63,10 +77,33 @@ export default async function ServiceDetailPage({
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#2C1E36] leading-tight font-bold mb-8">
                 {category.name}
               </h1>
-              {category.description && (
-                <p className="text-[#665D6B] text-base md:text-lg font-sans leading-relaxed">
-                  {category.description}
-                </p>
+              {descriptionBlocks.length > 0 && (
+                <div className="space-y-4">
+                  {descriptionBlocks.map((block, i) =>
+                    block.type === "bullet" ? (
+                      <ul key={i} className="space-y-3">
+                        {block.lines.map((line, j) => (
+                          <li
+                            key={j}
+                            className="flex gap-x-3 text-[#665D6B] text-base md:text-lg font-sans leading-relaxed"
+                          >
+                            <span className="text-[#C5A059] mt-1 flex-none">
+                              •
+                            </span>
+                            <span>{line.replace(/^[-•*]\s*/, "")}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p
+                        key={i}
+                        className="text-[#665D6B] text-base md:text-lg font-sans leading-relaxed whitespace-pre-line"
+                      >
+                        {block.lines.join("\n")}
+                      </p>
+                    )
+                  )}
+                </div>
               )}
             </div>
 
