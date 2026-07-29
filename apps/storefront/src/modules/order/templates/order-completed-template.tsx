@@ -42,8 +42,8 @@ export default async function OrderCompletedTemplate({
     const variant = firstSession?.variant as any
     const product = variant?.product as any
     const lengthValue = variant?.length || product?.length
-    const tag = product?.tags?.find((t: any) => t.value.toLowerCase().includes("audio")) ? "audio" : 
-                product?.tags?.find((t: any) => t.value.toLowerCase().includes("video")) ? "video" : 
+    const tag = product?.tags?.find((t: any) => typeof t.value === "string" && t.value.toLowerCase().includes("audio")) ? "audio" : 
+                product?.tags?.find((t: any) => typeof t.value === "string" && t.value.toLowerCase().includes("video")) ? "video" : 
                 "session"
 
     if (lengthValue) {
