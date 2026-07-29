@@ -8,8 +8,8 @@ export function isDigitalOnlyCart(items: any[] | null | undefined): boolean {
 
   return items.every((item: any) => {
     const p = item.variant?.product as any
-    const typeValue = (p?.type?.value || p?.type || "").toLowerCase()
-    const tags = p?.tags?.map((t: any) => (t.value || "").toLowerCase()) || []
+    const typeValue = (typeof p?.type?.value === "string" ? p.type.value : typeof p?.type === "string" ? p.type : "").toLowerCase()
+    const tags = p?.tags?.map((t: any) => (typeof t.value === "string" ? t.value : "").toLowerCase()) || []
 
     return (
       typeValue === "session" ||

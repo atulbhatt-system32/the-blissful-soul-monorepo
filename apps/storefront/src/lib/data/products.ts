@@ -79,7 +79,7 @@ export const listProducts = async ({
       // Filter out products tagged as 'free-gift' or 'hidden' OR marked in metadata
       const filteredProducts = includeHidden ? products : products.filter(p => {
         const isExcludedTag = p.tags?.some(t => {
-          const val = t.value.toLowerCase()
+          const val = typeof t.value === "string" ? t.value.toLowerCase() : ""
           return val === "free-gift" || val === "hidden"
         })
         const isHiddenMetadata = p.metadata?.hidden === "true" || p.metadata?.hidden === true
@@ -248,7 +248,7 @@ export const listSessionsWithSort = async ({
   const finalFilteredProducts = sortedProducts.filter((p) => {
     const isSession =
       p.type?.value === "session" ||
-      p.tags?.some((t: any) => t.value.toLowerCase() === "session") ||
+      p.tags?.some((t: any) => typeof t.value === "string" && t.value.toLowerCase() === "session") ||
       p.metadata?.is_service === true ||
       p.metadata?.is_service === "true" ||
       p.categories?.some((c: any) => sessionCategoryHandles.includes(c.handle))
