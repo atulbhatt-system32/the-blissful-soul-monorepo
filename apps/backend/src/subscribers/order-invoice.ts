@@ -275,9 +275,15 @@ export default async function orderInvoiceHandler({
         ${commonBodyPrefix}
         <!-- ═══ CLIENT ORDER TITLE ═══ -->
         <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${order.display_id}</h2>
-        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 30px;">
+        <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 20px;">
           Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. ${driveFolderId ? 'Your digital course access is provided below.' : 'It shall be energised and dispatched soon.'}
         </p>
+        ${!driveFolderId ? `
+        <!-- ═══ ENERGISATION NOTICE ═══ -->
+        <div style="background: #F9F7F9; padding: 16px 20px; border-left: 4px solid #C5A059; border-radius: 4px; margin: 0 0 25px 0;">
+          <p style="margin: 0; font-size: 14px; color: #2C1E36; font-weight: 600;">✨ Please send your full name and date of birth for energisation</p>
+        </div>
+        ` : ''}
         ${sessionDetailsHtml}
         ${courseDetailsHtml}
         ${commonBodySuffix}
