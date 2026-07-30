@@ -24,6 +24,21 @@ module.exports = defineConfig({
     }
   },
   modules: {
+    fulfillment: {
+      resolve: "@medusajs/medusa/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/fulfillment-manual",
+            id: "manual",
+          },
+          {
+            resolve: "./src/modules/weight-shipping",
+            id: "weight-based",
+          },
+        ],
+      },
+    },
     payment: {
       resolve: "@medusajs/medusa/payment",
       options: {

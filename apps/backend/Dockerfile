@@ -49,4 +49,4 @@ COPY --from=builder --chown=node:node /app/apps/backend/.medusa/server ./
 USER node
 EXPOSE 9000
 
-CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]
+CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa exec setup-weight-shipping.js && node_modules/.bin/medusa start"]

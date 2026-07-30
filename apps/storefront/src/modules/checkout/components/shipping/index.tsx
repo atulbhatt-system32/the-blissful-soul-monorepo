@@ -74,8 +74,30 @@ const Shipping: React.FC<ShippingProps> = ({
   // Open if explicitly on delivery step, or if no step is specified, address is complete, and no shipping method is selected
   const isOpen = isDeliveryStep || (!step && !!cart.shipping_address?.address_1 && cart.shipping_methods?.length === 0)
 
+  // Determine if cart has items with weight (for weight-based shipping)
+  const hasWeightedItems = cart.items?.some(
+    (item: any) => {
+      const weight = item.variant?.weight ?? 0
+      return Number(weight) > 0
+    }
+  ) ?? false
+
   const _shippingMethods = availableShippingMethods?.filter(
-    (sm: any) => sm.service_zone?.fulfillment_set?.type !== "pickup"
+    (sm: any) => {
+      // Exclude pickup options
+      if (sm.service_zone?.fulfillment_set?.type === "pickup") return false
+      
+      // If ANY items have weight (e.g. Salt is in the cart), ONLY show calculated (weight-based) options.
+      // This prevents customers from bypassing the heavy shipping charge by adding a regular item.
+      if (hasWeightedItems && sm.price_type === "calculated") return true
+      if (hasWeightedItems && sm.price_type !== "calculated") return false
+      
+      // If NO items have weight, ONLY show flat-rate options
+      if (!hasWeightedItems && sm.price_type !== "calculated") return true
+      if (!hasWeightedItems && sm.price_type === "calculated") return false
+      
+      return true
+    }
   )
 
   const _pickupMethods = availableShippingMethods?.filter(
@@ -97,7 +119,12 @@ const Shipping: React.FC<ShippingProps> = ({
           const pricesMap: Record<string, number> = {}
           res
             .filter((r) => r.status === "fulfilled")
-            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
+            .forEach((p) => {
+              const val = p.value as any
+              // The calculate endpoint returns { calculated_price: { calculated_amount: N }, amount: N }
+              const price = val?.calculated_price?.calculated_amount ?? val?.amount ?? 0
+              pricesMap[val?.id || ""] = price
+            })
 
           setCalculatedPricesMap(pricesMap)
           setIsLoadingPrices(false)
