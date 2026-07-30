@@ -87,14 +87,15 @@ const Shipping: React.FC<ShippingProps> = ({
       // Exclude pickup options
       if (sm.service_zone?.fulfillment_set?.type === "pickup") return false
       
-      // If ANY items have weight (e.g. Salt is in the cart), ONLY show calculated (weight-based) options.
-      // This prevents customers from bypassing the heavy shipping charge by adding a regular item.
-      if (hasWeightedItems && sm.price_type === "calculated") return true
-      if (hasWeightedItems && sm.price_type !== "calculated") return false
+      const isWeightBased = sm.provider_id === "weight-based_weight-based"
+
+      // If ANY items have weight (e.g. Salt is in the cart), ONLY show the weight-based option.
+      if (hasWeightedItems && isWeightBased) return true
+      if (hasWeightedItems && !isWeightBased) return false
       
-      // If NO items have weight, ONLY show flat-rate options
-      if (!hasWeightedItems && sm.price_type !== "calculated") return true
-      if (!hasWeightedItems && sm.price_type === "calculated") return false
+      // If NO items have weight, ONLY show flat-rate options (exclude weight-based)
+      if (!hasWeightedItems && !isWeightBased) return true
+      if (!hasWeightedItems && isWeightBased) return false
       
       return true
     }
@@ -111,7 +112,7 @@ const Shipping: React.FC<ShippingProps> = ({
 
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
-        .filter((sm) => sm.price_type === "calculated")
+        .filter((sm) => sm.provider_id === "weight-based_weight-based")
         .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
 
       if (promises.length) {
@@ -297,7 +298,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 >
                   {_shippingMethods?.map((option) => {
                     const isDisabled =
-                      option.price_type === "calculated" &&
+                      option.provider_id === "weight-based_weight-based" &&
                       !isLoadingPrices &&
                       typeof calculatedPricesMap[option.id] !== "number"
 
@@ -333,7 +334,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           </div>
                         </div>
                         <span className="text-sm font-black text-[#2C1E36]">
-                          {option.price_type === "flat" ? (
+                          {option.provider_id !== "weight-based_weight-based" ? (
                             convertToLocale({
                               amount: option.amount!,
                               currency_code: cart?.currency_code,
