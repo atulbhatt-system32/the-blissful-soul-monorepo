@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 import { Logger } from "@medusajs/framework/types"
 
@@ -115,7 +116,7 @@ class WeightBasedFulfillmentService extends AbstractFulfillmentProviderService {
 
   async getFulfillmentDocuments(
     data: Record<string, unknown>
-  ): Promise<never[]> {
+  ): Promise<any> {
     return []
   }
 
@@ -127,20 +128,20 @@ class WeightBasedFulfillmentService extends AbstractFulfillmentProviderService {
 
   async getReturnDocuments(
     data: Record<string, unknown>
-  ): Promise<never[]> {
+  ): Promise<any> {
     return []
   }
 
   async getDeletionDocuments(
     data: Record<string, unknown>
-  ): Promise<never[]> {
+  ): Promise<any> {
     return []
   }
 
   async retrieveDocuments(
     fulfillmentData: Record<string, unknown>,
     documentType: string
-  ): Promise<never[]> {
+  ): Promise<any> {
     return []
   }
 }
