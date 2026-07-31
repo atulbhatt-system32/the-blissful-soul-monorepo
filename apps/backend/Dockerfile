@@ -39,26 +39,25 @@ RUN pnpm run build
 # Copy static assets not handled by the TypeScript compiler
 RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 
-# Install production dependencies inside the build output.
-# --ignore-workspace means this has no lockfile of its own, so pnpm would normally
-# re-resolve every package fresh against the registry — even though the workspace
-# install above (frozen to pnpm-lock.yaml) already resolved metadata for the same
-# packages at the same pinned versions. --prefer-offline tells pnpm to trust that
-# already-cached metadata/store content instead of re-querying the registry,
-# which is what was tripping npm's per-package rate limit on a few heavily
-# depended-on packages (@medusajs/js-sdk, types, modules-sdk) on every build.
-# Mounts the same persistent pnpm store cache as the workspace install so that
-# cached content actually carries over between the two steps.
+# Populate .medusa/server's production dependencies via `pnpm deploy` instead of
+# a second `pnpm install`. A plain install there has no lockfile of its own
+# (--ignore-workspace), so pnpm must freshly resolve every package's metadata
+# against the registry on every build — unlike the frozen-lockfile install above,
+# which reads resolved versions/tarball URLs straight out of pnpm-lock.yaml and
+# never queries the metadata endpoint at all. That's why the frozen install never
+# hit a 429 while the ignore-workspace one reliably did on the same few heavily
+# depended-on packages (@medusajs/js-sdk, types, modules-sdk): no amount of
+# tarball caching or offline preference fixes it, because metadata resolution —
+# not tarball fetching — was the actual bottleneck.
+# `pnpm deploy` sidesteps this by producing a self-contained, non-symlinked
+# node_modules directly from backend's already-resolved dependency graph — zero
+# registry calls of any kind, since nothing needs re-resolving.
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
-    cd .medusa/server && \
-    for i in 1 2 3; do \
-      pnpm install --prod --ignore-workspace --prefer-offline && exit 0; \
-      echo "⚠️ pnpm install attempt $i/3 failed, retrying in 15s..."; \
-      sleep 15; \
-    done; \
-    echo "❌ pnpm install failed after 3 attempts" && exit 1
+    pnpm --filter backend deploy --prod /tmp/backend-deploy && \
+    rm -rf .medusa/server/node_modules && \
+    cp -a /tmp/backend-deploy/node_modules .medusa/server/node_modules
 
-# Re-apply the full Razorpay refund patch — npm install above pulls from registry without pnpm patches
+# Re-apply the full Razorpay refund patch — the deployed node_modules above has no pnpm patch support
 RUN cd /app/apps/backend/.medusa/server/node_modules/@tsc_tech/medusa-plugin-razorpay-payment \
     && patch -p1 --forward --ignore-whitespace < /app/patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
 
