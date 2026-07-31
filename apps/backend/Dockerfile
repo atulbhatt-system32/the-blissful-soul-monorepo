@@ -40,16 +40,19 @@ RUN pnpm run build
 RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 
 # Install production dependencies inside the build output.
-# Mounts a persistent pnpm store cache so repeat CI builds reuse already-fetched
-# packages/metadata instead of re-querying the registry (avoids 429 rate limits) —
-# this RUN step can't rely on the Docker layer cache since .medusa/server changes
-# almost every build. The retry loop must `exit` explicitly: a bare `for` loop's
-# exit code is that of its last command (sleep/echo = 0), which previously let
-# a fully-failed install report success and silently skip node_modules.
+# --ignore-workspace means this has no lockfile of its own, so pnpm would normally
+# re-resolve every package fresh against the registry — even though the workspace
+# install above (frozen to pnpm-lock.yaml) already resolved metadata for the same
+# packages at the same pinned versions. --prefer-offline tells pnpm to trust that
+# already-cached metadata/store content instead of re-querying the registry,
+# which is what was tripping npm's per-package rate limit on a few heavily
+# depended-on packages (@medusajs/js-sdk, types, modules-sdk) on every build.
+# Mounts the same persistent pnpm store cache as the workspace install so that
+# cached content actually carries over between the two steps.
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
     cd .medusa/server && \
     for i in 1 2 3; do \
-      pnpm install --prod --ignore-workspace && exit 0; \
+      pnpm install --prod --ignore-workspace --prefer-offline && exit 0; \
       echo "⚠️ pnpm install attempt $i/3 failed, retrying in 15s..."; \
       sleep 15; \
     done; \
