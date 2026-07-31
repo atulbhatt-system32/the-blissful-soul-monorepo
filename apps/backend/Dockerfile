@@ -57,9 +57,11 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
     rm -rf .medusa/server/node_modules && \
     cp -a /tmp/backend-deploy/node_modules .medusa/server/node_modules
 
-# Re-apply the full Razorpay refund patch — the deployed node_modules above has no pnpm patch support
-RUN cd /app/apps/backend/.medusa/server/node_modules/@tsc_tech/medusa-plugin-razorpay-payment \
-    && patch -p1 --forward --ignore-whitespace < /app/patches/@tsc_tech__medusa-plugin-razorpay-payment@0.0.11.patch
+# No manual patch step needed here: pnpm's patchedDependencies (package.json)
+# applies the Razorpay refund patch automatically during the workspace install
+# above, and `pnpm deploy` carries that already-patched node_modules straight
+# into .medusa/server. (The old --ignore-workspace install bypassed workspace
+# config entirely, which is why a manual re-patch used to be necessary here.)
 
 # Verify admin build is present
 RUN test -f .medusa/server/public/admin/index.html || (echo "ERROR: Admin build missing. medusa build did not produce admin assets." && exit 1)
