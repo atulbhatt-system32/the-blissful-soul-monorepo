@@ -27,11 +27,11 @@ RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 
 # Install production dependencies inside the build output (required by Medusa docs)
 # --legacy-peer-deps matches pnpm's peer dep resolution used above
-# Retry up to 5 times with 60s delay to handle npm 429 rate-limit errors
+# Using Yarn's registry mirror to bypass aggressive npm 429 rate-limiting
 RUN cd .medusa/server && \
     for i in 1 2 3 4 5; do \
-      npm install --omit=dev --legacy-peer-deps && break || \
-      { echo "⚠️ npm install attempt $i/5 failed, retrying in 60s..."; npm cache clean --force; sleep 60; }; \
+      npm install --omit=dev --legacy-peer-deps --registry=https://registry.yarnpkg.com && break || \
+      { echo "⚠️ npm install attempt $i/5 failed, retrying in 15s..."; sleep 15; }; \
     done
 
 # Re-apply the full Razorpay refund patch — npm install above pulls from registry without pnpm patches
