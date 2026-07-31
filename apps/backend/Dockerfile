@@ -2,6 +2,16 @@ FROM node:20-slim AS builder
 RUN apt-get update && apt-get install -y --no-install-recommends patch && rm -rf /var/lib/apt/lists/*
 RUN npm install -g pnpm@10.5.2
 
+# Lower concurrency + longer retry/backoff budget for both installs below —
+# large, heavily-depended-on packages (e.g. @medusajs/js-sdk, types, modules-sdk,
+# pulled in transitively by dozens of @medusajs/* packages) get hit with bursts
+# of concurrent packument requests on a cold store, which trips npm's per-package
+# rate limit regardless of registry/mirror chosen.
+RUN pnpm config set network-concurrency 8 && \
+    pnpm config set fetch-retries 5 && \
+    pnpm config set fetch-retry-mintimeout 15000 && \
+    pnpm config set fetch-retry-maxtimeout 90000
+
 WORKDIR /app
 
 # Copy root monorepo files
@@ -11,8 +21,12 @@ COPY patches ./patches
 # Copy ONLY backend package.json to avoid busting cache on code changes
 COPY apps/backend/package.json ./apps/backend/
 
-# Install all dependencies (frozen to ensure reproducible builds)
-RUN pnpm install --filter backend... --frozen-lockfile
+# Install all dependencies (frozen to ensure reproducible builds).
+# Shares the same pnpm store cache mount as the .medusa/server install below —
+# without this, that later step's cache mount shadows this step's on-disk store
+# and re-fetches everything (including packages already pulled here) from scratch.
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
+    pnpm install --filter backend... --frozen-lockfile
 
 # Now copy the backend app source code
 COPY apps/backend ./apps/backend
@@ -34,9 +48,6 @@ RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 # a fully-failed install report success and silently skip node_modules.
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
     cd .medusa/server && \
-    pnpm config set fetch-retries 5 && \
-    pnpm config set fetch-retry-mintimeout 15000 && \
-    pnpm config set fetch-retry-maxtimeout 90000 && \
     for i in 1 2 3; do \
       pnpm install --prod --ignore-workspace && exit 0; \
       echo "⚠️ pnpm install attempt $i/3 failed, retrying in 15s..."; \
