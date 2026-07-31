@@ -53,7 +53,7 @@ RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 # node_modules directly from backend's already-resolved dependency graph — zero
 # registry calls of any kind, since nothing needs re-resolving.
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
-    pnpm --filter backend deploy --prod /tmp/backend-deploy && \
+    pnpm --filter backend deploy --prod --legacy /tmp/backend-deploy && \
     rm -rf .medusa/server/node_modules && \
     cp -a /tmp/backend-deploy/node_modules .medusa/server/node_modules
 
