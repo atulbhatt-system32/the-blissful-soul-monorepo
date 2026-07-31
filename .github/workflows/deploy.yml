@@ -68,7 +68,7 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Point: Max job duration
+    timeout-minutes: 30 # Point: Max job duration
     permissions:
       contents: read
       packages: write
@@ -115,7 +115,7 @@ jobs:
     needs: [detect-changes, build-and-push]
     if: needs.detect-changes.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Point: Max job duration
+    timeout-minutes: 30 # Point: Max job duration
     environment: production
     permissions:
       contents: read # Required for actions/checkout to get config files
