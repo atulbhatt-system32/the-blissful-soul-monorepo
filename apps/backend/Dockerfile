@@ -29,7 +29,7 @@ RUN cp src/lib/logo.png .medusa/server/src/lib/logo.png
 # Switching to pnpm because npm is hanging/rate-limiting on GitHub servers
 RUN cd .medusa/server && \
     for i in 1 2 3; do \
-      pnpm install --prod --ignore-workspace && break || \
+      pnpm install --prod --ignore-workspace --registry=https://registry.yarnpkg.com && break || \
       { echo "⚠️ pnpm install attempt $i/3 failed, retrying in 15s..."; sleep 15; }; \
     done
 
