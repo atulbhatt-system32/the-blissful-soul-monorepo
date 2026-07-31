@@ -3,6 +3,7 @@ import {
 } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
 import { sendSessionReminderWhatsApp } from "../lib/interakt";
+import { resolveCalMeetUrl } from "../lib/cal-meet-url";
 
 /**
  * Scheduled job to send session reminders 1 hour before the booking.
@@ -89,6 +90,14 @@ export default async function sessionReminderJob(container: MedusaContainer) {
             : `${minutesLeft} minutes`;
           console.log(`[Reminder Job] Sending reminder for Order #${order.display_id} (Session at ${bookingTime}) — ${minutesLeft} minutes left`);
 
+          // Resolve meet URL — fetch from Cal.com if missing
+          const calMeetUrl = await resolveCalMeetUrl(order, orderModuleService);
+          if (calMeetUrl) {
+            console.log(`[Reminder Job] Meet URL resolved for Order #${order.display_id}: ${calMeetUrl}`);
+          } else {
+            console.warn(`[Reminder Job] No meet URL available for Order #${order.display_id}`);
+          }
+
           const reminderData = {
             to: order.email,
             channel: "email",
@@ -112,6 +121,12 @@ export default async function sessionReminderJob(container: MedusaContainer) {
                     <p style="margin: 5px 0;"><strong>Date:</strong> ${bookingDate}</p>
                   </div>
                   
+                  ${calMeetUrl ? `
+                  <div style="text-align: center; margin: 20px 0;">
+                    <a href="${calMeetUrl}" style="background: #d2691e; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Join Session</a>
+                  </div>
+                  ` : ''}
+                  
                   <p style="color: #333;">Please ensure you are in a quiet space and ready for your journey. 🙏</p>
                   <p style="color: #333;">If you have any last-minute questions, feel free to reply to this email.</p>
                   
@@ -131,7 +146,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
             bookingDate,
             bookingTime,
             orderId: order.display_id || order.id,
-            calMeetUrl: order.metadata?.cal_meet_url as string | undefined,
+            calMeetUrl,
             timeLeftText,
           }).catch((err: Error) => console.error(`[Reminder Job] WhatsApp failed for Order #${order.display_id}:`, err.message));
 
@@ -171,6 +186,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
             id: order.id,
             metadata: {
               ...order.metadata,
+              ...(calMeetUrl ? { cal_meet_url: calMeetUrl } : {}),
               reminder_sent: true,
               reminder_sent_at: new Date().toISOString()
             }
