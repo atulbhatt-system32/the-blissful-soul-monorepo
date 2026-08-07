@@ -122,7 +122,7 @@ export default async function calcomBookingHandler({
             console.log(`[Cal.com] Booking success for ${item.title}. UID: ${calBookingUid} | Meet URL: ${meetUrl}`)
 
             // Save the Cal Video meet URL back to order metadata so reminders and WhatsApp can use it
-            if (meetUrl) {
+            if (calBookingUid || meetUrl) {
               const orderModuleService = container.resolve("order") as any
               try {
                 await orderModuleService.updateOrders([{
@@ -133,7 +133,7 @@ export default async function calcomBookingHandler({
                     cal_booking_uid: calBookingUid,
                   }
                 }])
-                console.log(`[Cal.com] Saved meet URL to order ${order.id}: ${meetUrl}`)
+                console.log(`[Cal.com] Saved meet URL/UID to order ${order.id}: ${meetUrl} | UID: ${calBookingUid}`)
               } catch (updateErr: any) {
                 console.error(`[Cal.com] Failed to save meet URL to order:`, updateErr.message)
               }

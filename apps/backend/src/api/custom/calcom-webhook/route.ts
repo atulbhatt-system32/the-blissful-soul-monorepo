@@ -181,12 +181,13 @@ async function handleRescheduled(req: MedusaRequest, res: MedusaResponse, body: 
     const firstName = order.shipping_address?.first_name || "Customer"
     const serviceTitle = order.items?.[0]?.title
 
-    // Update order metadata with new date/time
+    // Update order metadata with new date/time and clear old meet URL
     await orderModuleService.updateOrders([{
       id: order.id,
       metadata: {
         ...order.metadata,
         cal_booking_uid: newBookingUid,
+        cal_meet_url: null,
         booking_date: newDate,
         booking_time: newTime,
         rescheduled_at: new Date().toISOString(),
