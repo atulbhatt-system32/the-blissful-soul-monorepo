@@ -357,7 +357,7 @@ export default function BookNowClient({
     .sort((a: any, b: any) => b.threshold - a.threshold)
 
   // Use full cart total (session + products) if available, otherwise fall back to session price alone (Step 3 preview)
-  const cartTotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+  const cartTotal = cartItems.reduce((sum, i) => sum + ((i as any).total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)), 0)
   const effectiveTotal = cartTotal > 0 ? cartTotal : sessionPrice
 
   const qualifiedHamper = sessionLineItemId ? hamperTiers.find((t: any) => effectiveTotal >= t.threshold) : null
@@ -714,7 +714,11 @@ export default function BookNowClient({
                   const thumbnail = prod?.thumbnail || prod?.images?.[0]?.url
                   const title = prod?.title || "Product"
                   const unitPrice = item.unit_price ?? 0
-                  const priceLabel = convertToLocale({ amount: unitPrice, currency_code: "INR" })
+                  const originalTotal = (item as any).original_total ?? (unitPrice * (item.quantity ?? 1))
+                  const itemTotal = (item as any).total ?? originalTotal
+                  const hasDiscount = originalTotal > itemTotal
+                  const priceLabel = convertToLocale({ amount: itemTotal, currency_code: "INR" })
+                  const originalPriceLabel = convertToLocale({ amount: originalTotal, currency_code: "INR" })
                   const bookingDate = item.metadata?.booking_date as string | undefined
                   const bookingTime = item.metadata?.booking_time as string | undefined
                   const isRemoving = removingItemId === item.id
@@ -752,7 +756,16 @@ export default function BookNowClient({
                             )}
                           </div>
                         )}
-                        <p className="text-[#2C1E36] font-bold text-sm mt-1">{unitPrice === 0 ? "₹0.00" : priceLabel}</p>
+                        {unitPrice === 0 && isAutoGift ? (
+                          <p className="text-[#2C1E36] font-bold text-sm mt-1">₹0.00</p>
+                        ) : (
+                          <div className="flex items-center gap-2 mt-1">
+                            <p className="text-[#2C1E36] font-bold text-sm">{priceLabel}</p>
+                            {hasDiscount && (
+                              <p className="text-gray-400 text-xs line-through">{originalPriceLabel}</p>
+                            )}
+                          </div>
+                        )}
                       </div>
                       {isAutoGift ? null : (
                         <button
@@ -849,7 +862,7 @@ export default function BookNowClient({
           {/* Cart total with shipping */}
           {(() => {
             const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
-            const subtotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+            const subtotal = cartItems.reduce((sum, i) => sum + ((i as any).total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)), 0)
             const shipping = hasPhysicalItems ? 99 : 0  // ₹99
             const grandTotal = subtotal + shipping
             return (
@@ -885,7 +898,7 @@ export default function BookNowClient({
             meetingAbout={`${details.firstName} ${details.lastName} | ${details.phone}`}
             price={(() => {
               const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
-              const subtotal = cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0)
+              const subtotal = cartItems.reduce((sum, i) => sum + ((i as any).total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)), 0)
               return subtotal + (hasPhysicalItems ? 99 : 0)
             })()}
             isPackage={isPackage}
@@ -954,7 +967,7 @@ export default function BookNowClient({
                        )}
                      </div>
                      <p className="text-sm font-bold text-[#2C1E36] whitespace-nowrap">
-                       {convertToLocale({ amount: unitPrice * (item.quantity ?? 1), currency_code: "INR" })}
+                       {convertToLocale({ amount: (item as any).total ?? (unitPrice * (item.quantity ?? 1)), currency_code: "INR" })}
                      </p>
                    </li>
                  )
@@ -964,7 +977,7 @@ export default function BookNowClient({
                <span className="text-xs font-bold text-[#2C1E36]/50 uppercase tracking-wider">Total Paid</span>
                <span className="text-xl font-serif font-bold text-[#2C1E36]">
                  {convertToLocale({
-                   amount: cartItems.reduce((sum, i) => sum + (i.unit_price ?? 0) * (i.quantity ?? 1), 0),
+                   amount: cartItems.reduce((sum, i) => sum + ((i as any).total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)), 0),
                    currency_code: "INR",
                  })}
                </span>
