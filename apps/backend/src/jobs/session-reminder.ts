@@ -95,8 +95,7 @@ export default async function sessionReminderJob(container: MedusaContainer) {
           if (calMeetUrl) {
             console.log(`[Reminder Job] Meet URL resolved for Order #${order.display_id}: ${calMeetUrl}`);
           } else {
-            const timestamp = new Date().toISOString();
-            console.warn(`[Reminder Job] [${timestamp}] No meet URL available for Order #${order.display_id} — skipping reminder dispatch to retry later`);
+            console.warn(`[Reminder Job] No meet URL available for Order #${order.display_id} — skipping reminder dispatch to retry later`);
             continue;
           }
 

@@ -402,9 +402,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
                       `[Razorpay Webhook] Retry succeeded — meetUrl: ${retryMeetUrl}`,
                     );
                   } else {
-                    const timestamp = new Date().toISOString();
                     console.warn(
-                      `[Razorpay Webhook] [${timestamp}] Retry returned no meetUrl for UID: ${calResult.uid} — will rely on reminder job`,
+                      `[Razorpay Webhook] Retry returned no meetUrl — will rely on reminder job`,
                     );
                   }
                 }
@@ -427,7 +426,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
               },
             ]);
             console.log(
-              `[Razorpay Webhook] Cal.com booking created — UID: ${calResult.uid} | Meet: ${calResult.meetUrl}`,
+              `✅ LINK GENERATED at ${new Date().toLocaleString()}: ${calResult.meetUrl}`,
             );
           }
         } catch (calErr: any) {
