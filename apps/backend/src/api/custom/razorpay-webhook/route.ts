@@ -254,7 +254,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       region_id: region.id,
       sales_channel_id: salesChannelId,
       customer_id: customerId,
-
+      email,
       currency_code: region.currency_code || "inr",
       shipping_address: {
         first_name: firstName,
