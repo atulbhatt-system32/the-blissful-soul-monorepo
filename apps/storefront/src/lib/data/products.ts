@@ -196,6 +196,13 @@ export const listProductsWithSort = async ({
     return !isSession
   })
 
+  // Apply manual sorting via metadata.sort_priority if it exists
+  finalFilteredProducts.sort((a, b) => {
+    const aPriority = a.metadata?.sort_priority !== undefined ? Number(a.metadata.sort_priority) : 999
+    const bPriority = b.metadata?.sort_priority !== undefined ? Number(b.metadata.sort_priority) : 999
+    return aPriority - bPriority
+  })
+
   const pageParam = (page - 1) * limit
 
   // Recalculate count and pagination based on the filtered list

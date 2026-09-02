@@ -27,7 +27,7 @@ export default async function StorePage(props: Params) {
   const searchParams = await props.searchParams;
   const { sortBy, page, limit, view, q } = searchParams
   const storeData = await getStorePageData()
-
+  
   return (
     <StoreTemplate
       sortBy={sortBy}
