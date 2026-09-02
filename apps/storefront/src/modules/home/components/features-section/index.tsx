@@ -49,9 +49,18 @@ const FeaturesSection = () => {
               className="flex flex-col items-center text-center group"
             >
               {/* Icon Container */}
-              <div className="mb-8 p-4 rounded-full bg-slate-50 group-hover:bg-amber-50 transition-colors duration-500">
+              <motion.div 
+                animate={{ y: [0, -12, 0] }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  ease: "easeInOut",
+                  delay: idx * 0.2
+                }}
+                className="mb-8 p-4 rounded-full bg-slate-50 group-hover:bg-amber-50 transition-colors duration-500"
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
 
               {/* Text Content */}
               <h3 className="text-2xl md:text-3xl font-serif text-[#2C1E36] mb-4 tracking-tight font-medium">
