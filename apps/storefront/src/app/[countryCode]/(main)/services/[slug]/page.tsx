@@ -41,10 +41,10 @@ export default async function ServiceDetailPage({
     []
     
   let rawDescription = (category.description as string) || ""
-  // If the description is a single block of text with no line breaks,
-  // split it by periods so each sentence renders as a separate, spaced-out block.
-  if (rawDescription && !rawDescription.includes('\n')) {
-    rawDescription = rawDescription.replace(/\.\s/g, '.\n')
+  // Automatically break sentences into new lines so they appear as distinct, 
+  // spaced-out blocks, similar to a bulleted list.
+  if (rawDescription) {
+    rawDescription = rawDescription.replace(/\.\s+/g, '.\n')
   }
 
   for (const rawLine of rawDescription.split("\n")) {
