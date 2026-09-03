@@ -40,7 +40,14 @@ export default async function ServiceDetailPage({
   const descriptionBlocks: Array<{ type: "bullet" | "text"; lines: string[] }> =
     []
     
-  for (const rawLine of ((category.description as string) || "").split("\n")) {
+  let rawDescription = (category.description as string) || ""
+  // If the description is a single block of text with no line breaks,
+  // split it by periods so each sentence renders as a separate, spaced-out block.
+  if (rawDescription && !rawDescription.includes('\n')) {
+    rawDescription = rawDescription.replace(/\.\s/g, '.\n')
+  }
+
+  for (const rawLine of rawDescription.split("\n")) {
     const line = rawLine.trim()
     if (!line) continue
     const type = /^[-•*]\s*/.test(line) ? "bullet" : "text"
