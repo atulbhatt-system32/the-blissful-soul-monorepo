@@ -39,6 +39,7 @@ export default async function ServiceDetailPage({
 
   const descriptionBlocks: Array<{ type: "bullet" | "text"; lines: string[] }> =
     []
+    
   for (const rawLine of ((category.description as string) || "").split("\n")) {
     const line = rawLine.trim()
     if (!line) continue
@@ -95,12 +96,16 @@ export default async function ServiceDetailPage({
                         ))}
                       </ul>
                     ) : (
-                      <p
-                        key={i}
-                        className="text-[#665D6B] text-base md:text-lg font-sans leading-relaxed whitespace-pre-line"
-                      >
-                        {block.lines.join("\n")}
-                      </p>
+                      <div key={i} className="flex flex-col gap-y-4">
+                        {block.lines.map((line, j) => (
+                          <p
+                            key={j}
+                            className="text-[#665D6B] text-base md:text-lg font-sans leading-relaxed"
+                          >
+                            {line}
+                          </p>
+                        ))}
+                      </div>
                     )
                   )}
                 </div>
