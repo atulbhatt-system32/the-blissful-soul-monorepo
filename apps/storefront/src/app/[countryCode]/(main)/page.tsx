@@ -106,9 +106,12 @@ export default async function HomeNew(props: {
 
       {/* Instagram Banner */}
       {homepageData?.show_instagram !== false && (
-        <InstagramBanner 
-          banner={homepageData?.instagram_banner} 
-          handle={homepageData?.instagram_handle} 
+        <InstagramBanner
+          banner={homepageData?.instagram_banner}
+          // Optional taller/portrait artwork for phones. Undefined until the
+          // field is added in Strapi, in which case the desktop banner is used.
+          mobileBanner={homepageData?.instagram_banner_mobile}
+          handle={homepageData?.instagram_handle}
         />
       )}
 
