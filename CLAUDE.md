@@ -120,3 +120,51 @@ Two keys are set per service category in the Medusa admin ("Edit Metadata"):
 - `POST /admin/product-category/:id/images` — upload (body: `{ urls: string[] }`)
 - `PUT /admin/product-category/:id/images` — reorder
 - `DELETE /admin/product-category/:id/images` — delete by `images_id` query param
+
+---
+
+## Automatic 50% crystal discount
+
+An automatic promotion (`AUTO_CRYSTAL_50`) takes 50% off physical crystals in the
+cart. No coupon code — it applies as soon as a matching item is added.
+
+```bash
+npx medusa exec ./src/scripts/setup-crystal-discount.ts          # create/refresh
+DISCOUNT_PERCENT=30 npx medusa exec ./src/scripts/setup-crystal-discount.ts
+DRY_RUN=1 npx medusa exec ./src/scripts/setup-crystal-discount.ts
+```
+The script is idempotent — it deletes and recreates the promotion, so re-running
+with a different `DISCOUNT_PERCENT` updates the rate.
+
+### Products are targeted by product TYPE, not metadata
+**Medusa promotion target rules can only read these five attributes:**
+`items.product.id`, `items.product.categories.id`, `items.product.collection_id`,
+`items.product.type_id`, `items.product.tags.id` (operators: `eq`, `ne`, `in`,
+`gt`, `gte`, `lt`, `lte`).
+
+`metadata` is **not** among them — so the usual `product.metadata.is_service`
+marker used everywhere else in this codebase (`is-digital-cart.ts`,
+`lib/data/products.ts`, `lib/data/orders.ts`) is invisible to the promotion
+engine. That is why the discount keys off product type instead.
+
+The catalog's existing two product types are reused — `product` for physical
+goods and `session` for bookings — so nothing new is introduced. The script only
+backfills them if they are missing (e.g. on a fresh database).
+
+**Every physical item must have its type set to `product` in the admin or it
+will not be discounted.** The rule is an explicit include (`type_id in
+[product]`) so it fails safe: an untyped item just misses the discount, rather
+than a session accidentally getting 50% off.
+
+### Allocation is `across`, not `each`
+`each` requires `application_method.max_quantity`, which would cap the discount
+at N units per line. `across` applies the percentage to the matching subtotal —
+identical result for a percentage promotion, with no cap.
+
+### This is a cart-level discount
+Product cards and PDPs still show the full price; the 50% appears in the cart as
+a discount line (`cart-totals` computes `discount_subtotal = item_subtotal -
+item_total`). To strike through prices in the catalog instead, that needs a
+**price list** of `type: sale` — `lib/util/get-product-price.ts` already renders
+`original_price` and `percentage_diff` for that case. Do not run both at once or
+they stack.
