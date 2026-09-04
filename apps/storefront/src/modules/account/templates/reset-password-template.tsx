@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { resetPassword } from "@lib/data/customer"
 import Input from "@modules/common/components/input"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -19,11 +20,31 @@ type Props = {
 }
 
 const ResetPasswordTemplate = ({ token, email }: Props) => {
+  const router = useRouter()
+  const params = useParams()
+  const countryCode = (params?.countryCode as string) || "in"
+
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // resetPassword() signs the customer in and issues a new JWT cookie, but
+  // revalidateTag only clears the server Data Cache — the client Router Cache
+  // still holds the signed-out /account payload. Without this refresh, moving
+  // to /account replays that stale payload and the page renders empty until
+  // the visitor clicks through to another tab.
+  useEffect(() => {
+    if (success) {
+      router.refresh()
+    }
+  }, [success, router])
+
+  const goToAccount = () => {
+    router.refresh()
+    router.replace(`/${countryCode}/account`)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -78,12 +99,13 @@ const ResetPasswordTemplate = ({ token, email }: Props) => {
                 <span className="not-italic block mt-1 text-xs opacity-70">Password reset successful.</span>
               </p>
             </div>
-            <LocalizedClientLink 
-              href="/account"
+            <button
+              type="button"
+              onClick={goToAccount}
               className="bg-[#2C1E36] text-white px-10 py-4.5 rounded-2xl text-sm font-bold uppercase tracking-widest hover:bg-[#3D2B4A] transition-all shadow-xl shadow-purple-900/20 inline-block w-full"
             >
-              Back to Login
-            </LocalizedClientLink>
+              Go to My Account
+            </button>
           </div>
         ) : (
           <form className="w-full flex flex-col gap-y-6" onSubmit={handleSubmit}>
