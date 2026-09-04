@@ -12,6 +12,8 @@ export interface HomepageData {
     faqs?: any[]
     instagram_handle?: string
     instagram_banner?: any
+    /** Optional phone-sized artwork; falls back to instagram_banner. */
+    instagram_banner_mobile?: any
     stats?: any[]
     shop_by_intent_title?: string
     show_featured_products?: boolean
