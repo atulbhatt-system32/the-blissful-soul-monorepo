@@ -1,7 +1,6 @@
 import { Metadata } from "next"
 
 import OrderOverview from "@modules/account/components/order-overview"
-import { notFound } from "next/navigation"
 import { listOrders } from "@lib/data/orders"
 
 export const metadata: Metadata = {
@@ -10,11 +9,11 @@ export const metadata: Metadata = {
 }
 
 export default async function Orders() {
-  const orders = await listOrders()
-
-  if (!orders) {
-    notFound()
-  }
+  // listOrders() rethrows through medusaError(), which is typed `never` — an
+  // expired session or a backend hiccup would otherwise take the whole page
+  // down, and there is no error boundary in the account tree. The overview
+  // page already guards the same call this way.
+  const orders = (await listOrders().catch(() => null)) ?? []
 
   return (
     <div className="w-full" data-testid="orders-page-wrapper">

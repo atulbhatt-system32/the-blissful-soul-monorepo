@@ -44,11 +44,33 @@ docker compose up -d backend
 **URL-encode gotcha:** When constructing `DATABASE_URL` locally (e.g. for `medusa db:migrate`), the `@` and `$` in the password must be percent-encoded: `@` → `%40`, `$` → `%24`.
 
 ### Medusa publishable API key
-Set in `apps/storefront/.env` as `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`. After a DB reset, Medusa generates a new key and the old one becomes invalid ("A valid publishable key is required"). To fix:
+Set in **two** places — `apps/storefront/.env` as `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` and `apps/backend/.env` as `MEDUSA_PUBLISHABLE_KEY`. Both must match the DB or requests fail with "A valid publishable key is required". After a DB reset, Medusa generates a new key and the old one becomes invalid. To fix:
 ```sql
 SELECT token FROM api_key WHERE type = 'publishable';
 ```
-Then update `apps/storefront/.env` and run `docker compose up -d storefront`.
+Update both `.env` files, then run `docker compose up -d storefront`.
+
+### After a DB reset, also recreate these
+A reset wipes the admin user, regions and the sales-channel link, and this repo has **no seed script** (`src/scripts/seed.ts` was deleted in 41ed481, though `pnpm seed` still references it). Without a region the storefront middleware throws "No regions found" before any page renders.
+
+```bash
+# 1. Admin user (none exists after a reset — /app is unreachable without one)
+docker compose exec backend npx medusa user -e admin@pragyavijh.com -p 'YourPassword123'
+
+# 2. Store currency + India region, via the admin API
+TOKEN=$(curl -s -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@pragyavijh.com","password":"YourPassword123"}' | jq -r .token)
+
+curl -X POST "http://localhost:9000/admin/stores/<store_id>" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"supported_currencies":[{"currency_code":"inr","is_default":true}]}'
+
+curl -X POST http://localhost:9000/admin/regions \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"India","currency_code":"inr","countries":["in"],"automatic_taxes":true}'
+```
+The storefront's `NEXT_PUBLIC_DEFAULT_REGION` is `in`, so the region must include country `in`.
 
 ### Storefront ↔ backend URL routing
 - Server components fetch from `http://backend:9000` (Docker internal network)

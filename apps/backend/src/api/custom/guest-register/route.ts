@@ -1,11 +1,17 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
+import { validatePassword } from "../../../lib/password"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { email, password, firstName, lastName } = req.body as any
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" })
+  }
+
+  const weakPassword = validatePassword(password)
+  if (weakPassword) {
+    return res.status(400).json({ message: weakPassword })
   }
 
   const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"

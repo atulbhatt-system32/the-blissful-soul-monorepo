@@ -6,6 +6,11 @@ import Input from "@modules/common/components/input"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Button } from "@medusajs/ui"
+import {
+  PASSWORD_MIN_LENGTH,
+  validatePassword,
+  validatePasswordConfirmation,
+} from "@lib/util/validation"
 
 
 type Props = {
@@ -25,14 +30,12 @@ const ResetPasswordTemplate = ({ token, email }: Props) => {
     setLoading(true)
     setError(null)
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.")
-      setLoading(false)
-      return
-    }
+    const invalid =
+      validatePassword(password) ??
+      validatePasswordConfirmation(password, confirmPassword)
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.")
+    if (invalid) {
+      setError(invalid)
       setLoading(false)
       return
     }
@@ -105,6 +108,11 @@ const ResetPasswordTemplate = ({ token, email }: Props) => {
               />
             </div>
             
+            <p className="text-gray-400 text-[11px] px-1 leading-relaxed -mt-3">
+              At least {PASSWORD_MIN_LENGTH} characters, including a letter and
+              a number.
+            </p>
+
             <ErrorMessage error={error} />
             
             <Button 

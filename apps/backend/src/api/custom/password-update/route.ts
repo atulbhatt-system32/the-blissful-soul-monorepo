@@ -1,5 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
+import { emailVariants } from "../../../lib/email"
+import { validatePassword } from "../../../lib/password"
 
 /**
  * POST /custom/password-update
@@ -16,22 +18,37 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     })
   }
 
+  if (new_password === old_password) {
+    return res.status(400).json({
+      message: "New password must be different from your current password.",
+    })
+  }
+
+  const weakPassword = validatePassword(new_password)
+  if (weakPassword) {
+    return res.status(400).json({ message: weakPassword })
+  }
+
   try {
     const authModuleService = req.scope.resolve(Modules.AUTH) as any
-    const normalizedEmail = email.toLowerCase()
 
-    // 1. Verify the old password by attempting authentication through the provider
-    const { success: authSuccess } = await authModuleService.authenticate(
-      "emailpass",
-      {
-        body: {
-          email: normalizedEmail,
-          password: old_password,
-        },
+    // 1. Verify the old password by attempting authentication through the provider.
+    //    entity_id keeps the casing used at registration, so try the submitted
+    //    form before the lowercased one rather than assuming normalisation.
+    let normalizedEmail = ""
+
+    for (const candidate of emailVariants(email)) {
+      const { success } = await authModuleService.authenticate("emailpass", {
+        body: { email: candidate, password: old_password },
+      })
+
+      if (success) {
+        normalizedEmail = candidate
+        break
       }
-    )
+    }
 
-    if (!authSuccess) {
+    if (!normalizedEmail) {
       return res.status(400).json({
         message: "Current password is incorrect.",
       })

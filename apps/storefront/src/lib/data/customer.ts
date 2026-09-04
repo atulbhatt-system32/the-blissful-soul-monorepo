@@ -3,6 +3,15 @@
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
+import { canonicalPhone, looksLikePhone } from "@lib/util/phone"
+import {
+  validateEmail,
+  validateLoginIdentifier,
+  validateName,
+  validatePassword,
+  validatePasswordConfirmation,
+  validatePhone,
+} from "@lib/util/validation"
 import { revalidateTag } from "next/cache"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
@@ -63,11 +72,36 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
 
 export async function signup(_currentState: unknown, formData: FormData) {
   const password = formData.get("password") as string
+  const rawEmail = ((formData.get("email") as string) || "").trim()
+  const rawPhone = (formData.get("phone") as string) || ""
+  const firstName = ((formData.get("first_name") as string) || "").trim()
+  const lastName = ((formData.get("last_name") as string) || "").trim()
+  const confirmPassword = (formData.get("confirm_password") as string) || ""
+
+  // Authoritative validation. The form runs the same rules for instant
+  // feedback, but a server action is a public endpoint — anything can post here.
+  const invalid =
+    validateName(firstName, "First name") ??
+    validateName(lastName, "Last name") ??
+    validateEmail(rawEmail) ??
+    validatePhone(rawPhone) ??
+    validatePassword(password) ??
+    // Only enforced when the field is submitted, so callers that predate the
+    // confirmation field still work.
+    (formData.has("confirm_password")
+      ? validatePasswordConfirmation(password, confirmPassword)
+      : null)
+
+  if (invalid) {
+    return invalid
+  }
+
   const customerForm = {
-    email: formData.get("email") as string,
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    phone: formData.get("phone") as string,
+    email: rawEmail,
+    first_name: firstName,
+    last_name: lastName,
+    // Stored canonically ("+919876543210") so sign-in by phone can match it.
+    phone: canonicalPhone(rawPhone),
   }
 
   try {
@@ -107,12 +141,53 @@ export async function signup(_currentState: unknown, formData: FormData) {
 }
 
 export async function login(_currentState: unknown, formData: FormData) {
-  const email = formData.get("email") as string
+  const identifier = ((formData.get("email") as string) || "").trim()
   const password = formData.get("password") as string
+
+  const invalid = validateLoginIdentifier(identifier)
+  if (invalid) {
+    return invalid
+  }
+
+  if (!password) {
+    return "Enter your password."
+  }
+
+  let emailToUse = identifier
+
+  // Customers may sign in with either their email or their phone number. Phone
+  // numbers are resolved to the account email server-side, since the emailpass
+  // provider only knows how to authenticate an email.
+  if (looksLikePhone(identifier)) {
+    const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
+
+    const res = await fetch(`${backendUrl}/store/custom/resolve-phone`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Medusa gates the whole /store namespace on this header.
+        "x-publishable-api-key":
+          process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
+      },
+      body: JSON.stringify({ phone: identifier, password }),
+    }).catch(() => null)
+
+    if (!res) {
+      return "Could not reach the server. Please try again."
+    }
+
+    const data = await res.json().catch(() => null)
+
+    if (!res.ok || !data?.success || !data?.email) {
+      return data?.message || "Invalid phone number or password."
+    }
+
+    emailToUse = data.email
+  }
 
   try {
     await sdk.auth
-      .login("customer", "emailpass", { email, password })
+      .login("customer", "emailpass", { email: emailToUse, password })
       .then(async (token) => {
         await setAuthToken(token as string)
         const customerCacheTag = await getCacheTag("customers")
@@ -344,6 +419,15 @@ export async function requestPasswordReset(email: string) {
  * Set a new password using the token sent via email.
  */
 export async function resetPassword(email: string, token: string, newPassword: string) {
+  const invalid = validatePassword(newPassword)
+  if (invalid) {
+    return { success: false, error: invalid }
+  }
+
+  if (!token || !email) {
+    return { success: false, error: "This reset link is invalid or incomplete." }
+  }
+
   try {
     const backendUrl = process.env.STOREFRONT_MEDUSA_URL || "http://localhost:9000"
     
@@ -388,12 +472,23 @@ export async function updateCustomerPassword(
   const newPassword = formData.get("new_password") as string
   const confirmPassword = formData.get("confirm_password") as string
 
-  if (newPassword !== confirmPassword) {
-    return { success: false, error: "Passwords do not match." }
+  if (!oldPassword) {
+    return { success: false, error: "Enter your current password." }
   }
 
-  if (newPassword.length < 6) {
-    return { success: false, error: "New password must be at least 6 characters." }
+  if (newPassword === oldPassword) {
+    return {
+      success: false,
+      error: "New password must be different from your current password.",
+    }
+  }
+
+  const invalid =
+    validatePassword(newPassword) ??
+    validatePasswordConfirmation(newPassword, confirmPassword)
+
+  if (invalid) {
+    return { success: false, error: invalid }
   }
 
   try {

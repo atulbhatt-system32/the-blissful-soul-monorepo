@@ -20,6 +20,7 @@ const SideMenuItems = {
   "Shop Crystals": "/store",
   Cart: "/cart",
   Wishlist: "/wishlist",
+  "My Account": "/account",
   Contact: "/contact",
 }
 

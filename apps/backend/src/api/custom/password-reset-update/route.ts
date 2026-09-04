@@ -1,5 +1,22 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
+import crypto from "crypto"
+import { emailVariants } from "../../../lib/email"
+import { validatePassword } from "../../../lib/password"
+
+/**
+ * Constant-time comparison of a stored SHA-256 token hash against a token from
+ * a reset link. Anything that is not a 64-character hex digest — including a
+ * token written by the pre-hashing version of this flow — fails.
+ */
+function tokensMatch(storedHash: string, providedToken: string): boolean {
+  if (!/^[0-9a-f]{64}$/i.test(storedHash)) return false
+
+  const stored = Buffer.from(storedHash, "hex")
+  const provided = crypto.createHash("sha256").update(providedToken).digest()
+
+  return crypto.timingSafeEqual(stored, provided)
+}
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { email, token, password } = req.body as any
@@ -8,13 +25,18 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Email, token, and new password are required." })
   }
 
+  const weakPassword = validatePassword(password)
+  if (weakPassword) {
+    return res.status(400).json({ message: weakPassword })
+  }
+
   try {
     const customerModuleService = req.scope.resolve(Modules.CUSTOMER)
     const authModuleService = req.scope.resolve(Modules.AUTH)
 
-    // 1. Find Customer
+    // 1. Find Customer (stored casing is not normalised)
     const [customers] = await (customerModuleService as any).listAndCountCustomers({
-      email: email.toLowerCase()
+      email: { $in: emailVariants(email) }
     })
 
     if (!customers || customers.length === 0) {
@@ -26,10 +48,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     console.log(`[Password Reset Update] validating token for: ${email}`)
 
     // 2. Verify Token and Expiry securely
+    //    Only the SHA-256 of the token is stored (see password-reset-request),
+    //    and the comparison is constant-time so the token cannot be recovered
+    //    byte by byte from response timing.
     const resetToken = customer.metadata?.reset_token
     const resetExpiry = customer.metadata?.reset_expiry
 
-    if (!resetToken || resetToken !== token) {
+    if (!resetToken || typeof resetToken !== "string" || !tokensMatch(resetToken, token)) {
       console.log(`[Password Reset Update] Token mismatch.`)
       return res.status(400).json({ message: "Invalid or expired reset token." })
     }
@@ -43,9 +68,33 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       return res.status(400).json({ message: "Invalid reset token structure." })
     }
 
-    const normalizedEmail = email.toLowerCase()
+    // 3. Locate the existing emailpass identity first. entity_id is stored with
+    //    the casing used at registration, so writing to a lowercased entity_id
+    //    would miss the real identity and silently create a duplicate one.
+    const candidateEmails = [
+      ...new Set([customer.email, ...emailVariants(email)].filter(Boolean)),
+    ] as string[]
 
-    // 3. Update password via the emailpass provider which handles hashing (scrypt-kdf).
+    const [knownIdentities] = await (authModuleService as any).listAndCountAuthIdentities(
+      {
+        provider_identities: {
+          entity_id: { $in: candidateEmails },
+          provider: "emailpass",
+        },
+      },
+      { relations: ["provider_identities"] }
+    )
+
+    const knownIdentity = knownIdentities?.[0]
+    const knownEntityId = knownIdentity?.provider_identities?.find(
+      (pi: any) => pi.provider === "emailpass"
+    )?.entity_id
+
+    // Reuse the stored entity_id when one exists; only a genuinely new identity
+    // gets the normalised form.
+    const normalizedEmail = knownEntityId ?? (customer.email || email).toLowerCase()
+
+    // 3b. Update password via the emailpass provider which handles hashing (scrypt-kdf).
     //    updateProvider calls the provider's update() method, which hashes the password
     //    and stores it in provider_metadata.password on the ProviderIdentity.
     const { success: updateSuccess } = await (authModuleService as any).updateProvider(
@@ -95,11 +144,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       // 4b. Auth identity exists. Ensure app_metadata.customer_id is set —
       //     it may be missing for users whose auth identity was created by older
       //     broken code (missing link causes actor_id: "" in the JWT).
-      const [existingIdentities] = await (authModuleService as any).listAndCountAuthIdentities(
-        { provider_identities: { entity_id: normalizedEmail, provider: "emailpass" } },
-        { relations: ["provider_identities"] }
-      )
-      const existingIdentity = existingIdentities?.[0]
+      const existingIdentity = knownIdentity
       if (existingIdentity && !existingIdentity.app_metadata?.customer_id) {
         await (authModuleService as any).updateAuthIdentities({
           id: existingIdentity.id,

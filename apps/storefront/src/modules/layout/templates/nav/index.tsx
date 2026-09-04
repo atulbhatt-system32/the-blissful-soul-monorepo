@@ -12,6 +12,7 @@ import SearchToggle from "@modules/layout/components/search-toggle"
 import NavLinks from "@modules/layout/components/nav-links"
 import StickyWrapper from "@modules/layout/components/sticky-wrapper"
 import WishlistButton from "@modules/layout/components/wishlist-button"
+import AccountButton from "@modules/layout/components/account-button"
 import MobileCartButton from "../../components/mobile-cart-button"
 import { retrieveCart } from "@lib/data/cart"
 
@@ -73,6 +74,17 @@ export default async function Nav() {
                 {/* Wishlist Icon with Count - Desktop */}
                 <div className="hidden sm:block">
                   <WishlistButton />
+                </div>
+
+                {/* Account / Sign in - Desktop */}
+                <div className="hidden sm:block">
+                  <Suspense
+                    fallback={
+                      <span className="p-2 block w-[38px] h-[38px]" aria-hidden />
+                    }
+                  >
+                    <AccountButton />
+                  </Suspense>
                 </div>
 
                 {/* Mobile Actions (Cart Only - Wishlist is in Menu) */}

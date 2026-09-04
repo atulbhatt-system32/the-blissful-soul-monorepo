@@ -1,6 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 import crypto from "crypto"
+import { emailVariants } from "../../../lib/email"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { email } = req.body as { email: string }
@@ -15,9 +16,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const customerModuleService = req.scope.resolve(Modules.CUSTOMER) as any
     const notificationModuleService = req.scope.resolve(Modules.NOTIFICATION) as any
 
-    // 1. Fetch customer by email
+    // 1. Fetch customer by email (stored casing is not normalised)
     const [customers] = await customerModuleService.listAndCountCustomers({
-      email: email.toLowerCase()
+      email: { $in: emailVariants(email) }
     })
 
     if (!customers || customers.length === 0) {
@@ -30,15 +31,19 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     // 2. Generate token and expiry
     const token = crypto.randomBytes(32).toString('hex')
+    // Only the hash is persisted. customer.metadata is readable through several
+    // admin/query paths, and a plaintext token there is a password reset for
+    // anyone who can see it.
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
     const expiry = new Date()
     expiry.setMinutes(expiry.getMinutes() + 15)
 
-    // 3. Save token to customer metadata
+    // 3. Save token hash to customer metadata
     try {
       await customerModuleService.updateCustomers(customer.id, {
         metadata: {
           ...(customer.metadata || {}),
-          reset_token: token,
+          reset_token: tokenHash,
           reset_expiry: expiry.toISOString()
         }
       })
@@ -50,7 +55,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     
     // 4. Construct Content
     const storefrontUrl = process.env.STOREFRONT_URL || 'https://klickvert.com'
-    const resetUrl = `${storefrontUrl}/account/reset-password?token=${token}&email=${email}`
+    // Use the stored email (and encode it) so the reset link round-trips the
+    // exact value the lookup on the other side will see.
+    const resetUrl = `${storefrontUrl}/account/reset-password?token=${token}&email=${encodeURIComponent(customer.email)}`
 
     const htmlBody = `
       <div style="font-family: 'Inter', sans-serif; background-color: #FBFAF8; padding: 40px; color: #110E17; max-width: 600px; margin: 0 auto; border: 1px solid #E1DFE3; border-radius: 24px;">

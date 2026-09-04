@@ -7,6 +7,8 @@ import Input from "@modules/common/components/input"
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { updateCustomer } from "@lib/data/customer"
+import { canonicalPhone } from "@lib/util/phone"
+import { validatePhone } from "@lib/util/validation"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
@@ -14,13 +16,26 @@ type MyInformationProps = {
 
 const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
+  const [phone, setPhone] = React.useState(customer.phone ?? "")
+  const [error, setError] = React.useState<string | undefined>()
+  const [touched, setTouched] = React.useState(false)
 
   const updateCustomerPhone = async (
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
+    const submitted = formData.get("phone") as string
+
+    // Re-checked here because a form action is a public endpoint; the inline
+    // check below is only for immediate feedback.
+    const invalid = validatePhone(submitted)
+    if (invalid) {
+      return { success: false, error: invalid }
+    }
+
     const customer = {
-      phone: formData.get("phone") as string,
+      // Stored canonically so sign-in by phone can match it.
+      phone: canonicalPhone(submitted),
     }
 
     try {
@@ -36,8 +51,24 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
     success: false,
   })
 
+  const handleSubmit = (formData: FormData) => {
+    const invalid = validatePhone(phone)
+
+    if (invalid) {
+      setTouched(true)
+      setError(invalid)
+      return
+    }
+
+    setError(undefined)
+    formAction(formData)
+  }
+
   const clearState = () => {
     setSuccessState(false)
+    setPhone(customer.phone ?? "")
+    setError(undefined)
+    setTouched(false)
   }
 
   useEffect(() => {
@@ -45,7 +76,7 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
   }, [state])
 
   return (
-    <form action={formAction} className="w-full">
+    <form action={handleSubmit} className="w-full" noValidate>
       <AccountInfo
         label="Phone"
         currentInfo={customer.phone ?? "Not provided"}
@@ -59,12 +90,26 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
           <Input
             label="Phone"
             name="phone"
-            type="phone"
-            autoComplete="phone"
+            type="tel"
+            autoComplete="tel"
             required
-            defaultValue={customer.phone ?? ""}
+            value={phone}
+            onChange={(e) => {
+              setPhone(e.target.value)
+              if (touched) setError(validatePhone(e.target.value) ?? undefined)
+            }}
+            onBlur={() => {
+              setTouched(true)
+              setError(validatePhone(phone) ?? undefined)
+            }}
+            error={touched ? error : undefined}
             data-testid="phone-input"
           />
+          {!(touched && error) && (
+            <p className="text-gray-400 text-[11px] px-1 leading-relaxed">
+              10-digit mobile number, with or without +91.
+            </p>
+          )}
         </div>
       </AccountInfo>
     </form>

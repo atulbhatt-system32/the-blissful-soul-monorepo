@@ -13,10 +13,12 @@ type InputProps = Omit<
   touched?: Record<string, unknown>
   name: string
   topLabel?: string
+  /** Validation message to show beneath the field. */
+  error?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched, required, topLabel, ...props }, ref) => {
+  ({ type, name, label, touched, required, topLabel, error, ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
@@ -44,7 +46,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             name={name}
             placeholder=" "
             required={required}
-            className="pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:border-[#2C1E36] focus:ring-2 focus:ring-[#2C1E36]/10 border-ui-border-base hover:bg-ui-bg-field-hover transition-all duration-200"
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? `${name}-error` : undefined}
+            className={`pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-2 hover:bg-ui-bg-field-hover transition-all duration-200 ${
+              error
+                ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/10"
+                : "border-ui-border-base focus:border-[#2C1E36] focus:ring-[#2C1E36]/10"
+            }`}
             {...props}
             ref={inputRef}
           />
@@ -66,6 +74,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
+        {error && (
+          <p
+            id={`${name}-error`}
+            role="alert"
+            className="text-rose-500 text-xsmall-regular mt-1 px-1"
+          >
+            {error}
+          </p>
+        )}
       </div>
     )
   }
