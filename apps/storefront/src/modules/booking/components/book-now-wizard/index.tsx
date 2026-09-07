@@ -862,15 +862,30 @@ export default function BookNowClient({
           {/* Cart total with shipping */}
           {(() => {
             const hasPhysicalItems = cartItems.some(i => i.id !== sessionLineItemId && i.metadata?.is_booking !== "true")
-            const subtotal = cartItems.reduce((sum, i) => sum + ((i as any).total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)), 0)
+            // Subtotal is shown before discounts, with any promotion broken out
+            // on its own line — otherwise the listed item prices don't add up to
+            // the total the customer is charged.
+            const lineOriginal = (i: any) => i.original_total ?? (i.unit_price ?? 0) * (i.quantity ?? 1)
+            const lineDiscounted = (i: any) => i.total ?? lineOriginal(i)
+            const subtotal = cartItems.reduce((sum, i) => sum + lineOriginal(i), 0)
+            const discountedSubtotal = cartItems.reduce((sum, i) => sum + lineDiscounted(i), 0)
+            const discount = subtotal - discountedSubtotal
             const shipping = hasPhysicalItems ? 99 : 0  // ₹99
-            const grandTotal = subtotal + shipping
+            const grandTotal = discountedSubtotal + shipping
             return (
               <div className="border-t border-gray-200 pt-4 mb-6 space-y-2 px-1">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Subtotal</span>
                   <span className="text-gray-800 font-medium">{convertToLocale({ amount: subtotal, currency_code: "INR" })}</span>
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-emerald-700">Discount</span>
+                    <span className="text-emerald-700 font-medium">
+                      −{convertToLocale({ amount: discount, currency_code: "INR" })}
+                    </span>
+                  </div>
+                )}
                 {hasPhysicalItems && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Shipping (Standard Delivery)</span>
