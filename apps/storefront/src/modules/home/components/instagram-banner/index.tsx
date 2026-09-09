@@ -3,6 +3,8 @@
 import React from "react"
 import Image from "next/image"
 
+import mobileInstaBanner from "../../../../images/mobile-insta-banner.jpg"
+
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
 /**
@@ -38,7 +40,11 @@ const InstagramBanner = ({
     : "https://www.instagram.com/pragya.vijh_astrotalks/"
 
   const desktop = resolveMedia(banner)
-  const mobile = resolveMedia(mobileBanner)
+  const mobile = resolveMedia(mobileBanner) || {
+    url: mobileInstaBanner.src,
+    width: mobileInstaBanner.width,
+    height: mobileInstaBanner.height
+  }
 
   if (!desktop) return null
 
