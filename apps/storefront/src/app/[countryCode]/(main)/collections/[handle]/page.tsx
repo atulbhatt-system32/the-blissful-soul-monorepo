@@ -17,6 +17,18 @@ type Props = {
 
 export const PRODUCT_LIMIT = 12
 
+// Rendered per request, like products/[handle].
+//
+// generateStaticParams below asks Next to pre-render these pages, but the tree
+// reads cookies (getAuthHeaders / getCacheOptions in lib/data) to resolve the
+// cart and cache tags. Reading cookies while pre-rendering throws
+// DYNAMIC_SERVER_USAGE, which surfaced as a 500 on every category and
+// collection page in production. Declaring the route dynamic keeps
+// generateStaticParams useful for path discovery without attempting to
+// pre-render the HTML.
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export async function generateStaticParams() {
   try {
     const { collections } = await listCollections({
