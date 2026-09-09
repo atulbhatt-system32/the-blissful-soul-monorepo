@@ -34,12 +34,14 @@ export default async function HomeNew(props: {
   const params = await props.params
   const { countryCode } = params
 
-  const homepageData = await getHomepageData()
-  const region = await getRegion(countryCode)
-
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
+  // Fetched together rather than one after another: none of the three depends
+  // on the others, so awaiting them in sequence cost two extra round trips on
+  // every render.
+  const [homepageData, region, { collections }] = await Promise.all([
+    getHomepageData(),
+    getRegion(countryCode),
+    listCollections({ fields: "id, handle, title" }),
+  ])
 
   if (!collections || !region) {
     return null

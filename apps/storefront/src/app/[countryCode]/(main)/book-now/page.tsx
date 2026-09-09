@@ -20,15 +20,17 @@ export default async function BookNowPage(props: {
   const { countryCode } = params
   const { service_id, variant_id } = searchParams
   
-  const region = await getRegion(countryCode)
-  const customer = await retrieveCustomer()
+  // region, customer and categories are independent of each other, so they run
+  // together; only the product list needs region.id and has to follow.
+  const [region, customer, categories] = await Promise.all([
+    getRegion(countryCode),
+    retrieveCustomer(),
+    getServiceCategories(),
+  ])
 
   if (!region) {
     return null
   }
-
-  // Fetch Categories (only those under the "Services" parent)
-  const categories = await getServiceCategories()
   
   // Fetch a base list of session products (all products that are sessions)
   // We can just fetch all products for now, or filter by a specific category if needed
