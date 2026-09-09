@@ -42,6 +42,18 @@ const STRAPI_TOKEN = process.env.CMS_API_TOKEN
  */
 const STRAPI_SERVER_URL = STRAPI_INTERNAL_URL || STRAPI_URL
 
+/**
+ * How long CMS responses may be reused, in seconds.
+ *
+ * Content here changes rarely, so serving it from cache removes most of the
+ * upstream calls a page render used to make. Editors do not have to wait for
+ * the window to elapse — a Strapi webhook calling revalidateTag() clears the
+ * relevant tag straight away.
+ */
+const CMS_REVALIDATE_SECONDS = Number(
+  process.env.CMS_REVALIDATE_SECONDS ?? 300
+)
+
 // Returns a map keyed by product handle (stable across environments)
 export async function getStrapiProductsByHandles(handles: string[]): Promise<Record<string, any>> {
     const nonEmpty = handles.filter(Boolean)
@@ -54,7 +66,11 @@ export async function getStrapiProductsByHandles(handles: string[]): Promise<Rec
         })
         const response = await fetch(`${STRAPI_SERVER_URL}/api/products?${query}`, {
             headers: { Authorization: `Bearer ${STRAPI_TOKEN}` },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-products") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-products"] },
         })
         const data = await response.json()
         const items: any[] = data.data || []
@@ -85,7 +101,11 @@ export async function getStrapiProduct(medusaId: string, handle?: string) {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-products") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-products"] },
         })
 
         const data = await response.json()
@@ -132,7 +152,11 @@ export async function getHomepageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-homepage") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-homepage"] },
         })
 
         const json = await response.json()
@@ -158,7 +182,11 @@ export async function getAboutPageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-about") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-about"] },
         })
 
         const json = await response.json()
@@ -182,7 +210,11 @@ export async function getContactPageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-contact") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-contact"] },
         })
 
         const json = await response.json()
@@ -215,7 +247,11 @@ export async function getStorePageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-store") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-store"] },
         })
 
         if (!response.ok) {
@@ -254,8 +290,11 @@ export async function getServicesPageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
-            next: { revalidate: 0 }
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-services") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-services"] },
         })
 
         if (!response.ok) {
@@ -291,8 +330,11 @@ export async function getCoursePageData() {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: "no-store",
-            next: { revalidate: 0 }
+            // Cached for CMS_REVALIDATE_SECONDS instead of no-store: this is
+            // global CMS content, not per-visitor data, and re-fetching it on
+            // every request was the main contributor to server response time.
+            // revalidateTag("strapi-course") makes an edit appear immediately.
+            next: { revalidate: CMS_REVALIDATE_SECONDS, tags: ["strapi-course"] },
         })
 
         if (!response.ok) {
