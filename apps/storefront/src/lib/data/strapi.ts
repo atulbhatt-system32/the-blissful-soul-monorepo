@@ -28,6 +28,20 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 const STRAPI_INTERNAL_URL = process.env.STOREFRONT_STRAPI_URL || "http://cms:1337"
 const STRAPI_TOKEN = process.env.CMS_API_TOKEN
 
+/**
+ * Base URL for the fetches in this module.
+ *
+ * Every export here runs on the server, so requests should stay on the Docker
+ * network. Several of them used NEXT_PUBLIC_STRAPI_URL, which in production is
+ * the public domain — that sent each render out through DNS, TLS and the
+ * reverse proxy to come back to a container sitting next door, and is what
+ * produced `ConnectTimeoutError: cms.pragyavijh.com:443` on the homepage.
+ *
+ * NEXT_PUBLIC_STRAPI_URL is still the right value for building media URLs the
+ * browser has to load; it is just wrong as a server-side fetch target.
+ */
+const STRAPI_SERVER_URL = STRAPI_INTERNAL_URL || STRAPI_URL
+
 // Returns a map keyed by product handle (stable across environments)
 export async function getStrapiProductsByHandles(handles: string[]): Promise<Record<string, any>> {
     const nonEmpty = handles.filter(Boolean)
@@ -38,7 +52,7 @@ export async function getStrapiProductsByHandles(handles: string[]): Promise<Rec
             populate: "*",
             pagination: { limit: 100 },
         })
-        const response = await fetch(`${STRAPI_URL}/api/products?${query}`, {
+        const response = await fetch(`${STRAPI_SERVER_URL}/api/products?${query}`, {
             headers: { Authorization: `Bearer ${STRAPI_TOKEN}` },
             cache: "no-store",
         })
@@ -67,7 +81,7 @@ export async function getStrapiProduct(medusaId: string, handle?: string) {
             populate: "*",
         })
 
-        const response = await fetch(`${STRAPI_URL}/api/products?${query}`, {
+        const response = await fetch(`${STRAPI_SERVER_URL}/api/products?${query}`, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
@@ -113,7 +127,7 @@ export async function getHomepageData() {
             },
         })
 
-        const url = `${STRAPI_URL}/api/homepage?${query}`;
+        const url = `${STRAPI_SERVER_URL}/api/homepage?${query}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
@@ -140,7 +154,7 @@ export async function getAboutPageData() {
             },
         })
 
-        const response = await fetch(`${STRAPI_URL}/api/about-page?${query}`, {
+        const response = await fetch(`${STRAPI_SERVER_URL}/api/about-page?${query}`, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
@@ -164,7 +178,7 @@ export async function getContactPageData() {
             },
         })
 
-        const response = await fetch(`${STRAPI_URL}/api/contact-page?${query}`, {
+        const response = await fetch(`${STRAPI_SERVER_URL}/api/contact-page?${query}`, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
