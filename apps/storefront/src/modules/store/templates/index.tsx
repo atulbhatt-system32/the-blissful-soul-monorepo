@@ -7,6 +7,7 @@ import PaginatedProducts from "./paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import ScrollingMarquee from "@modules/home/components/scrolling-marquee"
+import ShopCategories from "@modules/store/components/shop-categories"
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
@@ -162,6 +163,16 @@ const StoreTemplate = ({
               </div>
             </div>
           </div>
+
+          {/* Category tiles — hidden while searching, since results are
+              already filtered and the tiles would just push them down. */}
+          {!q && (
+            <div className="mt-10 md:mt-14">
+              <Suspense fallback={null}>
+                <ShopCategories />
+              </Suspense>
+            </div>
+          )}
 
           <div className="mt-16">
             <Suspense fallback={<SkeletonProductGrid />}>
