@@ -16,6 +16,21 @@ const nextConfig = {
   output: "standalone",
   outputFileTracingRoot: path.join(__dirname, "../../"),
   reactStrictMode: true,
+  experimental: {
+    /**
+     * Rewrites barrel imports so only the components actually used are
+     * bundled.
+     *
+     * `@medusajs/ui` depends on prismjs and prism-react-renderer for its
+     * CodeBlock component, which this storefront never renders. Importing
+     * anything from the package root — Text, Button, Heading and clx, across
+     * 87 files — pulled Prism and its language grammars in anyway, producing a
+     * 676KB chunk the browser had to parse before the page became
+     * interactive. That chunk was four times larger than any other and is the
+     * main contributor to a 1.75s Total Blocking Time.
+     */
+    optimizePackageImports: ["@medusajs/ui", "@medusajs/icons"],
+  },
   logging: {
     fetches: {
       fullUrl: true,
