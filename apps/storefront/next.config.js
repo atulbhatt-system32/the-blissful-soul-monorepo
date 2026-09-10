@@ -44,6 +44,21 @@ const nextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    /**
+     * Keep optimised images for 30 days.
+     *
+     * Medusa serves its uploads with `Cache-Control: max-age=0`, and Next takes
+     * the larger of that and this value, so it was falling back to the 60s
+     * default. Every product image therefore expired each minute: browsers
+     * re-downloaded it, and the optimiser re-fetched the original — PNGs of up
+     * to 2.5MB — and re-encoded it to AVIF on the storefront's half-core CPU.
+     * A miss measured 1.4s against 0.14s for a hit.
+     *
+     * A long TTL is safe because uploads are never overwritten in place:
+     * Medusa prefixes each file with an upload timestamp and Strapi appends a
+     * hash, so replacing an image produces a new URL rather than a stale one.
+     */
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {
         protocol: "http",
