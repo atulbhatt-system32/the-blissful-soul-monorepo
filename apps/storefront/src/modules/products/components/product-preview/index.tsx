@@ -345,6 +345,17 @@ export default function ProductPreview({
                  e.preventDefault()
                  toggleWishlist(product.id)
               }}
+              // The button holds only an SVG, so without a label a screen
+              // reader announces it as "button" — once per product card, and
+              // the homepage renders thirty of them. Naming the product keeps
+              // them distinguishable, and the state decides which verb is
+              // read out.
+              aria-label={
+                isWishlisted(product.id)
+                  ? `Remove ${product.title} from wishlist`
+                  : `Add ${product.title} to wishlist`
+              }
+              aria-pressed={isWishlisted(product.id)}
               className="absolute bottom-3 right-3 z-20 w-8 h-8 md:w-11 md:h-11 bg-white/95 backdrop-blur rounded-full flex items-center justify-center shadow-xl border border-[#2C1E36]/5 text-[#2C1E36] hover:scale-110 active:scale-90 transition-all pointer-events-auto"
             >
                <svg

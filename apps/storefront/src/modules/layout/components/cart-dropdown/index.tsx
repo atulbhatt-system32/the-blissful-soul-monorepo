@@ -77,7 +77,18 @@ const CartDropdown = ({
       onMouseLeave={close}
     >
       <Popover className="relative flex items-center justify-center">
-        <PopoverButton className="focus:outline-none p-2 transition-all hover:opacity-80">
+        {/*
+          Without a label this reads as "button", and the item-count badge
+          beside it reads as a bare number with nothing to attach it to.
+        */}
+        <PopoverButton
+          aria-label={
+            totalItems > 0
+              ? `Shopping cart, ${totalItems} ${totalItems === 1 ? "item" : "items"}`
+              : "Shopping cart, empty"
+          }
+          className="focus:outline-none p-2 transition-all hover:opacity-80"
+        >
           <div className="relative group/cart flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-colors group-hover/cart:text-primary pt-0.5">
               <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>

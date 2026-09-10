@@ -48,6 +48,8 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
         <button
           data-testid="nav-menu-button"
           onClick={openPopup}
+          aria-label="Open menu"
+          aria-haspopup="dialog"
           className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-primary group p-2"
         >
           <svg 
