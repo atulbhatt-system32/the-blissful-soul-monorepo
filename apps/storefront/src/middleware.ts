@@ -162,5 +162,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // robots.txt and sitemap.xml are excluded because this middleware prefixes
+  // any un-prefixed path with a country code — /robots.txt became a 307 to
+  // /in/robots.txt, which matched the [countryCode] route, found no page and
+  // rendered the 404 body with a 200 status, so crawlers were told the file
+  // existed and handed a web page. The same would apply to any future
+  // root-level file such as ads.txt or a search-console verification token.
+  matcher: [
+    "/",
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
+  ],
 }
