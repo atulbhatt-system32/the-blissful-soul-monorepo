@@ -41,7 +41,7 @@ const ServicesGrid = async () => {
 
         {/* Services Flip Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {categories.map((category) => {
+          {categories.map((category, index) => {
             const images = (category as any).product_category_images as Array<{ url: string }> | undefined
             const imageUrl = images?.[0]?.url
             const color = (category.metadata?.color as string) || "bg-purple-100"
@@ -58,6 +58,18 @@ const ServicesGrid = async () => {
                         src={imageUrl}
                         alt={category.name}
                         fill
+                        // One column on phones, two on tablets, three on
+                        // desktop within max-w-6xl. Without this Next assumed
+                        // full screen width and sent tablets and desktops an
+                        // image two to three times wider than the card.
+                        sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 384px"
+                        // Lighthouse's mobile run renders this first card as
+                        // the LCP element, and lazy-loading delayed its request
+                        // until layout finished. Eager lets the browser start
+                        // it straight from the HTML. Deliberately not
+                        // `priority`: where the hero is on screen it is the real
+                        // LCP, and a high-priority fetch here would compete.
+                        loading={index === 0 ? "eager" : "lazy"}
                         className="object-cover"
                       />
                     ) : (

@@ -285,8 +285,13 @@ export default function ProductPreview({
                           className="absolute inset-0 object-cover object-center w-full h-full"
                           fill
                           sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
-                          priority={index === 0}
-                          loading={index === 0 ? "eager" : "lazy"}
+                          // Lazy for every card. This component renders thirty
+                          // times on the homepage, and marking each card's
+                          // first image `priority` preloaded them at high
+                          // priority in competition with the actual LCP image.
+                          // Lazy images already inside the viewport still load
+                          // promptly once the page has laid out.
+                          loading="lazy"
                         />
                       </SwiperSlide>
                     )

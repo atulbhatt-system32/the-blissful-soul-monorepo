@@ -100,7 +100,7 @@ const Testimonials = ({ title, testimonials }: TestimonialsProps) => {
                     <div className="relative w-24 h-24 mb-8">
                        <div className="absolute inset-0 bg-[#C5A059]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                        <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white shadow-md z-10">
-                         <Image src={t.image} alt={t.name} fill className="object-cover" />
+                         <Image src={t.image} alt={t.name} fill sizes="96px" className="object-cover" />
                        </div>
                     </div>
                     

@@ -109,8 +109,8 @@ const SideMenu = ({ regions, locales, currentLocale, cart }: SideMenuProps) => {
                                 src="/logo-main.png"
                                 alt="Pragya Vijh"
                                 fill
+                                sizes="48px"
                                 className="object-contain"
-                                unoptimized
                               />
                             </div>
 

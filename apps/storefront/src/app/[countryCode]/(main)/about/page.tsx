@@ -58,11 +58,13 @@ export default async function AboutPage() {
             {/* Image side */}
             <div className="w-full lg:w-1/2 flex justify-center lg:justify-end animate-in fade-in slide-in-from-left-8 duration-1000">
               <div className="relative w-full aspect-[4/5] max-w-md rounded-[2.5rem] overflow-hidden shadow-[0_32px_80px_rgba(44,30,54,0.15)] border-[12px] border-white group">
-                <Image 
+                <Image
                   src={profileImage}
                   alt={name}
-                  fill 
-                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-105" 
+                  fill
+                  // Capped by max-w-md at 448px; full width only on small phones.
+                  sizes="(max-width: 480px) 100vw, 448px"
+                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-105"
                 />
                 <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-[2.5rem]"></div>
               </div>
