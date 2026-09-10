@@ -125,6 +125,9 @@ export default async function ServiceDetailPage({
                   src={heroImage}
                   alt={category.name}
                   fill
+                  // Half of a two-column grid from lg up, inside the 1440px
+                  // content container; full width below that.
+                  sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 50vw, 720px"
                   className="object-cover"
                   priority
                 />

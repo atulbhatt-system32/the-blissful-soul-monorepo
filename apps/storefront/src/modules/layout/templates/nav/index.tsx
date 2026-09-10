@@ -39,13 +39,20 @@ export default async function Nav() {
               >
                 {/* Logo image (visible on all screens now) */}
                 <div className="relative w-20 h-20 md:w-24 md:h-24 transition-transform duration-300 group-hover:scale-105">
+                  {/*
+                    Optimised rather than `unoptimized`: the source is an
+                    850x850 PNG of 266KB, and with `priority` the raw file was
+                    preloaded at high priority on every page — competing with the
+                    LCP image — to fill an 80-96px box. Resized to fit it is
+                    about 14KB of AVIF.
+                  */}
                   <Image
                     src="/logo-main.png"
                     alt="Pragya Vijh"
                     fill
+                    sizes="(max-width: 767px) 80px, 96px"
                     className="object-contain"
                     priority
-                    unoptimized
                   />
                 </div>
 
