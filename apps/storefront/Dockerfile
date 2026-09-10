@@ -55,6 +55,14 @@ COPY --from=builder --chown=node:node /app/apps/storefront/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/storefront/.next/static ./apps/storefront/.next/static
 COPY --from=builder --chown=node:node /app/apps/storefront/public ./apps/storefront/public
 
+# The image optimiser writes here at runtime, and production mounts a volume
+# on it. The directory must exist in the image and belong to `node`: Docker
+# seeds a new named volume from the image path, but creates a missing mount
+# point as root — which `node` cannot write, so nothing would ever be cached
+# and every request would re-encode its image.
+RUN mkdir -p ./apps/storefront/.next/cache/images \
+ && chown -R node:node ./apps/storefront/.next/cache
+
 USER node
 EXPOSE 8000
 

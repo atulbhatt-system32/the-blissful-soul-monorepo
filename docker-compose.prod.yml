@@ -107,6 +107,13 @@ services:
       # confirmed working, since a publish then clears the cache immediately.
       - CMS_REVALIDATE_SECONDS=${CMS_REVALIDATE_SECONDS:-300}
     restart: always
+    volumes:
+      # The image optimiser's cache. Without a volume it lived in the container
+      # and every deploy wiped it, so the first visitors after a release forced
+      # every image to be re-encoded at once. That burst is what pushed the
+      # storefront past its memory limit and got it OOM-killed mid-request.
+      # Only the image cache is persisted — the fetch cache stays per-build.
+      - storefront_image_cache:/app/apps/storefront/.next/cache/images
     depends_on:
       backend:
         condition: service_healthy
@@ -115,8 +122,13 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512m
-          cpus: '0.5'
+          # Raised from 512m / 0.5. The storefront renders every page and
+          # encodes every image, yet had the smallest allocation of the app
+          # services: it was OOM-killed by libvips at 509MB, sat at 80-86% of
+          # its limit when idle, and was CPU-throttled in 26% of scheduling
+          # periods while the 2-core host ran at ~0.6 load with 6GB free.
+          memory: 1g
+          cpus: '1.0'
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:8000/', (r) => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"]
       interval: 15s
@@ -218,6 +230,7 @@ services:
 volumes:
   postgres_data:
   cms_data:
+  storefront_image_cache:
   backup_data:
   certbot-etc:
   certbot-var:
