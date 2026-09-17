@@ -9,14 +9,14 @@ node_modules/
 pnpm-debug.log*
 
 # Builds and cache
-.next/
-dist/
-dist-*/
-build/
-.turbo/
-.medusa/
-.strapi/
-.tmp/
+**/.next/
+**/dist/
+**/dist-*/
+**/build/
+**/.turbo/
+**/.medusa/
+**/.strapi/
+**/.tmp/
 *.db
 *.sqlite
 

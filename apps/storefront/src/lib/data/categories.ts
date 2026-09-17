@@ -62,6 +62,44 @@ export const getServiceCategories = async () => {
     })
 }
 
+/**
+ * Shop-page category tiles: the children of the "Shop Collection" root.
+ *
+ * Mirrors getServiceCategories() — same shape, same image/metadata fields — so
+ * the shop tiles can reuse whatever the services flip cards already rely on.
+ */
+export const getShopCategories = async () => {
+  const nextOpts = {
+    ...(await getCacheOptions("categories")),
+  }
+
+  return sdk.client
+    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
+      "/store/product-categories",
+      {
+        query: {
+          fields:
+            "*category_children, *category_children.product_category_images, *category_children.metadata",
+          handle: "shop-collection",
+          limit: 1,
+        },
+        next: nextOpts,
+        cache: "no-store",
+      }
+    )
+    .then(({ product_categories }) => {
+      const children = product_categories[0]?.category_children ?? []
+      return children.sort((a: any, b: any) => (a.rank ?? 0) - (b.rank ?? 0))
+    })
+    .catch((err) => {
+      console.warn(
+        "[Medusa SDK] Error getting shop categories:",
+        err.message || err
+      )
+      return []
+    })
+}
+
 export const getServiceCategoryDetail = async (
   handle: string,
   countryCode: string
