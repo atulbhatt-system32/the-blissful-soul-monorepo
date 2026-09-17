@@ -200,12 +200,20 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       `/store/product-categories`,
       {
         query: {
-          fields: "*category_children, *products",
+          // category_children for the sub-category pills, parent_category (two
+          // levels) for the breadcrumb. Deliberately not *products — the
+          // product grid is fetched separately by category_id, so expanding
+          // it here is both unused and an expensive/unstable join.
+          fields: "*category_children, *parent_category, *parent_category.parent_category",
           handle,
         },
         next,
         cache: "force-cache",
       }
     )
-    .then(({ product_categories }) => product_categories[0])
+    .then(({ product_categories }) => product_categories[0] ?? null)
+    .catch((err) => {
+      console.warn("[Medusa SDK] Error getting category by handle:", err.message || err)
+      return null
+    })
 }
