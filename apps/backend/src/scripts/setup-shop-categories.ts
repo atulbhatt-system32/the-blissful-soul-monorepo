@@ -44,7 +44,7 @@ type CategoryDef = {
 
 /** In display order — the client's list, Zodiac first as it is launching. */
 const CATEGORIES: CategoryDef[] = [
-  { name: "ZODIAC BRACELETS", handle: "zodiac-bracelets", comingSoon: true },
+  { name: "ZODIAC BRACELETS", handle: "zodiac-bracelets" },
   { name: "CRYSTAL BRACELETS", handle: "crystal-bracelets", tag: "bracelet" },
   { name: "CRYSTAL LOCKETS", handle: "crystal-lockets", tag: "lockets" },
   {
