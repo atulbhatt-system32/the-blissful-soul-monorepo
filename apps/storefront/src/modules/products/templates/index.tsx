@@ -74,6 +74,14 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             >
               {product.title}
             </Heading>
+            {product.subtitle && (
+              <p
+                className="text-lg text-ui-fg-subtle mt-1"
+                data-testid="product-subtitle"
+              >
+                {product.subtitle}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
