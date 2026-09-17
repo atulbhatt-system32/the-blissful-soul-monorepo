@@ -208,7 +208,12 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
           handle,
         },
         next,
-        cache: "force-cache",
+        // Every other fetcher in this file uses no-store; force-cache here
+        // combined with getCacheOptions() reading cookies() is exactly what
+        // triggers Next's DYNAMIC_SERVER_USAGE on this route (it has
+        // generateStaticParams, so Next tries to reconcile a cacheable fetch
+        // with per-request dynamic data and throws instead).
+        cache: "no-store",
       }
     )
     .then(({ product_categories }) => product_categories[0] ?? null)
