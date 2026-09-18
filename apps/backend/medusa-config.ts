@@ -93,5 +93,11 @@ module.exports = defineConfig({
         ],
       },
     },
+    product_rank: {
+      resolve: "./src/modules/product-rank",
+      definition: {
+        isQueryable: true,
+      },
+    },
   },
 })
