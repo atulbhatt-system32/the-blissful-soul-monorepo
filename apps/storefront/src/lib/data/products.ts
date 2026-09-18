@@ -65,7 +65,7 @@ export const listProducts = async ({
           offset,
           region_id: region?.id,
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,+categories,+type",
+            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,+categories,+type,+product_rank.rank",
           ...queryParams,
         },
         headers,
@@ -196,11 +196,14 @@ export const listProductsWithSort = async ({
     return !isSession
   })
 
-  // Apply manual sorting via metadata.sort_priority if it exists
-  finalFilteredProducts.sort((a, b) => {
-    const aPriority = a.metadata?.sort_priority !== undefined ? Number(a.metadata.sort_priority) : 999
-    const bPriority = b.metadata?.sort_priority !== undefined ? Number(b.metadata.sort_priority) : 999
-    return aPriority - bPriority
+  // Manual ordering now comes from the product_rank module (managed from the
+  // admin's Product Ranking page) rather than metadata.sort_priority — a real
+  // uniquely-constrained column beats untyped JSON. Unranked products sort
+  // to the end.
+  finalFilteredProducts.sort((a: any, b: any) => {
+    const aRank = a.product_rank?.rank ?? Number.MAX_SAFE_INTEGER
+    const bRank = b.product_rank?.rank ?? Number.MAX_SAFE_INTEGER
+    return aRank - bRank
   })
 
   const pageParam = (page - 1) * limit
