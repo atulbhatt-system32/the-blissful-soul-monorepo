@@ -8,6 +8,7 @@ checkEnvVariables()
  */
 const S3_HOSTNAME = process.env.MEDUSA_CLOUD_S3_HOSTNAME
 const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
+const S3_PROTOCOL = process.env.MEDUSA_CLOUD_S3_PROTOCOL || "https"
 
 /**
  * @type {import('next').NextConfig}
@@ -99,7 +100,7 @@ const nextConfig = {
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
           {
-            protocol: "https",
+            protocol: S3_PROTOCOL,
             hostname: S3_HOSTNAME,
             pathname: S3_PATHNAME,
           },
