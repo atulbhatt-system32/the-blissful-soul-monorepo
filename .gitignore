@@ -85,3 +85,5 @@ yarn.lock
 **/.strapi-updater.json
 
 ssh.txt
+coolify.txt
+staging.txt
