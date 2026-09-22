@@ -79,17 +79,15 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "backend.pragyavijh.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "pragyavijh.com",
         pathname: "/**",
       },
       {
+        // Covers every subdomain (www, cms, backend, staging, cms-staging,
+        // backend-staging, and any added later) with one entry, so new
+        // environments never need their own remotePatterns changes.
         protocol: "https",
-        hostname: "cms.pragyavijh.com",
+        hostname: "**.pragyavijh.com",
         pathname: "/**",
       },
       {
