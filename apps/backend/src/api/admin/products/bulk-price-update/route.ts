@@ -10,7 +10,15 @@ import {
  * POST /admin/products/bulk-price-update
  *
  * Bulk-updates variant prices (and, optionally, catalog "sale" prices) from
- * a CSV parsed client-side into rows of { sku, price?, sale_price? }.
+ * a CSV parsed client-side into rows of
+ * { sku?, variant_id?, product_id?, price?, sale_price? }.
+ *
+ * Each row identifies its target by variant SKU, variant ID, or product ID —
+ * whichever column the CSV has (checked in that order of precedence when a
+ * row has more than one). Variant ID is the most precise — it addresses one
+ * variant directly, no lookup ambiguity possible. Product ID only resolves
+ * unambiguously for single-variant products: a product with more than one
+ * variant fails that row rather than guessing which variant to price.
  *
  * `price` is written straight onto each variant via the same workflow the
  * native admin "Edit prices" screen uses — it upserts the INR money amount
@@ -22,8 +30,8 @@ import {
  * run that touches sale prices deletes and recreates that price list from
  * the *complete* set of sale_price rows in the upload — mirroring the
  * idempotent delete+recreate pattern setup-crystal-discount.ts already uses
- * for its promotion. That means a partial upload (only some SKUs carrying
- * sale_price) will drop sale prices for any SKU left out this time.
+ * for its promotion. That means a partial upload (only some rows carrying
+ * sale_price) will drop sale prices for any product left out this time.
  *
  * CLAUDE.md warns that a sale price list and the AUTO_CRYSTAL_50 cart
  * promotion must not run at once (they'd stack) — this route does not
@@ -34,13 +42,16 @@ const CURRENCY_CODE = "inr"
 const SALE_PRICE_LIST_TITLE = "Bulk Sale Prices"
 
 type Row = {
-  sku: string
+  identifier: string
+  sku?: string
+  variant_id?: string
+  product_id?: string
   price?: number
   sale_price?: number
 }
 
 type RowResult = {
-  sku: string
+  identifier: string
   status: "ok" | "error"
   message?: string
 }
@@ -57,17 +68,29 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   for (const raw of rows as any[]) {
     const sku = typeof raw?.sku === "string" ? raw.sku.trim() : ""
-    if (!sku) {
-      results.push({ sku: String(raw?.sku ?? ""), status: "error", message: "Missing SKU" })
+    const variantId = typeof raw?.variant_id === "string" ? raw.variant_id.trim() : ""
+    const productId = typeof raw?.product_id === "string" ? raw.product_id.trim() : ""
+    const identifier = sku || variantId || productId
+
+    if (!identifier) {
+      results.push({
+        identifier: "",
+        status: "error",
+        message: "Missing sku, variant_id, or product_id",
+      })
       continue
     }
 
-    const row: Row = { sku }
+    const row: Row = sku
+      ? { identifier, sku }
+      : variantId
+      ? { identifier, variant_id: variantId }
+      : { identifier, product_id: productId }
 
     if (raw.price !== undefined && raw.price !== null && raw.price !== "") {
       const price = Number(raw.price)
       if (!Number.isFinite(price) || price < 0) {
-        results.push({ sku, status: "error", message: `Invalid price "${raw.price}"` })
+        results.push({ identifier, status: "error", message: `Invalid price "${raw.price}"` })
         continue
       }
       row.price = price
@@ -76,14 +99,18 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     if (raw.sale_price !== undefined && raw.sale_price !== null && raw.sale_price !== "") {
       const salePrice = Number(raw.sale_price)
       if (!Number.isFinite(salePrice) || salePrice < 0) {
-        results.push({ sku, status: "error", message: `Invalid sale_price "${raw.sale_price}"` })
+        results.push({
+          identifier,
+          status: "error",
+          message: `Invalid sale_price "${raw.sale_price}"`,
+        })
         continue
       }
       row.sale_price = salePrice
     }
 
     if (row.price === undefined && row.sale_price === undefined) {
-      results.push({ sku, status: "error", message: "Row has neither price nor sale_price" })
+      results.push({ identifier, status: "error", message: "Row has neither price nor sale_price" })
       continue
     }
 
@@ -97,21 +124,75 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const productModule = req.scope.resolve(Modules.PRODUCT)
   const pricingModule = req.scope.resolve(Modules.PRICING)
 
-  const skus = cleaned.map((r) => r.sku)
-  const variants = await productModule.listProductVariants(
-    { sku: skus } as any,
-    { select: ["id", "sku", "product_id"] }
-  )
+  const skus = cleaned.filter((r) => r.sku).map((r) => r.sku as string)
+  const variantIds = cleaned.filter((r) => r.variant_id).map((r) => r.variant_id as string)
+  const productIds = cleaned.filter((r) => r.product_id).map((r) => r.product_id as string)
+
+  const variants = skus.length
+    ? await productModule.listProductVariants(
+        { sku: skus } as any,
+        { select: ["id", "sku", "product_id"] }
+      )
+    : []
   const bySku = new Map(variants.map((v: any) => [v.sku, v]))
+
+  const variantsById = variantIds.length
+    ? await productModule.listProductVariants(
+        { id: variantIds } as any,
+        { select: ["id", "sku", "product_id"] }
+      )
+    : []
+  const byVariantId = new Map(variantsById.map((v: any) => [v.id, v]))
+
+  const products = productIds.length
+    ? await productModule.listProducts(
+        { id: productIds } as any,
+        { select: ["id"], relations: ["variants"] }
+      )
+    : []
+  const byProductId = new Map(products.map((p: any) => [p.id, p]))
 
   const priceUpdates: { id: string; prices: { amount: number; currency_code: string }[] }[] = []
   const saleRows: { variant_id: string; currency_code: string; amount: number }[] = []
 
   for (const row of cleaned) {
-    const variant: any = bySku.get(row.sku)
-    if (!variant) {
-      results.push({ sku: row.sku, status: "error", message: "SKU not found" })
-      continue
+    let variant: any
+
+    if (row.sku) {
+      variant = bySku.get(row.sku)
+      if (!variant) {
+        results.push({ identifier: row.identifier, status: "error", message: "SKU not found" })
+        continue
+      }
+    } else if (row.variant_id) {
+      variant = byVariantId.get(row.variant_id)
+      if (!variant) {
+        results.push({
+          identifier: row.identifier,
+          status: "error",
+          message: "Variant ID not found",
+        })
+        continue
+      }
+    } else {
+      const product: any = byProductId.get(row.product_id as string)
+      if (!product) {
+        results.push({
+          identifier: row.identifier,
+          status: "error",
+          message: "Product ID not found",
+        })
+        continue
+      }
+      if (!product.variants || product.variants.length !== 1) {
+        results.push({
+          identifier: row.identifier,
+          status: "error",
+          message: `Product has ${product.variants?.length ?? 0} variants — ambiguous, use SKU instead`,
+        })
+        continue
+      }
+      variant = product.variants[0]
     }
 
     if (row.price !== undefined) {
@@ -129,7 +210,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       })
     }
 
-    results.push({ sku: row.sku, status: "ok" })
+    results.push({ identifier: row.identifier, status: "ok" })
   }
 
   if (priceUpdates.length) {
