@@ -19,25 +19,76 @@ type RowResult = {
   message?: string
 }
 
-// Minimal CSV parser: no embedded-comma/quote handling, which is fine for a
-// sku/product_id/price/sale_price sheet. Blank lines are skipped.
+// Splits one CSV line respecting quoted fields (so `"₹ 1,499.00"` stays one
+// cell instead of breaking on the comma inside it) and doubled-quote escapes
+// (`""` -> `"`).
+const parseCsvLine = (line: string): string[] => {
+  const cells: string[] = []
+  let current = ""
+  let inQuotes = false
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i]
+    if (inQuotes) {
+      if (char === '"') {
+        if (line[i + 1] === '"') {
+          current += '"'
+          i++
+        } else {
+          inQuotes = false
+        }
+      } else {
+        current += char
+      }
+    } else if (char === '"') {
+      inQuotes = true
+    } else if (char === ",") {
+      cells.push(current.trim())
+      current = ""
+    } else {
+      current += char
+    }
+  }
+  cells.push(current.trim())
+  return cells
+}
+
+// Recognizes a spreadsheet's natural column names as stand-ins for the
+// canonical ones the importer reads. "sale price" maps to `price` (not
+// `sale_price`) deliberately: on the store's product sheet, "Sale Price" is
+// the number that should become the new regular price, not a catalog
+// discount-list entry — those are different things (see the file header
+// comment in the API route this posts to).
+const HEADER_ALIASES: Record<string, string> = {
+  "variant id": "variant_id",
+  "product id": "product_id",
+  "sale price": "price",
+}
+
 const parseCsv = (text: string): { header: string[]; rows: string[][] } => {
   const lines = text.split(/\r\n|\n|\r/).filter((l) => l.trim().length > 0)
-  const parseLine = (line: string) =>
-    line.split(",").map((cell) => cell.trim().replace(/^"|"$/g, ""))
-
   const [headerLine, ...rest] = lines
   if (!headerLine) {
     return { header: [], rows: [] }
   }
-  return { header: parseLine(headerLine).map((h) => h.toLowerCase()), rows: rest.map(parseLine) }
+  const header = parseCsvLine(headerLine).map((h) => {
+    const lower = h.toLowerCase()
+    return HEADER_ALIASES[lower] ?? lower
+  })
+  return { header, rows: rest.map(parseCsvLine) }
 }
 
 const parseNumericCell = (raw: string | undefined): { value?: number; error?: string } => {
   if (raw === undefined || raw.trim() === "") {
     return {}
   }
-  const value = Number(raw)
+  // Strips currency symbols, thousands separators, and whitespace, e.g.
+  // "₹ 1,499.00" -> "1499.00", so sheet-formatted price cells parse cleanly.
+  const cleaned = raw.replace(/[₹,\s]/g, "")
+  if (cleaned === "") {
+    return {}
+  }
+  const value = Number(cleaned)
   if (!Number.isFinite(value) || value < 0) {
     return { error: `invalid number "${raw}"` }
   }
@@ -280,7 +331,11 @@ const BulkPriceUpdatePage = () => {
             directly. <code>sale_price</code> is written to a shared "Bulk Sale Prices" catalog
             price list (shown struck-through on the shop page) — each upload that includes sale
             prices replaces that entire list, so include every product you want discounted, not
-            just the ones changing.
+            just the ones changing. You can also upload the product catalogue sheet as-is —
+            "Variant ID" and "Product ID" columns are recognized automatically, "Sale Price" is
+            read as the new <code>price</code> (it becomes the regular price, not a discount-list
+            entry), and every other column (Category, Original Price, Discount %, etc.) is
+            ignored. Rows with a blank Sale Price are skipped, not zeroed.
           </Text>
         </div>
 
