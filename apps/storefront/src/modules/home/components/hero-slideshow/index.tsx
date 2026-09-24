@@ -185,7 +185,17 @@ const HeroSlideshow = ({ slides }: HeroProps) => {
             {/* Dots */}
             <div
               className="hero-pagination absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center px-4 py-2 rounded-full w-auto"
-              style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)" }}
+              // width/left set inline (not just via the w-auto/left-1/2 classes)
+              // because swiper/css's .swiper-pagination-horizontal sets
+              // width: 100%; left: 0 with enough precedence to beat Tailwind's
+              // utility classes here, which stretched this pill's blurred
+              // black background across the full hero width.
+              style={{
+                background: "rgba(0,0,0,0.4)",
+                backdropFilter: "blur(8px)",
+                width: "fit-content",
+                left: "50%",
+              }}
             />
           </>
         )}

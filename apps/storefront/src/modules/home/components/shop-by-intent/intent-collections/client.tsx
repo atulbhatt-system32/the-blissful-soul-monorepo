@@ -25,7 +25,7 @@ const IntentCollectionsClient = ({
     if (t.includes('money')) return '#059669'
     if (t.includes('nazar') || t.includes('protection')) return '#2C1E36'
     if (t.includes('health')) return '#2563EB'
-    return '#C5A059'
+    return '#2C1E36'
   }
 
   const CTACard = () => (

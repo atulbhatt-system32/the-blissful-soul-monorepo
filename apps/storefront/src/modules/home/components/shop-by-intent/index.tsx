@@ -11,8 +11,17 @@ export default async function ShopByIntent({ region }: { region: HttpTypes.Store
     return null
   }
 
-  const children = (intentionsRoot.category_children || []).sort((a, b) => (a.rank || 0) - (b.rank || 0))
-  
+  // Categories with this metadata flag still appear in the "Blissful Soul
+  // Studio" collection rows further down the page (intent-collections/index.tsx
+  // has no such filter) — this only hides them from the "What's troubling
+  // you?" grid above it.
+  const children = (intentionsRoot.category_children || [])
+    .filter((category) => {
+      const hidden = category.metadata?.hide_from_troubling_section
+      return hidden !== "true" && hidden !== true
+    })
+    .sort((a, b) => (a.rank || 0) - (b.rank || 0))
+
   // 2. Map each subcategory to its products
   const intentsData = await Promise.all(
     children.map(async (category) => {

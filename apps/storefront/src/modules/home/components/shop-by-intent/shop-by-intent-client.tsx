@@ -92,10 +92,17 @@ const ShopByIntentClient = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-6">
           {intents.map((intent) => {
+            // This grid only has bespoke art/color for the 4 configs above —
+            // a category that matches none of them (e.g. Zodiac) has no card
+            // design to fall back to, so it's skipped here rather than
+            // silently mislabeled as "Love" via intentConfig[0].
             const cfg = intentConfig.find(c =>
               intent.handle?.includes(c.key) ||
               intent.title?.toLowerCase().includes(c.key)
-            ) || intentConfig[0]
+            )
+            if (!cfg) {
+              return null
+            }
 
             const intentKey = intent.handle || intent.id
             const isHovered = hoveredKey === intentKey
