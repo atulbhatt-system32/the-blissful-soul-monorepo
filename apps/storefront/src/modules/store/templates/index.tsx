@@ -85,22 +85,28 @@ const StoreTemplate = ({
             )}
           </div>
           
-          <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center !px-3 md:!px-8 pointer-events-none bg-white/20 backdrop-blur-[2px]">
-            <div className="content-container w-full flex flex-col items-center">
-              <div className="flex flex-col gap-y-3 md:gap-y-4 max-w-[800px] pointer-events-auto">
-                <h1 
-                  className="text-3xl md:text-5xl font-serif leading-tight drop-shadow-md text-[#2C1E36]"
-                >
-                  {heroTitle || "SUMMER CRYSTAL SALE"}
-                </h1>
-                <p 
-                  className="text-base md:text-xl font-sans leading-relaxed font-medium drop-shadow-sm text-[#2C1E36]"
-                >
-                  {heroSubtitle || "GET 30% OFF EVERYTHING | USE CODE: AETHER30"}
-                </p>
+          {(heroTitle || heroSubtitle) && (
+            <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center !px-3 md:!px-8 pointer-events-none bg-white/20 backdrop-blur-[2px]">
+              <div className="content-container w-full flex flex-col items-center">
+                <div className="flex flex-col gap-y-3 md:gap-y-4 max-w-[800px] pointer-events-auto">
+                  {heroTitle && (
+                    <h1 
+                      className="text-3xl md:text-5xl font-serif leading-tight drop-shadow-md text-[#2C1E36]"
+                    >
+                      {heroTitle}
+                    </h1>
+                  )}
+                  {heroSubtitle && (
+                    <p 
+                      className="text-base md:text-xl font-sans leading-relaxed font-medium drop-shadow-sm text-[#2C1E36]"
+                    >
+                      {heroSubtitle}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
