@@ -49,12 +49,12 @@ const StoreTemplate = ({
   const heroData = heroImage?.data?.attributes || heroImage?.attributes || heroImage || null
   const bannerUrl = heroData?.url
     ? (heroData.url.startsWith("http") ? heroData.url : `${STRAPI_URL}${heroData.url}`)
-    : null
+    : "/images/sale-banner-bg.jpg"
 
   const mobileHeroData = mobileHeroImage?.data?.attributes || mobileHeroImage?.attributes || mobileHeroImage || null
   const mobileBannerUrl = mobileHeroData?.url
     ? (mobileHeroData.url.startsWith("http") ? mobileHeroData.url : `${STRAPI_URL}${mobileHeroData.url}`)
-    : null
+    : "/images/sale-banner-bg.jpg"
 
   const marqueeItems = announcements?.map((a: any, idx: number) => ({
     id: a.id || idx,
@@ -65,14 +65,14 @@ const StoreTemplate = ({
     <div className="bg-[#FAF9F6] min-h-screen relative pb-12 md:pb-0">
       {/* Store Hero Banner - Fully Responsive & Natural Height */}
       {showHero && (bannerUrl || mobileBannerUrl) && (
-        <div className="w-full bg-[#FAF9F6] relative">
-          <div className="w-full h-auto">
+        <div className="w-full bg-[#FAF9F6] relative h-[250px] md:h-[350px]">
+          <div className="w-full h-full">
             {/* Desktop Banner */}
             {bannerUrl && (
               <img
                 src={bannerUrl}
                 alt={heroTitle || "Shop Crystals"}
-                className={`w-full h-auto block ${mobileBannerUrl ? 'hidden md:block' : ''}`}
+                className={`w-full h-full object-cover object-center block ${mobileBannerUrl ? 'hidden md:block' : ''}`}
               />
             )}
             {/* Mobile Banner */}
@@ -80,38 +80,33 @@ const StoreTemplate = ({
               <img
                 src={mobileBannerUrl}
                 alt={heroTitle || "Shop Crystals"}
-                className={`w-full h-auto block ${bannerUrl ? 'md:hidden' : ''}`}
+                className={`w-full h-full object-cover object-center block ${bannerUrl ? 'md:hidden' : ''}`}
               />
             )}
           </div>
           
-          <div className="absolute inset-0 z-10 flex flex-col justify-end pb-8 md:pb-16 !px-3 md:!px-8 pointer-events-none">
-            <div className="content-container w-full">
-              {/* We only show text if it's explicitly different from what's in the image */}
-              {!(bannerUrl?.includes('followers') || mobileBannerUrl?.includes('followers')) && (
-                <div className="flex flex-col gap-y-3 md:gap-y-5 max-w-[650px] pointer-events-auto">
-                  <div className="flex flex-col gap-y-1">
-                    {heroTitle && (
-                      <h1 
-                        className="text-4xl md:text-[68px] font-serif leading-tight drop-shadow-sm"
-                        style={{ color: titleColor || "#2C1E36" }}
-                      >
-                        {heroTitle}
-                      </h1>
-                    )}
-                  </div>
+          {(heroTitle || heroSubtitle) && (
+            <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center !px-3 md:!px-8 pointer-events-none bg-white/20 backdrop-blur-[2px]">
+              <div className="content-container w-full flex flex-col items-center">
+                <div className="flex flex-col gap-y-3 md:gap-y-4 max-w-[800px] pointer-events-auto">
+                  {heroTitle && (
+                    <h1 
+                      className="text-3xl md:text-5xl font-serif leading-tight drop-shadow-md text-[#2C1E36]"
+                    >
+                      {heroTitle}
+                    </h1>
+                  )}
                   {heroSubtitle && (
                     <p 
-                      className="text-base md:text-2xl font-sans leading-relaxed font-medium"
-                      style={{ color: subtitleColor || "#2C1E36" }}
+                      className="text-base md:text-xl font-sans leading-relaxed font-medium drop-shadow-sm text-[#2C1E36]"
                     >
                       {heroSubtitle}
                     </p>
                   )}
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
