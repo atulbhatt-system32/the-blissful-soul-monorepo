@@ -26,6 +26,7 @@
     "@medusajs/admin-sdk": "2.13.1",
     "@medusajs/admin-shared": "2.13.1",
     "@medusajs/cli": "2.13.1",
+    "@medusajs/core-flows": "2.13.1",
     "@medusajs/dashboard": "2.13.1",
     "@medusajs/draft-order": "2.13.1",
     "@medusajs/framework": "2.13.1",

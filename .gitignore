@@ -87,3 +87,5 @@ yarn.lock
 ssh.txt
 coolify.txt
 staging.txt
+
+.pnpm-store
