@@ -26,6 +26,7 @@ const StoreTemplate = ({
   titleColor,
   subtitleColor,
   showHero = true,
+  showMobileHero = true,
   showAnnouncements = true,
 }: {
   sortBy?: SortOptions
@@ -42,6 +43,7 @@ const StoreTemplate = ({
   titleColor?: string
   subtitleColor?: string
   showHero?: boolean
+  showMobileHero?: boolean
   showAnnouncements?: boolean
 }) => {
   const pageNumber = page ? parseInt(page) : 1
@@ -63,12 +65,12 @@ const StoreTemplate = ({
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen relative pb-12 md:pb-0">
-      {/* Store Hero Banner - Fully Responsive & Natural Height */}
-      {showHero && (bannerUrl || mobileBannerUrl) && (
-        <div className="w-full bg-[#FAF9F6] relative h-[250px] md:h-[350px]">
+      {/* Store Hero Banner - Desktop & Mobile independently controlled */}
+      {(showHero || showMobileHero) && (bannerUrl || mobileBannerUrl) && (
+        <div className={`w-full bg-[#FAF9F6] relative h-[250px] md:h-[350px] ${!showMobileHero ? 'hidden md:block' : ''} ${!showHero ? 'md:hidden' : ''}`}>
           <div className="w-full h-full">
             {/* Desktop Banner */}
-            {bannerUrl && (
+            {showHero && bannerUrl && (
               <img
                 src={bannerUrl}
                 alt={heroTitle || "Shop Crystals"}
@@ -76,7 +78,7 @@ const StoreTemplate = ({
               />
             )}
             {/* Mobile Banner */}
-            {mobileBannerUrl && (
+            {showMobileHero && mobileBannerUrl && (
               <img
                 src={mobileBannerUrl}
                 alt={heroTitle || "Shop Crystals"}

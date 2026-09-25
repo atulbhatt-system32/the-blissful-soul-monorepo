@@ -44,6 +44,7 @@ export default async function StorePage(props: Params) {
       titleColor={storeData?.title_color}
       subtitleColor={storeData?.subtitle_color}
       showHero={storeData?.show_hero ?? true}
+      showMobileHero={storeData?.show_mobile_hero ?? true}
       showAnnouncements={storeData?.show_announcements ?? true}
     />
   )
