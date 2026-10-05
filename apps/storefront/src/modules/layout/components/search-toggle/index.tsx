@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import SearchModal from "@modules/layout/components/search-modal"
 
 const SearchToggle = ({ countryCode }: { countryCode: string }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const openSearch = () => setIsOpen(true)
-  const closeSearch = () => setIsOpen(false)
+  const closeSearch = useCallback(() => setIsOpen(false), [])
 
   return (
     <>
