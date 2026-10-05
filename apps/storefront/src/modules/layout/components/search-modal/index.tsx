@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Text } from "@medusajs/ui"
 import X from "@modules/common/icons/x"
 import { listProducts } from "@lib/data/products"
@@ -73,6 +73,16 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
       document.body.style.overflow = "unset"
     }
   }, [isOpen])
+
+  // Close modal on route change
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (isOpen) {
+      close()
+    }
+  }, [pathname, searchParams, close])
+
 
   if (!isOpen) return null
 
