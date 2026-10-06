@@ -276,7 +276,7 @@ export default async function orderInvoiceHandler({
         <!-- ═══ CLIENT ORDER TITLE ═══ -->
         <h2 style="font-size: 26px; font-weight: 800; color: #2C1E36; margin: 0 0 10px;">Order Confirmed: #${order.display_id}</h2>
         <p style="font-size: 15px; line-height: 1.5; color: #665D6B; margin: 0 0 20px;">
-          Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. ${driveFolderId ? 'Your digital course access is provided below.' : 'It shall be energised and dispatched soon.'}
+          Hi ${order.shipping_address?.first_name || 'Customer'}, We have received your order. ${driveFolderId ? 'Your digital course access is provided below.' : 'It shall be energised and dispatched soon. Your shipment shall be delivered in 7–8 business days.'}
         </p>
         ${!driveFolderId ? `
         <!-- ═══ ENERGISATION NOTICE ═══ -->
