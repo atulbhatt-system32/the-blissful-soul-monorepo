@@ -204,7 +204,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
           // levels) for the breadcrumb. Deliberately not *products — the
           // product grid is fetched separately by category_id, so expanding
           // it here is both unused and an expensive/unstable join.
-          fields: "*category_children, *parent_category, *parent_category.parent_category",
+          fields: "*category_children, *parent_category, *parent_category.parent_category, *product_category_images, +metadata",
           handle,
         },
         next,
