@@ -109,6 +109,7 @@ export async function sendOrderConfirmationWhatsApp({
   productTitle?: string
   orderDate: string
   amount: number
+  pdfUrl?: string
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
@@ -120,6 +121,7 @@ export async function sendOrderConfirmationWhatsApp({
     template: {
       name: "order_confirmation",
       languageCode: "en",
+      ...(pdfUrl ? { headerValues: [pdfUrl] } : {}),
       bodyValues: [
         firstName,
         String(orderId),
@@ -162,6 +164,7 @@ export async function sendBookingConfirmationWhatsApp({
   bookingTime: string
   amount: number
   calMeetUrl?: string
+  pdfUrl?: string
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
@@ -180,7 +183,12 @@ export async function sendBookingConfirmationWhatsApp({
     phoneNumber: number,
     callbackData: `booking_confirmation_${orderId}`,
     type: "Template",
-    template: { name: "booking_confirmation", languageCode: "en", bodyValues },
+    template: { 
+      name: "booking_confirmation", 
+      languageCode: "en", 
+      ...(pdfUrl ? { headerValues: [pdfUrl] } : {}),
+      bodyValues 
+    },
   })
 }
 
@@ -430,6 +438,7 @@ export async function sendCourseConfirmationWhatsApp({
   firstName: string
   orderId: string | number
   driveLink: string
+  pdfUrl?: string
 }): Promise<void> {
   const { dialCode, number } = normalisePhone(phone, countryCode)
 
@@ -441,6 +450,7 @@ export async function sendCourseConfirmationWhatsApp({
     template: {
       name: "course_confirmation",
       languageCode: "en",
+      ...(pdfUrl ? { headerValues: [pdfUrl] } : {}),
       bodyValues: [firstName, driveLink],
     },
   })

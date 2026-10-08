@@ -31,11 +31,23 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const description = productCategory.description ?? `${title} category.`
 
+    const imageUrl = (productCategory as any).product_category_images?.[0]?.url || (productCategory as any).metadata?.image
+
     return {
       title,
       description,
       alternates: {
         canonical: `${params.category.join("/")}`,
+      },
+      openGraph: {
+        title,
+        description,
+        ...(imageUrl && { images: [imageUrl] }),
+      },
+      twitter: {
+        title,
+        description,
+        ...(imageUrl && { images: [imageUrl] }),
       },
     }
   } catch (error) {
