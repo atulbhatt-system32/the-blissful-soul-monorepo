@@ -50,11 +50,39 @@ export default async function orderInvoiceHandler({
     // 2. Generate PDF using pdfkit
     let pdfBuffer: Buffer
     let pdfBase64: string
+    let pdfUrl: string | undefined = undefined
     try {
       const pdfStart = Date.now()
       pdfBuffer = await generateInvoice(order)
       pdfBase64 = pdfBuffer.toString("base64")
-      console.log(`[Order Processing] PDF generated for #${order.display_id} in ${Date.now() - pdfStart}ms (${Math.round(pdfBuffer.length / 1024)}KB)`)
+      
+      const fs = require("fs")
+      const path = require("path")
+      const staticDir = path.join(process.cwd(), "static")
+      if (!fs.existsSync(staticDir)) fs.mkdirSync(staticDir, { recursive: true })
+      
+      const filename = `invoice_${order.display_id}_${Date.now()}.pdf`
+      const outPath = path.join(staticDir, filename)
+      fs.writeFileSync(outPath, pdfBuffer)
+      
+      const backendUrl = process.env.BACKEND_URL || "https://backend-staging.pragyavijh.com"
+      pdfUrl = `${backendUrl.replace(/\/$/, '')}/static/${filename}`
+      
+      console.log(`[Order Processing] PDF generated for #${order.display_id} in ${Date.now() - pdfStart}ms (${Math.round(pdfBuffer.length / 1024)}KB) - URL: ${pdfUrl}`)
+
+      // Interakt fetches the PDF asynchronously. 
+      // We delete the PDF from the server after 5 minutes to prevent the server from becoming heavy.
+      setTimeout(() => {
+        try {
+          if (fs.existsSync(outPath)) {
+            fs.unlinkSync(outPath)
+            console.log(`[Order Processing] Auto-deleted temporary PDF for #${order.display_id} at ${outPath}`)
+          }
+        } catch (delErr: any) {
+          console.error(`[Order Processing] Failed to delete temporary PDF for #${order.display_id}:`, delErr.message)
+        }
+      }, 5 * 60 * 1000)
+
     } catch (pdfErr: any) {
       console.error(`[Order Processing] PDF generation failed for #${order.display_id}:`, pdfErr.message)
       pdfBase64 = ""
@@ -357,12 +385,14 @@ export default async function orderInvoiceHandler({
             bookingTime,
             amount: calculatedTotal,
             calMeetUrl: calMeetUrl || undefined,
+            pdfUrl,
           }).catch((err: Error) => console.error(`[WhatsApp] Booking confirmation failed for #${order.display_id}:`, err.message))
         } else if (driveFolderId) {
           // Course purchase → course_confirmation template (drive link)
           sendCourseConfirmationWhatsApp({
             phone, countryCode, firstName, orderId,
             driveLink: `https://drive.google.com/drive/folders/${driveFolderId}`,
+            pdfUrl,
           }).catch((err: Error) => console.error(`[WhatsApp] Course confirmation failed for #${order.display_id}:`, err.message))
         } else {
           // Regular product order → order_confirmation template (order date only)
@@ -372,6 +402,7 @@ export default async function orderInvoiceHandler({
             productTitle: itemTitles,
             orderDate,
             amount: calculatedTotal,
+            pdfUrl,
           }).catch((err: Error) => console.error(`[WhatsApp] Order confirmation failed for #${order.display_id}:`, err.message))
         }
       }
