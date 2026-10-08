@@ -101,6 +101,7 @@ export async function sendOrderConfirmationWhatsApp({
   productTitle,
   orderDate,
   amount,
+  pdfUrl,
 }: {
   phone: string
   countryCode: string
@@ -154,6 +155,7 @@ export async function sendBookingConfirmationWhatsApp({
   bookingTime,
   amount,
   calMeetUrl,
+  pdfUrl,
 }: {
   phone: string
   countryCode: string
@@ -432,6 +434,7 @@ export async function sendCourseConfirmationWhatsApp({
   firstName,
   orderId,
   driveLink,
+  pdfUrl,
 }: {
   phone: string
   countryCode: string
