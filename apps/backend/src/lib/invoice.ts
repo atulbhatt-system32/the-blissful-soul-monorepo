@@ -24,10 +24,10 @@ function getHSNCode(title: string): string {
 // ──────────────────────────────────────────────
 const COMPANY = {
   name: "The Blissful Soul",
-  tagline: "The Blissful Soul Shakti Nagar",
+  tagline: "",
   gstin: "07APLPV9864M1ZN",
   email: process.env.GOOGLE_SMTP_USER ?? "tbspragya@gmail.com",
-  website: "theblissfulsoul.in",
+  website: "https://pragyavijh.com/in",
   phone: "PRAGYA VIJH : 9811611341",
   state: "Delhi",
   stateCode: "07",
