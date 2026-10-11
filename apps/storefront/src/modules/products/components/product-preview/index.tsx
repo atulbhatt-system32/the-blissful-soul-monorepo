@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Text, Badge } from "@medusajs/ui"
+import { useState, useMemo } from "react"
+import { Text, Badge, clx } from "@medusajs/ui"
 import { Clock } from "@medusajs/icons"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
@@ -190,8 +190,37 @@ export default function ProductPreview({
   // Only show modal with "Read more" when there's rich Strapi content to display
   const hasRichContent = Array.isArray(strapiContent?.rich_description) && strapiContent.rich_description.length > 0
 
+  const isVariantInStock = (v?: HttpTypes.StoreProductVariant) => {
+    if (!v) return false
+    // If inventory is not managed, it's always available
+    if (v.manage_inventory === false) return true
+    // If backorders are allowed, it can be purchased
+    if (v.allow_backorder === true) return true
+    // If inventory is managed, check positive quantity
+    if (v.manage_inventory && (v.inventory_quantity || 0) > 0) return true
+    // If inventory_quantity is explicitly provided
+    if (v.inventory_quantity !== undefined && v.inventory_quantity !== null && v.inventory_quantity > 0) return true
+    // If inventory is managed and stock <= 0, out of stock
+    if (v.manage_inventory) return false
+    return true
+  }
+
+  const inStock = useMemo(() => {
+    if (isSession) return true
+    if (!product.variants || product.variants.length === 0) return true
+    if (matchingVariant) {
+      return isVariantInStock(matchingVariant)
+    }
+    if (product.variants.length === 1) {
+      return isVariantInStock(product.variants[0])
+    }
+    // For products with multiple variants, check if at least one variant is purchasable
+    return product.variants.some((v) => isVariantInStock(v))
+  }, [product.variants, matchingVariant, isSession])
+
   const handleBooking = async (e?: React.MouseEvent) => {
     e?.preventDefault()
+    if (!inStock) return
     if (!preferredVariantId && !product.variants?.[0]?.id) return
 
     setIsAdding(true)
@@ -223,12 +252,19 @@ export default function ProductPreview({
           <div data-testid="product-wrapper" className="relative">
             <div className="relative p-2 md:p-3">
             {/* Item added confirmation overlay */}
-            {/* Discount Badge */}
-            {Number(displayPrice?.percentage_diff) > 0 && (
-              <div className="absolute top-6 left-6 z-10 bg-emerald-500 text-white text-[10px] md:text-[12px] font-black px-2.5 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg">
-                -{displayPrice?.percentage_diff}%
-              </div>
-            )}
+            {/* Badges */}
+            <div className="absolute top-6 left-6 z-10 flex flex-col gap-1.5 items-start">
+              {!inStock && (
+                <div className="bg-[#2C1E36]/90 text-white text-[9px] md:text-[11px] font-black tracking-wider uppercase px-2.5 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg backdrop-blur-sm border border-white/10">
+                  Out of Stock
+                </div>
+              )}
+              {inStock && Number(displayPrice?.percentage_diff) > 0 && (
+                <div className="bg-emerald-500 text-white text-[10px] md:text-[12px] font-black px-2.5 py-1 md:px-3 md:py-1.5 rounded-full shadow-lg">
+                  -{displayPrice?.percentage_diff}%
+                </div>
+              )}
+            </div>
 
             {/* Session Type Badge */}
             {!!displayLabel && (
@@ -429,14 +465,21 @@ export default function ProductPreview({
         <div className="px-2 md:px-6 pb-3 md:pb-8 mt-auto">
           <button
             onClick={handleBooking}
-            disabled={isAdding}
-            className="w-full py-2 md:py-4 bg-[#2C1E36] text-white rounded-[10px] md:rounded-[20px] font-bold hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none transition-all duration-300 uppercase tracking-[0.05em] md:tracking-[0.2em] text-[7px] md:text-[11px] flex items-center justify-center gap-x-1 md:gap-x-3 active:scale-95"
+            disabled={isAdding || !inStock}
+            className={clx(
+              "w-full py-2 md:py-4 rounded-[10px] md:rounded-[20px] font-bold uppercase tracking-[0.05em] md:tracking-[0.2em] text-[7px] md:text-[11px] flex items-center justify-center gap-x-1 md:gap-x-3 transition-all duration-300",
+              inStock
+                ? "bg-[#2C1E36] text-white hover:bg-[#3D2B4A] shadow-xl shadow-purple-900/10 active:scale-95 cursor-pointer"
+                : "bg-gray-100 text-gray-400 shadow-none cursor-not-allowed border border-gray-200"
+            )}
           >
             {isAdding ? (
               <>
                 <svg className="animate-spin h-4 w-4 text-[#C5A059]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 <span>ADDING...</span>
               </>
+            ) : !inStock ? (
+              <span className="font-sans">OUT OF STOCK</span>
             ) : (
               <>
                  <span className="font-sans">{isSession ? "BOOK SESSION" : "Add to Cart"}</span>
