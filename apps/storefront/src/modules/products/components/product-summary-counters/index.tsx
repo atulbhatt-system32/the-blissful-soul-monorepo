@@ -16,13 +16,14 @@ const ProductSummaryCounters = ({ productId, storeConfig }: ProductSummaryCounte
   // Allowing for different possible field names from Strapi config
   const isReal = storeConfig?.product_status_type === "real" || storeConfig?.show_real_data === true
 
-  // Stable random logic for "fake" values based on productId
+  // Stable random logic for "fake" values based on productId (range: 120 - 250)
   const fakeSold = useMemo(() => {
     let hash = 0
     for (let i = 0; i < productId.length; i++) {
       hash = productId.charCodeAt(i) + ((hash << 5) - hash)
     }
-    return Math.abs((hash % 20) + 5)
+    // 250 - 120 + 1 = 131 possible values (120 to 250 inclusive)
+    return (Math.abs(hash) % 131) + 120
   }, [productId])
 
   const fakeWatching = useMemo(() => {
