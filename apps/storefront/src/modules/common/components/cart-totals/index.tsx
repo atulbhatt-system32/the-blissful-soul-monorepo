@@ -22,7 +22,9 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     total,
   } = totals
 
-  const shipping_subtotal = (totals as any).shipping_total ?? totals.shipping_subtotal
+  const rawShipping = (totals as any).shipping_total ?? totals.shipping_subtotal ?? 0
+  // Defensively guard against Medusa negative shipping bugs
+  const shipping_subtotal = Math.max(0, rawShipping)
   // For tax-inclusive pricing, ensure we use the inclusive values from items
   const items = (totals as any).items || []
   
@@ -42,9 +44,10 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const discount_subtotal = item_subtotal - item_total
   const item_inclusive = item_subtotal
 
-  // For digital-only carts, don't show shipping and subtract it from total
+  // Guard displayTotal: if backend had negative shipping, add it back so the customer total is not reduced
+  const safeTotal = rawShipping < 0 ? (total ?? 0) - rawShipping : (total ?? 0)
   const displayShipping = isDigitalOnly ? 0 : shipping_subtotal
-  const displayTotal = isDigitalOnly ? (total ?? 0) - (shipping_subtotal ?? 0) : (total ?? 0)
+  const displayTotal = isDigitalOnly ? (safeTotal - shipping_subtotal) : safeTotal
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -55,12 +58,18 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             {convertToLocale({ amount: item_inclusive, currency_code })}
           </span>
         </div>
-        {!!displayShipping && (
+        {displayShipping > 0 && (
           <div className="flex items-center justify-between">
             <span>Shipping</span>
             <span data-testid="cart-shipping" data-value={displayShipping}>
               {convertToLocale({ amount: displayShipping, currency_code })}
             </span>
+          </div>
+        )}
+        {displayShipping === 0 && !isDigitalOnly && (
+          <div className="flex items-center justify-between text-emerald-400">
+            <span>Shipping</span>
+            <span>FREE</span>
           </div>
         )}
         {isDigitalOnly && (
