@@ -38,7 +38,7 @@ export async function retrieveCart(cartId?: string, fields?: string) {
     ...(await getCacheOptions("carts")),
   }
 
-  return await sdk.client
+  let cart = await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
       method: "GET",
       query: {
@@ -50,6 +50,32 @@ export async function retrieveCart(cartId?: string, fields?: string) {
     })
     .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
     .catch(() => null)
+
+  // Auto-heal negative shipping bug caused by Medusa v2 tax-inclusive promo race condition
+  if (
+    cart &&
+    typeof (cart as any).shipping_total === "number" &&
+    (cart as any).shipping_total < 0
+  ) {
+    await sdk.store.cart.update(id, {}, {}, headers).catch(() => null)
+    const refreshed = await sdk.client
+      .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
+        method: "GET",
+        query: { fields },
+        headers,
+        cache: "no-store",
+      })
+      .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
+      .catch(() => null)
+
+    if (refreshed) {
+      cart = refreshed
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+    }
+  }
+
+  return cart
 }
 
 export async function getOrSetCart(countryCode: string) {
@@ -273,6 +299,11 @@ export async function setShippingMethod({
   return sdk.store.cart
     .addShippingMethod(cartId, { option_id: shippingMethodId }, {}, headers)
     .then(async () => {
+      // Re-trigger cart calculation to re-evaluate promo adjustments
+      // In Medusa v2, addShippingMethod computes promo adjustments before shipping tax lines
+      // are persisted, producing a negative shipping total on tax-inclusive rates.
+      await sdk.store.cart.update(cartId, {}, {}, headers).catch(() => null)
+
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
     })
