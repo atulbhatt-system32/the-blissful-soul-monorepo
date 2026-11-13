@@ -55,6 +55,19 @@ export const listProducts = async ({
     ...(await getCacheOptions("products")),
   }
 
+  // Stock fields the product cards need to decide in/out of stock. Callers
+  // that pass their own `fields` would otherwise drop these: Medusa still
+  // returns `manage_inventory` but not `inventory_quantity`, so every managed
+  // variant looks out of stock.
+  const inventoryFields =
+    "+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder"
+  const callerFields = queryParams?.fields
+  const fields = callerFields
+    ? callerFields.includes("variants")
+      ? `${callerFields},${inventoryFields}`
+      : callerFields
+    : `*variants.calculated_price,${inventoryFields},*variants.images,+metadata,+tags,+categories,+type,+product_rank.rank`
+
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
       `/store/products`,
@@ -64,9 +77,8 @@ export const listProducts = async ({
           limit,
           offset,
           region_id: region?.id,
-          fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*variants.images,+metadata,+tags,+categories,+type,+product_rank.rank",
           ...queryParams,
+          fields,
         },
         headers,
         next,
