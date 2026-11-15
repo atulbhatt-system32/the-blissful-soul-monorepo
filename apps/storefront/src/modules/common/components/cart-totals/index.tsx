@@ -49,6 +49,8 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const displayShipping = isDigitalOnly ? 0 : shipping_subtotal
   const displayTotal = isDigitalOnly ? (safeTotal - shipping_subtotal) : safeTotal
 
+  const hasShippingMethod = ((totals as any).shipping_methods?.length ?? 0) > 0
+
   return (
     <div className="flex flex-col gap-y-3">
       <div className="flex flex-col gap-y-2 text-[10px] uppercase tracking-widest font-bold opacity-70">
@@ -66,10 +68,12 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             </span>
           </div>
         )}
-        {displayShipping === 0 && !isDigitalOnly && (
-          <div className="flex items-center justify-between text-emerald-400">
+        {hasShippingMethod && displayShipping === 0 && !isDigitalOnly && (
+          <div className="flex items-center justify-between">
             <span>Shipping</span>
-            <span>FREE</span>
+            <span data-testid="cart-shipping" data-value={0} className="text-[#C5A059]">
+              FREE
+            </span>
           </div>
         )}
         {isDigitalOnly && (
