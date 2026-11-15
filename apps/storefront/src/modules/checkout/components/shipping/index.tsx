@@ -11,7 +11,7 @@ import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
@@ -148,12 +148,72 @@ const Shipping: React.FC<ShippingProps> = ({
     ) {
       const method = _shippingMethods[0]
       if (shippingMethodId === method.id) {
-        handleSubmit()
+        // Replace, not push: leaving ?step=delivery in the history would bounce
+        // the customer forward again every time they press the browser's back.
+        router.replace(pathname + "?step=payment", { scroll: false })
       } else if (!shippingMethodId) {
         handleSetShippingMethod(method.id, "shipping")
       }
     }
   }, [isOpen, _shippingMethods, shippingMethodId, isLoading, error])
+
+  // Keep the shipping method already on the cart in step with the cart's
+  // contents. A method added earlier goes stale when the cart changes
+  // afterwards: a flat-rate method stays on after salt is added, and a
+  // weight-based method keeps the price of the old quantity. Each distinct
+  // correction is tried once, so a backend disagreement cannot loop.
+  const resyncAttempted = useRef<string | null>(null)
+  const cartMethod = cart.shipping_methods?.at(-1)
+
+  useEffect(() => {
+    if (isLoading || error || !cartMethod || !_shippingMethods?.length) {
+      return
+    }
+
+    const currentOptionId = cartMethod.shipping_option_id
+
+    if (_pickupMethods?.some((m) => m.id === currentOptionId)) {
+      return
+    }
+
+    const current = _shippingMethods.find((o) => o.id === currentOptionId)
+    let targetId: string | null = null
+    let attemptKey = ""
+
+    if (!current) {
+      // The cart's method is no longer offered for these items.
+      if (_shippingMethods.length !== 1) {
+        return
+      }
+      targetId = _shippingMethods[0].id
+      attemptKey = `swap:${cartMethod.id}:${targetId}`
+    } else if (current.provider_id === "weight-based_weight-based") {
+      const calculated = calculatedPricesMap[current.id]
+      if (
+        typeof calculated !== "number" ||
+        Math.abs(calculated - (cartMethod.amount ?? 0)) < 0.01
+      ) {
+        return
+      }
+      targetId = current.id
+      attemptKey = `reprice:${cartMethod.id}:${calculated}`
+    }
+
+    if (!targetId || resyncAttempted.current === attemptKey) {
+      return
+    }
+
+    resyncAttempted.current = attemptKey
+    handleSetShippingMethod(targetId, "shipping")
+  }, [
+    cartMethod?.id,
+    cartMethod?.shipping_option_id,
+    cartMethod?.amount,
+    _shippingMethods,
+    calculatedPricesMap,
+    isLoading,
+    error,
+  ])
 
   const handleEdit = () => {
     router.push(pathname + "?step=delivery", { scroll: false })
