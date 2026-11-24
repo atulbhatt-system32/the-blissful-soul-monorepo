@@ -443,15 +443,45 @@ const Shipping: React.FC<ShippingProps> = ({
                 <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-black italic">
                    Selected Method
                 </span>
-                <div className="flex items-center justify-between text-[#2C1E36] font-bold">
-                  <span>{cart.shipping_methods!.at(-1)!.name}</span>
-                  <span className="text-[#C5A059]">
-                    {convertToLocale({
-                      amount: cart.shipping_methods!.at(-1)!.amount!,
-                      currency_code: cart?.currency_code,
-                    })}
-                  </span>
-                </div>
+                {(() => {
+                  const method = cart.shipping_methods!.at(-1)! as any
+                  const basePrice = Number(method.amount ?? 0)
+                  // `amount` is the option's price before promotions. Show
+                  // what the customer actually pays, the same figure as the
+                  // order review card, so a free-shipping promo reads FREE here too.
+                  const rawPaid =
+                    typeof method.total === "number"
+                      ? method.total
+                      : cart.shipping_methods!.length === 1
+                        ? Number((cart as any).shipping_total ?? basePrice)
+                        : basePrice
+                  const paid = Math.max(0, rawPaid)
+                  const isDiscounted = paid < basePrice
+
+                  return (
+                    <div className="flex items-center justify-between text-[#2C1E36] font-bold">
+                      <span>{method.name}</span>
+                      <span className="flex items-center gap-x-2">
+                        {isDiscounted && (
+                          <span className="line-through text-gray-400 font-normal">
+                            {convertToLocale({
+                              amount: basePrice,
+                              currency_code: cart?.currency_code,
+                            })}
+                          </span>
+                        )}
+                        <span className="text-[#C5A059]">
+                          {paid === 0
+                            ? "FREE"
+                            : convertToLocale({
+                                amount: paid,
+                                currency_code: cart?.currency_code,
+                              })}
+                        </span>
+                      </span>
+                    </div>
+                  )
+                })()}
               </div>
             ) : (
                <span className="text-sm text-gray-400 italic">Shipping pending...</span>
